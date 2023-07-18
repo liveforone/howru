@@ -1,5 +1,6 @@
 package howru.howru.member.service.command
 
+import howru.howru.member.domain.MemberLock
 import howru.howru.member.domain.Role
 import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.dto.update.UpdateEmail
@@ -25,7 +26,7 @@ class MemberCommandServiceTest @Autowired constructor(
 
     @Test
     @Transactional
-    fun signupMember() {
+    fun signupMemberTest() {
         //given
         val email = "signup_test@gmail.com"
         val pw = "1234"
@@ -42,7 +43,7 @@ class MemberCommandServiceTest @Autowired constructor(
 
     @Test
     @Transactional
-    fun updateEmail() {
+    fun updateEmailTest() {
         //given
         val email = "email_test@gmail.com"
         val pw = "1234"
@@ -63,7 +64,47 @@ class MemberCommandServiceTest @Autowired constructor(
 
     @Test
     @Transactional
-    fun addReportCount() {
+    fun memberLockOnTest() {
+        //given
+        val email = "lock_on_test@gmail.com"
+        val pw = "1234"
+        val request = SignupRequest(email, pw)
+        val uuid = memberCommandService.signupMember(request)
+        flushAndClear()
+
+        //when
+        memberCommandService.memberLockOn(uuid)
+        flushAndClear()
+
+        //then
+        Assertions.assertThat(memberQueryService.getMemberByUUID(uuid).memberLock)
+            .isEqualTo(MemberLock.ON)
+    }
+
+    @Test
+    @Transactional
+    fun memberLockOffTest() {
+        //given
+        val email = "lock_off_test@gmail.com"
+        val pw = "1234"
+        val request = SignupRequest(email, pw)
+        val uuid = memberCommandService.signupMember(request)
+        flushAndClear()
+        memberCommandService.memberLockOn(uuid)
+        flushAndClear()
+
+        //when
+        memberCommandService.memberLockOff(uuid)
+        flushAndClear()
+
+        //then
+        Assertions.assertThat(memberQueryService.getMemberByUUID(uuid).memberLock)
+            .isEqualTo(MemberLock.OFF)
+    }
+
+    @Test
+    @Transactional
+    fun addReportCountTest() {
         //given
         val email = "email_test@gmail.com"
         val pw = "1234"
