@@ -6,6 +6,8 @@ object MemberUrl {
     const val INFO = "/member/info"
     const val UPDATE_EMAIL = "/member/{uuid}/update/email"
     const val UPDATE_PASSWORD = "/member/{uuid}/update/password"
+    const val LOCK_ON = "/member/{uuid}/lock-on"
+    const val LOCK_OFF = "/member/{uuid}/lock-off"
     const val WITHDRAW = "/member/{uuid}/withdraw"
     const val PROHIBITION = "/prohibition"
 }
