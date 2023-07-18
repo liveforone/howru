@@ -60,6 +60,16 @@ class MemberCommandService @Autowired constructor(
         }
     }
 
+    fun memberLockOn(uuid: UUID) {
+        memberRepository.findOneByUUID(uuid)
+            .also { it.lockOn() }
+    }
+
+    fun memberLockOff(uuid: UUID) {
+        memberRepository.findOneByUUID(uuid)
+            .also { it.lockOff() }
+    }
+
     fun addReportCount(uuid: UUID) {
         memberRepository.findOneByUUID(uuid)
             .also { it.addReport() }
