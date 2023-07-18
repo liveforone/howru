@@ -1,5 +1,6 @@
 package howru.howru.member.domain
 
+import howru.howru.converter.MemberLockConverter
 import howru.howru.converter.RoleConverter
 import howru.howru.exception.exception.MemberException
 import howru.howru.exception.message.MemberExceptionMessage
@@ -20,7 +21,8 @@ class Member private constructor(
     @Convert(converter = RoleConverter::class) @Column(nullable = false) var auth: Role,
     @Column(nullable = false) var email: String,
     @Column(nullable = false) var pw: String,
-    @Column(nullable = false) var reportCount: Long = MemberConstant.BASIC_REPORT
+    @Convert(converter = MemberLockConverter::class) @Column(nullable = false) var memberLock: MemberLock = MemberLock.OFF,
+    @Column(nullable = false) var reportCount: Long = MemberConstant.BASIC_REPORT,
 ) : UserDetails {
     companion object {
         private fun isAdmin(email: String) = (email == MemberConstant.ADMIN_EMAIL)
@@ -46,6 +48,14 @@ class Member private constructor(
     fun updatePw(newPassword: String, oldPassword: String) {
         require (PasswordUtil.isMatchPassword(oldPassword, pw)) { throw MemberException(MemberExceptionMessage.WRONG_PASSWORD) }
         pw = PasswordUtil.encodePassword(newPassword)
+    }
+
+    fun lockOn() {
+        memberLock = MemberLock.ON
+    }
+
+    fun lockOff() {
+        memberLock = MemberLock.OFF
     }
 
     fun addReport() {
