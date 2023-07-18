@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 class MemberTest {
 
     @Test
-    fun updateEmail() {
+    fun updateEmailTest() {
         //given
         val email = "email_test@gmail.com"
         val pw = "1234"
@@ -22,7 +22,7 @@ class MemberTest {
     }
 
     @Test
-    fun updatePw() {
+    fun updatePwTest() {
         //given
         val email = "pw_test@gmail.com"
         val pw = "1234"
@@ -37,7 +37,36 @@ class MemberTest {
     }
 
     @Test
-    fun addReport() {
+    fun lockOnTest() {
+        //given
+        val email = "lock_on_test@gmail.com"
+        val pw = "1234"
+        val member = Member.create(email, pw, Role.MEMBER)
+
+        //when
+        member.lockOn()
+
+        //then
+        Assertions.assertThat(member.memberLock).isEqualTo(MemberLock.ON)
+    }
+
+    @Test
+    fun lockOffTest() {
+        //given
+        val email = "lock_off_test@gmail.com"
+        val pw = "1234"
+        val member = Member.create(email, pw, Role.MEMBER)
+        member.lockOn()
+
+        //when
+        member.lockOff()
+
+        //then
+        Assertions.assertThat(member.memberLock).isEqualTo(MemberLock.OFF)
+    }
+
+    @Test
+    fun addReportTest() {
         //given
         val email = "pw_test@gmail.com"
         val pw = "1234"
