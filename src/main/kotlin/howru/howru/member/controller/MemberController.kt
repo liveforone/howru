@@ -94,6 +94,22 @@ class MemberController @Autowired constructor(
         return MemberResponse.updatePwSuccess()
     }
 
+    @PutMapping(MemberUrl.LOCK_ON)
+    fun lockOn(@PathVariable(MemberParam.UUID) uuid: UUID): ResponseEntity<*> {
+        memberCommandService.memberLockOn(uuid)
+        logger().info(MemberControllerLog.LOCK_ON_SUCCESS.log)
+
+        return MemberResponse.lockOnSuccess()
+    }
+
+    @PutMapping(MemberUrl.LOCK_OFF)
+    fun lockOff(@PathVariable(MemberParam.UUID) uuid: UUID): ResponseEntity<*> {
+        memberCommandService.memberLockOff(uuid)
+        logger().info(MemberControllerLog.LOCK_OFF_SUCCESS.log)
+
+        return MemberResponse.lockOffSuccess()
+    }
+
     @DeleteMapping(MemberUrl.WITHDRAW)
     fun withdraw(
         @PathVariable(MemberParam.UUID) uuid: UUID,
