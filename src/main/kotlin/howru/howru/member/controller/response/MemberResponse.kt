@@ -9,6 +9,8 @@ object MemberResponse {
     private const val LOGIN_SUCCESS = "로그인에 성공하였습니다.\n환영합니다."
     private const val UPDATE_EMAIL_SUCCESS = "이메일을 성공적으로 변경하였습니다."
     private const val UPDATE_PW_SUCCESS = "비밀번호를 성공적으로 변경하였습니다."
+    private const val LOCK_ON_SUCCESS = "프로필 잠금에 성공하였습니다."
+    private const val LOCK_OFF_SUCCESS = "프로필 잠금 해제에 성공하였습니다."
     private const val WITHDRAW_SUCCESS = "회원탈퇴를 성공적으로 마쳤습니다.\n안녕히가세요."
 
     fun infoSuccess(member: MemberInfo) = ResponseEntity.ok(member)
@@ -16,5 +18,7 @@ object MemberResponse {
     fun loginSuccess() = ResponseEntity.ok(LOGIN_SUCCESS)
     fun updateEmailSuccess() = ResponseEntity.ok(UPDATE_EMAIL_SUCCESS)
     fun updatePwSuccess() = ResponseEntity.ok(UPDATE_PW_SUCCESS)
+    fun lockOnSuccess() = ResponseEntity.ok(LOCK_ON_SUCCESS)
+    fun lockOffSuccess() = ResponseEntity.ok(LOCK_OFF_SUCCESS)
     fun withdrawSuccess() = ResponseEntity.ok(WITHDRAW_SUCCESS)
 }
