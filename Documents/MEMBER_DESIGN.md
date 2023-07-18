@@ -23,6 +23,8 @@
 [GET] /member/info
 [PUT] /member/{uuid}/update/email
 [PUT] /member/{uuid}/update/password
+[PUT] /member/{uuid}/lock-on
+[PUT] /member/{uuid}/lock-off
 [DELETE] /member/{uuid}/withdraw
 ```
 
