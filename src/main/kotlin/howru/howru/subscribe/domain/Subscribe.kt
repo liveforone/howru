@@ -1,14 +1,15 @@
 package howru.howru.subscribe.domain
 
 import howru.howru.globalUtil.getCurrentTimestamp
+import howru.howru.subscribe.domain.constant.SubscribeConstant
 import jakarta.persistence.*
 import java.util.*
 
 @Entity
 @IdClass(SubscribePk::class)
 class Subscribe private constructor(
-    @Id @Column(name = "followee_uuid") val followeeUUID: UUID,
-    @Id @Column(name = "follower_uuid") val followerUUID: UUID,
+    @Id @Column(name = SubscribeConstant.FOLLOWEE_UUID) val followeeUUID: UUID,
+    @Id @Column(name = SubscribeConstant.FOLLOWER_UUID) val followerUUID: UUID,
     @Column(updatable = false) val timestamp: Int = getCurrentTimestamp()
 ) {
     companion object {
