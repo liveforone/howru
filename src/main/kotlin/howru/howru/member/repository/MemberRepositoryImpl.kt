@@ -59,6 +59,7 @@ class MemberRepositoryImpl @Autowired constructor(
                     col(Member::uuid),
                     col(Member::auth),
                     col(Member::email),
+                    col(Member::memberLock),
                     col(Member::reportCount)
                 ))
                 from(entity(Member::class))
