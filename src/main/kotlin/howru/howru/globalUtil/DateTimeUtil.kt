@@ -1,7 +1,27 @@
 package howru.howru.globalUtil
 
 import java.time.Instant
+import java.time.LocalDateTime
 
 fun getCurrentTimestamp(): Int {
     return Instant.now().epochSecond.toInt()
+}
+
+fun dateConvertToInt(): Long {
+    val now = LocalDateTime.now()
+    val year = now.year.toString()
+    val month = checkSingleDigit(now.monthValue)
+    val day = checkSingleDigit(now.dayOfMonth)
+    val hour = checkSingleDigit(now.hour)
+    val minute = checkSingleDigit(now.minute)
+
+    return (year + month + day + hour + minute).toLong()
+}
+
+private fun checkSingleDigit(digit: Int): String {
+    return if (digit in 1..9) {
+        "0${digit}"
+    } else {
+        digit.toString()
+    }
 }
