@@ -10,6 +10,10 @@ import org.springframework.data.repository.query.Param
 import java.util.UUID
 
 interface SubscribeRepository : JpaRepository<Subscribe, SubscribePk>, SubscribeCustomRepository {
-    @Query(SubscribeQuery.FOLLOW_EACH)
+
+    @Query(SubscribeQuery.IS_FOLLOWEE)
+    fun isFollowee(@Param(SubscribeRepoParam.FOLLOWEE_UUID) followeeUUID: UUID, @Param(SubscribeRepoParam.FOLLOWER_UUID) followerUUID: UUID): Boolean
+
+    @Query(SubscribeQuery.IS_FOLLOW_EACH)
     fun isFollowEach(@Param(SubscribeRepoParam.FOLLOWEE_UUID) followeeUUID: UUID, @Param(SubscribeRepoParam.FOLLOWER_UUID) followerUUID: UUID): Boolean
 }
