@@ -22,7 +22,7 @@ class SubscribeCommandService @Autowired constructor(
 
     fun unsubscribe(unsubscribeRequest: UnsubscribeRequest) {
         with(unsubscribeRequest) {
-            subscribeRepository.findOneById(followeeUUID!!, followerUUID!!)
+            subscribeRepository.findOneByUUID(followeeUUID!!, followerUUID!!)
                 .also { subscribeRepository.delete(it) }
         }
     }
