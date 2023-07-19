@@ -102,6 +102,23 @@ class SubscribeQueryServiceTest @Autowired constructor(
 
     @Test
     @Transactional
+    fun isFolloweeTest() {
+        //given
+        val followeeUUID = createFollowee()
+        val followerUUID = createFollower()
+        val request = CreateSubscribe(followeeUUID, followerUUID)
+        subscribeCommandService.createSubscribe(request)
+        flushAndClear()
+
+        //when
+        val result = subscribeQueryService.isFollowee(followeeUUID, followerUUID)
+
+        //then
+        Assertions.assertThat(result).isTrue()
+    }
+
+    @Test
+    @Transactional
     fun isFollowEachTest() {
         //given
         val followeeUUID = createFollowee()
