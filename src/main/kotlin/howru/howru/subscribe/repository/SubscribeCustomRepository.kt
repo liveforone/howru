@@ -6,7 +6,7 @@ import java.util.*
 import kotlin.collections.List
 
 interface SubscribeCustomRepository {
-    fun findOneById(followeeUUID: UUID, followerUUID: UUID): Subscribe
+    fun findOneByUUID(followeeUUID: UUID, followerUUID: UUID): Subscribe
     fun findSubscribesByFollower(followerUUID: UUID): List<SubscribeInfo>
     fun findSubscribesByFollowee(followeeUUID: UUID): List<SubscribeInfo>
     fun findFollowee(followerUUID: UUID): List<UUID>
