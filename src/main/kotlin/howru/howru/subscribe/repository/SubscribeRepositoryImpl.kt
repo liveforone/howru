@@ -18,7 +18,7 @@ class SubscribeRepositoryImpl @Autowired constructor(
     private val queryFactory: SpringDataQueryFactory
 ) : SubscribeCustomRepository {
 
-    override fun findOneById(followeeUUID: UUID, followerUUID: UUID): Subscribe {
+    override fun findOneByUUID(followeeUUID: UUID, followerUUID: UUID): Subscribe {
         return try {
             queryFactory.singleQuery {
                 select(entity(Subscribe::class))
