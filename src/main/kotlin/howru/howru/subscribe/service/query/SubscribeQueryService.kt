@@ -15,6 +15,7 @@ class SubscribeQueryService @Autowired constructor(
     fun getSubscribesByFollowee(followeeUUID: UUID) = subscribeRepository.findSubscribesByFollowee(followeeUUID)
     fun getCountFollower(followeeUUID: UUID) = subscribeRepository.countFollowersByFollowee(followeeUUID)
     fun getCountSubscribes(followerUUID: UUID) = subscribeRepository.countSubscribesByFollower(followerUUID)
-    fun isFollowEach(followeeUUID: UUID, followerUUID: UUID) = subscribeRepository.isFollowEach(followeeUUID, followerUUID)
     fun getFollowee(followerUUID: UUID) = subscribeRepository.findFollowee(followerUUID)
+    fun isFollowee(followeeUUID: UUID, followerUUID: UUID) = subscribeRepository.isFollowee(followeeUUID, followerUUID)
+    fun isFollowEach(followeeUUID: UUID, followerUUID: UUID) = subscribeRepository.isFollowEach(followeeUUID, followerUUID)
 }
