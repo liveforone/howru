@@ -1,8 +1,10 @@
 package howru.howru.member.service.command
 
+import howru.howru.exception.exception.MemberException
 import howru.howru.member.domain.MemberLock
 import howru.howru.member.domain.Role
 import howru.howru.member.dto.request.SignupRequest
+import howru.howru.member.dto.request.WithdrawRequest
 import howru.howru.member.dto.update.UpdateEmail
 import howru.howru.member.service.query.MemberQueryService
 import jakarta.persistence.EntityManager
@@ -106,7 +108,7 @@ class MemberCommandServiceTest @Autowired constructor(
     @Transactional
     fun addReportCountTest() {
         //given
-        val email = "email_test@gmail.com"
+        val email = "add_report_test@gmail.com"
         val pw = "1234"
         val request = SignupRequest(email, pw)
         val uuid = memberCommandService.signupMember(request)
@@ -119,5 +121,28 @@ class MemberCommandServiceTest @Autowired constructor(
         //then
         Assertions.assertThat(memberQueryService.getMemberByUUID(uuid).reportCount)
             .isEqualTo(1)
+    }
+
+    /*
+    * 회원 탈퇴후 해당 회원을 다시 조회하게 되면, MemberException(MEMBER_IS_NULL) 예외가 발생하게 됩니다.
+     */
+    @Test
+    @Transactional
+    fun withdrawTest() {
+        //given
+        val email = "withdraw_test@gmail.com"
+        val pw = "1234"
+        val request = SignupRequest(email, pw)
+        val uuid = memberCommandService.signupMember(request)
+        flushAndClear()
+
+        //when
+        val withdrawRequest = WithdrawRequest(pw)
+        memberCommandService.withdraw(withdrawRequest, uuid)
+        flushAndClear()
+
+        //then
+        Assertions.assertThatThrownBy { (memberQueryService.getMemberByUUID(uuid)) }
+            .isInstanceOf(MemberException::class.java)
     }
 }
