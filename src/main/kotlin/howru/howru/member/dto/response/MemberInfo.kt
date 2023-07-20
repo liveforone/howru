@@ -10,4 +10,8 @@ data class MemberInfo(
     val email: String,
     val memberLock: MemberLock,
     val reportCount: Long
-)
+) {
+    fun isUnlock(): Boolean {
+        return memberLock == MemberLock.OFF
+    }
+}
