@@ -46,7 +46,7 @@ class SubscribeCommandServiceTest @Autowired constructor(
 
     @Test
     @Transactional
-    fun createSubscribe() {
+    fun createSubscribeTest() {
         //given
         val followeeUUID = createFollowee()
         val followerUUID = createFollower()
@@ -63,7 +63,7 @@ class SubscribeCommandServiceTest @Autowired constructor(
 
     @Test
     @Transactional
-    fun unsubscribe() {
+    fun unsubscribeTest() {
         //given
         val followeeUUID = createFollowee()
         val followerUUID = createFollower()
