@@ -7,7 +7,7 @@ fun getCurrentTimestamp(): Int {
     return Instant.now().epochSecond.toInt()
 }
 
-fun dateConvertToInt(): Long {
+fun datetimeConvertToDigit(): Long {
     val now = LocalDateTime.now()
     val year = now.year.toString()
     val month = checkSingleDigit(now.monthValue)
@@ -15,7 +15,7 @@ fun dateConvertToInt(): Long {
     val hour = checkSingleDigit(now.hour)
     val minute = checkSingleDigit(now.minute)
 
-    return (year + month + day + hour + minute).toLong()
+    return "$year$month$day$hour$minute".toLong()
 }
 
 private fun checkSingleDigit(digit: Int): String {
