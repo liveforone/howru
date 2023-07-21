@@ -12,10 +12,10 @@
 * 게시글은 잠금되어도 팔로잉을 한다면 조회가 가능하다. 
 * 그러나 댓글(의견)의 경우 맞팔로우한 상태여야만 열람이 가능하다.
 * 게시글과 관련되어 고민한 점이나, 상세한 설계는 따로 기술하였으니 아래 링크를 참조바란다.
-1. [날짜형 타입의 성능 향상]()
-2. [varchar vs text(LOB)]()
-3. [대용량 IN 쿼리 성능 향상 및 주의점]()
-4. [코드만으로 키워드 추출]()
+1. [날짜형 타입의 성능 향상](https://github.com/liveforone/howru/blob/master/Documents/DATETIME_PERFORMANCE.md)
+2. [varchar vs text(LOB)](https://github.com/liveforone/howru/blob/master/Documents/VARCHAR_VS_TEXT.md)
+3. [대용량 IN 쿼리 성능 향상 및 주의점](https://github.com/liveforone/howru/blob/master/Documents/BULK_IN_QUERY_PERFORMANCE.md)
+4. [코드만으로 키워드 추출](https://github.com/liveforone/howru/blob/master/Documents/KEYWORD_EXTRACT_RECOMMEND.md)
 
 ## API 설계
 ```
@@ -41,6 +41,9 @@
 3. 팔로우된 상태라면 게시글을 조회하여 리턴한다.
 4. 팔로우되지 않은 상태라면 게시글 불가 예외를 터뜨린다.
 5. 잠금되지 않은 상태라면 게시글을 조회하여 리턴한다.
+
+## 키워드 추출 매커니즘
+* 키워드 추출한 데이터는 최신 100개의 데이터중 5개를 뽑는 방식으로 한다.
 
 ## 작성자 확인
 * 해당 프로젝트는 모두 uuid를 외부 식별자로 사용한다.
