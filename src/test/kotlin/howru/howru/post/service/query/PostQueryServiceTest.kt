@@ -162,7 +162,7 @@ class PostQueryServiceTest @Autowired constructor(
 
     @Test
     @Transactional
-    fun getPostsByFollowee() {
+    fun getPostsOfFollowee() {
         //given
         val followeeUUID = createWriter1()
         val content1 = "test_content1"
@@ -177,7 +177,7 @@ class PostQueryServiceTest @Autowired constructor(
         flushAndClear()
 
         //then
-        Assertions.assertThat(postQueryService.getPostsByFollowee(followerUUID, null))
+        Assertions.assertThat(postQueryService.getPostsOfFollowee(followerUUID, null))
             .isNotEmpty
     }
 

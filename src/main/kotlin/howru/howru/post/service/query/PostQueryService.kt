@@ -32,7 +32,7 @@ class PostQueryService @Autowired constructor(
                 ?: throw PostException(PostExceptionMessage.NOT_FOLLOWER)
         }
     }
-    fun getPostsByFollowee(followerUUID: UUID, lastUUID: UUID?): List<PostInfo> {
+    fun getPostsOfFollowee(followerUUID: UUID, lastUUID: UUID?): List<PostInfo> {
         val followeeUUID = subscribeQueryService.getFollowee(followerUUID)
         return postRepository.findPostsByFollowee(followeeUUID, lastUUID)
     }
