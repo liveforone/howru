@@ -7,7 +7,9 @@
 
 ## IN절 인덱스
 * 문제에 들어가기에 앞서서 in절의 인덱스에 대해 알아보도록 한다.
-* between, like, <, > 등 범위 조건은 해당 컬럼은 인덱스를 타지만, 그 뒤 인덱스 컬럼들은 인덱스가 사용되지 않는다.
+* between, like, <, > 등 범위 조건의 경우 범위 조건에 해당하는 컬럼은 인덱스를 타지만, 그 뒤 인덱스 컬럼들은 인덱스가 사용되지 않는다.
+* 쉽게말해 (a,b,c)으로 인덱스가 걸려있는 상황에서 조회 쿼리를 where a=값1 and b > 값2 and c=값3 으로 쿼리를 날리면 c는 인덱스가 사용되지 않는다.
+* b에서 범위 조건이 걸렸기 때문에 a와 b까지는 인덱스를 사용하고 c는 인덱스를 타지 않는다는 것이다.
 * 그러나 in절은 = 과 마찬가지로 다음 컬럼도 인덱스를 사용한다.
 * 따라서 조회할 모든 컬럼에 대한 인덱스를 걸고, 조건과 순서를 맞춰서 조회해야한다.
 
@@ -88,3 +90,13 @@ hibernate.query.in_clause_parameter_padding=true
 * 따라서 DB에서 eq_range_index_dive_limit와 range_optimizer_max_mem_size의 옵션을 off로 설정하고
 * hibernate에서 쿼리 플랜 캐시를 최적화하는 ibernate.query.in_clause_parameter_padding 를 on하여 최적화할 것을 권장한다.
 * 이렇게 옵션을 설정할 경우 in절에 갯수에 대한 스트레스/관리가 없어서 좋다.
+* 아래는 변경할 옵션에 대한 최종 코드이다.
+### DB
+```sql
+set eq_range_index_dive_limit = 0;
+set range_optimizer_max_mem_size = 0;
+```
+### hibernate -> application.yml
+```yaml
+hibernate.query.in_clause_parameter_padding=true
+```
