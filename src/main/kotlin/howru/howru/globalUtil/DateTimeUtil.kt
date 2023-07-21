@@ -19,7 +19,7 @@ fun dateConvertToInt(): Long {
 }
 
 private fun checkSingleDigit(digit: Int): String {
-    return if (digit in 1..9) {
+    return if (digit in 0..9) {
         "0${digit}"
     } else {
         digit.toString()
