@@ -147,7 +147,7 @@ class PostRepositoryImpl @Autowired constructor(
             join(Post::writer)
             where(dynamicKeywordSearch(keyword))
             orderBy(col(Post::id).desc())
-            limit(PostRepoConstant.LIMIT_PAGE)
+            limit(PostRepoConstant.NEWEST_LIMIT_PAGE)
             offset(PostRepoConstant.START_OFFSET)
             limit(PostRepoConstant.RECOMMEND_LIMIT_PAGE)
         }
