@@ -45,3 +45,13 @@
   "followerUUID": "1cac45bd-2d55-4205-8b45-c65211ddf58d"
 }
 ```
+
+## DB 설계
+```sql
+create table subscribe (
+    timestamp integer,
+    followee_uuid binary(16) not null,
+    follower_uuid binary(16) not null,
+    primary key (followee_uuid, follower_uuid)
+);
+```

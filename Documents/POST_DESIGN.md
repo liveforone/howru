@@ -32,6 +32,20 @@
 [DELETE] /post/delete
 ```
 
+## DB 설계
+```sql
+create table post (
+    id bigint not null auto_increment,
+    uuid BINARY(16) not null UNIQUE,
+    writer_id bigint,
+    content VARCHAR(800) not null,
+    createdDate BIGINT(12) not null,
+    primary key (id),
+    foreign key (writer_id) references Member (id) on delete cascade
+);
+CREATE INDEX uuid_idx ON post (uuid);
+```
+
 ## findPostsOfSomeone : 다른 회원의 게시글 조회 매커니즘
 * 다른 회원의 게시글을 조회하는 매커니즘은 다음과 같다.
 * 회원은 잠금이 가능하고, 이렇게 잠금된 계정의 경우 함부로 회원이 작성한 게시글이나 댓글(토론)을 열람할 수 없다.

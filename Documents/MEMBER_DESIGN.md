@@ -54,3 +54,18 @@
   "oldPassword": "1234"
 }
 ```
+
+## DB 설계
+```sql
+create table member (
+    id bigint not null auto_increment,
+    uuid BINARY(16) not null UNIQUE,
+    auth varchar(255) not null,
+    reportCount integer not null,
+    email varchar(255) not null,
+    password varchar(100) not null,
+    primary key (id)
+);
+CREATE INDEX uuid_idx ON member (uuid);
+CREATE INDEX email_idx ON member (email);
+```
