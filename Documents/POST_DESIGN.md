@@ -32,6 +32,28 @@
 [DELETE] /post/delete
 ```
 
+## Json Body 설계
+```json
+[CreatePost]
+{
+  "writerUUID": "2753c128-9efc-4262-8196-ce62747d3287",
+  "content": "post content."
+}
+
+[UpdateContent]
+{
+  "uuid": "d9df70a8-8428-4ee8-bb87-2c250b877857",
+  "writerUUID": "1d390047-ac36-433b-b73a-8c9ec00405b9",
+  "content": "update content."
+}
+
+[DeletePost]
+{
+  "uuid": "0bc3cf3d-ceb4-482d-9a53-d339788a1b6a",
+  "writerUUID": "a784848d-b1ce-4b1a-946d-7b343ebdd373"
+}
+```
+
 ## DB 설계
 ```sql
 create table post (
