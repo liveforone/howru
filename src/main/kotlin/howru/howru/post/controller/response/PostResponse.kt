@@ -1,6 +1,7 @@
 package howru.howru.post.controller.response
 
 import howru.howru.post.dto.response.PostInfo
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 
 object PostResponse {
@@ -16,7 +17,7 @@ object PostResponse {
     fun recommendPostSuccess(recommendPosts: List<PostInfo>) = ResponseEntity.ok(recommendPosts)
     fun randomPostSuccess(randomPosts: List<PostInfo>) = ResponseEntity.ok(randomPosts)
     fun countPostOfWriterSuccess(countPost: Long) = ResponseEntity.ok(countPost)
-    fun createPostSuccess() = ResponseEntity.ok(CREATE_POST_SUCCESS)
+    fun createPostSuccess() = ResponseEntity.status(HttpStatus.CREATED).body(CREATE_POST_SUCCESS)
     fun editPostSuccess() = ResponseEntity.ok(EDIT_CONTENT_SUCCESS)
     fun deletePostSuccess() = ResponseEntity.ok(DELETE_POST_SUCCESS)
 }
