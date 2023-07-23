@@ -30,6 +30,7 @@
 * [회원 설계](https://github.com/liveforone/howru/blob/master/Documents/MEMBER_DESIGN.md)
 * [팔로잉(구독) 설계](https://github.com/liveforone/howru/blob/master/Documents/SUBSCRIBE_DESIGN.md)
 * [게시글 설계](https://github.com/liveforone/howru/blob/master/Documents/POST_DESIGN.md)
+* [좋아요 설계](https://github.com/liveforone/howru/blob/master/Documents/LIKES_DESIGN.md)
 
 # 3. 고민점
 * [JPA에서 복합키로 조회 쿼리 최적화](https://github.com/liveforone/howru/blob/master/Documents/COMPOSITE_KEY_IN_JPA.md)
