@@ -22,7 +22,7 @@ class Member private constructor(
     @Column(nullable = false) var email: String,
     @Column(nullable = false) var pw: String,
     @Convert(converter = MemberLockConverter::class) @Column(nullable = false) var memberLock: MemberLock = MemberLock.OFF,
-    @Column(nullable = false) var reportCount: Long = MemberConstant.BASIC_REPORT,
+    @Column(nullable = false) var reportCount: Int = MemberConstant.BASIC_REPORT,
 ) : UserDetails {
     companion object {
         private fun isAdmin(email: String) = (email == MemberConstant.ADMIN_EMAIL)

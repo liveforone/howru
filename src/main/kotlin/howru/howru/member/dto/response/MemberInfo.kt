@@ -9,7 +9,7 @@ data class MemberInfo(
     val auth: Role,
     val email: String,
     val memberLock: MemberLock,
-    val reportCount: Long
+    val reportCount: Int
 ) {
     fun isUnlock(): Boolean {
         return memberLock == MemberLock.OFF
