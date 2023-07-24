@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
@@ -28,14 +29,22 @@ class SubscribeController @Autowired constructor(
     private val subscribeCommandService: SubscribeCommandService
 ) {
     @GetMapping(SubscribeUrl.GET_FOLLOWING)
-    fun getFollowing(@PathVariable(SubscribeParam.FOLLOWER_UUID) followerUUID: UUID): ResponseEntity<*> {
-        val subscribes = subscribeQueryService.getSubscribesByFollower(followerUUID)
+    fun getFollowing(
+        @PathVariable(SubscribeParam.FOLLOWER_UUID) followerUUID: UUID,
+        @RequestParam(SubscribeParam.LAST_FOLLOWEE_UUID, required = false) lastFolloweeUUID: UUID?,
+        @RequestParam(SubscribeParam.LAST_FOLLOWER_UUID, required = false) lastFollowerUUID: UUID?
+    ): ResponseEntity<*> {
+        val subscribes = subscribeQueryService.getSubscribesByFollower(followerUUID, lastFolloweeUUID, lastFollowerUUID)
         return SubscribeResponse.getFollowingSuccess(subscribes)
     }
 
     @GetMapping(SubscribeUrl.GET_FOLLOWER)
-    fun getFollower(@PathVariable(SubscribeParam.FOLLOWEE_UUID) followeeUUID: UUID): ResponseEntity<*> {
-        val subscribes = subscribeQueryService.getSubscribesByFollowee(followeeUUID)
+    fun getFollower(
+        @PathVariable(SubscribeParam.FOLLOWEE_UUID) followeeUUID: UUID,
+        @RequestParam(SubscribeParam.LAST_FOLLOWEE_UUID, required = false) lastFolloweeUUID: UUID?,
+        @RequestParam(SubscribeParam.LAST_FOLLOWER_UUID, required = false) lastFollowerUUID: UUID?
+    ): ResponseEntity<*> {
+        val subscribes = subscribeQueryService.getSubscribesByFollowee(followeeUUID, lastFolloweeUUID, lastFollowerUUID)
         return SubscribeResponse.getFollowerSuccess(subscribes)
     }
 
