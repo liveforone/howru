@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 import java.util.UUID
 
-data class UpdateContent(
+data class UpdatePostContent(
     @field:NotNull(message = "게시글 외부식별자를 입력하세요.")
     val uuid: UUID?,
     @field:NotNull(message = "작성자의 외부식별자를 입력하세요.")

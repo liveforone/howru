@@ -6,7 +6,7 @@ import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.service.command.MemberCommandService
 import howru.howru.post.dto.request.CreatePost
 import howru.howru.post.dto.request.DeletePost
-import howru.howru.post.dto.update.UpdateContent
+import howru.howru.post.dto.update.UpdatePostContent
 import howru.howru.post.service.query.PostQueryService
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions
@@ -70,7 +70,7 @@ class PostCommandServiceTest @Autowired constructor(
 
         //when
         val updatedContent = "updated_content"
-        val updateRequest = UpdateContent(postUUID, writerUUID, updatedContent)
+        val updateRequest = UpdatePostContent(postUUID, writerUUID, updatedContent)
         postCommandService.editContent(updateRequest)
         flushAndClear()
 

@@ -8,7 +8,7 @@ import howru.howru.post.controller.constant.PostUrl
 import howru.howru.post.controller.response.PostResponse
 import howru.howru.post.dto.request.CreatePost
 import howru.howru.post.dto.request.DeletePost
-import howru.howru.post.dto.update.UpdateContent
+import howru.howru.post.dto.update.UpdatePostContent
 import howru.howru.post.service.command.PostCommandService
 import howru.howru.post.service.query.PostQueryService
 import jakarta.validation.Valid
@@ -103,12 +103,12 @@ class PostController @Autowired constructor(
 
     @PutMapping(PostUrl.EDIT_CONTENT)
     fun editContent(
-        @RequestBody @Valid updateContent: UpdateContent,
+        @RequestBody @Valid updatePostContent: UpdatePostContent,
         bindingResult: BindingResult
     ): ResponseEntity<*> {
         validateBinding(bindingResult)
 
-        postCommandService.editContent(updateContent)
+        postCommandService.editContent(updatePostContent)
         logger().info(PostControllerLog.EDIT_CONTENT_SUCCESS.log)
 
         return PostResponse.editPostSuccess()

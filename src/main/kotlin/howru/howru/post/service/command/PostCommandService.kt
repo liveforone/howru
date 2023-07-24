@@ -4,7 +4,7 @@ import howru.howru.member.repository.MemberRepository
 import howru.howru.post.domain.Post
 import howru.howru.post.dto.request.CreatePost
 import howru.howru.post.dto.request.DeletePost
-import howru.howru.post.dto.update.UpdateContent
+import howru.howru.post.dto.update.UpdatePostContent
 import howru.howru.post.repository.PostRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -24,8 +24,8 @@ class PostCommandService @Autowired constructor(
         }
     }
 
-    fun editContent(updateContent: UpdateContent) {
-        with(updateContent) {
+    fun editContent(updatePostContent: UpdatePostContent) {
+        with(updatePostContent) {
             postRepository.findOneByUUIDAndWriter(uuid!!, writerUUID!!)
                 .also { it.editContent(content!!) }
         }

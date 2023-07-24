@@ -41,8 +41,8 @@ class PostRepositoryImpl @Autowired constructor(
             queryFactory.singleQuery {
                 select(entity(Post::class))
                 from(Post::class)
-                fetch(Post::writer)
                 join(Post::writer)
+                fetch(Post::writer)
                 where(col(Post::uuid).equal(uuid).and(col(Member::uuid).equal(writerUUID)))
             }
         } catch (e: NoResultException) {
