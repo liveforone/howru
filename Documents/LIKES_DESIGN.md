@@ -8,6 +8,8 @@
 * 두개의 fk(외부 식별자)로 pk를 구성하였습니다.
 * 복합키 덕분에 중복된 좋아요는 불가능합니다.
 * 회원에 속한 좋아요, 게시글에 속한 좋아요 총 두가지 형태로 api를 제공합니다.
+* 좋아요는 컬렉션 조회시 80개씩 페이징한다.
+* [복합키를 사용하는 테이블에서 timestamp 기반 no-offset 페이징](https://github.com/liveforone/howru/blob/master/Documents/NO_OFFSET_IN_COMPOSITE_KEY_TABLE.md)을 참조하면 복합키를 사용하는 테이블에서의 no-offset 동작방식을 알 수 있을것이다.
 
 ## API 설계
 ```
