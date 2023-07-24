@@ -194,8 +194,7 @@ class PostRepositoryImpl @Autowired constructor(
     }
 
     private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastUUID(lastUUID: UUID?): PredicateSpec? {
-        val lastId = lastUUID?.let { findLastId(it) }
-        return lastUUID?.let { and(col(Post::id).lessThan(lastId!!)) }
+        return lastUUID?.let { and(col(Post::id).lessThan(findLastId(it))) }
     }
 
     private fun <T> SpringDataCriteriaQueryDsl<T>.dynamicKeywordSearch(keyword: String?): PredicateSpec? {
