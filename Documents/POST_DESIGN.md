@@ -40,7 +40,7 @@
   "content": "post content."
 }
 
-[UpdateContent]
+[UpdatePostContent]
 {
   "uuid": "d9df70a8-8428-4ee8-bb87-2c250b877857",
   "writerUUID": "1d390047-ac36-433b-b73a-8c9ec00405b9",
