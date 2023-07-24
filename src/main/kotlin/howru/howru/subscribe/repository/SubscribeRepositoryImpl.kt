@@ -87,10 +87,17 @@ class SubscribeRepositoryImpl @Autowired constructor(
     }
 
     private fun findLastTimestamp(lastFolloweeUUID: UUID, lastFollowerUUID: UUID): Int {
-        return queryFactory.singleQuery {
-            select(listOf(col(Subscribe::timestamp)))
-            from(Subscribe::class)
-            where(col(Subscribe::followeeUUID).equal(lastFolloweeUUID).and(col(Subscribe::followerUUID).equal(lastFollowerUUID)))
+        return try {
+            queryFactory.singleQuery {
+                select(listOf(col(Subscribe::timestamp)))
+                from(Subscribe::class)
+                where(
+                    col(Subscribe::followeeUUID).equal(lastFolloweeUUID)
+                        .and(col(Subscribe::followerUUID).equal(lastFollowerUUID))
+                )
+            }
+        } catch (e: NoResultException) {
+            SubscribeRepoConstant.END_OF_TIMESTAMP
         }
     }
 
