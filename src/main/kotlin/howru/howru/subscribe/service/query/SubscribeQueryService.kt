@@ -11,8 +11,8 @@ import java.util.UUID
 class SubscribeQueryService @Autowired constructor(
     private val subscribeRepository: SubscribeRepository
 ) {
-    fun getSubscribesByFollower(followerUUID: UUID) = subscribeRepository.findSubscribesByFollower(followerUUID)
-    fun getSubscribesByFollowee(followeeUUID: UUID) = subscribeRepository.findSubscribesByFollowee(followeeUUID)
+    fun getSubscribesByFollower(followerUUID: UUID, lastFolloweeUUID: UUID?, lastFollowerUUID: UUID?) = subscribeRepository.findSubscribesByFollower(followerUUID, lastFolloweeUUID, lastFollowerUUID)
+    fun getSubscribesByFollowee(followeeUUID: UUID, lastFolloweeUUID: UUID?, lastFollowerUUID: UUID?) = subscribeRepository.findSubscribesByFollowee(followeeUUID, lastFolloweeUUID, lastFollowerUUID)
     fun getCountFollower(followeeUUID: UUID) = subscribeRepository.countFollowersByFollowee(followeeUUID)
     fun getCountSubscribes(followerUUID: UUID) = subscribeRepository.countSubscribesByFollower(followerUUID)
     fun getFollowee(followerUUID: UUID) = subscribeRepository.findFollowee(followerUUID)

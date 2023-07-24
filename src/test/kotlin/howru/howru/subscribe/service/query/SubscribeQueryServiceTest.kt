@@ -54,10 +54,27 @@ class SubscribeQueryServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val subscribes = subscribeQueryService.getSubscribesByFollower(followerUUID)
+        val subscribes = subscribeQueryService.getSubscribesByFollower(followerUUID, null, null)
 
         //then
         Assertions.assertThat(subscribes[0].followeeUUID).isEqualTo(followeeUUID)
+    }
+
+    @Test
+    @Transactional
+    fun getSubscribesByFollowerPagingTest() {
+        //given
+        val followeeUUID = createFollowee()
+        val followerUUID = createFollower()
+        val request = CreateSubscribe(followeeUUID, followerUUID)
+        subscribeCommandService.createSubscribe(request)
+        flushAndClear()
+
+        //when
+        val subscribes = subscribeQueryService.getSubscribesByFollower(followerUUID, followeeUUID, followerUUID)
+
+        //then
+        Assertions.assertThat(subscribes).isEmpty()
     }
 
     @Test
