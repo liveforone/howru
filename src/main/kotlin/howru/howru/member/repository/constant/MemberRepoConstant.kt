@@ -1,5 +1,5 @@
 package howru.howru.member.repository.constant
 
-object MemberRepositoryConstant {
+object MemberRepoConstant {
     const val FIRST_INDEX = 0
 }

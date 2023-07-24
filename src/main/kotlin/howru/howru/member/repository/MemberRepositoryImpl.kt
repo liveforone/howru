@@ -8,7 +8,7 @@ import howru.howru.exception.exception.MemberException
 import howru.howru.exception.message.MemberExceptionMessage
 import howru.howru.member.domain.Member
 import howru.howru.member.dto.response.MemberInfo
-import howru.howru.member.repository.constant.MemberRepositoryConstant
+import howru.howru.member.repository.constant.MemberRepoConstant
 import jakarta.persistence.NoResultException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
@@ -25,7 +25,7 @@ class MemberRepositoryImpl @Autowired constructor(
             from(entity(Member::class))
             where(col(Member::email).equal(email))
         }
-        return if (foundIds.isEmpty()) null else foundIds[MemberRepositoryConstant.FIRST_INDEX]
+        return if (foundIds.isEmpty()) null else foundIds[MemberRepoConstant.FIRST_INDEX]
     }
 
     override fun findOneByEmail(email: String): Member {
