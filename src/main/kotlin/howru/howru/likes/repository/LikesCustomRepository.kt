@@ -7,6 +7,6 @@ import java.util.*
 
 interface LikesCustomRepository {
     fun findOneByUUID(memberUUID: UUID, postUUID: UUID): Likes
-    fun findLikesBelongMember(memberUUID: UUID): List<LikesBelongMemberInfo>
-    fun findLikesBelongPost(postUUID: UUID): List<LikesBelongPostInfo>
+    fun findLikesBelongMember(memberUUID: UUID, lastPostUUID: UUID?): List<LikesBelongMemberInfo>
+    fun findLikesBelongPost(postUUID: UUID, lastMemberUUID: UUID?): List<LikesBelongPostInfo>
 }
