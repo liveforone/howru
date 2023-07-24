@@ -1,8 +1,7 @@
-package howru.howru.likes.service.command
+package howru.howru.likes.service.query
 
 import howru.howru.likes.dto.request.CreateLikes
-import howru.howru.likes.dto.request.DeleteLikes
-import howru.howru.likes.service.query.LikesQueryService
+import howru.howru.likes.service.command.LikesCommandService
 import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.service.command.MemberCommandService
 import howru.howru.post.dto.request.CreatePost
@@ -10,15 +9,13 @@ import howru.howru.post.service.command.PostCommandService
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @SpringBootTest
-class LikesCommandServiceTest @Autowired constructor(
+class LikesQueryServiceTest @Autowired constructor(
     private val entityManager: EntityManager,
     private val memberCommandService: MemberCommandService,
     private val postCommandService: PostCommandService,
@@ -58,26 +55,24 @@ class LikesCommandServiceTest @Autowired constructor(
         return postUUID
     }
 
-    @Test
-    @Transactional
-    fun createLikes() {
+    @Test @Transactional
+    fun getLikesBelongMemberPagingTest() {
         //given
         val memberUUID = createMember()
         val postUUID = createPost()
-
-        //when
         val request = CreateLikes(memberUUID, postUUID)
         likesCommandService.createLikes(request)
         flushAndClear()
 
+        //when
+        val likes = likesQueryService.getLikesBelongMember(memberUUID, postUUID)
+
         //then
-        Assertions.assertThat(likesQueryService.getLikesBelongPost(postUUID, null))
-            .isNotEmpty
+        Assertions.assertThat(likes).isEmpty()
     }
 
-    @Test
-    @Transactional
-    fun deleteLikes() {
+    @Test @Transactional
+    fun getLikesBelongPostPagingTest() {
         //given
         val memberUUID = createMember()
         val postUUID = createPost()
@@ -86,12 +81,9 @@ class LikesCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val deleteRequest = DeleteLikes(memberUUID, postUUID)
-        likesCommandService.deleteLikes(deleteRequest)
-        flushAndClear()
+        val likes = likesQueryService.getLikesBelongPost(postUUID, memberUUID)
 
         //then
-        Assertions.assertThat(likesQueryService.getLikesBelongMember(memberUUID, null))
-            .isEmpty()
+        Assertions.assertThat(likes).isEmpty()
     }
 }

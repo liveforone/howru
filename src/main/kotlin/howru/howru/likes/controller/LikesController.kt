@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
@@ -28,14 +29,20 @@ class LikesController @Autowired constructor(
     private val likesCommandService: LikesCommandService
 ) {
     @GetMapping(LikesUrl.LIKES_BELONG_MEMBER)
-    fun likesBelongMember(@PathVariable(LikesParam.MEMBER_UUID) memberUUID: UUID): ResponseEntity<*> {
-        val likes = likesQueryService.getLikesBelongMember(memberUUID)
+    fun likesBelongMember(
+        @PathVariable(LikesParam.MEMBER_UUID) memberUUID: UUID,
+        @RequestParam(LikesParam.LAST_POST_UUID, required = false) lastPostUUID: UUID?
+    ): ResponseEntity<*> {
+        val likes = likesQueryService.getLikesBelongMember(memberUUID, lastPostUUID)
         return LikesResponse.belongMemberSuccess(likes)
     }
 
     @GetMapping(LikesUrl.LIKES_BELONG_POST)
-    fun likesBelongPost(@PathVariable(LikesParam.POST_UUID) postUUID: UUID): ResponseEntity<*> {
-        val likes = likesQueryService.getLikesBelongPost(postUUID)
+    fun likesBelongPost(
+        @PathVariable(LikesParam.POST_UUID) postUUID: UUID,
+        @RequestParam(LikesParam.LAST_MEMBER_UUID, required = false) lastMemberUUID: UUID?
+    ): ResponseEntity<*> {
+        val likes = likesQueryService.getLikesBelongPost(postUUID, lastMemberUUID)
         return LikesResponse.belongPostSuccess(likes)
     }
 

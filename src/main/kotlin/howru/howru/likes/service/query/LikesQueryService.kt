@@ -11,6 +11,6 @@ import java.util.UUID
 class LikesQueryService @Autowired constructor(
     private val likesRepository: LikesRepository
 ) {
-    fun getLikesBelongMember(memberUUID: UUID) = likesRepository.findLikesBelongMember(memberUUID)
-    fun getLikesBelongPost(postUUID: UUID) = likesRepository.findLikesBelongPost(postUUID)
+    fun getLikesBelongMember(memberUUID: UUID, lastPostUUID: UUID?) = likesRepository.findLikesBelongMember(memberUUID, lastPostUUID)
+    fun getLikesBelongPost(postUUID: UUID, lastMemberUUID: UUID?) = likesRepository.findLikesBelongPost(postUUID, lastMemberUUID)
 }
