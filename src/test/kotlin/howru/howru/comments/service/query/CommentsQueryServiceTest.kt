@@ -7,6 +7,8 @@ import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.service.command.MemberCommandService
 import howru.howru.post.dto.request.CreatePost
 import howru.howru.post.service.command.PostCommandService
+import howru.howru.subscribe.dto.request.CreateSubscribe
+import howru.howru.subscribe.service.command.SubscribeCommandService
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
@@ -20,6 +22,7 @@ class CommentsQueryServiceTest @Autowired constructor(
     private val entityManager: EntityManager,
     private val memberCommandService: MemberCommandService,
     private val postCommandService: PostCommandService,
+    private val subscribeCommandService: SubscribeCommandService,
     private val commentsCommandService: CommentsCommandService,
     private val commentsQueryService: CommentsQueryService
 ) {
@@ -47,6 +50,15 @@ class CommentsQueryServiceTest @Autowired constructor(
         return uuid
     }
 
+    private fun createMember2ForSubscribe(): UUID {
+        val email = "test_member2@gmail.com"
+        val pw = "5566"
+        val request = SignupRequest(email, pw)
+        val uuid = memberCommandService.signupMember(request)
+        flushAndClear()
+        return uuid
+    }
+
     private fun createPost(): UUID {
         val writerUUID = createWriter()
         val content = "test_content"
@@ -54,6 +66,11 @@ class CommentsQueryServiceTest @Autowired constructor(
         val postUUID = postCommandService.createPost(request)
         flushAndClear()
         return postUUID
+    }
+
+    private fun createSubscribe(followeeUUID: UUID, followerUUID: UUID) {
+        subscribeCommandService.createSubscribe(CreateSubscribe(followeeUUID, followerUUID))
+        flushAndClear()
     }
 
     @Test
@@ -154,5 +171,47 @@ class CommentsQueryServiceTest @Autowired constructor(
 
         //then
         Assertions.assertThat(comments.size).isEqualTo(1)
+    }
+
+    @Test
+    @Transactional
+    fun getCommentsBySomeoneTest() {
+        //given
+        val memberUUID = createMember()
+        val member2UUID = createMember2ForSubscribe()
+        createSubscribe(memberUUID, member2UUID)
+        createSubscribe(member2UUID, memberUUID)
+        val postUUID = createPost()
+        val content = "test_comments"
+        val request1 = CreateComments(memberUUID, postUUID, content)
+        commentsCommandService.createComment(request1)
+        flushAndClear()
+
+        //when
+        val comments = commentsQueryService.getCommentsBySomeone(memberUUID, member2UUID, null)
+
+        //then
+        Assertions.assertThat(comments).isNotEmpty
+    }
+
+    @Test
+    @Transactional
+    fun getCommentsBySomeonePagingTest() {
+        //given
+        val memberUUID = createMember()
+        val member2UUID = createMember2ForSubscribe()
+        createSubscribe(memberUUID, member2UUID)
+        createSubscribe(member2UUID, memberUUID)
+        val postUUID = createPost()
+        val content = "test_comments"
+        val request1 = CreateComments(memberUUID, postUUID, content)
+        val commentUUID = commentsCommandService.createComment(request1)
+        flushAndClear()
+
+        //when
+        val comments = commentsQueryService.getCommentsBySomeone(memberUUID, member2UUID, commentUUID)
+
+        //then
+        Assertions.assertThat(comments).isEmpty()
     }
 }

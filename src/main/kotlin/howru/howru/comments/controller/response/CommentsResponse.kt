@@ -12,6 +12,7 @@ object CommentsResponse {
     fun detailSuccess(comment: CommentsInfo) = ResponseEntity.ok(comment)
     fun commentsByWriterSuccess(comments: List<CommentsInfo>) = ResponseEntity.ok(comments)
     fun commentsByPostSuccess(comments: List<CommentsInfo>) = ResponseEntity.ok(comments)
+    fun commentsBySomeoneSuccess(comments: List<CommentsInfo>) = ResponseEntity.ok(comments)
     fun createCommentSuccess() = ResponseEntity.status(HttpStatus.CREATED).body(CREATE_SUCCESS)
     fun editCommentSuccess() = ResponseEntity.ok(EDIT_SUCCESS)
     fun deleteCommentSuccess() = ResponseEntity.ok(DELETE_SUCCESS)

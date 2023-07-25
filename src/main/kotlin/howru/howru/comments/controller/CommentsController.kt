@@ -54,6 +54,16 @@ class CommentsController @Autowired constructor(
         return CommentsResponse.commentsByPostSuccess(comments)
     }
 
+    @GetMapping(CommentsUrl.COMMENTS_BY_SOMEONE)
+    fun commentsBySomeone(
+        @PathVariable(CommentsParam.WRITER_UUID) writerUUID: UUID,
+        @RequestParam(CommentsParam.MEMBER_UUID) memberUUID: UUID,
+        @RequestParam(CommentsParam.LAST_UUID, required = false) lastUUID: UUID?
+    ): ResponseEntity<*> {
+        val comments = commentsQueryService.getCommentsBySomeone(writerUUID, memberUUID, lastUUID)
+        return CommentsResponse.commentsBySomeoneSuccess(comments)
+    }
+
     @PostMapping(CommentsUrl.CREATE)
     fun createComment(
         @RequestBody @Valid createComments: CreateComments,
