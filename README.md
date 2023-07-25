@@ -35,6 +35,7 @@
 * [대댓글 설계]()
 
 # 3. 고민점
+## 기술적 고민
 * [JPA에서 복합키로 조회 쿼리 최적화](https://github.com/liveforone/howru/blob/master/Documents/COMPOSITE_KEY_IN_JPA.md)
 * [복합키를 사용하는 테이블에서 timestamp 기반 no-offset 페이징](https://github.com/liveforone/howru/blob/master/Documents/NO_OFFSET_IN_COMPOSITE_KEY_TABLE.md)
 * [단일 쿼리로 맞팔로우 확인 방법](https://github.com/liveforone/howru/blob/master/Documents/FOLLOW_EACH_CHECK_BY_QUERY.md)
@@ -43,3 +44,5 @@
 * [varchar vs text(LOB)](https://github.com/liveforone/howru/blob/master/Documents/VARCHAR_VS_TEXT.md)
 * [대용량 IN 쿼리 성능 향상 및 주의점](https://github.com/liveforone/howru/blob/master/Documents/BULK_IN_QUERY_PERFORMANCE.md)
 * [코드만으로 키워드 추출](https://github.com/liveforone/howru/blob/master/Documents/KEYWORD_EXTRACT_RECOMMEND.md)
+## 비즈니스적 고민
+* [클린한 커뮤니티 만들기](https://github.com/liveforone/howru/blob/master/Documents/CLEAN_COMMUNITY.md)
