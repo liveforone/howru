@@ -6,12 +6,16 @@
 * 댓글은 상태가 존재하며, 변경이 발생하면 상태가 수정됨으로 변경됩니다. 
 * 따라서 댓글이 수정된 댓글인지 다른사람들이 알 수 있습니다.
 * 댓글의 경우 페이징시 15개씩 리밋걸어서 페이징 합니다.
+* 댓글은 의견으로도 나타낼 수 있으며, 이러한 맥락에 따라 맞팔로우하고 있는 회원의 의견(댓글)을 확인하는 것이 가능합니다.
+* 평소 어떤 의견을 맞팔로우하고 있는 회원이 가지고 있는지 확인 가능하도록 만들었습니다.
+* 당연하게도 다른 사람의 댓글을 모두 확인하려면 맞팔로우한 상태여야만 합니다.
 
 ## API 설계
 ```
 [GET] /comments/detail/{uuid}
 [GET] /comments/writer/{writerUUID} : 사용자가 작성한 댓글
 [GET] /comments/post/{postUUID} : 게시글에 속한 댓글
+[GET] /comments/someone/{writerUUID} : 다른 사용자가 작성한 게시글
 [POST] /comments/create
 [PUT] /comments/edit
 [DELETE] /comments/delete
