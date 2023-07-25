@@ -4,6 +4,7 @@ import howru.howru.exception.exception.PostException
 import howru.howru.logger
 import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.service.command.MemberCommandService
+import howru.howru.post.domain.PostState
 import howru.howru.post.dto.request.CreatePost
 import howru.howru.post.dto.request.DeletePost
 import howru.howru.post.dto.update.UpdatePostContent
@@ -75,8 +76,9 @@ class PostCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //then
-        Assertions.assertThat(postQueryService.getPostByUUID(postUUID).content)
-            .isEqualTo(updatedContent)
+        val post = postQueryService.getPostByUUID(postUUID)
+        Assertions.assertThat(post.content).isEqualTo(updatedContent)
+        Assertions.assertThat(post.postState).isEqualTo(PostState.EDITED)
     }
 
     @Test
