@@ -60,7 +60,7 @@ class LikesCommandServiceTest @Autowired constructor(
 
     @Test
     @Transactional
-    fun createLikes() {
+    fun createLikesTest() {
         //given
         val memberUUID = createMember()
         val postUUID = createPost()
@@ -77,7 +77,7 @@ class LikesCommandServiceTest @Autowired constructor(
 
     @Test
     @Transactional
-    fun deleteLikes() {
+    fun deleteLikesTest() {
         //given
         val memberUUID = createMember()
         val postUUID = createPost()
