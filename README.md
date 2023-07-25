@@ -16,9 +16,9 @@
 * 다양한 쿼리 방법들을 시도해보며 성능이 좋은 쿼리를 찾기 위해 분석하였고, 이를 적용한 코드를 확인하실 수 있습니다.
 * 특히나 구독(Subscribe) 도메인과 게시글(Post) 도메인에서 확인하실 수 있습니다.
 ## 기술 스택
-* Framework : Spring Boot 3.1.1
+* Framework : Spring Boot 3.1.2
 * Lang : Kotlin 1.9.0, Jvm17 
-* Data : Spring Data Jpa & Kotlin-Jdsl & MySql 
+* Data : Spring Data Jpa & Kotlin-JDSL & MySql 
 * Security : Spring Security & Jwt 
 * Test : Junit5
 
@@ -31,6 +31,8 @@
 * [팔로잉(구독) 설계](https://github.com/liveforone/howru/blob/master/Documents/SUBSCRIBE_DESIGN.md)
 * [게시글 설계](https://github.com/liveforone/howru/blob/master/Documents/POST_DESIGN.md)
 * [좋아요 설계](https://github.com/liveforone/howru/blob/master/Documents/LIKES_DESIGN.md)
+* [댓글 설계](https://github.com/liveforone/howru/blob/master/Documents/COMMENTS_DESIGN.md)
+* [대댓글 설계]()
 
 # 3. 고민점
 * [JPA에서 복합키로 조회 쿼리 최적화](https://github.com/liveforone/howru/blob/master/Documents/COMPOSITE_KEY_IN_JPA.md)
