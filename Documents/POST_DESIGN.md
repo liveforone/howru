@@ -62,6 +62,7 @@ create table post (
     writer_id bigint,
     content VARCHAR(800) not null,
     createdDate BIGINT(12) not null,
+    post_state varchar(255) not null,
     primary key (id),
     foreign key (writer_id) references Member (id) on delete cascade
 );
