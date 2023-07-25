@@ -5,6 +5,4 @@ object PostRepoConstant {
     const val NEWEST_LIMIT_PAGE = 100
     const val RECOMMEND_LIMIT_PAGE = 3
     const val START_OFFSET = 0
-    const val RANDOM_LIST_SIZE = 10
-    const val RANDOM_START_ID = 1
 }

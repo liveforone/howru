@@ -9,7 +9,6 @@ import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataCriteriaQueryDsl
 import com.linecorp.kotlinjdsl.spring.data.singleQuery
 import howru.howru.exception.exception.PostException
 import howru.howru.exception.message.PostExceptionMessage
-import howru.howru.logger
 import howru.howru.member.domain.Member
 import howru.howru.post.domain.Post
 import howru.howru.post.dto.response.PostInfo
@@ -18,7 +17,6 @@ import jakarta.persistence.NoResultException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 import java.util.*
-import kotlin.random.Random
 
 @Repository
 class PostRepositoryImpl @Autowired constructor(
