@@ -50,7 +50,7 @@ class PostQueryServiceTest @Autowired constructor(
 
     @Test
     @Transactional
-    fun getPostByUUID() {
+    fun getPostByUUIDTest() {
         //given
         val writerUUID = createWriter1()
         val content = "test_content"
@@ -67,7 +67,7 @@ class PostQueryServiceTest @Autowired constructor(
 
     @Test
     @Transactional
-    fun getMyPosts() {
+    fun getMyPostsTest() {
         //given
         val writerUUID = createWriter1()
         val content1 = "test_content1"
@@ -88,7 +88,7 @@ class PostQueryServiceTest @Autowired constructor(
 
     @Test
     @Transactional
-    fun getAllPosts() {
+    fun getAllPostsTest() {
         /*
         * 최신순 정렬 테스트
          */
@@ -117,7 +117,7 @@ class PostQueryServiceTest @Autowired constructor(
      */
     @Test
     @Transactional
-    fun getPostsBySomeoneWhenNoSubscribe() {
+    fun getPostsBySomeoneWhenNoSubscribeTest() {
         //given
         val followeeUUID = createWriter1()
         memberCommandService.memberLockOn(followeeUUID)
@@ -139,7 +139,7 @@ class PostQueryServiceTest @Autowired constructor(
      */
     @Test
     @Transactional
-    fun getPostsBySomeoneWhenSubscribe() {
+    fun getPostsBySomeoneWhenSubscribeTest() {
         //given
         val followeeUUID = createWriter1()
         memberCommandService.memberLockOn(followeeUUID)
@@ -162,7 +162,7 @@ class PostQueryServiceTest @Autowired constructor(
 
     @Test
     @Transactional
-    fun getPostsOfFollowee() {
+    fun getPostsOfFolloweeTest() {
         //given
         val followeeUUID = createWriter1()
         val content1 = "test_content1"
@@ -183,7 +183,7 @@ class PostQueryServiceTest @Autowired constructor(
 
     @Test
     @Transactional
-    fun getRecommendPosts() {
+    fun getRecommendPostsTest() {
         //given
         val writerUUID1 = createWriter1()
         val content1 = """
@@ -214,27 +214,7 @@ class PostQueryServiceTest @Autowired constructor(
 
     @Test
     @Transactional
-    fun getRandomPosts() {
-        //given
-        val writerUUID = createWriter1()
-        repeat(10) {
-            val content = "test_content"
-            val request = CreatePost(writerUUID, content+(it+1))
-            postCommandService.createPost(request)
-            flushAndClear()
-        }
-
-        //when
-        val posts = postQueryService.getRandomPosts()
-
-        //then
-        repeat(posts.size) { logger().info(posts[it].content) }
-        Assertions.assertThat(posts).isNotEmpty
-    }
-
-    @Test
-    @Transactional
-    fun countPostsByWriter() {
+    fun countPostsByWriterTest() {
         //given
         val writerUUID = createWriter1()
         val countOfRepeatCreatePost = 10

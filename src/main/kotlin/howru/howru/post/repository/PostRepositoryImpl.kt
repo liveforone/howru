@@ -2,7 +2,6 @@ package howru.howru.post.repository
 
 import com.linecorp.kotlinjdsl.query.spec.predicate.PredicateSpec
 import com.linecorp.kotlinjdsl.querydsl.expression.col
-import com.linecorp.kotlinjdsl.querydsl.from.fetch
 import com.linecorp.kotlinjdsl.querydsl.from.join
 import com.linecorp.kotlinjdsl.spring.data.SpringDataQueryFactory
 import com.linecorp.kotlinjdsl.spring.data.listQuery
@@ -10,6 +9,7 @@ import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataCriteriaQueryDsl
 import com.linecorp.kotlinjdsl.spring.data.singleQuery
 import howru.howru.exception.exception.PostException
 import howru.howru.exception.message.PostExceptionMessage
+import howru.howru.logger
 import howru.howru.member.domain.Member
 import howru.howru.post.domain.Post
 import howru.howru.post.dto.response.PostInfo
@@ -42,7 +42,6 @@ class PostRepositoryImpl @Autowired constructor(
                 select(entity(Post::class))
                 from(Post::class)
                 join(Post::writer)
-                fetch(Post::writer)
                 where(col(Post::uuid).equal(uuid).and(col(Member::uuid).equal(writerUUID)))
             }
         } catch (e: NoResultException) {
@@ -150,29 +149,6 @@ class PostRepositoryImpl @Autowired constructor(
             limit(PostRepoConstant.NEWEST_LIMIT_PAGE)
             offset(PostRepoConstant.START_OFFSET)
             limit(PostRepoConstant.RECOMMEND_LIMIT_PAGE)
-        }
-    }
-
-    override fun findRandomPosts(): List<PostInfo> {
-        val count = queryFactory.singleQuery {
-            select(count(entity(Post::class)))
-            from(Post::class)
-        }
-        val random = Random(System.currentTimeMillis())
-        val randomId = List(PostRepoConstant.RANDOM_LIST_SIZE) { (random.nextInt(Math.toIntExact(count)) + PostRepoConstant.RANDOM_START_ID).toLong() }
-
-        return queryFactory.listQuery {
-            select(listOf(
-                col(Post::uuid),
-                col(Member::uuid),
-                col(Post::content),
-                col(Post::createdDate)
-            ))
-            from(Post::class)
-            join(Post::writer)
-            where(col(Post::id).`in`(randomId))
-            orderBy(col(Post::id).desc())
-            limit(PostRepoConstant.LIMIT_PAGE)
         }
     }
 

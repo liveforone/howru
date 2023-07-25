@@ -76,12 +76,6 @@ class PostController @Autowired constructor(
         return PostResponse.recommendPostSuccess(recommendPosts)
     }
 
-    @GetMapping(PostUrl.RANDOM)
-    fun randomPost(): ResponseEntity<*> {
-        val randomPosts = postQueryService.getRandomPosts()
-        return PostResponse.randomPostSuccess(randomPosts)
-    }
-
     @GetMapping(PostUrl.COUNT_POST_BY_WRITER)
     fun countPostByWriter(@PathVariable(PostParam.WRITER_UUID) writerUUID: UUID): ResponseEntity<*> {
         val countPost = postQueryService.countPostsByWriter(writerUUID)

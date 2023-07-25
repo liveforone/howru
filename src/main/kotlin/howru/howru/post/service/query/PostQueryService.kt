@@ -39,6 +39,5 @@ class PostQueryService @Autowired constructor(
     fun getRecommendPosts(content: String): List<PostInfo> {
         return postRepository.findRecommendPosts(extractKeywords(content))
     }
-    fun getRandomPosts() = postRepository.findRandomPosts()
     fun countPostsByWriter(writerUUID: UUID) = postRepository.countPostByWriter(writerUUID)
 }
