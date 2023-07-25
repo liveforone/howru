@@ -56,6 +56,7 @@ class PostRepositoryImpl @Autowired constructor(
                     col(Post::uuid),
                     col(Member::uuid),
                     col(Post::content),
+                    col(Post::postState),
                     col(Post::createdDate)
                 ))
                 from(Post::class)
@@ -73,6 +74,7 @@ class PostRepositoryImpl @Autowired constructor(
                 col(Post::uuid),
                 col(Member::uuid),
                 col(Post::content),
+                col(Post::postState),
                 col(Post::createdDate)
             ))
             from(Post::class)
@@ -90,6 +92,7 @@ class PostRepositoryImpl @Autowired constructor(
                 col(Post::uuid),
                 col(Member::uuid),
                 col(Post::content),
+                col(Post::postState),
                 col(Post::createdDate)
             ))
             from(Post::class)
@@ -106,6 +109,7 @@ class PostRepositoryImpl @Autowired constructor(
                 col(Post::uuid),
                 col(Member::uuid),
                 col(Post::content),
+                col(Post::postState),
                 col(Post::createdDate)
             ))
             from(Post::class)
@@ -123,6 +127,7 @@ class PostRepositoryImpl @Autowired constructor(
                 col(Post::uuid),
                 col(Member::uuid),
                 col(Post::content),
+                col(Post::postState),
                 col(Post::createdDate)
             ))
             from(Post::class)
@@ -140,6 +145,7 @@ class PostRepositoryImpl @Autowired constructor(
                 col(Post::uuid),
                 col(Member::uuid),
                 col(Post::content),
+                col(Post::postState),
                 col(Post::createdDate)
             ))
             from(Post::class)
