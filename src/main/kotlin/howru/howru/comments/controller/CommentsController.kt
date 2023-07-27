@@ -84,7 +84,7 @@ class CommentsController @Autowired constructor(
     ): ResponseEntity<*> {
         validateBinding(bindingResult)
 
-        commentsCommandService.editContent(updateCommentsContent)
+        commentsCommandService.editComment(updateCommentsContent)
         logger().info(CommentsControllerLog.EDIT_COMMENT_SUCCESS.log)
 
         return CommentsResponse.editCommentSuccess()

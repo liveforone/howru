@@ -29,16 +29,16 @@ class CommentsCommandService @Autowired constructor(
         }
     }
 
-    fun editContent(updateCommentsContent: UpdateCommentsContent) {
+    fun editComment(updateCommentsContent: UpdateCommentsContent) {
         with(updateCommentsContent) {
-            commentsRepository.findOneByUUID(uuid!!, writerUUID!!)
+            commentsRepository.findOneByUUIDAndWriter(uuid!!, writerUUID!!)
                 .also { it.editContent(content!!) }
         }
     }
 
     fun deleteComment(deleteComments: DeleteComments) {
         with(deleteComments) {
-            commentsRepository.findOneByUUID(uuid!!, writerUUID!!)
+            commentsRepository.findOneByUUIDAndWriter(uuid!!, writerUUID!!)
                 .also { commentsRepository.delete(it) }
         }
     }

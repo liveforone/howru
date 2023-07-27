@@ -77,7 +77,7 @@ class CommentsCommandServiceTest @Autowired constructor(
     }
 
     @Test @Transactional
-    fun editContentTest() {
+    fun editCommentTest() {
         //given
         val memberUUID = createMember()
         val postUUID = createPost()
@@ -88,7 +88,7 @@ class CommentsCommandServiceTest @Autowired constructor(
         //when
         val updateContent = "updated_comment"
         val updateRequest = UpdateCommentsContent(commentUUID, memberUUID, updateContent)
-        commentsCommandService.editContent(updateRequest)
+        commentsCommandService.editComment(updateRequest)
         flushAndClear()
 
         //then

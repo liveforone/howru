@@ -23,7 +23,20 @@ import java.util.*
 class CommentsRepositoryImpl @Autowired constructor(
     private val queryFactory: SpringDataQueryFactory
 ) : CommentsCustomRepository {
-    override fun findOneByUUID(uuid: UUID, writerUUID: UUID): Comments {
+    override fun findOneByUUID(uuid: UUID): Comments {
+        return try {
+            queryFactory.singleQuery {
+                select(entity(Comments::class))
+                from(Comments::class)
+                join(Comments::writer)
+                where(col(Comments::uuid).equal(uuid))
+            }
+        } catch (e: NoResultException) {
+            throw CommentsException(CommentsExceptionMessage.COMMENTS_IS_NULL)
+        }
+    }
+
+    override fun findOneByUUIDAndWriter(uuid: UUID, writerUUID: UUID): Comments {
         return try {
             queryFactory.singleQuery {
                 select(entity(Comments::class))
