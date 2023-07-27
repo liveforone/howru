@@ -7,6 +7,7 @@ import howru.howru.member.domain.Member
 import howru.howru.post.domain.Post
 import howru.howru.comments.domain.constant.CommentsConstant
 import howru.howru.converter.CommentsStateConverter
+import howru.howru.globalUtil.DATE_TYPE
 import jakarta.persistence.*
 import org.hibernate.annotations.OnDelete
 import org.hibernate.annotations.OnDeleteAction
@@ -20,7 +21,7 @@ class Comments private constructor(
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(updatable = false) @OnDelete(action = OnDeleteAction.CASCADE) val post: Post,
     @Column(nullable = false, columnDefinition = CommentsConstant.CONTENT_TYPE) var content: String,
     @Convert(converter = CommentsStateConverter::class) @Column(nullable = false) var commentsState: CommentsState = CommentsState.ORIGINAL,
-    @Column(nullable = false, updatable = false, columnDefinition = CommentsConstant.DATE_TYPE) val createdDate: Long = datetimeConvertToDigit()
+    @Column(nullable = false, updatable = false, columnDefinition = DATE_TYPE) val createdDate: Long = datetimeConvertToDigit()
 ) {
     companion object {
         fun create(writer: Member, post: Post, content: String) = Comments(writer = writer, post = post, content = content)

@@ -3,6 +3,8 @@ package howru.howru.globalUtil
 import java.time.Instant
 import java.time.LocalDateTime
 
+const val DATE_TYPE = "BIGINT(12)"
+
 fun getCurrentTimestamp(): Int {
     return Instant.now().epochSecond.toInt()
 }
