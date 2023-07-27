@@ -7,6 +7,7 @@ object PostUrl {
     const val POST_OF_WRITER = "/post/writer/{writerUUID}"
     const val POST_OF_FOLLOWEE = "/post/followee/{followerUUID}"
     const val RECOMMEND = "/post/recommend"
+    const val RANDOM = "/post/random"
     const val COUNT_POST_BY_WRITER = "/post/count/{writerUUID}"
     const val CREATE = "/post/create"
     const val EDIT_CONTENT = "/post/edit/content"

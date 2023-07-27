@@ -15,6 +15,7 @@ object PostResponse {
     fun postOfWriterSuccess(postsOfWriter: List<PostInfo>) = ResponseEntity.ok(postsOfWriter)
     fun postOfFolloweeSuccess(postsOfFollowee: List<PostInfo>) = ResponseEntity.ok(postsOfFollowee)
     fun recommendPostSuccess(recommendPosts: List<PostInfo>) = ResponseEntity.ok(recommendPosts)
+    fun randomPostSuccess(randomPosts: List<PostInfo>) = ResponseEntity.ok(randomPosts)
     fun countPostOfWriterSuccess(countPost: Long) = ResponseEntity.ok(countPost)
     fun createPostSuccess() = ResponseEntity.status(HttpStatus.CREATED).body(CREATE_POST_SUCCESS)
     fun editPostSuccess() = ResponseEntity.ok(EDIT_CONTENT_SUCCESS)

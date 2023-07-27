@@ -214,6 +214,27 @@ class PostQueryServiceTest @Autowired constructor(
 
     @Test
     @Transactional
+    fun getRandomPostsTest() {
+        //given
+        val writerUUID1 = createWriter1()
+        val request1 = CreatePost(writerUUID1, "post1")
+        postCommandService.createPost(request1)
+        flushAndClear()
+        val writerUUID2 = createWriter2()
+        val request2 = CreatePost(writerUUID2, "post2")
+        postCommandService.createPost(request2)
+        flushAndClear()
+
+        //when
+        val posts = postQueryService.getRandomPosts()
+
+        //then
+        repeat(posts.size) { logger().info(posts[it].content) }
+        Assertions.assertThat(posts).isNotEmpty
+    }
+
+    @Test
+    @Transactional
     fun countPostsByWriterTest() {
         //given
         val writerUUID = createWriter1()
