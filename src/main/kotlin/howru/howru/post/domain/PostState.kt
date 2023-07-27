@@ -1,5 +1,3 @@
 package howru.howru.post.domain
 
-enum class PostState {
-    ORIGINAL, EDITED
-}
+enum class PostState { ORIGINAL, EDITED }
