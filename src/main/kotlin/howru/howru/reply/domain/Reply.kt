@@ -20,7 +20,7 @@ class Reply private constructor(
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(updatable = false) @OnDelete(action = OnDeleteAction.CASCADE) val writer: Member,
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(updatable = false) @OnDelete(action = OnDeleteAction.CASCADE) val comment: Comments,
     @Column(nullable = false, columnDefinition = ReplyConstant.CONTENT_TYPE) var content: String,
-    @Convert(converter = ReplyStateConverter::class) @Column(nullable = false) var replyState: ReplyState = ReplyState.ORIGINAL,
+    @Convert(converter = ReplyStateConverter::class) @Column(nullable = false, columnDefinition = ReplyConstant.REPLY_STATE_TYPE) var replyState: ReplyState = ReplyState.ORIGINAL,
     @Column(nullable = false, updatable = false, columnDefinition = DATE_TYPE) val createdDate: Long = datetimeConvertToDigit()
 ) {
     companion object {
