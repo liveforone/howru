@@ -9,6 +9,7 @@
 * 댓글은 의견으로도 나타낼 수 있으며, 이러한 맥락에 따라 맞팔로우하고 있는 회원의 의견(댓글)을 확인하는 것이 가능합니다.
 * 평소 어떤 의견을 맞팔로우하고 있는 회원이 가지고 있는지 확인 가능하도록 만들었습니다.
 * 당연하게도 다른 사람의 댓글을 모두 확인하려면 맞팔로우한 상태여야만 합니다.
+* 댓글은 100자의 길이 제한을 갖습니다. 이는 정책입니다.
 
 ## API 설계
 ```
@@ -52,7 +53,7 @@ create table comments (
      post_id bigint,
      writer_id bigint,
      content VARCHAR(100) not null,
-     comments_state varchar(255) not null,
+     comments_state varchar(8) not null,
      created_date BIGINT(12) not null,
      primary key (id)
      foreign key (writer_id) references Member (id) on delete cascade
