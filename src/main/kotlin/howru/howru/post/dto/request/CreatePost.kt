@@ -9,6 +9,6 @@ data class CreatePost(
     @field:NotNull(message = "작성자의 외부 식별자를 입력하세요.")
     val writerUUID: UUID?,
     @field:NotBlank(message = "게시글을 입력하세요.")
-    @field:Size(max = 800)
+    @field:Size(max = 800, message = "게시글 제한 길이를 초과하였습니다.")
     val content: String?
 )
