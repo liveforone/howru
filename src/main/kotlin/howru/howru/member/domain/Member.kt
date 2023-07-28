@@ -18,10 +18,10 @@ import java.util.*
 class Member private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long? = null,
     @Column(columnDefinition = UUID_TYPE, unique = true, nullable = false) val uuid: UUID = createUUID(),
-    @Convert(converter = RoleConverter::class) @Column(nullable = false) var auth: Role,
+    @Convert(converter = RoleConverter::class) @Column(nullable = false, columnDefinition = MemberConstant.ROLE_TYPE) var auth: Role,
     @Column(nullable = false) var email: String,
-    @Column(nullable = false) var pw: String,
-    @Convert(converter = MemberLockConverter::class) @Column(nullable = false) var memberLock: MemberLock = MemberLock.OFF,
+    @Column(nullable = false, columnDefinition = MemberConstant.PW_TYPE) var pw: String,
+    @Convert(converter = MemberLockConverter::class) @Column(nullable = false, columnDefinition = MemberConstant.LOCK_TYPE) var memberLock: MemberLock = MemberLock.OFF,
     @Column(nullable = false) var reportCount: Int = MemberConstant.BASIC_REPORT,
 ) : UserDetails {
     companion object {
