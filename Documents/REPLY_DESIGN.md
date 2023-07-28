@@ -5,6 +5,7 @@
 * 대댓글 또한 상태가 존재합니다. 수정이 일어나게되면 수정됨으로 상태가 변경되어, 다른 사용자가 수정된 대댓글이라는 것을 알 수 있습니다.
 * 대댓글은 15개씩 페이징 됩니다.
 * 다른 사람의 프로필을 통해 대댓글을 조회할 순 없습니다. 댓글(의견)의 경우에만 가능합니다.
+* 대댓글은 100자로 제한됩니다.
 
 ## API 설계
 ```
@@ -47,7 +48,7 @@ create table reply (
      comment_id bigint,
      writer_id bigint,
      content VARCHAR(100) not null,
-     reply_state varchar(255) not null,
+     reply_state varchar(8) not null,
      created_date BIGINT(12) not null,
      primary key (id)
      foreign key (comment_id) references comments (id) on delete cascade
