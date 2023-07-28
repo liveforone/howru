@@ -60,10 +60,11 @@
 create table member (
     id bigint not null auto_increment,
     uuid BINARY(16) not null UNIQUE,
-    auth varchar(255) not null,
-    reportCount integer not null,
     email varchar(255) not null,
     password varchar(100) not null,
+    auth varchar(7) not null,
+    member_lock varchar(3) not null,
+    reportCount integer not null,
     primary key (id)
 );
 CREATE INDEX uuid_idx ON member (uuid);
