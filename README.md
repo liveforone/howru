@@ -32,7 +32,7 @@
 * [게시글 설계](https://github.com/liveforone/howru/blob/master/Documents/POST_DESIGN.md)
 * [좋아요 설계](https://github.com/liveforone/howru/blob/master/Documents/LIKES_DESIGN.md)
 * [댓글 설계](https://github.com/liveforone/howru/blob/master/Documents/COMMENTS_DESIGN.md)
-* [대댓글 설계]()
+* [대댓글 설계](https://github.com/liveforone/howru/blob/master/Documents/REPLY_DESIGN.md)
 
 # 3. 고민점
 ## 기술적 고민
