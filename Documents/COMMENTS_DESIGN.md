@@ -48,12 +48,12 @@
 ```sql
 create table comments (
      id bigint not null auto_increment,
-     uuid BINARY(16) not null,
+     uuid BINARY(16) not null UNIQUE,
      post_id bigint,
      writer_id bigint,
-     created_date BIGINT(12) not null,
-     comments_state varchar(255) not null,
      content VARCHAR(100) not null,
+     comments_state varchar(255) not null,
+     created_date BIGINT(12) not null,
      primary key (id)
      foreign key (writer_id) references Member (id) on delete cascade
      foreign key (post_id) references Post (id) on delete cascade
