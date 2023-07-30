@@ -1,7 +1,7 @@
-package howru.howru.globalConfig
+package howru.howru.globalConfig.security
 
-import howru.howru.jwt.JwtAuthenticationFilter
-import howru.howru.jwt.JwtTokenProvider
+import howru.howru.globalConfig.jwt.JwtAuthenticationFilter
+import howru.howru.globalConfig.jwt.JwtTokenProvider
 import howru.howru.member.controller.constant.MemberUrl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
