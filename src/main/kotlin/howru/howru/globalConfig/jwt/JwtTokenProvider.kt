@@ -1,8 +1,8 @@
-package howru.howru.jwt
+package howru.howru.globalConfig.jwt
 
 import howru.howru.exception.exception.JwtCustomException
 import howru.howru.exception.message.JwtExceptionMessage
-import howru.howru.jwt.constant.JwtConstant
+import howru.howru.globalConfig.jwt.constant.JwtConstant
 import howru.howru.logger
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys

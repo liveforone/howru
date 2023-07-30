@@ -1,6 +1,6 @@
-package howru.howru.jwt
+package howru.howru.globalConfig.jwt
 
-import howru.howru.jwt.constant.JwtConstant
+import howru.howru.globalConfig.jwt.constant.JwtConstant
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletRequest
 import jakarta.servlet.ServletResponse

@@ -1,4 +1,4 @@
-package howru.howru.jwt
+package howru.howru.globalConfig.jwt
 
 class TokenInfo private constructor(
     val grantType: String,

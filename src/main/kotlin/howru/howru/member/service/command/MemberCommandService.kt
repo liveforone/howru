@@ -2,8 +2,8 @@ package howru.howru.member.service.command
 
 import howru.howru.exception.exception.MemberException
 import howru.howru.exception.message.MemberExceptionMessage
-import howru.howru.jwt.JwtTokenProvider
-import howru.howru.jwt.TokenInfo
+import howru.howru.globalConfig.jwt.JwtTokenProvider
+import howru.howru.globalConfig.jwt.TokenInfo
 import howru.howru.member.domain.Member
 import howru.howru.member.domain.Role
 import howru.howru.member.domain.util.PasswordUtil

@@ -1,7 +1,7 @@
 package howru.howru.member.controller
 
 import howru.howru.globalUtil.validateBinding
-import howru.howru.jwt.constant.JwtConstant
+import howru.howru.globalConfig.jwt.constant.JwtConstant
 import howru.howru.logger
 import howru.howru.member.controller.constant.MemberControllerLog
 import howru.howru.member.controller.constant.MemberParam

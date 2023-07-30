@@ -1,4 +1,4 @@
-package howru.howru.jwt.constant
+package howru.howru.globalConfig.jwt.constant
 
 object JwtConstant {
     const val ACCESS_TOKEN = "access-token"
