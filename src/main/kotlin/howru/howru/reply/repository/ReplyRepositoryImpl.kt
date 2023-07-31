@@ -45,7 +45,7 @@ class ReplyRepositoryImpl @Autowired constructor(
                     col(Comments::uuid),
                     col(Reply::content),
                     col(Reply::replyState),
-                    col(Reply::createdDate)
+                    col(Reply::createdDatetime)
                 ))
                 from(Reply::class)
                 join(Reply::writer)
@@ -65,7 +65,7 @@ class ReplyRepositoryImpl @Autowired constructor(
                 col(Comments::uuid),
                 col(Reply::content),
                 col(Reply::replyState),
-                col(Reply::createdDate)
+                col(Reply::createdDatetime)
             ))
             from(Reply::class)
             join(Reply::writer)
@@ -85,7 +85,7 @@ class ReplyRepositoryImpl @Autowired constructor(
                 col(Comments::uuid),
                 col(Reply::content),
                 col(Reply::replyState),
-                col(Reply::createdDate)
+                col(Reply::createdDatetime)
             ))
             from(Reply::class)
             join(Reply::writer)

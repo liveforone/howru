@@ -2,15 +2,13 @@ package howru.howru.reply.domain
 
 import howru.howru.comments.domain.Comments
 import howru.howru.converter.ReplyStateConverter
-import howru.howru.globalUtil.DATE_TYPE
-import howru.howru.globalUtil.UUID_TYPE
-import howru.howru.globalUtil.createUUID
-import howru.howru.globalUtil.datetimeConvertToDigit
+import howru.howru.globalUtil.*
 import howru.howru.member.domain.Member
 import howru.howru.reply.domain.constant.ReplyConstant
 import jakarta.persistence.*
 import org.hibernate.annotations.OnDelete
 import org.hibernate.annotations.OnDeleteAction
+import java.time.LocalDateTime
 import java.util.*
 
 @Entity
@@ -21,7 +19,7 @@ class Reply private constructor(
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(updatable = false) @OnDelete(action = OnDeleteAction.CASCADE) val comment: Comments,
     @Column(nullable = false, columnDefinition = ReplyConstant.CONTENT_TYPE) var content: String,
     @Convert(converter = ReplyStateConverter::class) @Column(nullable = false, columnDefinition = ReplyConstant.REPLY_STATE_TYPE) var replyState: ReplyState = ReplyState.ORIGINAL,
-    @Column(nullable = false, updatable = false, columnDefinition = DATE_TYPE) val createdDate: Long = datetimeConvertToDigit()
+    @Column(nullable = false, updatable = false, columnDefinition = DATETIME_TYPE) val createdDatetime: Long = getDatetimeDigit(LocalDateTime.now())
 ) {
     companion object {
         fun create(writer: Member, comment: Comments, content: String) = Reply(writer = writer, comment = comment, content = content)
