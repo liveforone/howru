@@ -58,7 +58,7 @@ class CommentsRepositoryImpl @Autowired constructor(
                     col(Post::uuid),
                     col(Comments::content),
                     col(Comments::commentsState),
-                    col(Comments::createdDate)
+                    col(Comments::createdDatetime)
                 ))
                 from(Comments::class)
                 join(Comments::writer)
@@ -78,7 +78,7 @@ class CommentsRepositoryImpl @Autowired constructor(
                 col(Post::uuid),
                 col(Comments::content),
                 col(Comments::commentsState),
-                col(Comments::createdDate)
+                col(Comments::createdDatetime)
             ))
             from(Comments::class)
             join(Comments::writer)
@@ -98,7 +98,7 @@ class CommentsRepositoryImpl @Autowired constructor(
                 col(Post::uuid),
                 col(Comments::content),
                 col(Comments::commentsState),
-                col(Comments::createdDate)
+                col(Comments::createdDatetime)
             ))
             from(Comments::class)
             join(Comments::writer)
