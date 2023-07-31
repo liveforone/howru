@@ -55,7 +55,7 @@ class PostRepositoryImpl @Autowired constructor(
                     col(Member::uuid),
                     col(Post::content),
                     col(Post::postState),
-                    col(Post::createdDate)
+                    col(Post::createdDatetime)
                 ))
                 from(Post::class)
                 join(Post::writer)
@@ -73,7 +73,7 @@ class PostRepositoryImpl @Autowired constructor(
                 col(Member::uuid),
                 col(Post::content),
                 col(Post::postState),
-                col(Post::createdDate)
+                col(Post::createdDatetime)
             ))
             from(Post::class)
             join(Post::writer)
@@ -91,7 +91,7 @@ class PostRepositoryImpl @Autowired constructor(
                 col(Member::uuid),
                 col(Post::content),
                 col(Post::postState),
-                col(Post::createdDate)
+                col(Post::createdDatetime)
             ))
             from(Post::class)
             join(Post::writer)
@@ -108,7 +108,7 @@ class PostRepositoryImpl @Autowired constructor(
                 col(Member::uuid),
                 col(Post::content),
                 col(Post::postState),
-                col(Post::createdDate)
+                col(Post::createdDatetime)
             ))
             from(Post::class)
             join(Post::writer)
@@ -126,7 +126,7 @@ class PostRepositoryImpl @Autowired constructor(
                 col(Member::uuid),
                 col(Post::content),
                 col(Post::postState),
-                col(Post::createdDate)
+                col(Post::createdDatetime)
             ))
             from(Post::class)
             join(Post::writer)
@@ -144,7 +144,7 @@ class PostRepositoryImpl @Autowired constructor(
                 col(Member::uuid),
                 col(Post::content),
                 col(Post::postState),
-                col(Post::createdDate)
+                col(Post::createdDatetime)
             ))
             from(Post::class)
             join(Post::writer)

@@ -54,7 +54,7 @@ class PostCommandServiceTest @Autowired constructor(
 
         //then
         val post = postQueryService.getPostByUUID(postUUID)
-        logger().info("${post.createdDate}")
+        logger().info("${post.createdDatetime}")
         Assertions.assertThat(post.writerUUID)
             .isEqualTo(writerUUID)
     }
