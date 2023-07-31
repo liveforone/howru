@@ -1,23 +1,32 @@
 package howru.howru.globalUtil
 
 import java.time.Instant
+import java.time.LocalDate
 import java.time.LocalDateTime
 
-const val DATE_TYPE = "BIGINT(12)"
+const val DATETIME_TYPE = "BIGINT(12)"
+const val DATE_TYPE = "INT(8)"
 
 fun getCurrentTimestamp(): Int {
     return Instant.now().epochSecond.toInt()
 }
 
-fun datetimeConvertToDigit(): Long {
-    val now = LocalDateTime.now()
-    val year = now.year.toString()
-    val month = checkSingleDigit(now.monthValue)
-    val day = checkSingleDigit(now.dayOfMonth)
-    val hour = checkSingleDigit(now.hour)
-    val minute = checkSingleDigit(now.minute)
+fun getDatetimeDigit(dateTime: LocalDateTime): Long {
+    val year = dateTime.year.toString()
+    val month = checkSingleDigit(dateTime.monthValue)
+    val day = checkSingleDigit(dateTime.dayOfMonth)
+    val hour = checkSingleDigit(dateTime.hour)
+    val minute = checkSingleDigit(dateTime.minute)
 
     return "$year$month$day$hour$minute".toLong()
+}
+
+fun getDateDigit(date: LocalDate): Int {
+    val year = date.year.toString()
+    val month = checkSingleDigit(date.monthValue)
+    val day = checkSingleDigit(date.dayOfMonth)
+
+    return "$year$month$day".toInt()
 }
 
 private fun checkSingleDigit(digit: Int): String {
