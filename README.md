@@ -24,8 +24,8 @@
 
 # 2. 프로젝트 설계
 ## 시스템 설계
-* [전체 설계]()
-* [DB 설계]()
+* [전체 설계](https://github.com/liveforone/howru/blob/master/Documents/DESIGN.md)
+* [DB 설계](https://github.com/liveforone/howru/blob/master/Documents/DB_DESIGN.md)
 ## 엔티티 설계
 * [회원 설계](https://github.com/liveforone/howru/blob/master/Documents/MEMBER_DESIGN.md)
 * [팔로잉(구독) 설계](https://github.com/liveforone/howru/blob/master/Documents/SUBSCRIBE_DESIGN.md)
@@ -33,6 +33,8 @@
 * [좋아요 설계](https://github.com/liveforone/howru/blob/master/Documents/LIKES_DESIGN.md)
 * [댓글 설계](https://github.com/liveforone/howru/blob/master/Documents/COMMENTS_DESIGN.md)
 * [대댓글 설계](https://github.com/liveforone/howru/blob/master/Documents/REPLY_DESIGN.md)
+* [광고 설계](https://github.com/liveforone/howru/blob/master/Documents/AD_DESIGN.md)
+* [신고 설계](https://github.com/liveforone/howru/blob/master/Documents/REPORT_DESIGN.md)
 
 # 3. 고민점
 ## 기술적 고민
@@ -44,5 +46,7 @@
 * [varchar vs text(LOB)](https://github.com/liveforone/howru/blob/master/Documents/VARCHAR_VS_TEXT.md)
 * [대용량 IN 쿼리 성능 향상 및 주의점](https://github.com/liveforone/howru/blob/master/Documents/BULK_IN_QUERY_PERFORMANCE.md)
 * [코드만으로 키워드 추출](https://github.com/liveforone/howru/blob/master/Documents/KEYWORD_EXTRACT_RECOMMEND.md)
+* [DB 데이터 사이즈 맞추기](https://github.com/liveforone/howru/blob/master/Documents/DB_DATA_STURCTURE_SIZE.md)
+* [어플리케이션 캐시를 활용해 성능향상하기](https://github.com/liveforone/howru/blob/master/Documents/CACHE_FOR_PERFORMANCE.md)
 ## 비즈니스적 고민
 * [클린한 커뮤니티 만들기](https://github.com/liveforone/howru/blob/master/Documents/CLEAN_COMMUNITY.md)
