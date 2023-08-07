@@ -7,6 +7,19 @@ import org.junit.jupiter.api.Test
 class MemberTest {
 
     @Test
+    fun createAdminTest() {
+        //given
+        val email = "admin_howru@gmail.com"
+        val pw = "1234"
+
+        //when
+        val member = Member.create(email, pw, Role.MEMBER)
+
+        //then
+        Assertions.assertThat(member.auth).isEqualTo(Role.ADMIN)
+    }
+
+    @Test
     fun updateEmailTest() {
         //given
         val email = "email_test@gmail.com"
