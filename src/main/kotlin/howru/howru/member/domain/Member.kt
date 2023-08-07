@@ -63,9 +63,8 @@ class Member private constructor(
     }
 
 
-    override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return arrayListOf<GrantedAuthority>(SimpleGrantedAuthority(auth.auth))
-    }
+    override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
+        arrayListOf<GrantedAuthority>(SimpleGrantedAuthority(auth.auth))
     override fun getUsername() = uuid.toString()
     override fun getPassword() = pw
     override fun isAccountNonExpired() = true
