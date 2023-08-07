@@ -1,5 +1,6 @@
 package howru.howru.exception.controllerAdvice
 
+import howru.howru.exception.controllerAdvice.constant.MemberAdviceConstant
 import howru.howru.exception.exception.JwtCustomException
 import howru.howru.exception.exception.MemberException
 import org.springframework.http.HttpStatus
@@ -15,7 +16,7 @@ class MemberControllerAdvice {
     fun loginFailHandle(): ResponseEntity<String> {
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
-            .body("로그인에 실패했습니다.")
+            .body(MemberAdviceConstant.LOGIN_FAIL)
     }
 
     @ExceptionHandler(MemberException::class)
