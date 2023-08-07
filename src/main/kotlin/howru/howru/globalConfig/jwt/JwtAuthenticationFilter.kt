@@ -24,8 +24,7 @@ class JwtAuthenticationFilter @Autowired constructor(
     }
 
     private fun resolveToken(request: HttpServletRequest): String? {
-        val bearerToken = request.getHeader(JwtConstant.HEADER)
-        return bearerToken
+        return request.getHeader(JwtConstant.HEADER)
             ?.takeIf { it.startsWith(JwtConstant.BEARER_TOKEN) }
             ?.substring(JwtConstant.TOKEN_SUB_INDEX)
     }
