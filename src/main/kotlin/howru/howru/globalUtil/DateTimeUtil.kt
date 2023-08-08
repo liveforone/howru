@@ -29,6 +29,15 @@ fun getDateDigit(date: LocalDate): Int {
     return "$year$month$day".toInt()
 }
 
+fun convertDateToLocalDate(date: Int): LocalDate {
+    val stringDate = date.toString()
+    val year = stringDate.substring(0, 4).toInt()
+    val month = stringDate.substring(4, 6).toInt()
+    val day = stringDate.substring(6).toInt()
+
+    return LocalDate.of(year, month, day)
+}
+
 private fun checkSingleDigit(digit: Int): String {
     return if (digit in 0..9) {
         "0${digit}"
