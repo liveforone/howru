@@ -10,9 +10,8 @@ import org.springframework.stereotype.Component
 class MemberServiceValidator @Autowired constructor(
     private val memberRepository: MemberRepository
 ) {
-
     fun validateDuplicateEmail(email: String) {
-        check(memberRepository.findIdByEmailNullableForValidate(email) == null) {
+        checkNotNull(memberRepository.findIdByEmailNullableForValidate(email)) {
             throw MemberException(MemberExceptionMessage.DUPLICATE_EMAIL)
         }
     }
