@@ -58,8 +58,8 @@ class Member private constructor(
     }
 
     fun addReport() {
+        reportCount += MemberConstant.BASIC_VARIATION
         if (reportCount > MemberConstant.SUSPEND_LIMIT) auth = Role.SUSPEND
-        else reportCount += MemberConstant.BASIC_VARIATION
     }
 
 
