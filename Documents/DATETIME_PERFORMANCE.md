@@ -42,3 +42,31 @@ private fun checkSingleDigit(digit: Int): String {
     }
 }
 ```
+
+## 날짜를 숫자타입으로 파싱하는 코드 : date기준
+* INT(8)의 크기를 지정해주어야한다.
+* yyyymmdd 의 형태로 저장된다.
+```kotlin
+fun getDateDigit(date: LocalDate): Int {
+    val year = date.year.toString()
+    val month = checkSingleDigit(date.monthValue)
+    val day = checkSingleDigit(date.dayOfMonth)
+
+    return "$year$month$day".toInt()
+}
+```
+
+## 숫자타입의 날짜를 LocalDate 형식으로 변경
+* 숫자타입의 날짜를 date의 경우 localDate
+* datetime의 경우 localDateTime의 형태로 변경하는 함수도 필요할 수 있다. 이는 아래와 같이 정의할 수 있다.
+* date 타입의 경우만 작성하였다. datetime 또한 같은 로직으로 작성하면된다.
+```kotlin
+fun convertDateToLocalDate(date: Int): LocalDate {
+    val stringDate = date.toString()
+    val year = stringDate.substring(0, 4).toInt()
+    val month = stringDate.substring(4, 6).toInt()
+    val day = stringDate.substring(6).toInt()
+
+    return LocalDate.of(year, month, day)
+}
+```
