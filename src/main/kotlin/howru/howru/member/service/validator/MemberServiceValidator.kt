@@ -11,7 +11,7 @@ class MemberServiceValidator @Autowired constructor(
     private val memberRepository: MemberRepository
 ) {
     fun validateDuplicateEmail(email: String) {
-        checkNotNull(memberRepository.findIdByEmailNullableForValidate(email)) {
+        require (memberRepository.findIdByEmailNullableForValidate(email) == null) {
             throw MemberException(MemberExceptionMessage.DUPLICATE_EMAIL)
         }
     }
