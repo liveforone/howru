@@ -4,6 +4,7 @@ import howru.howru.exception.exception.JwtCustomException
 import howru.howru.exception.message.JwtExceptionMessage
 import howru.howru.globalConfig.jwt.constant.JwtConstant
 import howru.howru.logger
+import howru.howru.member.dto.response.LoginInfo
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
@@ -21,7 +22,7 @@ class JwtTokenProvider(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) {
 
     private val key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secretKey))
 
-    fun generateToken(authentication: Authentication): TokenInfo {
+    fun generateToken(authentication: Authentication): LoginInfo {
         val now: Long = Date().time
         val accessToken = Jwts.builder()
             .setSubject(authentication.name)
@@ -36,7 +37,7 @@ class JwtTokenProvider(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) {
             .setExpiration(Date(now + JwtConstant.TWO_HOUR_MS))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()
-        return TokenInfo.create(JwtConstant.BEARER_TOKEN, accessToken, refreshToken)
+        return LoginInfo.create(authentication.name, accessToken, refreshToken)
     }
 
     fun getAuthentication(accessToken: String): Authentication {

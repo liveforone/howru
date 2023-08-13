@@ -1,8 +1,8 @@
 package howru.howru.member.controller
 
 import howru.howru.globalUtil.validateBinding
-import howru.howru.globalConfig.jwt.constant.JwtConstant
 import howru.howru.logger
+import howru.howru.member.controller.constant.MemberControllerConstant
 import howru.howru.member.controller.constant.MemberControllerLog
 import howru.howru.member.controller.constant.MemberParam
 import howru.howru.member.controller.constant.MemberUrl
@@ -58,8 +58,9 @@ class MemberController @Autowired constructor(
 
         val tokenInfo = memberCommandService.login(loginRequest)
         response.apply {
-            addHeader(JwtConstant.ACCESS_TOKEN, tokenInfo.accessToken)
-            addHeader(JwtConstant.REFRESH_TOKEN, tokenInfo.refreshToken)
+            addHeader(MemberControllerConstant.ACCESS_TOKEN, tokenInfo.accessToken)
+            addHeader(MemberControllerConstant.REFRESH_TOKEN, tokenInfo.refreshToken)
+            addHeader(MemberControllerConstant.MEMBER_UUID, tokenInfo.uuid)
         }
         logger().info(MemberControllerLog.LOGIN_SUCCESS.log)
 

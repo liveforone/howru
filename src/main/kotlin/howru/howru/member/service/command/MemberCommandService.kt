@@ -4,7 +4,7 @@ import howru.howru.exception.exception.MemberException
 import howru.howru.exception.message.MemberExceptionMessage
 import howru.howru.globalConfig.cache.constant.CacheName
 import howru.howru.globalConfig.jwt.JwtTokenProvider
-import howru.howru.globalConfig.jwt.TokenInfo
+import howru.howru.member.dto.response.LoginInfo
 import howru.howru.member.cache.MemberCache
 import howru.howru.member.domain.Member
 import howru.howru.member.domain.Role
@@ -42,7 +42,7 @@ class MemberCommandService @Autowired constructor(
         }
     }
 
-    fun login(loginRequest: LoginRequest): TokenInfo {
+    fun login(loginRequest: LoginRequest): LoginInfo {
         val authentication: Authentication = authenticationManagerBuilder
             .`object`
             .authenticate(UsernamePasswordAuthenticationToken(loginRequest.email, loginRequest.pw))
