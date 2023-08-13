@@ -21,8 +21,15 @@ class Comments private constructor(
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(updatable = false) @OnDelete(action = OnDeleteAction.CASCADE) val writer: Member,
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(updatable = false) @OnDelete(action = OnDeleteAction.CASCADE) val post: Post,
     @Column(nullable = false, columnDefinition = CommentsConstant.CONTENT_TYPE) var content: String,
-    @Convert(converter = CommentsStateConverter::class) @Column(nullable = false, columnDefinition = CommentsConstant.COMMENT_STATE_TYPE) var commentsState: CommentsState = CommentsState.ORIGINAL,
-    @Column(nullable = false, updatable = false, columnDefinition = DATETIME_TYPE) val createdDatetime: Long = getDatetimeDigit(LocalDateTime.now())
+    @Convert(converter = CommentsStateConverter::class) @Column(
+        nullable = false,
+        columnDefinition = CommentsConstant.COMMENT_STATE_TYPE
+    ) var commentsState: CommentsState = CommentsState.ORIGINAL,
+    @Column(
+        nullable = false,
+        updatable = false,
+        columnDefinition = DATETIME_TYPE
+    ) val createdDatetime: Long = getDatetimeDigit(LocalDateTime.now())
 ) {
     companion object {
         fun create(writer: Member, post: Post, content: String) = Comments(writer = writer, post = post, content = content)

@@ -16,8 +16,15 @@ class Post private constructor(
     @Column(columnDefinition = UUID_TYPE, unique = true, nullable = false) val uuid: UUID = createUUID(),
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(updatable = false) @OnDelete(action = OnDeleteAction.CASCADE) val writer: Member,
     @Column(nullable = false, columnDefinition = PostConstant.CONTENT_TYPE) var content: String,
-    @Convert(converter = PostStateConverter::class) @Column(nullable = false, columnDefinition = PostConstant.POST_STATE_TYPE) var postState: PostState = PostState.ORIGINAL,
-    @Column(nullable = false, updatable = false, columnDefinition = DATETIME_TYPE) val createdDatetime: Long = getDatetimeDigit(LocalDateTime.now())
+    @Convert(converter = PostStateConverter::class) @Column(
+        nullable = false,
+        columnDefinition = PostConstant.POST_STATE_TYPE
+    ) var postState: PostState = PostState.ORIGINAL,
+    @Column(
+        nullable = false,
+        updatable = false,
+        columnDefinition = DATETIME_TYPE
+    ) val createdDatetime: Long = getDatetimeDigit(LocalDateTime.now())
 ) {
     companion object {
         fun create(writer: Member, content: String) = Post(writer = writer, content = content)

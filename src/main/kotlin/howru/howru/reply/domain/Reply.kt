@@ -18,8 +18,15 @@ class Reply private constructor(
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(updatable = false) @OnDelete(action = OnDeleteAction.CASCADE) val writer: Member,
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(updatable = false) @OnDelete(action = OnDeleteAction.CASCADE) val comment: Comments,
     @Column(nullable = false, columnDefinition = ReplyConstant.CONTENT_TYPE) var content: String,
-    @Convert(converter = ReplyStateConverter::class) @Column(nullable = false, columnDefinition = ReplyConstant.REPLY_STATE_TYPE) var replyState: ReplyState = ReplyState.ORIGINAL,
-    @Column(nullable = false, updatable = false, columnDefinition = DATETIME_TYPE) val createdDatetime: Long = getDatetimeDigit(LocalDateTime.now())
+    @Convert(converter = ReplyStateConverter::class) @Column(
+        nullable = false,
+        columnDefinition = ReplyConstant.REPLY_STATE_TYPE
+    ) var replyState: ReplyState = ReplyState.ORIGINAL,
+    @Column(
+        nullable = false,
+        updatable = false,
+        columnDefinition = DATETIME_TYPE
+    ) val createdDatetime: Long = getDatetimeDigit(LocalDateTime.now())
 ) {
     companion object {
         fun create(writer: Member, comment: Comments, content: String) = Reply(writer = writer, comment = comment, content = content)
