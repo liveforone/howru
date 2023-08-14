@@ -37,7 +37,7 @@ class JwtTokenProvider(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) {
             .setExpiration(Date(now + JwtConstant.TWO_HOUR_MS))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()
-        return LoginInfo.create(authentication.name, accessToken, refreshToken)
+        return LoginInfo.create(UUID.fromString(authentication.name), accessToken, refreshToken)
     }
 
     fun getAuthentication(accessToken: String): Authentication {

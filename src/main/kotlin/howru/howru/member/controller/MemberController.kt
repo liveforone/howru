@@ -60,7 +60,7 @@ class MemberController @Autowired constructor(
         response.apply {
             addHeader(MemberControllerConstant.ACCESS_TOKEN, tokenInfo.accessToken)
             addHeader(MemberControllerConstant.REFRESH_TOKEN, tokenInfo.refreshToken)
-            addHeader(MemberControllerConstant.MEMBER_UUID, tokenInfo.uuid)
+            addHeader(MemberControllerConstant.MEMBER_UUID, tokenInfo.uuid.toString())
         }
         logger().info(MemberControllerLog.LOGIN_SUCCESS.log)
 
