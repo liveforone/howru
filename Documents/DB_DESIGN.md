@@ -1,7 +1,7 @@
 # DB 설계
 
 ## ER-Diagram
-![image](https://github.com/liveforone/howru/assets/88976237/33ac0381-3ff3-46a9-b0bc-4bf69b4424ab)
+![image](https://github.com/liveforone/howru/assets/88976237/86d30071-b5a6-45fa-8b80-c6b81220c101)
 
 ## 테이블 생성 및 제약조건 명시
 ### 회원 -> Member
@@ -13,7 +13,6 @@ create table member (
     password varchar(100) not null,
     auth varchar(7) not null,
     member_lock varchar(3) not null,
-    reportCount integer not null,
     primary key (id)
 );
 CREATE INDEX uuid_idx ON member (uuid);
