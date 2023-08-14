@@ -11,9 +11,10 @@ class MemberTest {
         //given
         val email = "admin_howru@gmail.com"
         val pw = "1234"
+        val nickName = "nickName"
 
         //when
-        val member = Member.create(email, pw, Role.MEMBER)
+        val member = Member.create(email, pw, nickName)
 
         //then
         Assertions.assertThat(member.auth).isEqualTo(Role.ADMIN)
@@ -24,7 +25,8 @@ class MemberTest {
         //given
         val email = "email_test@gmail.com"
         val pw = "1234"
-        val member = Member.create(email, pw, Role.MEMBER)
+        val nickName = "nickName"
+        val member = Member.create(email, pw, nickName)
 
         //when
         val updatedEmail = "updated_email@gmail.com"
@@ -39,7 +41,8 @@ class MemberTest {
         //given
         val email = "pw_test@gmail.com"
         val pw = "1234"
-        val member = Member.create(email, pw, Role.MEMBER)
+        val nickName = "nickName"
+        val member = Member.create(email, pw, nickName)
 
         //when
         val updatedPw = "1111"
@@ -54,7 +57,8 @@ class MemberTest {
         //given
         val email = "lock_on_test@gmail.com"
         val pw = "1234"
-        val member = Member.create(email, pw, Role.MEMBER)
+        val nickName = "nickName"
+        val member = Member.create(email, pw, nickName)
 
         //when
         member.lockOn()
@@ -68,7 +72,8 @@ class MemberTest {
         //given
         val email = "lock_off_test@gmail.com"
         val pw = "1234"
-        val member = Member.create(email, pw, Role.MEMBER)
+        val nickName = "nickName"
+        val member = Member.create(email, pw, nickName)
         member.lockOn()
 
         //when
@@ -76,19 +81,5 @@ class MemberTest {
 
         //then
         Assertions.assertThat(member.memberLock).isEqualTo(MemberLock.OFF)
-    }
-
-    @Test
-    fun addReportTest() {
-        //given
-        val email = "pw_test@gmail.com"
-        val pw = "1234"
-        val member = Member.create(email, pw, Role.MEMBER)
-
-        //when
-        member.addReport()
-
-        //then
-        Assertions.assertThat(member.reportCount).isEqualTo(1)
     }
 }

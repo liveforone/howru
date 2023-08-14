@@ -59,8 +59,8 @@ class MemberRepositoryImpl @Autowired constructor(
                     col(Member::uuid),
                     col(Member::auth),
                     col(Member::email),
-                    col(Member::memberLock),
-                    col(Member::reportCount)
+                    col(Member::nickName),
+                    col(Member::memberLock)
                 ))
                 from(entity(Member::class))
                 where(col(Member::uuid).equal(uuid))

@@ -8,8 +8,8 @@ data class MemberInfo(
     val uuid: UUID,
     val auth: Role,
     val email: String,
-    val memberLock: MemberLock,
-    val reportCount: Int
+    val nickName: String,
+    val memberLock: MemberLock
 ) {
     fun isUnlock(): Boolean {
         return memberLock == MemberLock.OFF

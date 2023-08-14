@@ -7,7 +7,6 @@ import howru.howru.globalConfig.jwt.JwtTokenProvider
 import howru.howru.member.dto.response.LoginInfo
 import howru.howru.member.cache.MemberCache
 import howru.howru.member.domain.Member
-import howru.howru.member.domain.Role
 import howru.howru.member.domain.util.PasswordUtil
 import howru.howru.member.dto.request.LoginRequest
 import howru.howru.member.dto.request.SignupRequest
@@ -16,6 +15,7 @@ import howru.howru.member.dto.update.UpdateEmail
 import howru.howru.member.dto.update.UpdatePassword
 import howru.howru.member.repository.MemberRepository
 import howru.howru.member.service.validator.MemberServiceValidator
+import howru.howru.reportState.service.command.RepostStateCommandService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -29,16 +29,19 @@ import java.util.*
 @Transactional
 class MemberCommandService @Autowired constructor(
     private val memberRepository: MemberRepository,
+    private val repostStateCommandService: RepostStateCommandService,
     private val authenticationManagerBuilder: AuthenticationManagerBuilder,
     private val jwtTokenProvider: JwtTokenProvider,
     private val memberServiceValidator: MemberServiceValidator
 ) {
 
-    fun signupMember(signupRequest: SignupRequest): UUID {
-        return with(signupRequest) {
+    fun signupMember(signupRequest: SignupRequest) {
+        with(signupRequest) {
             memberServiceValidator.validateDuplicateEmail(email!!)
-            Member.create(email, pw!!, auth = Role.MEMBER)
-                .run { memberRepository.save(this).uuid }
+            Member.create(email, pw!!, nickName!!).also {
+                memberRepository.save(it)
+                repostStateCommandService.createRepostState(it)
+            }
         }
     }
 
@@ -74,12 +77,6 @@ class MemberCommandService @Autowired constructor(
     fun memberLockOff(uuid: UUID) {
         memberRepository.findOneByUUID(uuid)
             .also { it.lockOff() }
-    }
-
-    @CacheEvict(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)
-    fun addReportCount(uuid: UUID) {
-        memberRepository.findOneByUUID(uuid)
-            .also { it.addReport() }
     }
 
     @CacheEvict(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)

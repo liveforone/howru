@@ -3,6 +3,7 @@ package howru.howru.member.service.command
 import howru.howru.exception.exception.MemberException
 import howru.howru.member.domain.MemberLock
 import howru.howru.member.domain.Role
+import howru.howru.member.dto.request.LoginRequest
 import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.dto.request.WithdrawRequest
 import howru.howru.member.dto.update.UpdateEmail
@@ -32,14 +33,17 @@ class MemberCommandServiceTest @Autowired constructor(
         //given
         val email = "signup_test@gmail.com"
         val pw = "1234"
-        val request = SignupRequest(email, pw)
+        val nickName = "nickName"
+        val request = SignupRequest(email, pw, nickName)
 
         //when
-        val uuid = memberCommandService.signupMember(request)
+        memberCommandService.signupMember(request)
         flushAndClear()
 
         //then
-        Assertions.assertThat(memberQueryService.getMemberByUUID(uuid).auth)
+        val loginRequest = LoginRequest(email, pw)
+        val loginInfo = memberCommandService.login(loginRequest)
+        Assertions.assertThat(memberQueryService.getMemberByUUID(loginInfo.uuid).auth)
             .isEqualTo(Role.MEMBER)
     }
 
@@ -49,9 +53,12 @@ class MemberCommandServiceTest @Autowired constructor(
         //given
         val email = "email_test@gmail.com"
         val pw = "1234"
-        val request = SignupRequest(email, pw)
-        val uuid = memberCommandService.signupMember(request)
+        val nickName = "nickName"
+        val request = SignupRequest(email, pw, nickName)
+        memberCommandService.signupMember(request)
         flushAndClear()
+        val loginRequest = LoginRequest(email, pw)
+        val uuid = memberCommandService.login(loginRequest).uuid
 
         //when
         val newEmail = "updated_email@gmail.com"
@@ -70,9 +77,12 @@ class MemberCommandServiceTest @Autowired constructor(
         //given
         val email = "lock_on_test@gmail.com"
         val pw = "1234"
-        val request = SignupRequest(email, pw)
-        val uuid = memberCommandService.signupMember(request)
+        val nickName = "nickName"
+        val request = SignupRequest(email, pw, nickName)
+        memberCommandService.signupMember(request)
         flushAndClear()
+        val loginRequest = LoginRequest(email, pw)
+        val uuid = memberCommandService.login(loginRequest).uuid
 
         //when
         memberCommandService.memberLockOn(uuid)
@@ -89,9 +99,12 @@ class MemberCommandServiceTest @Autowired constructor(
         //given
         val email = "lock_off_test@gmail.com"
         val pw = "1234"
-        val request = SignupRequest(email, pw)
-        val uuid = memberCommandService.signupMember(request)
+        val nickName = "nickName"
+        val request = SignupRequest(email, pw, nickName)
+        memberCommandService.signupMember(request)
         flushAndClear()
+        val loginRequest = LoginRequest(email, pw)
+        val uuid = memberCommandService.login(loginRequest).uuid
         memberCommandService.memberLockOn(uuid)
         flushAndClear()
 
@@ -104,25 +117,6 @@ class MemberCommandServiceTest @Autowired constructor(
             .isEqualTo(MemberLock.OFF)
     }
 
-    @Test
-    @Transactional
-    fun addReportCountTest() {
-        //given
-        val email = "add_report_test@gmail.com"
-        val pw = "1234"
-        val request = SignupRequest(email, pw)
-        val uuid = memberCommandService.signupMember(request)
-        flushAndClear()
-
-        //when
-        memberCommandService.addReportCount(uuid)
-        flushAndClear()
-
-        //then
-        Assertions.assertThat(memberQueryService.getMemberByUUID(uuid).reportCount)
-            .isEqualTo(1)
-    }
-
     /*
     * 회원 탈퇴후 해당 회원을 다시 조회하게 되면, MemberException(MEMBER_IS_NULL) 예외가 발생하게 됩니다.
      */
@@ -132,9 +126,12 @@ class MemberCommandServiceTest @Autowired constructor(
         //given
         val email = "withdraw_test@gmail.com"
         val pw = "1234"
-        val request = SignupRequest(email, pw)
-        val uuid = memberCommandService.signupMember(request)
+        val nickName = "nickName"
+        val request = SignupRequest(email, pw, nickName)
+        memberCommandService.signupMember(request)
         flushAndClear()
+        val loginRequest = LoginRequest(email, pw)
+        val uuid = memberCommandService.login(loginRequest).uuid
 
         //when
         val withdrawRequest = WithdrawRequest(pw)

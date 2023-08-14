@@ -1,17 +1,21 @@
 package howru.howru.member.domain
 
 import howru.howru.converter.MemberLockConverter
+import howru.howru.converter.MemberStateConverter
 import howru.howru.converter.RoleConverter
 import howru.howru.exception.exception.MemberException
 import howru.howru.exception.message.MemberExceptionMessage
+import howru.howru.globalUtil.DATE_TYPE
 import howru.howru.globalUtil.UUID_TYPE
 import howru.howru.globalUtil.createUUID
+import howru.howru.globalUtil.getDateDigit
 import howru.howru.member.domain.constant.MemberConstant
 import howru.howru.member.domain.util.PasswordUtil
 import jakarta.persistence.*
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
+import java.time.LocalDate
 import java.util.*
 
 @Entity
@@ -24,25 +28,24 @@ class Member private constructor(
     ) var auth: Role,
     @Column(nullable = false) var email: String,
     @Column(nullable = false, columnDefinition = MemberConstant.PW_TYPE) var pw: String,
+    @Column(nullable = false, unique = true, columnDefinition = MemberConstant.NICKNAME_TYPE) val nickName: String,
     @Convert(converter = MemberLockConverter::class) @Column(
         nullable = false,
         columnDefinition = MemberConstant.LOCK_TYPE
-    ) var memberLock: MemberLock = MemberLock.OFF,
-    @Column(nullable = false) var reportCount: Int = MemberConstant.BASIC_REPORT
+    ) var memberLock: MemberLock = MemberLock.OFF
 ) : UserDetails {
     companion object {
         private fun isAdmin(email: String) = (email == MemberConstant.ADMIN_EMAIL)
 
-        fun create(email: String, pw: String, auth: Role): Member {
+        fun create(email: String, pw: String, nickName: String): Member {
             return Member(
-                auth = if (isAdmin(email)) Role.ADMIN else auth,
+                auth = if (isAdmin(email)) Role.ADMIN else Role.MEMBER,
                 email = email,
-                pw = PasswordUtil.encodePassword(pw)
+                pw = PasswordUtil.encodePassword(pw),
+                nickName = nickName
             )
         }
     }
-
-    fun isNotSuspend() = auth != Role.SUSPEND
 
     fun isAdmin() = auth == Role.ADMIN
 
@@ -61,11 +64,6 @@ class Member private constructor(
 
     fun lockOff() {
         memberLock = MemberLock.OFF
-    }
-
-    fun addReport() {
-        reportCount += MemberConstant.BASIC_VARIATION
-        if (reportCount > MemberConstant.SUSPEND_LIMIT) auth = Role.SUSPEND
     }
 
 
