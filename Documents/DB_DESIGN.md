@@ -97,6 +97,18 @@ create table advertisement (
 );
 CREATE INDEX uuid_idx ON advertisement (uuid);
 ```
+### 신고상태 -> ReportState
+```sql
+create table report_state (
+     id bigint not null auto_increment,
+     member_id bigint,
+     modified_state_date INT(8) not null,
+     report_count integer not null,
+     member_state VARCHAR(17) not null,
+     primary key (id),
+     foreign key (member_id) references on Member (id) on delete cascade
+);
+```
 
 ## no-offset 페이징 with 외부 식별자
 * 페이징 성능을 향상하기 위해 no-offset 방식으로 페이징 처리한다.
