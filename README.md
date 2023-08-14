@@ -34,7 +34,7 @@
 * [댓글 설계](https://github.com/liveforone/howru/blob/master/Documents/COMMENTS_DESIGN.md)
 * [대댓글 설계](https://github.com/liveforone/howru/blob/master/Documents/REPLY_DESIGN.md)
 * [광고 설계](https://github.com/liveforone/howru/blob/master/Documents/AD_DESIGN.md)
-* [신고 설계](https://github.com/liveforone/howru/blob/master/Documents/REPORT_DESIGN.md)
+* [신고상태 설계](https://github.com/liveforone/howru/blob/master/Documents/REPORT_STATE_DESIGN.md)
 
 # 3. 고민점
 ## 기술적 고민
@@ -48,5 +48,6 @@
 * [코드만으로 키워드 추출](https://github.com/liveforone/howru/blob/master/Documents/KEYWORD_EXTRACT_RECOMMEND.md)
 * [DB 데이터 사이즈 맞추기](https://github.com/liveforone/howru/blob/master/Documents/DB_DATA_STURCTURE_SIZE.md)
 * [어플리케이션 캐시를 활용해 성능향상하기](https://github.com/liveforone/howru/blob/master/Documents/CACHE_FOR_PERFORMANCE.md)
+* [정지 기간이 있는 계정 정지 방법](https://github.com/liveforone/howru/blob/master/Documents/HOW_TO_SUSPEND_USER.md)
 ## 비즈니스적 고민
 * [클린한 커뮤니티 만들기](https://github.com/liveforone/howru/blob/master/Documents/CLEAN_COMMUNITY.md)
