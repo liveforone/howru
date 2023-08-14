@@ -3,6 +3,7 @@ package howru.howru.likes.service.command
 import howru.howru.likes.dto.request.CreateLikes
 import howru.howru.likes.dto.request.DeleteLikes
 import howru.howru.likes.service.query.LikesQueryService
+import howru.howru.member.dto.request.LoginRequest
 import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.service.command.MemberCommandService
 import howru.howru.post.dto.request.CreatePost
@@ -32,19 +33,23 @@ class LikesCommandServiceTest @Autowired constructor(
     private fun createWriter(): UUID {
         val email = "test_writer@gmail.com"
         val pw = "1122"
-        val request = SignupRequest(email, pw)
-        val uuid = memberCommandService.signupMember(request)
+        val nickName = "writer"
+        val request = SignupRequest(email, pw, nickName)
+        memberCommandService.signupMember(request)
         flushAndClear()
-        return uuid
+        val loginRequest = LoginRequest(email, pw)
+        return memberCommandService.login(loginRequest).uuid
     }
 
     private fun createMember(): UUID {
         val email = "test_member@gmail.com"
         val pw = "3344"
-        val request = SignupRequest(email, pw)
-        val uuid = memberCommandService.signupMember(request)
+        val nickName = "member"
+        val request = SignupRequest(email, pw, nickName)
+        memberCommandService.signupMember(request)
         flushAndClear()
-        return uuid
+        val loginRequest = LoginRequest(email, pw)
+        return memberCommandService.login(loginRequest).uuid
     }
 
     private fun createPost(): UUID {

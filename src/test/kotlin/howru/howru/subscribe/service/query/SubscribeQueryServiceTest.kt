@@ -1,5 +1,6 @@
 package howru.howru.subscribe.service.query
 
+import howru.howru.member.dto.request.LoginRequest
 import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.service.command.MemberCommandService
 import howru.howru.subscribe.dto.request.CreateSubscribe
@@ -28,19 +29,23 @@ class SubscribeQueryServiceTest @Autowired constructor(
     private fun createFollowee(): UUID {
         val email = "test_followee@gmail.com"
         val pw = "1122"
-        val request = SignupRequest(email, pw)
-        val uuid = memberCommandService.signupMember(request)
+        val nickName = "followee"
+        val request = SignupRequest(email, pw, nickName)
+        memberCommandService.signupMember(request)
         flushAndClear()
-        return uuid
+        val loginRequest = LoginRequest(email, pw)
+        return memberCommandService.login(loginRequest).uuid
     }
 
     private fun createFollower(): UUID {
         val email = "test_follower@gmail.com"
         val pw = "3344"
-        val request = SignupRequest(email, pw)
-        val uuid = memberCommandService.signupMember(request)
+        val nickName = "follower"
+        val request = SignupRequest(email, pw, nickName)
+        memberCommandService.signupMember(request)
         flushAndClear()
-        return uuid
+        val loginRequest = LoginRequest(email, pw)
+        return memberCommandService.login(loginRequest).uuid
     }
 
     @Test

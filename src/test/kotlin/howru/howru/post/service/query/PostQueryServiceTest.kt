@@ -2,6 +2,7 @@ package howru.howru.post.service.query
 
 import howru.howru.exception.exception.PostException
 import howru.howru.logger
+import howru.howru.member.dto.request.LoginRequest
 import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.service.command.MemberCommandService
 import howru.howru.post.dto.request.CreatePost
@@ -33,19 +34,23 @@ class PostQueryServiceTest @Autowired constructor(
     private fun createWriter1(): UUID {
         val email = "test_followee@gmail.com"
         val pw = "1111"
-        val request = SignupRequest(email, pw)
-        val uuid = memberCommandService.signupMember(request)
+        val nickName = "writer1"
+        val request = SignupRequest(email, pw, nickName)
+        memberCommandService.signupMember(request)
         flushAndClear()
-        return uuid
+        val loginRequest = LoginRequest(email, pw)
+        return memberCommandService.login(loginRequest).uuid
     }
 
     private fun createWriter2(): UUID {
         val email = "test_follower@gmail.com"
         val pw = "2222"
-        val request = SignupRequest(email, pw)
-        val uuid = memberCommandService.signupMember(request)
+        val nickName = "writer1"
+        val request = SignupRequest(email, pw, nickName)
+        memberCommandService.signupMember(request)
         flushAndClear()
-        return uuid
+        val loginRequest = LoginRequest(email, pw)
+        return memberCommandService.login(loginRequest).uuid
     }
 
     @Test

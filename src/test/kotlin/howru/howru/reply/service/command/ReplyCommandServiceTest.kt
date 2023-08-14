@@ -3,6 +3,7 @@ package howru.howru.reply.service.command
 import howru.howru.comments.dto.request.CreateComments
 import howru.howru.comments.service.command.CommentsCommandService
 import howru.howru.exception.exception.ReplyException
+import howru.howru.member.dto.request.LoginRequest
 import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.service.command.MemberCommandService
 import howru.howru.post.dto.request.CreatePost
@@ -39,28 +40,34 @@ class ReplyCommandServiceTest @Autowired constructor(
     private fun createPostWriter(): UUID {
         val email = "test_post_writer@gmail.com"
         val pw = "1122"
-        val request = SignupRequest(email, pw)
-        val uuid = memberCommandService.signupMember(request)
+        val nickName = "pWriter"
+        val request = SignupRequest(email, pw, nickName)
+        memberCommandService.signupMember(request)
         flushAndClear()
-        return uuid
+        val loginRequest = LoginRequest(email, pw)
+        return memberCommandService.login(loginRequest).uuid
     }
 
     private fun createCommentWriter(): UUID {
         val email = "test_comment_writer@gmail.com"
         val pw = "1122"
-        val request = SignupRequest(email, pw)
-        val uuid = memberCommandService.signupMember(request)
+        val nickName = "cWriter"
+        val request = SignupRequest(email, pw, nickName)
+        memberCommandService.signupMember(request)
         flushAndClear()
-        return uuid
+        val loginRequest = LoginRequest(email, pw)
+        return memberCommandService.login(loginRequest).uuid
     }
 
     private fun createMember(): UUID {
         val email = "test_member@gmail.com"
         val pw = "3344"
-        val request = SignupRequest(email, pw)
-        val uuid = memberCommandService.signupMember(request)
+        val nickName = "member"
+        val request = SignupRequest(email, pw, nickName)
+        memberCommandService.signupMember(request)
         flushAndClear()
-        return uuid
+        val loginRequest = LoginRequest(email, pw)
+        return memberCommandService.login(loginRequest).uuid
     }
 
     private fun createPost(): UUID {

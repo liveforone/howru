@@ -11,7 +11,7 @@ class CommentsTest {
     @Test
     fun editContentTest() {
         //given
-        val writer = Member.create("writer_test1@gmail.com", "1111", Role.MEMBER)
+        val writer = Member.create("writer_test1@gmail.com", "1111", "testName")
         val post = Post.create(writer, "test_post1")
         val content = "test_comments_content"
         val comments = Comments.create(writer, post, content)

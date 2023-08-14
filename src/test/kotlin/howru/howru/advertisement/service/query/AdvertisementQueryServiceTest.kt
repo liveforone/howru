@@ -2,6 +2,7 @@ package howru.howru.advertisement.service.query
 
 import howru.howru.advertisement.dto.request.CreateAdvertisement
 import howru.howru.advertisement.service.command.AdvertisementCommandService
+import howru.howru.member.dto.request.LoginRequest
 import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.service.command.MemberCommandService
 import jakarta.persistence.EntityManager
@@ -28,10 +29,12 @@ class AdvertisementQueryServiceTest @Autowired constructor(
     private fun createAdmin(): UUID {
         val email = "admin_howru@gmail.com"
         val pw = "1122"
-        val request = SignupRequest(email, pw)
-        val uuid = memberCommandService.signupMember(request)
+        val nickName = "testName"
+        val request = SignupRequest(email, pw, nickName)
+        memberCommandService.signupMember(request)
         flushAndClear()
-        return uuid
+        val loginRequest = LoginRequest(email, pw)
+        return memberCommandService.login(loginRequest).uuid
     }
 
     @Test @Transactional
