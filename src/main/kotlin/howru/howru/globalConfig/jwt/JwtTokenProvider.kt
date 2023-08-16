@@ -22,46 +22,41 @@ class JwtTokenProvider(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) {
 
     private val key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secretKey))
 
-    fun generateToken(authentication: Authentication): LoginInfo {
-        val now: Long = Date().time
-        val accessToken = Jwts.builder()
+    private fun generateAccessToken(authentication: Authentication): String {
+        return Jwts.builder()
             .setSubject(authentication.name)
             .claim(
                 JwtConstant.CLAIM_NAME,
                 authentication.authorities.iterator().next().authority
             )
-            .setExpiration(Date(now + JwtConstant.TWO_HOUR_MS))
+            .setExpiration(Date(Date().time + JwtConstant.TWO_HOUR_MS))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()
-        val refreshToken = Jwts.builder()
-            .setExpiration(Date(now + JwtConstant.TWO_HOUR_MS))
+    }
+
+    private fun generateRefreshToken(): String {
+        return Jwts.builder()
+            .setExpiration(Date(Date().time + JwtConstant.TWO_HOUR_MS))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()
-        return LoginInfo.create(UUID.fromString(authentication.name), accessToken, refreshToken)
+    }
+
+    fun generateToken(authentication: Authentication): LoginInfo {
+        return LoginInfo.create(UUID.fromString(authentication.name), generateAccessToken(authentication), generateRefreshToken())
     }
 
     fun getAuthentication(accessToken: String): Authentication {
         val claims = parseClaims(accessToken)
-
         val authorities: Collection<GrantedAuthority> =
             claims[JwtConstant.CLAIM_NAME].toString()
-                .split(",")
+                .split(JwtConstant.AUTH_DELIMITER)
                 .map { role: String? -> SimpleGrantedAuthority(role) }
-        val principal: UserDetails = User(
-            claims.subject,
-            "",
-            authorities
-        )
-        return UsernamePasswordAuthenticationToken(
-            principal,
-            "",
-            authorities
-        )
+        val principal: UserDetails = User(claims.subject, JwtConstant.EMPTY_PW, authorities)
+        return UsernamePasswordAuthenticationToken(principal, JwtConstant.CREDENTIAL, authorities)
     }
 
     fun validateToken(token: String?): Boolean {
         requireNotNull(token) { throw JwtCustomException(JwtExceptionMessage.TOKEN_IS_NULL) }
-
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token)
             return true

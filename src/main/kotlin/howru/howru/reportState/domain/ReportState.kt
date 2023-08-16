@@ -26,22 +26,27 @@ class ReportState private constructor(
         fun create(member: Member) = ReportState(member = member)
     }
 
-    fun releaseSuspend() {
+    private fun releaseSuspendWhenMonth(modifiedDate: LocalDate) {
+        val oneMonthReleaseDate = modifiedDate.plusMonths(ReportStateConstant.ONE_MONTH)
         val now = LocalDate.now()
+        if (now.isAfter(oneMonthReleaseDate) || now.isEqual(oneMonthReleaseDate)) {
+            memberState = MemberState.NORMAL
+        }
+    }
+
+    private fun releaseSuspendWhenSixMonth(modifiedDate: LocalDate) {
+        val sixMonthReleaseDate = modifiedDate.plusMonths(ReportStateConstant.SIX_MONTH)
+        val now = LocalDate.now()
+        if (now.isAfter(sixMonthReleaseDate) || now.isEqual(sixMonthReleaseDate)) {
+            memberState = MemberState.NORMAL
+        }
+    }
+
+    fun releaseSuspend() {
         val modifiedDate = convertDateToLocalDate(modifiedStateDate)
         when (memberState) {
-            MemberState.SUSPEND_MONTH -> {
-                val oneMonthReleaseDate = modifiedDate.plusMonths(ReportStateConstant.ONE_MONTH)
-                if (now.isAfter(oneMonthReleaseDate) || now.isEqual(oneMonthReleaseDate)) {
-                    memberState = MemberState.NORMAL
-                }
-            }
-            MemberState.SUSPEND_SIX_MONTH -> {
-                val sixMonthReleaseDate = modifiedDate.plusMonths(ReportStateConstant.SIX_MONTH)
-                if (now.isAfter(sixMonthReleaseDate) || now.isEqual(sixMonthReleaseDate)) {
-                    memberState = MemberState.NORMAL
-                }
-            }
+            MemberState.SUSPEND_MONTH -> releaseSuspendWhenMonth(modifiedDate)
+            MemberState.SUSPEND_SIX_MONTH -> releaseSuspendWhenSixMonth(modifiedDate)
             else -> Unit
         }
     }
