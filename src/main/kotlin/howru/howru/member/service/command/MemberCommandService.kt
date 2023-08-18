@@ -4,10 +4,10 @@ import howru.howru.exception.exception.MemberException
 import howru.howru.exception.message.MemberExceptionMessage
 import howru.howru.globalConfig.cache.constant.CacheName
 import howru.howru.globalConfig.jwt.JwtTokenProvider
+import howru.howru.globalUtil.isMatchPassword
 import howru.howru.member.dto.response.LoginInfo
 import howru.howru.member.cache.MemberCache
 import howru.howru.member.domain.Member
-import howru.howru.member.domain.util.PasswordUtil
 import howru.howru.member.dto.request.LoginRequest
 import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.dto.request.WithdrawRequest
@@ -82,7 +82,7 @@ class MemberCommandService @Autowired constructor(
     @CacheEvict(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)
     fun withdraw(withdrawRequest: WithdrawRequest, uuid: UUID) {
         memberRepository.findOneByUUID(uuid)
-            .takeIf { PasswordUtil.isMatchPassword(withdrawRequest.pw!!, it.pw) }
+            .takeIf { isMatchPassword(withdrawRequest.pw!!, it.pw) }
             ?.also { memberRepository.delete(it) }
             ?: throw MemberException(MemberExceptionMessage.WRONG_PASSWORD)
     }

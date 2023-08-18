@@ -6,8 +6,9 @@ import howru.howru.exception.exception.MemberException
 import howru.howru.exception.message.MemberExceptionMessage
 import howru.howru.globalUtil.UUID_TYPE
 import howru.howru.globalUtil.createUUID
+import howru.howru.globalUtil.encodePassword
+import howru.howru.globalUtil.isMatchPassword
 import howru.howru.member.domain.constant.MemberConstant
-import howru.howru.member.domain.util.PasswordUtil
 import jakarta.persistence.*
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -37,7 +38,7 @@ class Member private constructor(
             return Member(
                 auth = findFitAuth(email),
                 email = email,
-                pw = PasswordUtil.encodePassword(pw),
+                pw = encodePassword(pw),
                 nickName = nickName
             )
         }
@@ -50,8 +51,8 @@ class Member private constructor(
     }
 
     fun updatePw(newPassword: String, oldPassword: String) {
-        require (PasswordUtil.isMatchPassword(oldPassword, pw)) { throw MemberException(MemberExceptionMessage.WRONG_PASSWORD) }
-        pw = PasswordUtil.encodePassword(newPassword)
+        require (isMatchPassword(oldPassword, pw)) { throw MemberException(MemberExceptionMessage.WRONG_PASSWORD) }
+        pw = encodePassword(newPassword)
     }
 
     fun lockOn() {

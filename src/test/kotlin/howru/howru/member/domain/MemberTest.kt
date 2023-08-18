@@ -1,6 +1,6 @@
 package howru.howru.member.domain
 
-import howru.howru.member.domain.util.PasswordUtil
+import howru.howru.globalUtil.isMatchPassword
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -49,7 +49,7 @@ class MemberTest {
         member.updatePw(updatedPw, pw)
 
         //then
-        Assertions.assertThat(PasswordUtil.isMatchPassword(updatedPw, member.pw)).isTrue()
+        Assertions.assertThat(isMatchPassword(updatedPw, member.pw)).isTrue()
     }
 
     @Test
