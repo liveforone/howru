@@ -45,7 +45,7 @@ class PostQueryServiceTest @Autowired constructor(
     private fun createWriter2(): UUID {
         val email = "test_follower@gmail.com"
         val pw = "2222"
-        val nickName = "writer1"
+        val nickName = "writer2"
         val request = SignupRequest(email, pw, nickName)
         memberCommandService.signupMember(request)
         flushAndClear()
