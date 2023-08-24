@@ -4,7 +4,7 @@ import howru.howru.logger
 import howru.howru.member.domain.Member
 import howru.howru.reportState.domain.ReportState
 import howru.howru.reportState.dto.request.ReportMember
-import howru.howru.reportState.service.command.constant.ReportConstant
+import howru.howru.reportState.service.command.log.ReportLog
 import howru.howru.reportState.repository.RepostStateRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -28,7 +28,7 @@ class RepostStateCommandService @Autowired constructor(
         with(reportMember) {
             repostStateRepository.findOneByMemberUUID(memberUUID!!)
                 .also { it.addReport() }
-            logger().info(ReportConstant.REPORT_MEMBER + memberUUID)
+            logger().info(ReportLog.REPORT_MEMBER.log + memberUUID)
         }
     }
 }
