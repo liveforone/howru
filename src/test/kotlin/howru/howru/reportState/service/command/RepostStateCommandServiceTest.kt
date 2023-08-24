@@ -32,7 +32,7 @@ class RepostStateCommandServiceTest @Autowired constructor(
     @Transactional
     fun createRepostState() {
         //given
-        val email = "signup_test@gmail.com"
+        val email = "test_member@gmail.com"
         val pw = "1234"
         val nickName = "member"
         val request = SignupRequest(email, pw, nickName)
@@ -52,7 +52,7 @@ class RepostStateCommandServiceTest @Autowired constructor(
     @Transactional
     fun releaseSuspend() {
         //given
-        val email = "signup_test@gmail.com"
+        val email = "test_member@gmail.com"
         val pw = "1234"
         val nickName = "member"
         val request = SignupRequest(email, pw, nickName)
@@ -77,7 +77,7 @@ class RepostStateCommandServiceTest @Autowired constructor(
     @Transactional
     fun addRepost() {
         //given
-        val email = "signup_test@gmail.com"
+        val email = "test_member@gmail.com"
         val pw = "1234"
         val nickName = "member"
         val request = SignupRequest(email, pw, nickName)
