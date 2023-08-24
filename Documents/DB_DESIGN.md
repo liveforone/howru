@@ -132,3 +132,7 @@ private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastUUID(lastUUID: UUID?): Predi
         return lastUUID?.let { and(col(엔티티::id).lessThan(lastId!!)) }
 }
 ```
+
+## 복합키 주의 사항
+* 복합키는 인덱스의 순서를 반드시 주의하여한다.
+* 이는 쿼리를 짤때 큰 성능 차이를 유발할 수 있다.
