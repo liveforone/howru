@@ -5,7 +5,6 @@ import howru.howru.exception.message.MemberExceptionMessage
 import howru.howru.member.domain.Member
 import howru.howru.member.domain.Role
 import howru.howru.member.repository.MemberRepository
-import howru.howru.reportState.repository.RepostStateRepository
 import howru.howru.reportState.service.command.RepostStateCommandService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.User

@@ -26,7 +26,10 @@ class SubscribeRepositoryImpl @Autowired constructor(
             queryFactory.singleQuery {
                 select(entity(Subscribe::class))
                 from(Subscribe::class)
-                where(col(Subscribe::followeeUUID).equal(followeeUUID).and(col(Subscribe::followerUUID).equal(followerUUID)))
+                where(
+                    col(Subscribe::followeeUUID).equal(followeeUUID)
+                        .and(col(Subscribe::followerUUID).equal(followerUUID))
+                )
             }
         } catch (e: NoResultException) {
             throw SubscribeException(SubscribeExceptionMessage.SUBSCRIBE_IS_NULL)

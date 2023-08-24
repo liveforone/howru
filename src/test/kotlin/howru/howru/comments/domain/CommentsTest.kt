@@ -1,7 +1,6 @@
 package howru.howru.comments.domain
 
 import howru.howru.member.domain.Member
-import howru.howru.member.domain.Role
 import howru.howru.post.domain.Post
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
