@@ -9,12 +9,10 @@ import jakarta.persistence.*
 import org.hibernate.annotations.OnDelete
 import org.hibernate.annotations.OnDeleteAction
 import java.time.LocalDateTime
-import java.util.*
 
 @Entity
 class Reply private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long? = null,
-    @Column(columnDefinition = UUID_TYPE, unique = true, nullable = false) val uuid: UUID = createUUID(),
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(updatable = false) @OnDelete(action = OnDeleteAction.CASCADE) val writer: Member,
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(updatable = false) @OnDelete(action = OnDeleteAction.CASCADE) val comment: Comments,
     @Column(nullable = false, columnDefinition = ReplyConstant.CONTENT_TYPE) var content: String,
@@ -29,7 +27,8 @@ class Reply private constructor(
     ) val createdDatetime: Long = getDatetimeDigit(LocalDateTime.now())
 ) {
     companion object {
-        fun create(writer: Member, comment: Comments, content: String) = Reply(writer = writer, comment = comment, content = content)
+        fun create(writer: Member, comment: Comments, content: String) =
+            Reply(writer = writer, comment = comment, content = content)
     }
 
     fun editContent(content: String) {

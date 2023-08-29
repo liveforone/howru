@@ -65,37 +65,37 @@ class ReplyQueryServiceTest @Autowired constructor(
         return memberCommandService.login(loginRequest).uuid
     }
 
-    private fun createPost(): UUID {
+    private fun createPost(): Long {
         val writerUUID = createPostWriter()
         val content = "test_content"
         val request = CreatePost(writerUUID, content)
-        val postUUID = postCommandService.createPost(request)
+        val postId = postCommandService.createPost(request)
         flushAndClear()
-        return postUUID
+        return postId
     }
 
-    private fun createComment(): UUID {
+    private fun createComment(): Long {
         val memberUUID = createCommentWriter()
-        val postUUID = createPost()
+        val postId = createPost()
         val content = "test_comment"
-        val request = CreateComments(memberUUID, postUUID, content)
-        val commentUUID = commentsCommandService.createComment(request)
+        val request = CreateComments(memberUUID, postId, content)
+        val commentId = commentsCommandService.createComment(request)
         flushAndClear()
-        return commentUUID
+        return commentId
     }
 
     @Test @Transactional
     fun getReplyByUUIDTest() {
         //given
         val memberUUID = createMember()
-        val commentUUID = createComment()
+        val commentId = createComment()
         val content = "test_reply"
-        val request = CreateReply(memberUUID, commentUUID, content)
-        val replyUUID = replyCommandService.createReply(request)
+        val request = CreateReply(memberUUID, commentId, content)
+        val replyId = replyCommandService.createReply(request)
         flushAndClear()
 
         //when
-        val reply = replyQueryService.getReplyByUUID(replyUUID)
+        val reply = replyQueryService.getReplyById(replyId)
 
         //then
         Assertions.assertThat(reply).isNotNull
@@ -105,13 +105,13 @@ class ReplyQueryServiceTest @Autowired constructor(
     fun getRepliesByWriterTest() {
         //given
         val memberUUID = createMember()
-        val commentUUID = createComment()
+        val commentId = createComment()
         val content1 = "test_reply1"
-        val request1 = CreateReply(memberUUID, commentUUID, content1)
+        val request1 = CreateReply(memberUUID, commentId, content1)
         replyCommandService.createReply(request1)
         flushAndClear()
         val content2 = "test_reply2"
-        val request2 = CreateReply(memberUUID, commentUUID, content2)
+        val request2 = CreateReply(memberUUID, commentId, content2)
         replyCommandService.createReply(request2)
         flushAndClear()
 
@@ -126,18 +126,18 @@ class ReplyQueryServiceTest @Autowired constructor(
     fun getRepliesByWriterPagingTest() {
         //given
         val memberUUID = createMember()
-        val commentUUID = createComment()
+        val commentId = createComment()
         val content1 = "test_reply1"
-        val request1 = CreateReply(memberUUID, commentUUID, content1)
+        val request1 = CreateReply(memberUUID, commentId, content1)
         replyCommandService.createReply(request1)
         flushAndClear()
         val content2 = "test_reply2"
-        val request2 = CreateReply(memberUUID, commentUUID, content2)
-        val replyUUID2 = replyCommandService.createReply(request2)
+        val request2 = CreateReply(memberUUID, commentId, content2)
+        val replyId2 = replyCommandService.createReply(request2)
         flushAndClear()
 
         //when
-        val replies = replyQueryService.getRepliesByWriter(memberUUID, replyUUID2)
+        val replies = replyQueryService.getRepliesByWriter(memberUUID, replyId2)
 
         //then
         Assertions.assertThat(replies).isNotEmpty
@@ -147,18 +147,18 @@ class ReplyQueryServiceTest @Autowired constructor(
     fun getRepliesByCommentTest() {
         //given
         val memberUUID = createMember()
-        val commentUUID = createComment()
+        val commentId = createComment()
         val content1 = "test_reply1"
-        val request1 = CreateReply(memberUUID, commentUUID, content1)
+        val request1 = CreateReply(memberUUID, commentId, content1)
         replyCommandService.createReply(request1)
         flushAndClear()
         val content2 = "test_reply2"
-        val request2 = CreateReply(memberUUID, commentUUID, content2)
+        val request2 = CreateReply(memberUUID, commentId, content2)
         replyCommandService.createReply(request2)
         flushAndClear()
 
         //when
-        val replies = replyQueryService.getRepliesByComment(commentUUID, null)
+        val replies = replyQueryService.getRepliesByComment(commentId, null)
 
         //then
         Assertions.assertThat(replies).isNotEmpty
@@ -168,18 +168,18 @@ class ReplyQueryServiceTest @Autowired constructor(
     fun getRepliesByCommentPagingTest() {
         //given
         val memberUUID = createMember()
-        val commentUUID = createComment()
+        val commentId = createComment()
         val content1 = "test_reply1"
-        val request1 = CreateReply(memberUUID, commentUUID, content1)
+        val request1 = CreateReply(memberUUID, commentId, content1)
         replyCommandService.createReply(request1)
         flushAndClear()
         val content2 = "test_reply2"
-        val request2 = CreateReply(memberUUID, commentUUID, content2)
-        val replyUUID2 = replyCommandService.createReply(request2)
+        val request2 = CreateReply(memberUUID, commentId, content2)
+        val replyId2 = replyCommandService.createReply(request2)
         flushAndClear()
 
         //when
-        val replies = replyQueryService.getRepliesByComment(commentUUID, replyUUID2)
+        val replies = replyQueryService.getRepliesByComment(commentId, replyId2)
 
         //then
         Assertions.assertThat(replies).isNotEmpty

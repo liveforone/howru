@@ -1,5 +1,3 @@
 package howru.howru.likes.dto.response
 
-import java.util.*
-
-data class LikesBelongMemberInfo(val postUUID: UUID)
+data class LikesBelongMemberInfo(val postId: Long)

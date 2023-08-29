@@ -13,29 +13,28 @@ import jakarta.persistence.NoResultException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 import java.time.LocalDate
-import java.util.*
 
 @Repository
 class AdvertisementRepositoryImpl @Autowired constructor(
     private val queryFactory: SpringDataQueryFactory
 ) : AdvertisementCustomRepository {
-    override fun findOneByUUID(uuid: UUID): Advertisement {
+    override fun findOneById(id: Long): Advertisement {
         return try {
             queryFactory.singleQuery {
                 select(entity(Advertisement::class))
                 from(Advertisement::class)
-                where(col(Advertisement::uuid).equal(uuid))
+                where(col(Advertisement::id).equal(id))
             }
         } catch (e: NoResultException) {
             throw AdvertisementException(AdvertisementExceptionMessage.AD_IS_NULL)
         }
     }
 
-    override fun findOneDtoByUUID(uuid: UUID): AdvertisementInfo {
+    override fun findOneDtoById(id: Long): AdvertisementInfo {
         return try {
             queryFactory.singleQuery {
                 select(listOf(
-                    col(Advertisement::uuid),
+                    col(Advertisement::id),
                     col(Advertisement::company),
                     col(Advertisement::title),
                     col(Advertisement::content),
@@ -43,7 +42,7 @@ class AdvertisementRepositoryImpl @Autowired constructor(
                     col(Advertisement::endDate)
                 ))
                 from(Advertisement::class)
-                where(col(Advertisement::uuid).equal(uuid))
+                where(col(Advertisement::id).equal(id))
             }
         } catch (e: NoResultException) {
             throw AdvertisementException(AdvertisementExceptionMessage.AD_IS_NULL)
@@ -53,7 +52,7 @@ class AdvertisementRepositoryImpl @Autowired constructor(
     override fun findAllAdvertisement(): List<AdvertisementInfo> {
         return queryFactory.listQuery {
             select(listOf(
-                col(Advertisement::uuid),
+                col(Advertisement::id),
                 col(Advertisement::company),
                 col(Advertisement::title),
                 col(Advertisement::content),
@@ -68,7 +67,7 @@ class AdvertisementRepositoryImpl @Autowired constructor(
     override fun searchAdByCompany(company: String): List<AdvertisementInfo> {
         return queryFactory.listQuery {
             select(listOf(
-                col(Advertisement::uuid),
+                col(Advertisement::id),
                 col(Advertisement::company),
                 col(Advertisement::title),
                 col(Advertisement::content),
@@ -84,7 +83,7 @@ class AdvertisementRepositoryImpl @Autowired constructor(
     override fun findExpiredAd(): List<AdvertisementInfo> {
         return queryFactory.listQuery {
             select(listOf(
-                col(Advertisement::uuid),
+                col(Advertisement::id),
                 col(Advertisement::company),
                 col(Advertisement::title),
                 col(Advertisement::content),

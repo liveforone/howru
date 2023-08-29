@@ -66,13 +66,13 @@ class CommentsQueryServiceTest @Autowired constructor(
         return memberCommandService.login(loginRequest).uuid
     }
 
-    private fun createPost(): UUID {
+    private fun createPost(): Long {
         val writerUUID = createWriter()
         val content = "test_content"
         val request = CreatePost(writerUUID, content)
-        val postUUID = postCommandService.createPost(request)
+        val postId = postCommandService.createPost(request)
         flushAndClear()
-        return postUUID
+        return postId
     }
 
     private fun createSubscribe(followeeUUID: UUID, followerUUID: UUID) {
@@ -85,14 +85,14 @@ class CommentsQueryServiceTest @Autowired constructor(
     fun getCommentByUUIDTest() {
         //given
         val memberUUID = createMember()
-        val postUUID = createPost()
+        val postId = createPost()
         val content = "test_comments"
-        val request = CreateComments(memberUUID, postUUID, content)
-        val commentUUID = commentsCommandService.createComment(request)
+        val request = CreateComments(memberUUID, postId, content)
+        val commentId = commentsCommandService.createComment(request)
         flushAndClear()
 
         //when
-        val comment = commentsQueryService.getCommentByUUID(commentUUID)
+        val comment = commentsQueryService.getCommentById(commentId)
 
         //then
         Assertions.assertThat(comment.commentsState).isEqualTo(CommentsState.ORIGINAL)
@@ -103,10 +103,10 @@ class CommentsQueryServiceTest @Autowired constructor(
     fun getCommentsByWriterTest() {
         //given
         val memberUUID = createMember()
-        val postUUID = createPost()
+        val postId = createPost()
         val content = "test_comments"
         repeat(2) {
-            val request = CreateComments(memberUUID, postUUID, content)
+            val request = CreateComments(memberUUID, postId, content)
             commentsCommandService.createComment(request)
             flushAndClear()
         }
@@ -123,17 +123,17 @@ class CommentsQueryServiceTest @Autowired constructor(
     fun getCommentsByWriterPagingTest() {
         //given
         val memberUUID = createMember()
-        val postUUID = createPost()
+        val postId = createPost()
         val content = "test_comments"
-        val request1 = CreateComments(memberUUID, postUUID, content)
+        val request1 = CreateComments(memberUUID, postId, content)
         commentsCommandService.createComment(request1)
         flushAndClear()
-        val request2 = CreateComments(memberUUID, postUUID, content)
-        val commentUUID2 = commentsCommandService.createComment(request2)
+        val request2 = CreateComments(memberUUID, postId, content)
+        val commentId2 = commentsCommandService.createComment(request2)
         flushAndClear()
 
         //when
-        val comments = commentsQueryService.getCommentsByWriter(memberUUID, commentUUID2)
+        val comments = commentsQueryService.getCommentsByWriter(memberUUID, commentId2)
 
         //then
         Assertions.assertThat(comments.size).isEqualTo(1)
@@ -144,16 +144,16 @@ class CommentsQueryServiceTest @Autowired constructor(
     fun getCommentsByPostTest() {
         //given
         val memberUUID = createMember()
-        val postUUID = createPost()
+        val postId = createPost()
         val content = "test_comments"
         repeat(2) {
-            val request = CreateComments(memberUUID, postUUID, content)
+            val request = CreateComments(memberUUID, postId, content)
             commentsCommandService.createComment(request)
             flushAndClear()
         }
 
         //when
-        val comments = commentsQueryService.getCommentsByPost(postUUID, null)
+        val comments = commentsQueryService.getCommentsByPost(postId, null)
 
         //then
         Assertions.assertThat(comments.size).isEqualTo(2)
@@ -164,17 +164,17 @@ class CommentsQueryServiceTest @Autowired constructor(
     fun getCommentsByPostPagingTest() {
         //given
         val memberUUID = createMember()
-        val postUUID = createPost()
+        val postId = createPost()
         val content = "test_comments"
-        val request1 = CreateComments(memberUUID, postUUID, content)
+        val request1 = CreateComments(memberUUID, postId, content)
         commentsCommandService.createComment(request1)
         flushAndClear()
-        val request2 = CreateComments(memberUUID, postUUID, content)
-        val commentUUID2 = commentsCommandService.createComment(request2)
+        val request2 = CreateComments(memberUUID, postId, content)
+        val commentId2 = commentsCommandService.createComment(request2)
         flushAndClear()
 
         //when
-        val comments = commentsQueryService.getCommentsByPost(postUUID, commentUUID2)
+        val comments = commentsQueryService.getCommentsByPost(postId, commentId2)
 
         //then
         Assertions.assertThat(comments.size).isEqualTo(1)
@@ -188,9 +188,9 @@ class CommentsQueryServiceTest @Autowired constructor(
         val member2UUID = createMember2ForSubscribe()
         createSubscribe(memberUUID, member2UUID)
         createSubscribe(member2UUID, memberUUID)
-        val postUUID = createPost()
+        val postId = createPost()
         val content = "test_comments"
-        val request1 = CreateComments(memberUUID, postUUID, content)
+        val request1 = CreateComments(memberUUID, postId, content)
         commentsCommandService.createComment(request1)
         flushAndClear()
 
@@ -209,14 +209,14 @@ class CommentsQueryServiceTest @Autowired constructor(
         val member2UUID = createMember2ForSubscribe()
         createSubscribe(memberUUID, member2UUID)
         createSubscribe(member2UUID, memberUUID)
-        val postUUID = createPost()
+        val postId = createPost()
         val content = "test_comments"
-        val request1 = CreateComments(memberUUID, postUUID, content)
-        val commentUUID = commentsCommandService.createComment(request1)
+        val request1 = CreateComments(memberUUID, postId, content)
+        val commentId = commentsCommandService.createComment(request1)
         flushAndClear()
 
         //when
-        val comments = commentsQueryService.getCommentsBySomeone(memberUUID, member2UUID, commentUUID)
+        val comments = commentsQueryService.getCommentsBySomeone(memberUUID, member2UUID, commentId)
 
         //then
         Assertions.assertThat(comments).isEmpty()

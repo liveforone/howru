@@ -55,29 +55,29 @@ class CommentsCommandServiceTest @Autowired constructor(
         return memberCommandService.login(loginRequest).uuid
     }
 
-    private fun createPost(): UUID {
+    private fun createPost(): Long {
         val writerUUID = createWriter()
         val content = "test_content"
         val request = CreatePost(writerUUID, content)
-        val postUUID = postCommandService.createPost(request)
+        val postId = postCommandService.createPost(request)
         flushAndClear()
-        return postUUID
+        return postId
     }
 
     @Test @Transactional
     fun createCommentTest() {
         //given
         val memberUUID = createMember()
-        val postUUID = createPost()
+        val postId = createPost()
         val content = "test_comments"
 
         //when
-        val request = CreateComments(memberUUID, postUUID, content)
-        val commentUUID = commentsCommandService.createComment(request)
+        val request = CreateComments(memberUUID, postId, content)
+        val commentId = commentsCommandService.createComment(request)
         flushAndClear()
 
         //then
-        Assertions.assertThat(commentsQueryService.getCommentByUUID(commentUUID).content)
+        Assertions.assertThat(commentsQueryService.getCommentById(commentId).content)
             .isEqualTo(content)
     }
 
@@ -85,19 +85,19 @@ class CommentsCommandServiceTest @Autowired constructor(
     fun editCommentTest() {
         //given
         val memberUUID = createMember()
-        val postUUID = createPost()
-        val request = CreateComments(memberUUID, postUUID, "test_comments")
-        val commentUUID = commentsCommandService.createComment(request)
+        val postId = createPost()
+        val request = CreateComments(memberUUID, postId, "test_comments")
+        val commentId = commentsCommandService.createComment(request)
         flushAndClear()
 
         //when
         val updateContent = "updated_comment"
-        val updateRequest = UpdateCommentsContent(commentUUID, memberUUID, updateContent)
+        val updateRequest = UpdateCommentsContent(commentId, memberUUID, updateContent)
         commentsCommandService.editComment(updateRequest)
         flushAndClear()
 
         //then
-        val comment = commentsQueryService.getCommentByUUID(commentUUID)
+        val comment = commentsQueryService.getCommentById(commentId)
         Assertions.assertThat(comment.content).isEqualTo(updateContent)
         Assertions.assertThat(comment.commentsState).isEqualTo(CommentsState.EDITED)
     }
@@ -106,18 +106,18 @@ class CommentsCommandServiceTest @Autowired constructor(
     fun deleteCommentTest() {
         //given
         val memberUUID = createMember()
-        val postUUID = createPost()
-        val request = CreateComments(memberUUID, postUUID, "test_comments")
-        val commentUUID = commentsCommandService.createComment(request)
+        val postId = createPost()
+        val request = CreateComments(memberUUID, postId, "test_comments")
+        val commentId = commentsCommandService.createComment(request)
         flushAndClear()
 
         //when
-        val deleteRequest = DeleteComments(commentUUID, memberUUID)
+        val deleteRequest = DeleteComments(commentId, memberUUID)
         commentsCommandService.deleteComment(deleteRequest)
         flushAndClear()
 
         //then
-        Assertions.assertThatThrownBy { commentsQueryService.getCommentByUUID(commentUUID) }
+        Assertions.assertThatThrownBy { commentsQueryService.getCommentById(commentId) }
             .isInstanceOf(CommentsException::class.java)
     }
 }

@@ -1,9 +1,9 @@
 package howru.howru.comments.controller.constant
 
 object CommentsParam {
-    const val UUID = "uuid"
-    const val LAST_UUID = "lastUUID"
+    const val ID = "id"
+    const val LAST_ID = "lastId"
     const val WRITER_UUID = "writerUUID"
-    const val POST_UUID = "postUUID"
+    const val POST_ID = "postId"
     const val MEMBER_UUID = "memberUUID"
 }

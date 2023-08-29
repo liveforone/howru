@@ -31,23 +31,23 @@ class PostController @Autowired constructor(
     private val postCommandService: PostCommandService
 ) {
     @GetMapping(PostUrl.DETAIL)
-    fun detail(@PathVariable(PostParam.UUID) uuid: UUID): ResponseEntity<*> {
-        val postDetail = postQueryService.getPostByUUID(uuid)
+    fun detail(@PathVariable(PostParam.ID) id: Long): ResponseEntity<*> {
+        val postDetail = postQueryService.getPostById(id)
         return PostResponse.postDetailSuccess(postDetail)
     }
 
     @GetMapping(PostUrl.MY_POST)
     fun myPost(
         @PathVariable(PostParam.MEMBER_UUID) memberUUID: UUID,
-        @RequestParam(PostParam.LAST_UUID, required = false) lastUUID: UUID?
+        @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<*> {
-        val myPosts = postQueryService.getMyPosts(memberUUID, lastUUID)
+        val myPosts = postQueryService.getMyPosts(memberUUID, lastId)
         return PostResponse.myPostSuccess(myPosts)
     }
 
     @GetMapping(PostUrl.ALL_POST)
-    fun allPost(@RequestParam(PostParam.LAST_UUID, required = false) lastUUID: UUID?): ResponseEntity<*> {
-        val allPosts = postQueryService.getAllPosts(lastUUID)
+    fun allPost(@RequestParam(PostParam.LAST_ID, required = false) lastId: Long?): ResponseEntity<*> {
+        val allPosts = postQueryService.getAllPosts(lastId)
         return PostResponse.allPostSuccess(allPosts)
     }
 
@@ -55,18 +55,18 @@ class PostController @Autowired constructor(
     fun postOfWriter(
         @PathVariable(PostParam.WRITER_UUID) writerUUID: UUID,
         @RequestParam(PostParam.MEMBER_UUID) memberUUID: UUID,
-        @RequestParam(PostParam.LAST_UUID, required = false) lastUUID: UUID?
+        @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<*> {
-        val postsOfWriter = postQueryService.getPostsBySomeone(writerUUID, memberUUID, lastUUID)
+        val postsOfWriter = postQueryService.getPostsBySomeone(writerUUID, memberUUID, lastId)
         return PostResponse.postOfWriterSuccess(postsOfWriter)
     }
 
     @GetMapping(PostUrl.POST_OF_FOLLOWEE)
     fun postOfFollowee(
         @PathVariable(PostParam.FOLLOWER_UUID) followerUUID: UUID,
-        @RequestParam(PostParam.LAST_UUID, required = false) lastUUID: UUID?
+        @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<*> {
-        val postsOfFollowee = postQueryService.getPostsOfFollowee(followerUUID, lastUUID)
+        val postsOfFollowee = postQueryService.getPostsOfFollowee(followerUUID, lastId)
         return PostResponse.postOfFolloweeSuccess(postsOfFollowee)
     }
 

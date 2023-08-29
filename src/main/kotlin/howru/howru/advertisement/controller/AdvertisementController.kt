@@ -32,8 +32,8 @@ class AdvertisementController @Autowired constructor(
     private val advertisementCommandService: AdvertisementCommandService
 ) {
     @GetMapping(AdvertisementUrl.DETAIL)
-    fun detail(@PathVariable(AdvertisementParam.UUID) uuid: UUID): ResponseEntity<*> {
-        val ad = advertisementQueryService.getOneByUUID(uuid)
+    fun detail(@PathVariable(AdvertisementParam.ID) id: Long): ResponseEntity<*> {
+        val ad = advertisementQueryService.getOneById(id)
         return AdvertisementResponse.detailSuccess(ad)
     }
 
@@ -119,10 +119,10 @@ class AdvertisementController @Autowired constructor(
 
     @DeleteMapping(AdvertisementUrl.DELETE)
     fun deleteAd(
-        @PathVariable(AdvertisementParam.UUID) uuid: UUID,
+        @PathVariable(AdvertisementParam.ID) id: Long,
         principal: Principal
     ): ResponseEntity<*> {
-        advertisementCommandService.deleteAdByUUID(uuid, UUID.fromString(principal.name))
+        advertisementCommandService.deleteAdByUUID(id, UUID.fromString(principal.name))
         logger().info(AdvertisementControllerLog.DELETE_SUCCESS.log)
 
         return AdvertisementResponse.deleteAdSuccess()

@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
 
 @Service
 @Transactional
@@ -21,25 +20,25 @@ class PostCommandService @Autowired constructor(
     private val memberRepository: MemberRepository
 ) {
     @CacheEvict(cacheNames = [CacheName.POST], key = PostCache.CREATE_WRITER)
-    fun createPost(createPost: CreatePost): UUID {
+    fun createPost(createPost: CreatePost): Long {
         return with(createPost) {
             Post.create(writer = memberRepository.findOneByUUID(writerUUID!!), content!!)
-                .run { postRepository.save(this).uuid }
+                .run { postRepository.save(this).id!! }
         }
     }
 
-    @CacheEvict(cacheNames = [CacheName.POST], key = PostCache.UPDATE_UUID)
+    @CacheEvict(cacheNames = [CacheName.POST], key = PostCache.UPDATE_ID)
     fun editContent(updatePostContent: UpdatePostContent) {
         with(updatePostContent) {
-            postRepository.findOneByUUIDAndWriter(uuid!!, writerUUID!!)
+            postRepository.findOneByIdAndWriter(id!!, writerUUID!!)
                 .also { it.editContent(content!!) }
         }
     }
 
-    @CacheEvict(cacheNames = [CacheName.POST], key = PostCache.DELETE_UUID)
+    @CacheEvict(cacheNames = [CacheName.POST], key = PostCache.DELETE_ID)
     fun deletePost(deletePost: DeletePost) {
         with(deletePost) {
-            postRepository.findOneByUUIDAndWriter(uuid!!, writerUUID!!)
+            postRepository.findOneByIdAndWriter(id!!, writerUUID!!)
                 .also { postRepository.delete(it) }
         }
     }

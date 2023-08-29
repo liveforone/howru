@@ -1,6 +1,6 @@
 package howru.howru.advertisement.controller.constant
 
 object AdvertisementParam {
-    const val UUID = "uuid"
+    const val ID = "id"
     const val COMPANY = "company"
 }

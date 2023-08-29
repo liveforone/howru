@@ -52,11 +52,11 @@ class PostCommandServiceTest @Autowired constructor(
 
         //when
         val request = CreatePost(writerUUID, content)
-        val postUUID = postCommandService.createPost(request)
+        val postId = postCommandService.createPost(request)
         flushAndClear()
 
         //then
-        val post = postQueryService.getPostByUUID(postUUID)
+        val post = postQueryService.getPostById(postId)
         logger().info("${post.createdDatetime}")
         Assertions.assertThat(post.writerUUID)
             .isEqualTo(writerUUID)
@@ -69,17 +69,17 @@ class PostCommandServiceTest @Autowired constructor(
         val writerUUID = createWriter()
         val content = "test_content"
         val request = CreatePost(writerUUID, content)
-        val postUUID = postCommandService.createPost(request)
+        val postId = postCommandService.createPost(request)
         flushAndClear()
 
         //when
         val updatedContent = "updated_content"
-        val updateRequest = UpdatePostContent(postUUID, writerUUID, updatedContent)
+        val updateRequest = UpdatePostContent(postId, writerUUID, updatedContent)
         postCommandService.editContent(updateRequest)
         flushAndClear()
 
         //then
-        val post = postQueryService.getPostByUUID(postUUID)
+        val post = postQueryService.getPostById(postId)
         Assertions.assertThat(post.content).isEqualTo(updatedContent)
         Assertions.assertThat(post.postState).isEqualTo(PostState.EDITED)
     }
@@ -91,16 +91,16 @@ class PostCommandServiceTest @Autowired constructor(
         val writerUUID = createWriter()
         val content = "test_content"
         val request = CreatePost(writerUUID, content)
-        val postUUID = postCommandService.createPost(request)
+        val postId = postCommandService.createPost(request)
         flushAndClear()
 
         //when
-        val deleteRequest = DeletePost(postUUID, writerUUID)
+        val deleteRequest = DeletePost(postId, writerUUID)
         postCommandService.deletePost(deleteRequest)
         flushAndClear()
 
         //then
-        Assertions.assertThatThrownBy { postQueryService.getPostByUUID(postUUID) }
+        Assertions.assertThatThrownBy { postQueryService.getPostById(postId) }
             .isInstanceOf(PostException::class.java)
     }
 }

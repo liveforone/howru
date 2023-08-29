@@ -10,7 +10,6 @@ import howru.howru.reply.repository.ReplyRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
 
 @Service
 @Transactional
@@ -19,26 +18,26 @@ class ReplyCommandService @Autowired constructor(
     private val memberRepository: MemberRepository,
     private val commentsRepository: CommentsRepository
 ) {
-    fun createReply(createReply: CreateReply): UUID {
+    fun createReply(createReply: CreateReply): Long {
         return with(createReply) {
             Reply.create(
                 writer = memberRepository.findOneByUUID(writerUUID!!),
-                comment = commentsRepository.findOneByUUID(commentUUID!!),
+                comment = commentsRepository.findOneById(commentId!!),
                 content!!
-            ).run { replyRepository.save(this).uuid }
+            ).run { replyRepository.save(this).id!! }
         }
     }
 
     fun editReply(updateReplyContent: UpdateReplyContent) {
         with(updateReplyContent) {
-            replyRepository.findOneByUUIDAndWriter(uuid!!, writerUUID!!)
+            replyRepository.findOneByIdAndWriter(id!!, writerUUID!!)
                 .also { it.editContent(content!!) }
         }
     }
 
     fun deleteReply(deleteReply: DeleteReply) {
         with(deleteReply) {
-            replyRepository.findOneByUUIDAndWriter(uuid!!, writerUUID!!)
+            replyRepository.findOneByIdAndWriter(id!!, writerUUID!!)
                 .also { replyRepository.delete(it) }
         }
     }

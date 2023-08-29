@@ -53,11 +53,11 @@ class AdvertisementCommandServiceTest @Autowired constructor(
         val request = CreateAdvertisement(company, title, content)
 
         //when
-        val adUUID = advertisementCommandService.createHalfAd(request, adminUUID)
+        val adId = advertisementCommandService.createHalfAd(request, adminUUID)
         flushAndClear()
 
         //then
-        val ad = advertisementQueryService.getOneByUUID(adUUID)
+        val ad = advertisementQueryService.getOneById(adId)
         Assertions.assertThat(ad.content).isEqualTo(content)
         Assertions.assertThat(ad.createdDate).isEqualTo(getDateDigit(LocalDate.now()))
         Assertions.assertThat(ad.endDate).isEqualTo(getDateDigit(LocalDate.now().plusMonths(6)))
@@ -73,11 +73,11 @@ class AdvertisementCommandServiceTest @Autowired constructor(
         val request = CreateAdvertisement(company, title, content)
 
         //when
-        val adUUID = advertisementCommandService.createYearAd(request, adminUUID)
+        val adId = advertisementCommandService.createYearAd(request, adminUUID)
         flushAndClear()
 
         //then
-        val ad = advertisementQueryService.getOneByUUID(adUUID)
+        val ad = advertisementQueryService.getOneById(adId)
         Assertions.assertThat(ad.content).isEqualTo(content)
         Assertions.assertThat(ad.createdDate).isEqualTo(getDateDigit(LocalDate.now()))
         Assertions.assertThat(ad.endDate).isEqualTo(getDateDigit(LocalDate.now().plusYears(1)))
@@ -91,17 +91,17 @@ class AdvertisementCommandServiceTest @Autowired constructor(
         val title = "test title"
         val content = "edit title ad test"
         val request = CreateAdvertisement(company, title, content)
-        val adUUID = advertisementCommandService.createYearAd(request, adminUUID)
+        val adId = advertisementCommandService.createYearAd(request, adminUUID)
         flushAndClear()
 
         //when
         val updatedTitle = "updated title"
-        val updateRequest = UpdateAdTitle(adUUID, updatedTitle)
+        val updateRequest = UpdateAdTitle(adId, updatedTitle)
         advertisementCommandService.editTitle(updateRequest, adminUUID)
         flushAndClear()
 
         //then
-        Assertions.assertThat(advertisementQueryService.getOneByUUID(adUUID).title)
+        Assertions.assertThat(advertisementQueryService.getOneById(adId).title)
             .isEqualTo(updatedTitle)
     }
 
@@ -113,17 +113,17 @@ class AdvertisementCommandServiceTest @Autowired constructor(
         val title = "test title"
         val content = "edit content ad test"
         val request = CreateAdvertisement(company, title, content)
-        val adUUID = advertisementCommandService.createYearAd(request, adminUUID)
+        val adId = advertisementCommandService.createYearAd(request, adminUUID)
         flushAndClear()
 
         //when
         val updatedContent = "updated content"
-        val updateRequest = UpdateAdContent(adUUID, updatedContent)
+        val updateRequest = UpdateAdContent(adId, updatedContent)
         advertisementCommandService.editContent(updateRequest, adminUUID)
         flushAndClear()
 
         //then
-        Assertions.assertThat(advertisementQueryService.getOneByUUID(adUUID).content)
+        Assertions.assertThat(advertisementQueryService.getOneById(adId).content)
             .isEqualTo(updatedContent)
     }
 
@@ -135,15 +135,15 @@ class AdvertisementCommandServiceTest @Autowired constructor(
         val title = "test title"
         val content = "delete ad test"
         val request = CreateAdvertisement(company, title, content)
-        val adUUID = advertisementCommandService.createYearAd(request, adminUUID)
+        val adId = advertisementCommandService.createYearAd(request, adminUUID)
         flushAndClear()
 
         //when
-        advertisementCommandService.deleteAdByUUID(adUUID, adminUUID)
+        advertisementCommandService.deleteAdByUUID(adId, adminUUID)
         flushAndClear()
 
         //then
-        Assertions.assertThatThrownBy { advertisementQueryService.getOneByUUID(adUUID) }
+        Assertions.assertThatThrownBy { advertisementQueryService.getOneById(adId) }
             .isInstanceOf(AdvertisementException::class.java)
     }
 
@@ -155,7 +155,7 @@ class AdvertisementCommandServiceTest @Autowired constructor(
         val title = "test title"
         val content = "delete ad test"
         val request = CreateAdvertisement(company, title, content)
-        val adUUID = advertisementCommandService.createYearAd(request, adminUUID)
+        val adId = advertisementCommandService.createYearAd(request, adminUUID)
         flushAndClear()
 
         //when
@@ -163,7 +163,7 @@ class AdvertisementCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        Assertions.assertThat(advertisementQueryService.getOneByUUID(adUUID))
+        Assertions.assertThat(advertisementQueryService.getOneById(adId))
             .isNotNull
     }
 }

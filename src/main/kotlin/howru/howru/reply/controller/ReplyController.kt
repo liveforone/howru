@@ -31,26 +31,26 @@ class ReplyController @Autowired constructor(
     private val replyCommandService: ReplyCommandService
 ) {
     @GetMapping(ReplyUrl.DETAIL)
-    fun detail(@PathVariable(ReplyParam.UUID) uuid: UUID): ResponseEntity<*> {
-        val reply = replyQueryService.getReplyByUUID(uuid)
+    fun detail(@PathVariable(ReplyParam.ID) id: Long): ResponseEntity<*> {
+        val reply = replyQueryService.getReplyById(id)
         return ReplyResponse.detailSuccess(reply)
     }
 
     @GetMapping(ReplyUrl.BELONG_WRITER)
     fun belongWriter(
         @PathVariable(ReplyParam.WRITER_UUID) writerUUID: UUID,
-        @RequestParam(ReplyParam.LAST_UUID, required = false) lastUUID: UUID?
+        @RequestParam(ReplyParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<*> {
-        val replies = replyQueryService.getRepliesByWriter(writerUUID, lastUUID)
+        val replies = replyQueryService.getRepliesByWriter(writerUUID, lastId)
         return ReplyResponse.belongWriterSuccess(replies)
     }
 
     @GetMapping(ReplyUrl.BELONG_COMMENT)
     fun belongComment(
-        @PathVariable(ReplyParam.COMMENT_UUID) commentUUID: UUID,
-        @RequestParam(ReplyParam.LAST_UUID, required = false) lastUUID: UUID?
+        @PathVariable(ReplyParam.COMMENT_ID) commentId: Long,
+        @RequestParam(ReplyParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<*> {
-        val replies = replyQueryService.getRepliesByComment(commentUUID, lastUUID)
+        val replies = replyQueryService.getRepliesByComment(commentId, lastId)
         return ReplyResponse.belongCommentSuccess(replies)
     }
 

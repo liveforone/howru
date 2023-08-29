@@ -22,23 +22,23 @@ class PostQueryService @Autowired constructor(
     private val memberQueryService: MemberQueryService,
     private val subscribeQueryService: SubscribeQueryService
 ) {
-    @Cacheable(cacheNames = [CacheName.POST], key = PostCache.UUID_KEY)
-    fun getPostByUUID(uuid: UUID) = postRepository.findOneDtoByUUID(uuid)
-    fun getMyPosts(memberUUID: UUID, lastUUID: UUID?) = postRepository.findMyPosts(memberUUID, lastUUID)
-    fun getAllPosts(lastUUID: UUID?) = postRepository.findAllPosts(lastUUID)
-    fun getPostsBySomeone(writerUUID: UUID, memberUUID: UUID, lastUUID: UUID?): List<PostInfo> {
+    @Cacheable(cacheNames = [CacheName.POST], key = PostCache.ID_KEY)
+    fun getPostById(id: Long) = postRepository.findOneDtoById(id)
+    fun getMyPosts(memberUUID: UUID, lastId: Long?) = postRepository.findMyPosts(memberUUID, lastId)
+    fun getAllPosts(lastId: Long?) = postRepository.findAllPosts(lastId)
+    fun getPostsBySomeone(writerUUID: UUID, memberUUID: UUID, lastId: Long?): List<PostInfo> {
         val writer = memberQueryService.getMemberByUUID(writerUUID)
         return if (writer.isUnlock()) {
-            postRepository.findPostsBySomeone(writerUUID, lastUUID)
+            postRepository.findPostsBySomeone(writerUUID, lastId)
         } else {
             takeIf { subscribeQueryService.isFollowee(writerUUID, memberUUID) }
-                ?.run { postRepository.findPostsBySomeone(writerUUID, lastUUID) }
+                ?.run { postRepository.findPostsBySomeone(writerUUID, lastId) }
                 ?: throw PostException(PostExceptionMessage.NOT_FOLLOWER)
         }
     }
-    fun getPostsOfFollowee(followerUUID: UUID, lastUUID: UUID?): List<PostInfo> {
+    fun getPostsOfFollowee(followerUUID: UUID, lastId: Long?): List<PostInfo> {
         val followeeUUID = subscribeQueryService.getFollowee(followerUUID)
-        return postRepository.findPostsByFollowee(followeeUUID, lastUUID)
+        return postRepository.findPostsByFollowee(followeeUUID, lastId)
     }
     fun getRecommendPosts(content: String): List<PostInfo> {
         return postRepository.findRecommendPosts(extractKeywords(content))

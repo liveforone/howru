@@ -70,39 +70,39 @@ class ReplyCommandServiceTest @Autowired constructor(
         return memberCommandService.login(loginRequest).uuid
     }
 
-    private fun createPost(): UUID {
+    private fun createPost(): Long {
         val writerUUID = createPostWriter()
         val content = "test_content"
         val request = CreatePost(writerUUID, content)
-        val postUUID = postCommandService.createPost(request)
+        val postId = postCommandService.createPost(request)
         flushAndClear()
-        return postUUID
+        return postId
     }
 
-    private fun createComment(): UUID {
+    private fun createComment(): Long {
         val memberUUID = createCommentWriter()
         val postUUID = createPost()
         val content = "test_comment"
         val request = CreateComments(memberUUID, postUUID, content)
-        val commentUUID = commentsCommandService.createComment(request)
+        val commentId = commentsCommandService.createComment(request)
         flushAndClear()
-        return commentUUID
+        return commentId
     }
 
     @Test @Transactional
     fun createReplyTest() {
         //given
         val memberUUID = createMember()
-        val commentUUID = createComment()
+        val commentId = createComment()
         val content = "test_reply"
 
         //when
-        val request = CreateReply(memberUUID, commentUUID, content)
-        val replyUUID = replyCommandService.createReply(request)
+        val request = CreateReply(memberUUID, commentId, content)
+        val replyId = replyCommandService.createReply(request)
         flushAndClear()
 
         //then
-        Assertions.assertThat(replyQueryService.getReplyByUUID(replyUUID).content)
+        Assertions.assertThat(replyQueryService.getReplyById(replyId).content)
             .isEqualTo(content)
     }
 
@@ -110,20 +110,20 @@ class ReplyCommandServiceTest @Autowired constructor(
     fun editReplyTest() {
         //given
         val memberUUID = createMember()
-        val commentUUID = createComment()
+        val commentId = createComment()
         val content = "test_reply"
-        val request = CreateReply(memberUUID, commentUUID, content)
-        val replyUUID = replyCommandService.createReply(request)
+        val request = CreateReply(memberUUID, commentId, content)
+        val replyId = replyCommandService.createReply(request)
         flushAndClear()
 
         //when
         val updatedContent = "updated reply"
-        val updateRequest = UpdateReplyContent(replyUUID, memberUUID, updatedContent)
+        val updateRequest = UpdateReplyContent(replyId, memberUUID, updatedContent)
         replyCommandService.editReply(updateRequest)
         flushAndClear()
 
         //then
-        val reply = replyQueryService.getReplyByUUID(replyUUID)
+        val reply = replyQueryService.getReplyById(replyId)
         Assertions.assertThat(reply.content).isEqualTo(updatedContent)
         Assertions.assertThat(reply.replyState).isEqualTo(ReplyState.EDITED)
     }
@@ -132,19 +132,19 @@ class ReplyCommandServiceTest @Autowired constructor(
     fun deleteReplyTest() {
         //given
         val memberUUID = createMember()
-        val commentUUID = createComment()
+        val commentId = createComment()
         val content = "test_reply"
-        val request = CreateReply(memberUUID, commentUUID, content)
-        val replyUUID = replyCommandService.createReply(request)
+        val request = CreateReply(memberUUID, commentId, content)
+        val replyId = replyCommandService.createReply(request)
         flushAndClear()
 
         //when
-        val deleteRequest = DeleteReply(replyUUID, memberUUID)
+        val deleteRequest = DeleteReply(replyId, memberUUID)
         replyCommandService.deleteReply(deleteRequest)
         flushAndClear()
 
         //then
-        Assertions.assertThatThrownBy { replyQueryService.getReplyByUUID(replyUUID) }
+        Assertions.assertThatThrownBy { replyQueryService.getReplyById(replyId) }
             .isInstanceOf(ReplyException::class.java)
     }
 }

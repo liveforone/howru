@@ -52,13 +52,13 @@ class LikesCommandServiceTest @Autowired constructor(
         return memberCommandService.login(loginRequest).uuid
     }
 
-    private fun createPost(): UUID {
+    private fun createPost(): Long {
         val writerUUID = createWriter()
         val content = "test_content"
         val request = CreatePost(writerUUID, content)
-        val postUUID = postCommandService.createPost(request)
+        val postId = postCommandService.createPost(request)
         flushAndClear()
-        return postUUID
+        return postId
     }
 
     @Test
@@ -66,15 +66,15 @@ class LikesCommandServiceTest @Autowired constructor(
     fun createLikesTest() {
         //given
         val memberUUID = createMember()
-        val postUUID = createPost()
+        val postId = createPost()
 
         //when
-        val request = CreateLikes(memberUUID, postUUID)
+        val request = CreateLikes(memberUUID, postId)
         likesCommandService.createLikes(request)
         flushAndClear()
 
         //then
-        Assertions.assertThat(likesQueryService.getLikesBelongPost(postUUID, null))
+        Assertions.assertThat(likesQueryService.getLikesBelongPost(postId, null))
             .isNotEmpty
     }
 
@@ -83,13 +83,13 @@ class LikesCommandServiceTest @Autowired constructor(
     fun deleteLikesTest() {
         //given
         val memberUUID = createMember()
-        val postUUID = createPost()
-        val request = CreateLikes(memberUUID, postUUID)
+        val postId = createPost()
+        val request = CreateLikes(memberUUID, postId)
         likesCommandService.createLikes(request)
         flushAndClear()
 
         //when
-        val deleteRequest = DeleteLikes(memberUUID, postUUID)
+        val deleteRequest = DeleteLikes(memberUUID, postId)
         likesCommandService.deleteLikes(deleteRequest)
         flushAndClear()
 

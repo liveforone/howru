@@ -5,9 +5,9 @@ import howru.howru.comments.dto.response.CommentsInfo
 import java.util.UUID
 
 interface CommentsCustomRepository {
-    fun findOneByUUID(uuid: UUID): Comments
-    fun findOneByUUIDAndWriter(uuid: UUID, writerUUID: UUID): Comments
-    fun findOneDtoByUUID(uuid: UUID): CommentsInfo
-    fun findCommentsByWriter(writerUUID: UUID, lastUUID: UUID?): List<CommentsInfo>
-    fun findCommentsByPost(postUUID: UUID, lastUUID: UUID?): List<CommentsInfo>
+    fun findOneById(id: Long): Comments
+    fun findOneByIdAndWriter(id: Long, writerUUID: UUID): Comments
+    fun findOneDtoById(id: Long): CommentsInfo
+    fun findCommentsByWriter(writerUUID: UUID, lastId: Long?): List<CommentsInfo>
+    fun findCommentsByPost(postId: Long, lastId: Long?): List<CommentsInfo>
 }

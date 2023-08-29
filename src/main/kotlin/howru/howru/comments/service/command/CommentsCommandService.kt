@@ -10,7 +10,6 @@ import howru.howru.post.repository.PostRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
 
 @Service
 @Transactional
@@ -19,26 +18,26 @@ class CommentsCommandService @Autowired constructor(
     private val memberRepository: MemberRepository,
     private val postRepository: PostRepository
 ) {
-    fun createComment(createComments: CreateComments): UUID {
+    fun createComment(createComments: CreateComments): Long {
         return with(createComments) {
             Comments.create(
                 writer = memberRepository.findOneByUUID(writerUUID!!),
-                post = postRepository.findOneByUUID(postUUID!!),
+                post = postRepository.findOneById(postId!!),
                 content!!
-            ).run { commentsRepository.save(this).uuid }
+            ).run { commentsRepository.save(this).id!! }
         }
     }
 
     fun editComment(updateCommentsContent: UpdateCommentsContent) {
         with(updateCommentsContent) {
-            commentsRepository.findOneByUUIDAndWriter(uuid!!, writerUUID!!)
+            commentsRepository.findOneByIdAndWriter(id!!, writerUUID!!)
                 .also { it.editContent(content!!) }
         }
     }
 
     fun deleteComment(deleteComments: DeleteComments) {
         with(deleteComments) {
-            commentsRepository.findOneByUUIDAndWriter(uuid!!, writerUUID!!)
+            commentsRepository.findOneByIdAndWriter(id!!, writerUUID!!)
                 .also { commentsRepository.delete(it) }
         }
     }

@@ -23,39 +23,39 @@ import java.util.*
 class CommentsRepositoryImpl @Autowired constructor(
     private val queryFactory: SpringDataQueryFactory
 ) : CommentsCustomRepository {
-    override fun findOneByUUID(uuid: UUID): Comments {
+    override fun findOneById(id: Long): Comments {
         return try {
             queryFactory.singleQuery {
                 select(entity(Comments::class))
                 from(Comments::class)
                 join(Comments::writer)
-                where(col(Comments::uuid).equal(uuid))
+                where(col(Comments::id).equal(id))
             }
         } catch (e: NoResultException) {
             throw CommentsException(CommentsExceptionMessage.COMMENTS_IS_NULL)
         }
     }
 
-    override fun findOneByUUIDAndWriter(uuid: UUID, writerUUID: UUID): Comments {
+    override fun findOneByIdAndWriter(id: Long, writerUUID: UUID): Comments {
         return try {
             queryFactory.singleQuery {
                 select(entity(Comments::class))
                 from(Comments::class)
                 join(Comments::writer)
-                where(col(Comments::uuid).equal(uuid).and(col(Member::uuid).equal(writerUUID)))
+                where(col(Comments::id).equal(id).and(col(Member::uuid).equal(writerUUID)))
             }
         } catch (e: NoResultException) {
             throw CommentsException(CommentsExceptionMessage.COMMENTS_IS_NULL)
         }
     }
 
-    override fun findOneDtoByUUID(uuid: UUID): CommentsInfo {
+    override fun findOneDtoById(id: Long): CommentsInfo {
         return try {
             queryFactory.singleQuery {
                 select(listOf(
-                    col(Comments::uuid),
+                    col(Comments::id),
                     col(Member::uuid),
-                    col(Post::uuid),
+                    col(Post::id),
                     col(Comments::content),
                     col(Comments::commentsState),
                     col(Comments::createdDatetime)
@@ -63,19 +63,19 @@ class CommentsRepositoryImpl @Autowired constructor(
                 from(Comments::class)
                 join(Comments::writer)
                 join(Comments::post)
-                where(col(Comments::uuid).equal(uuid))
+                where(col(Comments::id).equal(id))
             }
         } catch (e: NoResultException) {
             throw CommentsException(CommentsExceptionMessage.COMMENTS_IS_NULL)
         }
     }
 
-    override fun findCommentsByWriter(writerUUID: UUID, lastUUID: UUID?): List<CommentsInfo> {
+    override fun findCommentsByWriter(writerUUID: UUID, lastId: Long?): List<CommentsInfo> {
         return queryFactory.listQuery {
             select(listOf(
-                col(Comments::uuid),
+                col(Comments::id),
                 col(Member::uuid),
-                col(Post::uuid),
+                col(Post::id),
                 col(Comments::content),
                 col(Comments::commentsState),
                 col(Comments::createdDatetime)
@@ -84,18 +84,18 @@ class CommentsRepositoryImpl @Autowired constructor(
             join(Comments::writer)
             join(Comments::post)
             where(col(Member::uuid).equal(writerUUID))
-            where(ltLastUUID(lastUUID))
+            where(ltLastId(lastId))
             orderBy(col(Comments::id).desc())
             limit(CommentsRepoConstant.LIMIT_PAGE)
         }
     }
 
-    override fun findCommentsByPost(postUUID: UUID, lastUUID: UUID?): List<CommentsInfo> {
+    override fun findCommentsByPost(postId: Long, lastId: Long?): List<CommentsInfo> {
         return queryFactory.listQuery {
             select(listOf(
-                col(Comments::uuid),
+                col(Comments::id),
                 col(Member::uuid),
-                col(Post::uuid),
+                col(Post::id),
                 col(Comments::content),
                 col(Comments::commentsState),
                 col(Comments::createdDatetime)
@@ -103,22 +103,14 @@ class CommentsRepositoryImpl @Autowired constructor(
             from(Comments::class)
             join(Comments::writer)
             join(Comments::post)
-            where(col(Post::uuid).equal(postUUID))
-            where(ltLastUUID(lastUUID))
+            where(col(Post::id).equal(postId))
+            where(ltLastId(lastId))
             orderBy(col(Comments::id).desc())
             limit(CommentsRepoConstant.LIMIT_PAGE)
         }
     }
 
-    private fun findLastId(lastUUID: UUID): Long {
-        return queryFactory.singleQuery {
-            select(listOf(col(Comments::id)))
-            from(Comments::class)
-            where(col(Comments::uuid).equal(lastUUID))
-        }
-    }
-
-    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastUUID(lastUUID: UUID?): PredicateSpec? {
-        return lastUUID?.let { and(col(Comments::id).lessThan(findLastId(it))) }
+    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastId(lastId: Long?): PredicateSpec? {
+        return lastId?.let { and(col(Comments::id).lessThan(it)) }
     }
 }

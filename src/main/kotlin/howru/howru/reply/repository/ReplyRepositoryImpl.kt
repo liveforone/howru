@@ -23,26 +23,26 @@ import java.util.*
 class ReplyRepositoryImpl @Autowired constructor(
     private val queryFactory: SpringDataQueryFactory
 ) : ReplyCustomRepository {
-    override fun findOneByUUIDAndWriter(uuid: UUID, writerUUID: UUID): Reply {
+    override fun findOneByIdAndWriter(id: Long, writerUUID: UUID): Reply {
         return try {
             queryFactory.singleQuery {
                 select(entity(Reply::class))
                 from(Reply::class)
                 join(Reply::writer)
-                where(col(Reply::uuid).equal(uuid).and(col(Member::uuid).equal(writerUUID)))
+                where(col(Reply::id).equal(id).and(col(Member::uuid).equal(writerUUID)))
             }
         } catch (e: NoResultException) {
             throw ReplyException(ReplyExceptionMessage.REPLY_IS_NULL)
         }
     }
 
-    override fun findOneDtoByUUID(uuid: UUID): ReplyInfo {
+    override fun findOneDtoById(id: Long): ReplyInfo {
         return try {
             queryFactory.singleQuery {
                 select(listOf(
-                    col(Reply::uuid),
+                    col(Reply::id),
                     col(Member::uuid),
-                    col(Comments::uuid),
+                    col(Comments::id),
                     col(Reply::content),
                     col(Reply::replyState),
                     col(Reply::createdDatetime)
@@ -50,19 +50,19 @@ class ReplyRepositoryImpl @Autowired constructor(
                 from(Reply::class)
                 join(Reply::writer)
                 join(Reply::comment)
-                where(col(Reply::uuid).equal(uuid))
+                where(col(Reply::id).equal(id))
             }
         } catch (e: NoResultException) {
             throw ReplyException(ReplyExceptionMessage.REPLY_IS_NULL)
         }
     }
 
-    override fun findRepliesByWriter(writerUUID: UUID, lastUUID: UUID?): List<ReplyInfo> {
+    override fun findRepliesByWriter(writerUUID: UUID, lastId: Long?): List<ReplyInfo> {
         return queryFactory.listQuery {
             select(listOf(
-                col(Reply::uuid),
+                col(Reply::id),
                 col(Member::uuid),
-                col(Comments::uuid),
+                col(Comments::id),
                 col(Reply::content),
                 col(Reply::replyState),
                 col(Reply::createdDatetime)
@@ -71,18 +71,18 @@ class ReplyRepositoryImpl @Autowired constructor(
             join(Reply::writer)
             join(Reply::comment)
             where(col(Member::uuid).equal(writerUUID))
-            where(ltLastUUID(lastUUID))
-            orderBy(col(Reply::uuid).desc())
+            where(ltLastId(lastId))
+            orderBy(col(Reply::id).desc())
             limit(ReplyRepoConstant.LIMIT_PAGE)
         }
     }
 
-    override fun findRepliesByComment(commentUUID: UUID, lastUUID: UUID?): List<ReplyInfo> {
+    override fun findRepliesByComment(commentId: Long, lastId: Long?): List<ReplyInfo> {
         return queryFactory.listQuery {
             select(listOf(
-                col(Reply::uuid),
+                col(Reply::id),
                 col(Member::uuid),
-                col(Comments::uuid),
+                col(Comments::id),
                 col(Reply::content),
                 col(Reply::replyState),
                 col(Reply::createdDatetime)
@@ -90,22 +90,14 @@ class ReplyRepositoryImpl @Autowired constructor(
             from(Reply::class)
             join(Reply::writer)
             join(Reply::comment)
-            where(col(Comments::uuid).equal(commentUUID))
-            where(ltLastUUID(lastUUID))
-            orderBy(col(Reply::uuid).desc())
+            where(col(Comments::id).equal(commentId))
+            where(ltLastId(lastId))
+            orderBy(col(Reply::id).desc())
             limit(ReplyRepoConstant.LIMIT_PAGE)
         }
     }
 
-    private fun findLastId(lastUUID: UUID): Long {
-        return queryFactory.singleQuery {
-            select(listOf(col(Reply::id)))
-            from(Reply::class)
-            where(col(Reply::uuid).equal(lastUUID))
-        }
-    }
-
-    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastUUID(lastUUID: UUID?): PredicateSpec? {
-        return lastUUID?.let { and(col(Reply::id).lessThan(findLastId(it))) }
+    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastId(lastId: Long?): PredicateSpec? {
+        return lastId?.let { and(col(Reply::id).lessThan(it)) }
     }
 }

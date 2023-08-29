@@ -11,7 +11,7 @@ import java.util.UUID
 class ReplyQueryService @Autowired constructor(
     private val replyRepository: ReplyRepository
 ) {
-    fun getReplyByUUID(uuid: UUID) = replyRepository.findOneDtoByUUID(uuid)
-    fun getRepliesByWriter(writerUUID: UUID, lastUUID: UUID?) = replyRepository.findRepliesByWriter(writerUUID, lastUUID)
-    fun getRepliesByComment(commentUUID: UUID, lastUUID: UUID?) = replyRepository.findRepliesByComment(commentUUID, lastUUID)
+    fun getReplyById(id: Long) = replyRepository.findOneDtoById(id)
+    fun getRepliesByWriter(writerUUID: UUID, lastId: Long?) = replyRepository.findRepliesByWriter(writerUUID, lastId)
+    fun getRepliesByComment(commentId: Long, lastId: Long?) = replyRepository.findRepliesByComment(commentId, lastId)
 }

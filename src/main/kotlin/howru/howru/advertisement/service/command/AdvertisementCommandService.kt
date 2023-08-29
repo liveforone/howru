@@ -24,20 +24,20 @@ class AdvertisementCommandService @Autowired constructor(
     private val memberRepository: MemberRepository
 ) {
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
-    fun createHalfAd(createAdvertisement: CreateAdvertisement, memberUUID: UUID): UUID {
+    fun createHalfAd(createAdvertisement: CreateAdvertisement, memberUUID: UUID): Long {
         require(memberRepository.findOneByUUID(memberUUID).isAdmin()) { throw AdvertisementException(AdvertisementExceptionMessage.NOT_ADMIN) }
         return with(createAdvertisement) {
             Advertisement.createHalfAd(company!!, title!!, content!!)
-                .run { advertisementRepository.save(this).uuid }
+                .run { advertisementRepository.save(this).id!! }
         }
     }
 
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
-    fun createYearAd(createAdvertisement: CreateAdvertisement, memberUUID: UUID): UUID {
+    fun createYearAd(createAdvertisement: CreateAdvertisement, memberUUID: UUID): Long {
         require(memberRepository.findOneByUUID(memberUUID).isAdmin()) { throw AdvertisementException(AdvertisementExceptionMessage.NOT_ADMIN) }
         return with(createAdvertisement) {
             Advertisement.createYearAd(company!!, title!!, content!!)
-                .run { advertisementRepository.save(this).uuid }
+                .run { advertisementRepository.save(this).id!! }
         }
     }
 
@@ -45,7 +45,7 @@ class AdvertisementCommandService @Autowired constructor(
     fun editTitle(updateAdTitle: UpdateAdTitle, memberUUID: UUID) {
         require(memberRepository.findOneByUUID(memberUUID).isAdmin()) { throw AdvertisementException(AdvertisementExceptionMessage.NOT_ADMIN) }
         with(updateAdTitle) {
-            advertisementRepository.findOneByUUID(uuid!!)
+            advertisementRepository.findOneById(id!!)
                 .also { it.editTitle(title!!) }
         }
     }
@@ -54,14 +54,14 @@ class AdvertisementCommandService @Autowired constructor(
     fun editContent(updateAdContent: UpdateAdContent, memberUUID: UUID) {
         require(memberRepository.findOneByUUID(memberUUID).isAdmin()) { throw AdvertisementException(AdvertisementExceptionMessage.NOT_ADMIN) }
         with(updateAdContent) {
-            advertisementRepository.findOneByUUID(uuid!!)
+            advertisementRepository.findOneById(id!!)
                 .also { it.editContent(content!!) }
         }
     }
 
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
-    fun deleteAdByUUID(uuid: UUID, memberUUID: UUID) {
-        advertisementRepository.findOneByUUID(uuid)
+    fun deleteAdByUUID(id: Long, memberUUID: UUID) {
+        advertisementRepository.findOneById(id)
             .takeIf { memberRepository.findOneByUUID(memberUUID).isAdmin() }
             ?.also { advertisementRepository.delete(it) }
             ?: throw AdvertisementException(AdvertisementExceptionMessage.NOT_ADMIN)

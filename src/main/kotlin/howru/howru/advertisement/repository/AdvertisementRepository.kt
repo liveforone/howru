@@ -16,5 +16,9 @@ interface AdvertisementRepository : JpaRepository<Advertisement, Long>, Advertis
 
     @Modifying(clearAutomatically = true)
     @Query(AdvertisementQuery.DELETE_EXPIRED_QUERY)
-    fun deleteExpiredThreeMonthAd(@Param(AdvertisementQuery.DELETE_EXPIRED_PARAM) nowDate: Int = getDateDigit(LocalDate.now().minusMonths(AdvertisementQuery.THREE_MONTH)))
+    fun deleteExpiredThreeMonthAd(
+        @Param(AdvertisementQuery.DELETE_EXPIRED_PARAM) nowDate: Int = getDateDigit(
+            LocalDate.now().minusMonths(AdvertisementQuery.THREE_MONTH)
+        )
+    )
 }

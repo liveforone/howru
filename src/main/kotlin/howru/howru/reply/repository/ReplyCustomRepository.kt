@@ -5,8 +5,8 @@ import howru.howru.reply.dto.response.ReplyInfo
 import java.util.UUID
 
 interface ReplyCustomRepository {
-    fun findOneByUUIDAndWriter(uuid: UUID, writerUUID: UUID): Reply
-    fun findOneDtoByUUID(uuid: UUID): ReplyInfo
-    fun findRepliesByWriter(writerUUID: UUID, lastUUID: UUID?): List<ReplyInfo>
-    fun findRepliesByComment(commentUUID: UUID, lastUUID: UUID?): List<ReplyInfo>
+    fun findOneByIdAndWriter(id: Long, writerUUID: UUID): Reply
+    fun findOneDtoById(id: Long): ReplyInfo
+    fun findRepliesByWriter(writerUUID: UUID, lastId: Long?): List<ReplyInfo>
+    fun findRepliesByComment(commentId: Long, lastId: Long?): List<ReplyInfo>
 }

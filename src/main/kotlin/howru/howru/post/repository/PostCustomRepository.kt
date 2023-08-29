@@ -5,13 +5,13 @@ import howru.howru.post.dto.response.PostInfo
 import java.util.UUID
 
 interface PostCustomRepository {
-    fun findOneByUUID(uuid: UUID): Post
-    fun findOneByUUIDAndWriter(uuid: UUID, writerUUID: UUID): Post
-    fun findOneDtoByUUID(uuid: UUID): PostInfo
-    fun findMyPosts(memberUUID: UUID, lastUUID: UUID?): List<PostInfo>
-    fun findAllPosts(lastUUID: UUID?): List<PostInfo>
-    fun findPostsBySomeone(someoneUUID: UUID, lastUUID: UUID?): List<PostInfo>
-    fun findPostsByFollowee(followeeUUID: List<UUID>, lastUUID: UUID?): List<PostInfo>
+    fun findOneById(id: Long): Post
+    fun findOneByIdAndWriter(id: Long, writerUUID: UUID): Post
+    fun findOneDtoById(id: Long): PostInfo
+    fun findMyPosts(memberUUID: UUID, lastId: Long?): List<PostInfo>
+    fun findAllPosts(lastId: Long?): List<PostInfo>
+    fun findPostsBySomeone(someoneUUID: UUID, lastId: Long?): List<PostInfo>
+    fun findPostsByFollowee(followeeUUID: List<UUID>, lastId: Long?): List<PostInfo>
     fun findRecommendPosts(keyword: String?): List<PostInfo>
     fun countPostByWriter(writerUUID: UUID): Long
 }

@@ -22,36 +22,36 @@ import java.util.*
 class PostRepositoryImpl @Autowired constructor(
     private val queryFactory: SpringDataQueryFactory
 ) : PostCustomRepository {
-    override fun findOneByUUID(uuid: UUID): Post {
+    override fun findOneById(id: Long): Post {
         return try {
             queryFactory.singleQuery {
                 select(entity(Post::class))
                 from(Post::class)
-                where(col(Post::uuid).equal(uuid))
+                where(col(Post::id).equal(id))
             }
         } catch (e: NoResultException) {
             throw PostException(PostExceptionMessage.POST_IS_NULL)
         }
     }
 
-    override fun findOneByUUIDAndWriter(uuid: UUID, writerUUID: UUID): Post {
+    override fun findOneByIdAndWriter(id: Long, writerUUID: UUID): Post {
         return try {
             queryFactory.singleQuery {
                 select(entity(Post::class))
                 from(Post::class)
                 join(Post::writer)
-                where(col(Post::uuid).equal(uuid).and(col(Member::uuid).equal(writerUUID)))
+                where(col(Post::id).equal(id).and(col(Member::uuid).equal(writerUUID)))
             }
         } catch (e: NoResultException) {
             throw PostException(PostExceptionMessage.POST_IS_NULL)
         }
     }
 
-    override fun findOneDtoByUUID(uuid: UUID): PostInfo {
+    override fun findOneDtoById(id: Long): PostInfo {
         return try {
             queryFactory.singleQuery {
                 select(listOf(
-                    col(Post::uuid),
+                    col(Post::id),
                     col(Member::uuid),
                     col(Post::content),
                     col(Post::postState),
@@ -59,17 +59,17 @@ class PostRepositoryImpl @Autowired constructor(
                 ))
                 from(Post::class)
                 join(Post::writer)
-                where(col(Post::uuid).equal(uuid))
+                where(col(Post::id).equal(id))
             }
         } catch (e: NoResultException) {
             throw PostException(PostExceptionMessage.POST_IS_NULL)
         }
     }
 
-    override fun findMyPosts(memberUUID: UUID, lastUUID: UUID?): List<PostInfo> {
+    override fun findMyPosts(memberUUID: UUID, lastId: Long?): List<PostInfo> {
         return queryFactory.listQuery {
             select(listOf(
-                col(Post::uuid),
+                col(Post::id),
                 col(Member::uuid),
                 col(Post::content),
                 col(Post::postState),
@@ -78,16 +78,16 @@ class PostRepositoryImpl @Autowired constructor(
             from(Post::class)
             join(Post::writer)
             where(col(Member::uuid).equal(memberUUID))
-            where(ltLastUUID(lastUUID))
+            where(ltLastId(lastId))
             orderBy(col(Post::id).desc())
             limit(PostRepoConstant.LIMIT_PAGE)
         }
     }
 
-    override fun findAllPosts(lastUUID: UUID?): List<PostInfo> {
+    override fun findAllPosts(lastId: Long?): List<PostInfo> {
         return queryFactory.listQuery {
             select(listOf(
-                col(Post::uuid),
+                col(Post::id),
                 col(Member::uuid),
                 col(Post::content),
                 col(Post::postState),
@@ -95,16 +95,16 @@ class PostRepositoryImpl @Autowired constructor(
             ))
             from(Post::class)
             join(Post::writer)
-            where(ltLastUUID(lastUUID))
+            where(ltLastId(lastId))
             orderBy(col(Post::id).desc())
             limit(PostRepoConstant.LIMIT_PAGE)
         }
     }
 
-    override fun findPostsBySomeone(someoneUUID: UUID, lastUUID: UUID?): List<PostInfo> {
+    override fun findPostsBySomeone(someoneUUID: UUID, lastId: Long?): List<PostInfo> {
         return queryFactory.listQuery {
             select(listOf(
-                col(Post::uuid),
+                col(Post::id),
                 col(Member::uuid),
                 col(Post::content),
                 col(Post::postState),
@@ -113,16 +113,16 @@ class PostRepositoryImpl @Autowired constructor(
             from(Post::class)
             join(Post::writer)
             where(col(Member::uuid).equal(someoneUUID))
-            where(ltLastUUID(lastUUID))
+            where(ltLastId(lastId))
             orderBy(col(Post::id).desc())
             limit(PostRepoConstant.LIMIT_PAGE)
         }
     }
 
-    override fun findPostsByFollowee(followeeUUID: List<UUID>, lastUUID: UUID?): List<PostInfo> {
+    override fun findPostsByFollowee(followeeUUID: List<UUID>, lastId: Long?): List<PostInfo> {
         return queryFactory.listQuery {
             select(listOf(
-                col(Post::uuid),
+                col(Post::id),
                 col(Member::uuid),
                 col(Post::content),
                 col(Post::postState),
@@ -131,7 +131,7 @@ class PostRepositoryImpl @Autowired constructor(
             from(Post::class)
             join(Post::writer)
             where(col(Member::uuid).`in`(followeeUUID))
-            where(ltLastUUID(lastUUID))
+            where(ltLastId(lastId))
             orderBy(col(Post::id).desc())
             limit(PostRepoConstant.LIMIT_PAGE)
         }
@@ -140,7 +140,7 @@ class PostRepositoryImpl @Autowired constructor(
     override fun findRecommendPosts(keyword: String?): List<PostInfo> {
         return queryFactory.listQuery {
             select(listOf(
-                col(Post::uuid),
+                col(Post::id),
                 col(Member::uuid),
                 col(Post::content),
                 col(Post::postState),
@@ -165,16 +165,8 @@ class PostRepositoryImpl @Autowired constructor(
         }
     }
 
-    private fun findLastId(lastUUID: UUID): Long {
-        return queryFactory.singleQuery {
-            select(listOf(col(Post::id)))
-            from(Post::class)
-            where(col(Post::uuid).equal(lastUUID))
-        }
-    }
-
-    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastUUID(lastUUID: UUID?): PredicateSpec? {
-        return lastUUID?.let { and(col(Post::id).lessThan(findLastId(it))) }
+    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastId(lastId: Long?): PredicateSpec? {
+        return lastId?.let { and(col(Post::id).lessThan(it)) }
     }
 
     private fun <T> SpringDataCriteriaQueryDsl<T>.dynamicKeywordSearch(keyword: String?): PredicateSpec? {

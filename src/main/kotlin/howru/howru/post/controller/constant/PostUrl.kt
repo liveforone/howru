@@ -1,7 +1,7 @@
 package howru.howru.post.controller.constant
 
 object PostUrl {
-    const val DETAIL = "/post/detail/{uuid}"
+    const val DETAIL = "/post/detail/{id}"
     const val MY_POST = "/post/my-post/{memberUUID}"
     const val ALL_POST = "/post/all"
     const val POST_OF_WRITER = "/post/writer/{writerUUID}"

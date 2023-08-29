@@ -45,11 +45,11 @@ class AdvertisementQueryServiceTest @Autowired constructor(
         val title = "test title"
         val content = "test content"
         val request = CreateAdvertisement(company, title, content)
-        val adUUID = advertisementCommandService.createHalfAd(request, adminUUID)
+        val adId = advertisementCommandService.createHalfAd(request, adminUUID)
         flushAndClear()
 
         //when
-        val ad = advertisementQueryService.getOneByUUID(adUUID)
+        val ad = advertisementQueryService.getOneById(adId)
 
         //then
         Assertions.assertThat(ad.content).isEqualTo(content)

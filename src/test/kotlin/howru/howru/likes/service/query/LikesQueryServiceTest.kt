@@ -51,26 +51,26 @@ class LikesQueryServiceTest @Autowired constructor(
         return memberCommandService.login(loginRequest).uuid
     }
 
-    private fun createPost(): UUID {
+    private fun createPost(): Long {
         val writerUUID = createWriter()
         val content = "test_content"
         val request = CreatePost(writerUUID, content)
-        val postUUID = postCommandService.createPost(request)
+        val postId = postCommandService.createPost(request)
         flushAndClear()
-        return postUUID
+        return postId
     }
 
     @Test @Transactional
     fun getLikesBelongMemberPagingTest() {
         //given
         val memberUUID = createMember()
-        val postUUID = createPost()
-        val request = CreateLikes(memberUUID, postUUID)
+        val postId = createPost()
+        val request = CreateLikes(memberUUID, postId)
         likesCommandService.createLikes(request)
         flushAndClear()
 
         //when
-        val likes = likesQueryService.getLikesBelongMember(memberUUID, postUUID)
+        val likes = likesQueryService.getLikesBelongMember(memberUUID, postId)
 
         //then
         Assertions.assertThat(likes).isEmpty()
@@ -80,13 +80,13 @@ class LikesQueryServiceTest @Autowired constructor(
     fun getLikesBelongPostPagingTest() {
         //given
         val memberUUID = createMember()
-        val postUUID = createPost()
-        val request = CreateLikes(memberUUID, postUUID)
+        val postId = createPost()
+        val request = CreateLikes(memberUUID, postId)
         likesCommandService.createLikes(request)
         flushAndClear()
 
         //when
-        val likes = likesQueryService.getLikesBelongPost(postUUID, memberUUID)
+        val likes = likesQueryService.getLikesBelongPost(postId, memberUUID)
 
         //then
         Assertions.assertThat(likes).isEmpty()

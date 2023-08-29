@@ -60,11 +60,11 @@ class PostQueryServiceTest @Autowired constructor(
         val writerUUID = createWriter1()
         val content = "test_content"
         val request = CreatePost(writerUUID, content)
-        val postUUID = postCommandService.createPost(request)
+        val postId = postCommandService.createPost(request)
         flushAndClear()
 
         //when
-        val post = postQueryService.getPostByUUID(postUUID)
+        val post = postQueryService.getPostById(postId)
 
         //then
         Assertions.assertThat(post.content).isEqualTo(content)

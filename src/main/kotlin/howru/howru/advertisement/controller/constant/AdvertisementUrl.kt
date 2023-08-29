@@ -1,7 +1,7 @@
 package howru.howru.advertisement.controller.constant
 
 object AdvertisementUrl {
-    const val DETAIL = "/advertisement/detail/{uuid}"
+    const val DETAIL = "/advertisement/detail/{id}"
     const val ALL_AD = "/advertisement/all"
     const val SEARCH_COMPANY = "/advertisement/search-company"
     const val EXPIRED_AD = "/advertisement/expired"
@@ -10,5 +10,5 @@ object AdvertisementUrl {
     const val CREATE_YEAR = "/advertisement/create/year"
     const val EDIT_TITLE = "/advertisement/edit/title"
     const val EDIT_CONTENT = "/advertisement/edit/content"
-    const val DELETE = "/advertisement/delete/{uuid}"
+    const val DELETE = "/advertisement/delete/{id}"
 }

@@ -31,18 +31,18 @@ class LikesController @Autowired constructor(
     @GetMapping(LikesUrl.LIKES_BELONG_MEMBER)
     fun likesBelongMember(
         @PathVariable(LikesParam.MEMBER_UUID) memberUUID: UUID,
-        @RequestParam(LikesParam.LAST_POST_UUID, required = false) lastPostUUID: UUID?
+        @RequestParam(LikesParam.LAST_POST_ID, required = false) lastPostId: Long?
     ): ResponseEntity<*> {
-        val likes = likesQueryService.getLikesBelongMember(memberUUID, lastPostUUID)
+        val likes = likesQueryService.getLikesBelongMember(memberUUID, lastPostId)
         return LikesResponse.belongMemberSuccess(likes)
     }
 
     @GetMapping(LikesUrl.LIKES_BELONG_POST)
     fun likesBelongPost(
-        @PathVariable(LikesParam.POST_UUID) postUUID: UUID,
+        @PathVariable(LikesParam.POST_ID) postId: Long,
         @RequestParam(LikesParam.LAST_MEMBER_UUID, required = false) lastMemberUUID: UUID?
     ): ResponseEntity<*> {
-        val likes = likesQueryService.getLikesBelongPost(postUUID, lastMemberUUID)
+        val likes = likesQueryService.getLikesBelongPost(postId, lastMemberUUID)
         return LikesResponse.belongPostSuccess(likes)
     }
 

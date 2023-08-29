@@ -31,26 +31,26 @@ class CommentsController @Autowired constructor(
     private val commentsCommandService: CommentsCommandService
 ) {
     @GetMapping(CommentsUrl.DETAIL)
-    fun detail(@PathVariable(CommentsParam.UUID) uuid: UUID): ResponseEntity<*> {
-        val comment = commentsQueryService.getCommentByUUID(uuid)
+    fun detail(@PathVariable(CommentsParam.ID) id: Long): ResponseEntity<*> {
+        val comment = commentsQueryService.getCommentById(id)
         return CommentsResponse.detailSuccess(comment)
     }
 
     @GetMapping(CommentsUrl.COMMENTS_BY_WRITER)
     fun commentsByWriter(
         @PathVariable(CommentsParam.WRITER_UUID) writerUUID: UUID,
-        @RequestParam(CommentsParam.LAST_UUID, required = false) lastUUID: UUID?
+        @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<*> {
-        val comments = commentsQueryService.getCommentsByWriter(writerUUID, lastUUID)
+        val comments = commentsQueryService.getCommentsByWriter(writerUUID, lastId)
         return CommentsResponse.commentsByWriterSuccess(comments)
     }
 
     @GetMapping(CommentsUrl.COMMENTS_BY_POST)
     fun commentsByPost(
-        @PathVariable(CommentsParam.POST_UUID) postUUID: UUID,
-        @RequestParam(CommentsParam.LAST_UUID, required = false) lastUUID: UUID?
+        @PathVariable(CommentsParam.POST_ID) postId: Long,
+        @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<*> {
-        val comments = commentsQueryService.getCommentsByPost(postUUID, lastUUID)
+        val comments = commentsQueryService.getCommentsByPost(postId, lastId)
         return CommentsResponse.commentsByPostSuccess(comments)
     }
 
@@ -58,9 +58,9 @@ class CommentsController @Autowired constructor(
     fun commentsBySomeone(
         @PathVariable(CommentsParam.WRITER_UUID) writerUUID: UUID,
         @RequestParam(CommentsParam.MEMBER_UUID) memberUUID: UUID,
-        @RequestParam(CommentsParam.LAST_UUID, required = false) lastUUID: UUID?
+        @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<*> {
-        val comments = commentsQueryService.getCommentsBySomeone(writerUUID, memberUUID, lastUUID)
+        val comments = commentsQueryService.getCommentsBySomeone(writerUUID, memberUUID, lastId)
         return CommentsResponse.commentsBySomeoneSuccess(comments)
     }
 

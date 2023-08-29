@@ -1,15 +1,14 @@
 package howru.howru.advertisement.domain
 
 import howru.howru.advertisement.domain.constant.AdvertisementConstant
-import howru.howru.globalUtil.*
+import howru.howru.globalUtil.DATE_TYPE
+import howru.howru.globalUtil.getDateDigit
 import jakarta.persistence.*
 import java.time.LocalDate
-import java.util.*
 
 @Entity
 class Advertisement private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long? = null,
-    @Column(columnDefinition = UUID_TYPE, unique = true, nullable = false) val uuid: UUID = createUUID(),
     @Column(nullable = false) val company: String,
     @Column(nullable = false) var title: String,
     @Column(nullable = false, columnDefinition = AdvertisementConstant.CONTENT_TYPE) var content: String,

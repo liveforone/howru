@@ -6,14 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
 
 @Service
 @Transactional(readOnly = true)
 class AdvertisementQueryService @Autowired constructor(
     private val advertisementRepository: AdvertisementRepository
 ) {
-    fun getOneByUUID(uuid: UUID) = advertisementRepository.findOneDtoByUUID(uuid)
+    fun getOneById(id: Long) = advertisementRepository.findOneDtoById(id)
     @Cacheable(cacheNames = [CacheName.ADVERTISEMENT])
     fun getAllAdvertisement() = advertisementRepository.findAllAdvertisement()
     fun searchAdByCompany(company: String) = advertisementRepository.searchAdByCompany(company)
