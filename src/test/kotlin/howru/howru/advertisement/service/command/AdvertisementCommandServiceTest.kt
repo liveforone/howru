@@ -139,7 +139,7 @@ class AdvertisementCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        advertisementCommandService.deleteAdByUUID(adId, adminUUID)
+        advertisementCommandService.removeAdByUUID(adId, adminUUID)
         flushAndClear()
 
         //then
@@ -159,7 +159,7 @@ class AdvertisementCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        advertisementCommandService.deleteExpiredThreeMonthSchedule()
+        advertisementCommandService.removeExpiredThreeMonthSchedule()
         flushAndClear()
 
         //when

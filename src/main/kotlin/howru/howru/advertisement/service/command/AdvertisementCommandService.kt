@@ -60,7 +60,7 @@ class AdvertisementCommandService @Autowired constructor(
     }
 
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
-    fun deleteAdByUUID(id: Long, memberUUID: UUID) {
+    fun removeAdByUUID(id: Long, memberUUID: UUID) {
         advertisementRepository.findOneById(id)
             .takeIf { memberRepository.findOneByUUID(memberUUID).isAdmin() }
             ?.also { advertisementRepository.delete(it) }
@@ -69,7 +69,7 @@ class AdvertisementCommandService @Autowired constructor(
 
     @Scheduled(cron = AdScheduleConstant.DELETE_EXPIRED_POLICY)
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
-    fun deleteExpiredThreeMonthSchedule() {
+    fun removeExpiredThreeMonthSchedule() {
         advertisementRepository.deleteExpiredThreeMonthAd()
     }
 }

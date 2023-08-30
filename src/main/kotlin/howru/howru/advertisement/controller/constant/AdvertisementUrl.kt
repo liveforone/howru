@@ -10,5 +10,5 @@ object AdvertisementUrl {
     const val CREATE_YEAR = "/advertisement/create/year"
     const val EDIT_TITLE = "/advertisement/edit/title"
     const val EDIT_CONTENT = "/advertisement/edit/content"
-    const val DELETE = "/advertisement/delete/{id}"
+    const val REMOVE = "/advertisement/remove/{id}"
 }

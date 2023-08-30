@@ -117,14 +117,14 @@ class AdvertisementController @Autowired constructor(
         return AdvertisementResponse.editContentSuccess()
     }
 
-    @DeleteMapping(AdvertisementUrl.DELETE)
-    fun deleteAd(
+    @DeleteMapping(AdvertisementUrl.REMOVE)
+    fun removeAd(
         @PathVariable(AdvertisementParam.ID) id: Long,
         principal: Principal
     ): ResponseEntity<*> {
-        advertisementCommandService.deleteAdByUUID(id, UUID.fromString(principal.name))
+        advertisementCommandService.removeAdByUUID(id, UUID.fromString(principal.name))
         logger().info(AdvertisementControllerLog.DELETE_SUCCESS.log)
 
-        return AdvertisementResponse.deleteAdSuccess()
+        return AdvertisementResponse.removeAdSuccess()
     }
 }
