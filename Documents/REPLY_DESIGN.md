@@ -9,9 +9,9 @@
 
 ## API 설계
 ```
-[GET] /reply/detail/{uuid} : 대댓글 상세
+[GET] /reply/detail/{id} : 대댓글 상세
 [GET] /reply/belong/writer/{writerUUID} : 사용자가 작성한 대댓글, 작성자만 접근 가능합니다.(프론트에서 제어)
-[GET] /reply/belong/comment/{commentUUID} : 댓글에 속한 대댓글
+[GET] /reply/belong/comment/{commentId} : 댓글에 속한 대댓글
 [POST] /reply/create
 [PUT] /reply/edit
 [DELETE] /reply/delete
@@ -22,20 +22,20 @@
 [CreateReply]
 {
   "writerUUID": "b05a66cd-0a55-45b8-918f-a74820d96d64",
-  "commentUUID": "b2bd94bd-dfcf-4303-82af-763572826284",
+  "commentID": 1,
   "content": "test_reply"
 }
 
 [UpdateReplyContent]
 {
-  "uuid": "5b6dbc59-4892-4fb2-9e72-78d136bcee49",
+  "id": 1,
   "writerUUID": "b05a66cd-0a55-45b8-918f-a74820d96d64",
   "content": "updated reply"
 }
 
 [DeleteReply]
 {
-  "uuid": "7e93d552-ce25-4c4d-9147-db12affad9f3",
+  "id": 1,
   "writerUUID": "70033e13-275a-426d-b8bf-50b264a3e689"
 }
 ```
@@ -44,7 +44,6 @@
 ```sql
 create table reply (
      id bigint not null auto_increment,
-     uuid BINARY(16) not null UNIQUE,
      comment_id bigint,
      writer_id bigint,
      content VARCHAR(100) not null,
@@ -54,5 +53,4 @@ create table reply (
      foreign key (comment_id) references comments (id) on delete cascade
      foreign key (writer_id) references member (id) on delete cascade
 );
-CREATE INDEX uuid_idx ON reply (uuid);
 ```
