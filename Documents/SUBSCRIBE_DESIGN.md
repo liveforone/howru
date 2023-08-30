@@ -56,4 +56,5 @@ create table subscribe (
     follower_uuid binary(16) not null,
     primary key (followee_uuid, follower_uuid)
 );
+CREATE INDEX subscribe_timestamp ON Subscribe (timestamp);
 ```
