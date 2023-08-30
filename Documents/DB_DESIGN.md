@@ -39,7 +39,7 @@ create table subscribe (
     follower_uuid binary(16) not null,
     primary key (followee_uuid, follower_uuid)
 );
-CREATE INDEX subscribe_timestamp ON Subscribe (timestamp);
+CREATE INDEX subscribe_timestamp_idx ON Subscribe (timestamp);
 ```
 ### 게시글 -> Post
 ```sql
@@ -52,7 +52,7 @@ create table post (
     primary key (id),
     foreign key (writer_id) references Member (id) on delete cascade
 );
-CREATE INDEX post_content ON Post (content);
+CREATE INDEX post_content_idx ON Post (content);
 ```
 ### 좋아요 -> Likes
 ```sql
@@ -62,7 +62,7 @@ create table likes (
      post_id binary(16) not null,
      primary key (member_uuid, post_id)
 );
-CREATE INDEX likes_timestamp ON Likes (timestamp);
+CREATE INDEX likes_timestamp_idx ON Likes (timestamp);
 ```
 ### 댓글 -> Comments
 ```sql
@@ -103,8 +103,8 @@ create table advertisement (
      end_date INT(8) not null,
      primary key (id)
 );
-CREATE INDEX advertisement_company ON Advertisement (company);
-CREATE INDEX advertisement_end_date ON Advertisement (end_date);
+CREATE INDEX advertisement_company_idx ON Advertisement (company);
+CREATE INDEX advertisement_end_date_idx ON Advertisement (end_date);
 ```
 
 ## no-offset 페이징

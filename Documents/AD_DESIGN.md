@@ -55,6 +55,6 @@ create table advertisement (
      end_date INT(8) not null,
      primary key (id)
 );
-CREATE INDEX advertisement_company ON Advertisement (company);
-CREATE INDEX advertisement_end_date ON Advertisement (end_date);
+CREATE INDEX advertisement_company_idx ON Advertisement (company);
+CREATE INDEX advertisement_end_date_idx ON Advertisement (end_date);
 ```

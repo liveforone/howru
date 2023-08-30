@@ -40,5 +40,5 @@ create table likes (
      post_id binary(16) not null,
      primary key (member_uuid, post_id)
 );
-CREATE INDEX likes_timestamp ON Likes (timestamp);
+CREATE INDEX likes_timestamp_idx ON Likes (timestamp);
 ```

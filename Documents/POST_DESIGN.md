@@ -66,7 +66,7 @@ create table post (
     primary key (id),
     foreign key (writer_id) references Member (id) on delete cascade
 );
-CREATE INDEX post_content ON Post (content);
+CREATE INDEX post_content_idx ON Post (content);
 ```
 
 ## findPostsOfSomeone : 다른 회원의 게시글 조회 매커니즘
