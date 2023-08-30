@@ -6,5 +6,5 @@ object ReplyUrl {
     const val BELONG_COMMENT = "/reply/belong/comment/{commentId}"
     const val CREATE = "/reply/create"
     const val EDIT = "/reply/edit"
-    const val DELETE = "/reply/delete"
+    const val REMOVE = "/reply/remove"
 }

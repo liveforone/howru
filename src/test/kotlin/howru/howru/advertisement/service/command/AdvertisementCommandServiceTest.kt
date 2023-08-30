@@ -128,7 +128,7 @@ class AdvertisementCommandServiceTest @Autowired constructor(
     }
 
     @Test @Transactional
-    fun deleteAdByUUID() {
+    fun removeAdById() {
         //given
         val adminUUID = createAdmin()
         val company = "test company"
@@ -139,7 +139,7 @@ class AdvertisementCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        advertisementCommandService.removeAdByUUID(adId, adminUUID)
+        advertisementCommandService.removeAdById(adId, adminUUID)
         flushAndClear()
 
         //then
@@ -148,7 +148,7 @@ class AdvertisementCommandServiceTest @Autowired constructor(
     }
 
     @Test @Transactional
-    fun deleteExpiredThreeMonthSchedule() {
+    fun removeExpiredThreeMonthSchedule() {
         //given
         val adminUUID = createAdmin()
         val company = "test company"

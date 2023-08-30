@@ -2,7 +2,7 @@ package howru.howru.comments.service.command
 
 import howru.howru.comments.domain.Comments
 import howru.howru.comments.dto.request.CreateComments
-import howru.howru.comments.dto.request.DeleteComments
+import howru.howru.comments.dto.request.RemoveComments
 import howru.howru.comments.dto.update.UpdateCommentsContent
 import howru.howru.comments.repository.CommentsRepository
 import howru.howru.member.repository.MemberRepository
@@ -35,8 +35,8 @@ class CommentsCommandService @Autowired constructor(
         }
     }
 
-    fun deleteComment(deleteComments: DeleteComments) {
-        with(deleteComments) {
+    fun removeComment(removeComments: RemoveComments) {
+        with(removeComments) {
             commentsRepository.findOneByIdAndWriter(id!!, writerUUID!!)
                 .also { commentsRepository.delete(it) }
         }

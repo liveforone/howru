@@ -4,7 +4,7 @@ import howru.howru.comments.repository.CommentsRepository
 import howru.howru.member.repository.MemberRepository
 import howru.howru.reply.domain.Reply
 import howru.howru.reply.dto.request.CreateReply
-import howru.howru.reply.dto.request.DeleteReply
+import howru.howru.reply.dto.request.RemoveReply
 import howru.howru.reply.dto.update.UpdateReplyContent
 import howru.howru.reply.repository.ReplyRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -35,8 +35,8 @@ class ReplyCommandService @Autowired constructor(
         }
     }
 
-    fun deleteReply(deleteReply: DeleteReply) {
-        with(deleteReply) {
+    fun removeReply(removeReply: RemoveReply) {
+        with(removeReply) {
             replyRepository.findOneByIdAndWriter(id!!, writerUUID!!)
                 .also { replyRepository.delete(it) }
         }

@@ -11,5 +11,5 @@ object PostUrl {
     const val COUNT_POST_BY_WRITER = "/post/count/{writerUUID}"
     const val CREATE = "/post/create"
     const val EDIT_CONTENT = "/post/edit/content"
-    const val DELETE = "/post/delete"
+    const val REMOVE = "/post/remove"
 }

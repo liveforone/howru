@@ -5,7 +5,7 @@ import howru.howru.member.repository.MemberRepository
 import howru.howru.post.cache.PostCache
 import howru.howru.post.domain.Post
 import howru.howru.post.dto.request.CreatePost
-import howru.howru.post.dto.request.DeletePost
+import howru.howru.post.dto.request.RemovePost
 import howru.howru.post.dto.update.UpdatePostContent
 import howru.howru.post.repository.PostRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -36,8 +36,8 @@ class PostCommandService @Autowired constructor(
     }
 
     @CacheEvict(cacheNames = [CacheName.POST], key = PostCache.DELETE_ID)
-    fun deletePost(deletePost: DeletePost) {
-        with(deletePost) {
+    fun removePost(removePost: RemovePost) {
+        with(removePost) {
             postRepository.findOneByIdAndWriter(id!!, writerUUID!!)
                 .also { postRepository.delete(it) }
         }

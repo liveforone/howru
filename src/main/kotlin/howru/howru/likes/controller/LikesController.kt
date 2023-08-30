@@ -6,7 +6,7 @@ import howru.howru.likes.controller.constant.LikesParam
 import howru.howru.likes.controller.constant.LikesUrl
 import howru.howru.likes.controller.response.LikesResponse
 import howru.howru.likes.dto.request.CreateLikes
-import howru.howru.likes.dto.request.DeleteLikes
+import howru.howru.likes.dto.request.RemoveLikes
 import howru.howru.likes.service.command.LikesCommandService
 import howru.howru.likes.service.query.LikesQueryService
 import howru.howru.logger
@@ -61,12 +61,12 @@ class LikesController @Autowired constructor(
 
     @DeleteMapping(LikesUrl.DISLIKE)
     fun dislike(
-        @RequestBody @Valid deleteLikes: DeleteLikes,
+        @RequestBody @Valid removeLikes: RemoveLikes,
         bindingResult: BindingResult
     ): ResponseEntity<*> {
         validateBinding(bindingResult)
 
-        likesCommandService.deleteLikes(deleteLikes)
+        likesCommandService.removeLikes(removeLikes)
         logger().info(LikesControllerLog.DELETE_LIKE_SUCCESS.log)
 
         return LikesResponse.dislikeSuccess()

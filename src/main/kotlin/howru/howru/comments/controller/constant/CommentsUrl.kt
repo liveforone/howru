@@ -7,5 +7,5 @@ object CommentsUrl {
     const val COMMENTS_BY_SOMEONE = "/comments/someone/{writerUUID}"
     const val CREATE = "/comments/create"
     const val EDIT = "/comments/edit"
-    const val DELETE = "/comments/delete"
+    const val REMOVE = "/comments/remove"
 }

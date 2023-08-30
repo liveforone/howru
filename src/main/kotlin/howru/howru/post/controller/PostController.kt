@@ -7,7 +7,7 @@ import howru.howru.post.controller.constant.PostParam
 import howru.howru.post.controller.constant.PostUrl
 import howru.howru.post.controller.response.PostResponse
 import howru.howru.post.dto.request.CreatePost
-import howru.howru.post.dto.request.DeletePost
+import howru.howru.post.dto.request.RemovePost
 import howru.howru.post.dto.update.UpdatePostContent
 import howru.howru.post.service.command.PostCommandService
 import howru.howru.post.service.query.PostQueryService
@@ -114,16 +114,16 @@ class PostController @Autowired constructor(
         return PostResponse.editPostSuccess()
     }
 
-    @DeleteMapping(PostUrl.DELETE)
-    fun deletePost(
-        @RequestBody @Valid deletePost: DeletePost,
+    @DeleteMapping(PostUrl.REMOVE)
+    fun removePost(
+        @RequestBody @Valid removePost: RemovePost,
         bindingResult: BindingResult
     ): ResponseEntity<*> {
         validateBinding(bindingResult)
 
-        postCommandService.deletePost(deletePost)
+        postCommandService.removePost(removePost)
         logger().info(PostControllerLog.DELETE_POST_SUCCESS.log)
 
-        return PostResponse.deletePostSuccess()
+        return PostResponse.removePostSuccess()
     }
 }

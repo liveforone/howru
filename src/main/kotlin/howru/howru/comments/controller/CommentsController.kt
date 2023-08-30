@@ -5,7 +5,7 @@ import howru.howru.comments.controller.constant.CommentsParam
 import howru.howru.comments.controller.constant.CommentsUrl
 import howru.howru.comments.controller.response.CommentsResponse
 import howru.howru.comments.dto.request.CreateComments
-import howru.howru.comments.dto.request.DeleteComments
+import howru.howru.comments.dto.request.RemoveComments
 import howru.howru.comments.dto.update.UpdateCommentsContent
 import howru.howru.comments.service.command.CommentsCommandService
 import howru.howru.comments.service.query.CommentsQueryService
@@ -90,16 +90,16 @@ class CommentsController @Autowired constructor(
         return CommentsResponse.editCommentSuccess()
     }
 
-    @DeleteMapping(CommentsUrl.DELETE)
-    fun deleteComment(
-        @RequestBody @Valid deleteComments: DeleteComments,
-         bindingResult: BindingResult
+    @DeleteMapping(CommentsUrl.REMOVE)
+    fun removeComment(
+        @RequestBody @Valid removeComments: RemoveComments,
+        bindingResult: BindingResult
     ): ResponseEntity<*> {
         validateBinding(bindingResult)
 
-        commentsCommandService.deleteComment(deleteComments)
+        commentsCommandService.removeComment(removeComments)
         logger().info(CommentsControllerLog.DELETE_COMMENTS_SUCCESS.log)
 
-        return CommentsResponse.deleteCommentSuccess()
+        return CommentsResponse.removeCommentSuccess()
     }
 }

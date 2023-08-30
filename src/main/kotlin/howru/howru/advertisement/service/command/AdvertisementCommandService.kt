@@ -60,7 +60,7 @@ class AdvertisementCommandService @Autowired constructor(
     }
 
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
-    fun removeAdByUUID(id: Long, memberUUID: UUID) {
+    fun removeAdById(id: Long, memberUUID: UUID) {
         advertisementRepository.findOneById(id)
             .takeIf { memberRepository.findOneByUUID(memberUUID).isAdmin() }
             ?.also { advertisementRepository.delete(it) }

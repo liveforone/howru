@@ -2,7 +2,7 @@ package howru.howru.comments.service.command
 
 import howru.howru.comments.domain.CommentsState
 import howru.howru.comments.dto.request.CreateComments
-import howru.howru.comments.dto.request.DeleteComments
+import howru.howru.comments.dto.request.RemoveComments
 import howru.howru.comments.dto.update.UpdateCommentsContent
 import howru.howru.comments.service.query.CommentsQueryService
 import howru.howru.exception.exception.CommentsException
@@ -103,7 +103,7 @@ class CommentsCommandServiceTest @Autowired constructor(
     }
 
     @Test @Transactional
-    fun deleteCommentTest() {
+    fun removeCommentTest() {
         //given
         val memberUUID = createMember()
         val postId = createPost()
@@ -112,8 +112,8 @@ class CommentsCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val deleteRequest = DeleteComments(commentId, memberUUID)
-        commentsCommandService.deleteComment(deleteRequest)
+        val deleteRequest = RemoveComments(commentId, memberUUID)
+        commentsCommandService.removeComment(deleteRequest)
         flushAndClear()
 
         //then

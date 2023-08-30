@@ -7,7 +7,7 @@ import howru.howru.reply.controller.constant.ReplyParam
 import howru.howru.reply.controller.constant.ReplyUrl
 import howru.howru.reply.controller.response.ReplyResponse
 import howru.howru.reply.dto.request.CreateReply
-import howru.howru.reply.dto.request.DeleteReply
+import howru.howru.reply.dto.request.RemoveReply
 import howru.howru.reply.dto.update.UpdateReplyContent
 import howru.howru.reply.service.command.ReplyCommandService
 import howru.howru.reply.service.query.ReplyQueryService
@@ -80,16 +80,16 @@ class ReplyController @Autowired constructor(
         return ReplyResponse.editReplySuccess()
     }
 
-    @DeleteMapping(ReplyUrl.DELETE)
-    fun delete(
-        @RequestBody @Valid deleteReply: DeleteReply,
+    @DeleteMapping(ReplyUrl.REMOVE)
+    fun remove(
+        @RequestBody @Valid removeReply: RemoveReply,
         bindingResult: BindingResult
     ): ResponseEntity<*> {
         validateBinding(bindingResult)
 
-        replyCommandService.deleteReply(deleteReply)
+        replyCommandService.removeReply(removeReply)
         logger().info(ReplyControllerLog.DELETE_SUCCESS.log)
 
-        return ReplyResponse.deleteReplySuccess()
+        return ReplyResponse.removeReplySuccess()
     }
 }

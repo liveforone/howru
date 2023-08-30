@@ -10,7 +10,7 @@ import howru.howru.post.dto.request.CreatePost
 import howru.howru.post.service.command.PostCommandService
 import howru.howru.reply.domain.ReplyState
 import howru.howru.reply.dto.request.CreateReply
-import howru.howru.reply.dto.request.DeleteReply
+import howru.howru.reply.dto.request.RemoveReply
 import howru.howru.reply.dto.update.UpdateReplyContent
 import howru.howru.reply.service.query.ReplyQueryService
 import jakarta.persistence.EntityManager
@@ -129,7 +129,7 @@ class ReplyCommandServiceTest @Autowired constructor(
     }
 
     @Test @Transactional
-    fun deleteReplyTest() {
+    fun removeReplyTest() {
         //given
         val memberUUID = createMember()
         val commentId = createComment()
@@ -139,8 +139,8 @@ class ReplyCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val deleteRequest = DeleteReply(replyId, memberUUID)
-        replyCommandService.deleteReply(deleteRequest)
+        val deleteRequest = RemoveReply(replyId, memberUUID)
+        replyCommandService.removeReply(deleteRequest)
         flushAndClear()
 
         //then

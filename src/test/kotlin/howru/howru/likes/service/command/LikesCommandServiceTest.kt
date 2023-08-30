@@ -1,7 +1,7 @@
 package howru.howru.likes.service.command
 
 import howru.howru.likes.dto.request.CreateLikes
-import howru.howru.likes.dto.request.DeleteLikes
+import howru.howru.likes.dto.request.RemoveLikes
 import howru.howru.likes.service.query.LikesQueryService
 import howru.howru.member.dto.request.LoginRequest
 import howru.howru.member.dto.request.SignupRequest
@@ -89,8 +89,8 @@ class LikesCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val deleteRequest = DeleteLikes(memberUUID, postId)
-        likesCommandService.deleteLikes(deleteRequest)
+        val deleteRequest = RemoveLikes(memberUUID, postId)
+        likesCommandService.removeLikes(deleteRequest)
         flushAndClear()
 
         //then

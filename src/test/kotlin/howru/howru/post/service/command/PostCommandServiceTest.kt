@@ -7,7 +7,7 @@ import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.service.command.MemberCommandService
 import howru.howru.post.domain.PostState
 import howru.howru.post.dto.request.CreatePost
-import howru.howru.post.dto.request.DeletePost
+import howru.howru.post.dto.request.RemovePost
 import howru.howru.post.dto.update.UpdatePostContent
 import howru.howru.post.service.query.PostQueryService
 import jakarta.persistence.EntityManager
@@ -86,7 +86,7 @@ class PostCommandServiceTest @Autowired constructor(
 
     @Test
     @Transactional
-    fun deletePostTest() {
+    fun removePostTest() {
         //given
         val writerUUID = createWriter()
         val content = "test_content"
@@ -95,8 +95,8 @@ class PostCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val deleteRequest = DeletePost(postId, writerUUID)
-        postCommandService.deletePost(deleteRequest)
+        val deleteRequest = RemovePost(postId, writerUUID)
+        postCommandService.removePost(deleteRequest)
         flushAndClear()
 
         //then
