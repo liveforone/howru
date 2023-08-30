@@ -82,7 +82,7 @@ class CommentsQueryServiceTest @Autowired constructor(
 
     @Test
     @Transactional
-    fun getCommentByUUIDTest() {
+    fun getCommentByIdTest() {
         //given
         val memberUUID = createMember()
         val postId = createPost()

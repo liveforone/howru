@@ -85,7 +85,7 @@ class ReplyQueryServiceTest @Autowired constructor(
     }
 
     @Test @Transactional
-    fun getReplyByUUIDTest() {
+    fun getReplyByIdTest() {
         //given
         val memberUUID = createMember()
         val commentId = createComment()

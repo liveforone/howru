@@ -38,7 +38,7 @@ class AdvertisementQueryServiceTest @Autowired constructor(
     }
 
     @Test @Transactional
-    fun getOneByUUID() {
+    fun getOneById() {
         //given
         val adminUUID = createAdmin()
         val company = "test company"

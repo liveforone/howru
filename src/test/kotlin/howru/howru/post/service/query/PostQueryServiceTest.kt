@@ -55,7 +55,7 @@ class PostQueryServiceTest @Autowired constructor(
 
     @Test
     @Transactional
-    fun getPostByUUIDTest() {
+    fun getPostByIdTest() {
         //given
         val writerUUID = createWriter1()
         val content = "test_content"
