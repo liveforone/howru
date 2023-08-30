@@ -21,7 +21,7 @@
 
 ## API 설계
 ```
-[GET] /post/detail/{uuid}
+[GET] /post/detail/{id}
 [GET] /post/my-post/{memberUUID}
 [GET] /post/all
 [GET] /post/writer/{writerUUID}
@@ -43,14 +43,14 @@
 
 [UpdatePostContent]
 {
-  "uuid": "d9df70a8-8428-4ee8-bb87-2c250b877857",
+  "id": 1,
   "writerUUID": "1d390047-ac36-433b-b73a-8c9ec00405b9",
   "content": "update content."
 }
 
 [DeletePost]
 {
-  "uuid": "0bc3cf3d-ceb4-482d-9a53-d339788a1b6a",
+  "id": 1,
   "writerUUID": "a784848d-b1ce-4b1a-946d-7b343ebdd373"
 }
 ```
@@ -59,7 +59,6 @@
 ```sql
 create table post (
     id bigint not null auto_increment,
-    uuid BINARY(16) not null UNIQUE,
     writer_id bigint,
     content VARCHAR(800) not null,
     post_state varchar(8) not null,
@@ -67,7 +66,7 @@ create table post (
     primary key (id),
     foreign key (writer_id) references Member (id) on delete cascade
 );
-CREATE INDEX uuid_idx ON post (uuid);
+CREATE INDEX post_content ON Post (content);
 ```
 
 ## findPostsOfSomeone : 다른 회원의 게시글 조회 매커니즘
@@ -84,20 +83,20 @@ CREATE INDEX uuid_idx ON post (uuid);
 * 키워드 추출한 데이터는 최신 100개의 데이터중 5개를 뽑는 방식으로 한다.
 
 ## 작성자 확인
-* 해당 프로젝트는 모두 uuid를 외부 식별자로 사용한다.
+* 해당 프로젝트에서 회원의 경우 uuid를 외부 식별자로 사용한다.
 * 이는 보안의 측면에서 우수하기 때문이다. 게시글을 삭제하거나 수정할때 회원의 uuid를 사용하면 아주 안전하게 수정/삭제를 할 수 있다.
-* 수정/삭제시에 클라이언트로부터 게시글의 uuid와 회원의 uuid를 받아온다.
-* 그리고 조인을 통해 게시글 uuid와 회원의 uuid를 and 쿼리를 통해서 날린다.
+* 수정/삭제시에 클라이언트로부터 게시글의 id와 회원의 uuid를 받아온다.
+* 그리고 조인을 통해 게시글 id와 회원의 uuid를 and 쿼리를 통해서 날린다.
 * 이렇게 쿼리를 통해서 검증하게 되면 어플리케이션 단에서 추가적인 검증작업 없이 수정/삭제를 진행할 수 있다.
 ```kotlin
-override fun findOneByUUIDAndWriter(uuid: UUID, writerUUID: UUID): Post {
+override fun findOneByUUIDAndWriter(id: Long, writerUUID: UUID): Post {
         return try {
             queryFactory.singleQuery {
                 select(entity(Post::class))
                 from(Post::class)
                 fetch(Post::writer)
                 join(Post::writer)
-                where(col(Post::uuid).equal(uuid).and(col(Member::uuid).equal(writerUUID)))
+                where(col(Post::id).equal(id).and(col(Member::uuid).equal(writerUUID)))
             }
         } catch (e: NoResultException) {
             throw PostException(PostExceptionMessage.POST_IS_NULL)
@@ -111,6 +110,7 @@ override fun findOneByUUIDAndWriter(uuid: UUID, writerUUID: UUID): Post {
 * 이 방법의 경우 여러값일 경우 in 쿼리로 조회하면된다.
 * 두번째 방법은 실제 사용한 방법인데, RAND() 함수를 이용하는 것이다.
 * 이렇게 하면 DB에서 자동으로 랜덤한 값을 리턴한다.
+* jdsl에서는 rand()함수를 사용할 수 없다. 따라서 이는 jpql로 정적쿼리를 만들어 날려주어야한다.
 ```sql
 SELECT * FROM Table ORDER BY RAND();
 ```
