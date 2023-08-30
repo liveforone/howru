@@ -13,9 +13,9 @@
 
 ## API 설계
 ```
-[GET] /comments/detail/{uuid}
+[GET] /comments/detail/{id}
 [GET] /comments/writer/{writerUUID} : 사용자가 작성한 댓글
-[GET] /comments/post/{postUUID} : 게시글에 속한 댓글
+[GET] /comments/post/{postId} : 게시글에 속한 댓글
 [GET] /comments/someone/{writerUUID} : 다른 사용자가 작성한 게시글
 [POST] /comments/create
 [PUT] /comments/edit
@@ -27,20 +27,20 @@
 [CreateComments]
 {
   "writerUUID": "86bd534f-3044-47df-bf8f-7531b343870e",
-  "postUUID": "977920f9-b20f-414d-b2c9-48260025771c",
+  "postId": 1,
   "content": "comment"
 }
 
 [UpdateCommentsContent]
 {
-  "uuid": "6181dbf7-99de-4606-a828-0513dd7769a8",
+  "id": 3,
   "writerUUID": "86bd534f-3044-47df-bf8f-7531b343870e",
   "content": "updated comment"
 }
 
 [DeleteComments]
 {
-  "uuid": "6181dbf7-99de-4606-a828-0513dd7769a8",
+  "id": 3,
   "writerUUID": "86bd534f-3044-47df-bf8f-7531b343870e"
 }
 ```
@@ -49,7 +49,6 @@
 ```sql
 create table comments (
      id bigint not null auto_increment,
-     uuid BINARY(16) not null UNIQUE,
      post_id bigint,
      writer_id bigint,
      content VARCHAR(100) not null,
@@ -59,5 +58,4 @@ create table comments (
      foreign key (writer_id) references Member (id) on delete cascade
      foreign key (post_id) references Post (id) on delete cascade
 );
-CREATE INDEX uuid_idx ON comments (uuid);
 ```
