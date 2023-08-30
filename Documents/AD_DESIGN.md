@@ -10,7 +10,7 @@
 
 ## API 설계
 ```
-[GET] /advertisement/detail/{uuid}
+[GET] /advertisement/detail/{id}
 [GET] /advertisement/all
 [GET] /advertisement/search-company
 [GET] /advertisement/expired
@@ -19,7 +19,7 @@
 [POST] /advertisement/create/year
 [PUT] /advertisement/edit/title
 [PUT] /advertisement/edit/content
-[DELETE] /advertisement/delete/{uuid}
+[DELETE] /advertisement/delete/{id}
 ```
 
 ## Json Body 예시
@@ -33,13 +33,13 @@
 
 [UpdateAdTitle]
 {
-  "uuid": "5e299f9c-ecd5-4696-a0da-22ebea1be5e2",
+  "id": 1,
   "title": "update_ad_title"
 }
 
 [UdpateAdContent]
 {
-  "uuid": "5e299f9c-ecd5-4696-a0da-22ebea1be5e2",
+  "id": 1,
   "content": "update_ad_content"
 }
 ```
@@ -48,7 +48,6 @@
 ```sql
 create table advertisement (
      id bigint not null auto_increment,
-     uuid BINARY(16) not null unique,
      company varchar(255) not null,
      title varchar(255) not null,
      content VARCHAR(800) not null,
@@ -56,5 +55,6 @@ create table advertisement (
      end_date INT(8) not null,
      primary key (id)
 );
-CREATE INDEX uuid_idx ON advertisement (uuid);
+CREATE INDEX advertisement_company ON Advertisement (company);
+CREATE INDEX advertisement_end_date ON Advertisement (end_date);
 ```
