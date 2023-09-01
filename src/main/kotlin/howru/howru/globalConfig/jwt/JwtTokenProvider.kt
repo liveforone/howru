@@ -22,6 +22,10 @@ class JwtTokenProvider(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) {
 
     private val key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secretKey))
 
+    fun generateToken(authentication: Authentication): LoginInfo {
+        return LoginInfo.create(UUID.fromString(authentication.name), generateAccessToken(authentication), generateRefreshToken())
+    }
+
     private fun generateAccessToken(authentication: Authentication): String {
         return Jwts.builder()
             .setSubject(authentication.name)
@@ -41,10 +45,6 @@ class JwtTokenProvider(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) {
             .compact()
     }
 
-    fun generateToken(authentication: Authentication): LoginInfo {
-        return LoginInfo.create(UUID.fromString(authentication.name), generateAccessToken(authentication), generateRefreshToken())
-    }
-
     fun getAuthentication(accessToken: String): Authentication {
         val claims = parseClaims(accessToken)
         val authorities: Collection<GrantedAuthority> =
@@ -53,6 +53,18 @@ class JwtTokenProvider(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) {
                 .map { role: String? -> SimpleGrantedAuthority(role) }
         val principal: UserDetails = User(claims.subject, JwtConstant.EMPTY_PW, authorities)
         return UsernamePasswordAuthenticationToken(principal, JwtConstant.CREDENTIAL, authorities)
+    }
+
+    private fun parseClaims(accessToken: String?): Claims {
+        return try {
+            Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(accessToken)
+                .body
+        } catch (e: ExpiredJwtException) {
+            e.claims
+        }
     }
 
     fun validateToken(token: String?): Boolean {
@@ -70,17 +82,5 @@ class JwtTokenProvider(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) {
             logger().info(JwtExceptionMessage.INVALID_MESSAGE.message)
         }
         return false
-    }
-
-    private fun parseClaims(accessToken: String?): Claims {
-        return try {
-            Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(accessToken)
-                .body
-        } catch (e: ExpiredJwtException) {
-            e.claims
-        }
     }
 }
