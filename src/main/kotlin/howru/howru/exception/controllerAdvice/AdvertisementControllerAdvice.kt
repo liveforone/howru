@@ -11,6 +11,6 @@ class AdvertisementControllerAdvice {
     fun advertisementException(advertisementException: AdvertisementException): ResponseEntity<String> {
         return ResponseEntity
             .status(advertisementException.advertisementExceptionMessage.status)
-            .body(advertisementException.message)
+            .body(advertisementException.message + advertisementException.advertisementId)
     }
 }

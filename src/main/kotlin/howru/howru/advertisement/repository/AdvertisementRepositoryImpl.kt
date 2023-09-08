@@ -26,7 +26,7 @@ class AdvertisementRepositoryImpl @Autowired constructor(
                 where(col(Advertisement::id).equal(id))
             }
         } catch (e: NoResultException) {
-            throw AdvertisementException(AdvertisementExceptionMessage.AD_IS_NULL)
+            throw AdvertisementException(AdvertisementExceptionMessage.AD_IS_NULL, id)
         }
     }
 
@@ -45,7 +45,7 @@ class AdvertisementRepositoryImpl @Autowired constructor(
                 where(col(Advertisement::id).equal(id))
             }
         } catch (e: NoResultException) {
-            throw AdvertisementException(AdvertisementExceptionMessage.AD_IS_NULL)
+            throw AdvertisementException(AdvertisementExceptionMessage.AD_IS_NULL, id)
         }
     }
 

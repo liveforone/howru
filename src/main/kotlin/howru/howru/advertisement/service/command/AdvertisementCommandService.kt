@@ -6,8 +6,8 @@ import howru.howru.advertisement.dto.update.UpdateAdContent
 import howru.howru.advertisement.dto.update.UpdateAdTitle
 import howru.howru.advertisement.repository.AdvertisementRepository
 import howru.howru.advertisement.service.command.constant.AdScheduleConstant
-import howru.howru.exception.exception.AdvertisementException
-import howru.howru.exception.message.AdvertisementExceptionMessage
+import howru.howru.exception.exception.MemberException
+import howru.howru.exception.message.MemberExceptionMessage
 import howru.howru.globalConfig.cache.constant.CacheName
 import howru.howru.member.repository.MemberRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,7 +25,7 @@ class AdvertisementCommandService @Autowired constructor(
 ) {
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
     fun createHalfAd(createAdvertisement: CreateAdvertisement, memberUUID: UUID): Long {
-        require(memberRepository.findOneByUUID(memberUUID).isAdmin()) { throw AdvertisementException(AdvertisementExceptionMessage.NOT_ADMIN) }
+        require(memberRepository.findOneByUUID(memberUUID).isAdmin()) { throw MemberException(MemberExceptionMessage.NOT_ADMIN, memberUUID.toString()) }
         return with(createAdvertisement) {
             Advertisement.createHalfAd(company!!, title!!, content!!)
                 .run { advertisementRepository.save(this).id!! }
@@ -34,7 +34,7 @@ class AdvertisementCommandService @Autowired constructor(
 
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
     fun createYearAd(createAdvertisement: CreateAdvertisement, memberUUID: UUID): Long {
-        require(memberRepository.findOneByUUID(memberUUID).isAdmin()) { throw AdvertisementException(AdvertisementExceptionMessage.NOT_ADMIN) }
+        require(memberRepository.findOneByUUID(memberUUID).isAdmin()) { throw MemberException(MemberExceptionMessage.NOT_ADMIN, memberUUID.toString()) }
         return with(createAdvertisement) {
             Advertisement.createYearAd(company!!, title!!, content!!)
                 .run { advertisementRepository.save(this).id!! }
@@ -43,7 +43,7 @@ class AdvertisementCommandService @Autowired constructor(
 
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
     fun editTitle(updateAdTitle: UpdateAdTitle, memberUUID: UUID) {
-        require(memberRepository.findOneByUUID(memberUUID).isAdmin()) { throw AdvertisementException(AdvertisementExceptionMessage.NOT_ADMIN) }
+        require(memberRepository.findOneByUUID(memberUUID).isAdmin()) { throw MemberException(MemberExceptionMessage.NOT_ADMIN, memberUUID.toString()) }
         with(updateAdTitle) {
             advertisementRepository.findOneById(id!!)
                 .also { it.editTitle(title!!) }
@@ -52,7 +52,7 @@ class AdvertisementCommandService @Autowired constructor(
 
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
     fun editContent(updateAdContent: UpdateAdContent, memberUUID: UUID) {
-        require(memberRepository.findOneByUUID(memberUUID).isAdmin()) { throw AdvertisementException(AdvertisementExceptionMessage.NOT_ADMIN) }
+        require(memberRepository.findOneByUUID(memberUUID).isAdmin()) { throw MemberException(MemberExceptionMessage.NOT_ADMIN, memberUUID.toString()) }
         with(updateAdContent) {
             advertisementRepository.findOneById(id!!)
                 .also { it.editContent(content!!) }
@@ -64,7 +64,7 @@ class AdvertisementCommandService @Autowired constructor(
         advertisementRepository.findOneById(id)
             .takeIf { memberRepository.findOneByUUID(memberUUID).isAdmin() }
             ?.also { advertisementRepository.delete(it) }
-            ?: throw AdvertisementException(AdvertisementExceptionMessage.NOT_ADMIN)
+            ?: throw MemberException(MemberExceptionMessage.NOT_ADMIN, memberUUID.toString())
     }
 
     @Scheduled(cron = AdScheduleConstant.DELETE_EXPIRED_POLICY)
