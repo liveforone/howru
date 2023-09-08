@@ -32,7 +32,7 @@ class SubscribeRepositoryImpl @Autowired constructor(
                 )
             }
         } catch (e: NoResultException) {
-            throw SubscribeException(SubscribeExceptionMessage.SUBSCRIBE_IS_NULL)
+            throw SubscribeException(SubscribeExceptionMessage.SUBSCRIBE_IS_NULL, followerUUID)
         }
     }
 

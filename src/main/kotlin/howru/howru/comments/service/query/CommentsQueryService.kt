@@ -20,7 +20,7 @@ class CommentsQueryService @Autowired constructor(
     fun getCommentsByWriter(writerUUID: UUID, lastId: Long?) = commentsRepository.findCommentsByWriter(writerUUID, lastId)
     fun getCommentsByPost(postId: Long, lastId: Long?) = commentsRepository.findCommentsByPost(postId, lastId)
     fun getCommentsBySomeone(someoneUUID: UUID, memberUUID: UUID, lastId: Long?): List<CommentsInfo> {
-        require(subscribeQueryService.isFollowEach(someoneUUID, memberUUID)) { throw SubscribeException(SubscribeExceptionMessage.IS_NOT_FOLLOW_EACH) }
+        require(subscribeQueryService.isFollowEach(someoneUUID, memberUUID)) { throw SubscribeException(SubscribeExceptionMessage.IS_NOT_FOLLOW_EACH, memberUUID) }
         return commentsRepository.findCommentsByWriter(someoneUUID, lastId)
     }
 }

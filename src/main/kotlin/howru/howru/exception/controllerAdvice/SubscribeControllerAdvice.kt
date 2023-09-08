@@ -11,6 +11,6 @@ class SubscribeControllerAdvice {
     fun subscribeExceptionHandel(subscribeException: SubscribeException): ResponseEntity<String> {
         return ResponseEntity
             .status(subscribeException.subscribeExceptionMessage.status)
-            .body(subscribeException.message)
+            .body(subscribeException.message + subscribeException.followerUUID)
     }
 }
