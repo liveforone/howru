@@ -1,7 +1,7 @@
 package howru.howru.post.service.query
 
-import howru.howru.exception.exception.PostException
-import howru.howru.exception.message.PostExceptionMessage
+import howru.howru.exception.exception.SubscribeException
+import howru.howru.exception.message.SubscribeExceptionMessage
 import howru.howru.globalConfig.cache.constant.CacheName
 import howru.howru.globalUtil.extractKeywords
 import howru.howru.member.service.query.MemberQueryService
@@ -33,7 +33,7 @@ class PostQueryService @Autowired constructor(
         } else {
             takeIf { subscribeQueryService.isFollowee(writerUUID, memberUUID) }
                 ?.run { postRepository.findPostsBySomeone(writerUUID, lastId) }
-                ?: throw PostException(PostExceptionMessage.NOT_FOLLOWER)
+                ?: throw SubscribeException(SubscribeExceptionMessage.NOT_FOLLOWER)
         }
     }
     fun getPostsOfFollowee(followerUUID: UUID, lastId: Long?): List<PostInfo> {

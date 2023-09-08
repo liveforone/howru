@@ -11,6 +11,6 @@ class PostControllerAdvice {
     fun postExceptionHandle(postException: PostException): ResponseEntity<String> {
         return ResponseEntity
             .status(postException.postExceptionMessage.status)
-            .body(postException.message)
+            .body(postException.message + postException.postId)
     }
 }

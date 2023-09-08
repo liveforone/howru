@@ -30,7 +30,7 @@ class PostRepositoryImpl @Autowired constructor(
                 where(col(Post::id).equal(id))
             }
         } catch (e: NoResultException) {
-            throw PostException(PostExceptionMessage.POST_IS_NULL)
+            throw PostException(PostExceptionMessage.POST_IS_NULL, id)
         }
     }
 
@@ -43,7 +43,7 @@ class PostRepositoryImpl @Autowired constructor(
                 where(col(Post::id).equal(id).and(col(Member::uuid).equal(writerUUID)))
             }
         } catch (e: NoResultException) {
-            throw PostException(PostExceptionMessage.POST_IS_NULL)
+            throw PostException(PostExceptionMessage.POST_IS_NULL, id)
         }
     }
 
@@ -62,7 +62,7 @@ class PostRepositoryImpl @Autowired constructor(
                 where(col(Post::id).equal(id))
             }
         } catch (e: NoResultException) {
-            throw PostException(PostExceptionMessage.POST_IS_NULL)
+            throw PostException(PostExceptionMessage.POST_IS_NULL, id)
         }
     }
 
