@@ -23,7 +23,7 @@ class MemberControllerAdvice {
     fun memberExceptionHandle(memberException: MemberException): ResponseEntity<String> {
         return ResponseEntity
             .status(memberException.memberExceptionMessage.status)
-            .body(memberException.message)
+            .body(memberException.message + memberException.memberIdentifier)
     }
 
     @ExceptionHandler(JwtCustomException::class)

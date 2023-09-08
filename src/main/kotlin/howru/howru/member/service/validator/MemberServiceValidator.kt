@@ -12,7 +12,7 @@ class MemberServiceValidator @Autowired constructor(
 ) {
     fun validateDuplicateEmail(email: String) {
         require (memberRepository.findIdByEmailNullableForValidate(email) == null) {
-            throw MemberException(MemberExceptionMessage.DUPLICATE_EMAIL)
+            throw MemberException(MemberExceptionMessage.DUPLICATE_EMAIL, email)
         }
     }
 }

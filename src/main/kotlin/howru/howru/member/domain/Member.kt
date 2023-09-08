@@ -51,7 +51,7 @@ class Member private constructor(
     }
 
     fun updatePw(newPassword: String, oldPassword: String) {
-        require (isMatchPassword(oldPassword, pw)) { throw MemberException(MemberExceptionMessage.WRONG_PASSWORD) }
+        require (isMatchPassword(oldPassword, pw)) { throw MemberException(MemberExceptionMessage.WRONG_PASSWORD, uuid.toString()) }
         pw = encodePassword(newPassword)
     }
 

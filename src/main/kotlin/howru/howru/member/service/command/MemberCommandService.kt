@@ -84,6 +84,6 @@ class MemberCommandService @Autowired constructor(
         memberRepository.findOneByUUID(uuid)
             .takeIf { isMatchPassword(withdrawRequest.pw!!, it.pw) }
             ?.also { memberRepository.delete(it) }
-            ?: throw MemberException(MemberExceptionMessage.WRONG_PASSWORD)
+            ?: throw MemberException(MemberExceptionMessage.WRONG_PASSWORD, uuid.toString())
     }
 }
