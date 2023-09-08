@@ -32,7 +32,7 @@ class CommentsRepositoryImpl @Autowired constructor(
                 where(col(Comments::id).equal(id))
             }
         } catch (e: NoResultException) {
-            throw CommentsException(CommentsExceptionMessage.COMMENTS_IS_NULL)
+            throw CommentsException(CommentsExceptionMessage.COMMENTS_IS_NULL, id)
         }
     }
 
@@ -45,7 +45,7 @@ class CommentsRepositoryImpl @Autowired constructor(
                 where(col(Comments::id).equal(id).and(col(Member::uuid).equal(writerUUID)))
             }
         } catch (e: NoResultException) {
-            throw CommentsException(CommentsExceptionMessage.COMMENTS_IS_NULL)
+            throw CommentsException(CommentsExceptionMessage.COMMENTS_IS_NULL, id)
         }
     }
 
@@ -66,7 +66,7 @@ class CommentsRepositoryImpl @Autowired constructor(
                 where(col(Comments::id).equal(id))
             }
         } catch (e: NoResultException) {
-            throw CommentsException(CommentsExceptionMessage.COMMENTS_IS_NULL)
+            throw CommentsException(CommentsExceptionMessage.COMMENTS_IS_NULL, id)
         }
     }
 

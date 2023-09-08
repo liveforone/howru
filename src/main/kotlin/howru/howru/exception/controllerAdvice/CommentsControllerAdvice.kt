@@ -11,6 +11,6 @@ class CommentsControllerAdvice {
     fun commentsExceptionHandle(commentsException: CommentsException): ResponseEntity<String> {
         return ResponseEntity
             .status(commentsException.commentsExceptionMessage.status)
-            .body(commentsException.message)
+            .body(commentsException.message + commentsException.commentId)
     }
 }
