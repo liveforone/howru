@@ -11,6 +11,6 @@ class ReplyControllerAdvice {
     fun replyExceptionHandle(replyException: ReplyException): ResponseEntity<String> {
         return ResponseEntity
             .status(replyException.replyExceptionMessage.status)
-            .body(replyException.message)
+            .body(replyException.message + replyException.replyId)
     }
 }

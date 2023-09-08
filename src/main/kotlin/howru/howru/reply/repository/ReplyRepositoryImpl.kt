@@ -32,7 +32,7 @@ class ReplyRepositoryImpl @Autowired constructor(
                 where(col(Reply::id).equal(id).and(col(Member::uuid).equal(writerUUID)))
             }
         } catch (e: NoResultException) {
-            throw ReplyException(ReplyExceptionMessage.REPLY_IS_NULL)
+            throw ReplyException(ReplyExceptionMessage.REPLY_IS_NULL, id)
         }
     }
 
@@ -53,7 +53,7 @@ class ReplyRepositoryImpl @Autowired constructor(
                 where(col(Reply::id).equal(id))
             }
         } catch (e: NoResultException) {
-            throw ReplyException(ReplyExceptionMessage.REPLY_IS_NULL)
+            throw ReplyException(ReplyExceptionMessage.REPLY_IS_NULL, id)
         }
     }
 
