@@ -11,6 +11,6 @@ class LikesControllerAdvice {
     fun likesExceptionHandle(likesException: LikesException): ResponseEntity<String> {
         return ResponseEntity
             .status(likesException.likesExceptionMessage.status)
-            .body(likesException.message)
+            .body(likesException.message + likesException.postId)
     }
 }

@@ -29,7 +29,7 @@ class LikesRepositoryImpl @Autowired constructor(
                 where(col(Likes::memberUUID).equal(memberUUID).and(col(Likes::postId).equal(postId)))
             }
         } catch (e: NoResultException) {
-            throw LikesException(LikesExceptionMessage.LIKES_IS_NULL)
+            throw LikesException(LikesExceptionMessage.LIKES_IS_NULL, postId)
         }
     }
 
