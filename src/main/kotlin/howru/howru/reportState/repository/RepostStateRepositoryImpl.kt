@@ -27,7 +27,7 @@ class RepostStateRepositoryImpl @Autowired constructor(
                 where(col(Member::email).equal(email))
             }
         } catch (e: NoResultException) {
-            throw ReportStateException(RepostStateExceptionMessage.REPORT_STATE_IS_NULL)
+            throw ReportStateException(RepostStateExceptionMessage.REPORT_STATE_IS_NULL, email)
         }
     }
 
@@ -40,7 +40,7 @@ class RepostStateRepositoryImpl @Autowired constructor(
                 where(col(Member::uuid).equal(memberUUID))
             }
         } catch (e: NoResultException) {
-            throw ReportStateException(RepostStateExceptionMessage.REPORT_STATE_IS_NULL)
+            throw ReportStateException(RepostStateExceptionMessage.REPORT_STATE_IS_NULL, memberUUID.toString())
         }
     }
 
@@ -57,7 +57,7 @@ class RepostStateRepositoryImpl @Autowired constructor(
                 where(col(Member::uuid).equal(memberUUID))
             }
         } catch (e: NoResultException) {
-            throw ReportStateException(RepostStateExceptionMessage.REPORT_STATE_IS_NULL)
+            throw ReportStateException(RepostStateExceptionMessage.REPORT_STATE_IS_NULL, memberUUID.toString())
         }
     }
 }

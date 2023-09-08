@@ -11,6 +11,6 @@ class ReportStateControllerAdvice {
     fun reportStateExceptionHandle(reportStateException: ReportStateException): ResponseEntity<String> {
         return ResponseEntity
             .status(reportStateException.repostStateExceptionMessage.status)
-            .body(reportStateException.message)
+            .body(reportStateException.message + reportStateException.memberIdentifier)
     }
 }
