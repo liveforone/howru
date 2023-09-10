@@ -139,6 +139,9 @@
 ### 모든 예외에 대해서는 패키지로 나누어서 모듈화 한다.
 * message는 message 끼리, exception은 exception끼리, advice는 advice끼리 패키지로 묶는다.
 * global, common 처럼 공통적으로 예외를 처리하지 않도록한다. 도메인에 따라 모듈화시켜 처리한다.
+### 예외는 추적가능하도록 한다
+* 이것에 관한 것은 별도의 문서로 작성하였다. 아래 문서를 참고바란다.
+* [추적가능한 예외처리](https://github.com/liveforone/howru/blob/master/Documents/TRACEABLE_EXCEPTION.md)
 
 ## Others
 * 위에서는 간략하게 주요한 부분의 설계와 요구에 대해 설명하였다.
