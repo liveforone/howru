@@ -1,5 +1,10 @@
 # 복합키를 사용하는 테이블에서 timestamp 기반 no-offset 페이징
 
+## Jdsl 버전
+* limit 함수를 지원하지 않는 jdsl v3에서는 사용이 불가합니다. 
+* v3에서는 PageRequest를 사용한 페이징만 가능합니다.
+* 반드시 jdsl v2 버전에서만 사용하시기 바랍니다.(v3에서 커스텀 dsl로 ltLastId 함수를 만드는 것은 가능합니다.)
+
 ## 복합키를 사용하는 테이블에서 페이징
 * 현재 모든 프로젝트, 그리고 해당 프로젝트에 no-offset 페이징을 적용하고 있습니다.
 * 이는 no-offset 페이징의 성능 때문인데요, no-offset 페이징은 auto increment pk를 기반으로 동작합니다.
