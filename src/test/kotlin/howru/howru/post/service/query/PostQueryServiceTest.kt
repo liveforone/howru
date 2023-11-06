@@ -1,6 +1,6 @@
 package howru.howru.post.service.query
 
-import howru.howru.exception.exception.PostException
+import howru.howru.exception.exception.SubscribeException
 import howru.howru.logger
 import howru.howru.member.dto.request.LoginRequest
 import howru.howru.member.dto.request.SignupRequest
@@ -135,7 +135,7 @@ class PostQueryServiceTest @Autowired constructor(
 
         //then -> error 발생!!
         Assertions.assertThatThrownBy { postQueryService.getPostsBySomeone(followeeUUID, followerUUID, null) }
-            .isInstanceOf(PostException::class.java)
+            .isInstanceOf(SubscribeException::class.java)
     }
 
     /*
