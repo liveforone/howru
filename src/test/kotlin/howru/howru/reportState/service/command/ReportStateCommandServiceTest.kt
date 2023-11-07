@@ -16,10 +16,10 @@ import org.springframework.security.authentication.InternalAuthenticationService
 import org.springframework.transaction.annotation.Transactional
 
 @SpringBootTest
-class RepostStateCommandServiceTest @Autowired constructor(
+class ReportStateCommandServiceTest @Autowired constructor(
     private val entityManager: EntityManager,
     private val memberCommandService: MemberCommandService,
-    private val repostStateCommandService: RepostStateCommandService,
+    private val reportStateCommandService: ReportStateCommandService,
     private val reportStateQueryService: ReportStateQueryService
 ) {
 
@@ -63,7 +63,7 @@ class RepostStateCommandServiceTest @Autowired constructor(
         //when
         repeat(3) {
             val dtoRequest = ReportMember(memberUUID)
-            repostStateCommandService.addRepost(dtoRequest)
+            reportStateCommandService.addRepost(dtoRequest)
             flushAndClear()
         }
         val loginRequest = LoginRequest(email, pw)
@@ -88,7 +88,7 @@ class RepostStateCommandServiceTest @Autowired constructor(
         //when
         repeat(3) {
             val dtoRequest = ReportMember(memberUUID)
-            repostStateCommandService.addRepost(dtoRequest)
+            reportStateCommandService.addRepost(dtoRequest)
             flushAndClear()
         }
 

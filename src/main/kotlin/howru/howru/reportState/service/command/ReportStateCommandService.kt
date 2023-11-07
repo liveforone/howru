@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class RepostStateCommandService @Autowired constructor(
+class ReportStateCommandService @Autowired constructor(
     private val repostStateRepository: RepostStateRepository
 ) {
     fun createRepostState(member: Member) {

@@ -8,7 +8,7 @@ import howru.howru.exception.exception.ReportStateException
 import howru.howru.exception.message.RepostStateExceptionMessage
 import howru.howru.member.domain.Member
 import howru.howru.reportState.domain.ReportState
-import howru.howru.reportState.dto.response.RepostStateInfo
+import howru.howru.reportState.dto.response.ReportStateInfo
 import jakarta.persistence.NoResultException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
@@ -44,7 +44,7 @@ class RepostStateRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findOneDtoByMemberUUID(memberUUID: UUID): RepostStateInfo {
+    override fun findOneDtoByMemberUUID(memberUUID: UUID): ReportStateInfo {
         return try {
             queryFactory.singleQuery {
                 select(listOf(

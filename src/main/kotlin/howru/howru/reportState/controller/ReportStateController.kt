@@ -5,7 +5,7 @@ import howru.howru.reportState.controller.constant.ReportStateParam
 import howru.howru.reportState.controller.constant.ReportStateUrl
 import howru.howru.reportState.controller.response.ReportStateResponse
 import howru.howru.reportState.dto.request.ReportMember
-import howru.howru.reportState.service.command.RepostStateCommandService
+import howru.howru.reportState.service.command.ReportStateCommandService
 import howru.howru.reportState.service.query.ReportStateQueryService
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,7 +21,7 @@ import java.util.UUID
 @RestController
 class ReportStateController @Autowired constructor(
     private val reportStateQueryService: ReportStateQueryService,
-    private val repostStateCommandService: RepostStateCommandService
+    private val reportStateCommandService: ReportStateCommandService
 ) {
     @GetMapping(ReportStateUrl.REPORT_STATE_INFO)
     fun reportStateInfo(@PathVariable(ReportStateParam.MEMBER_UUID) memberUUID: UUID): ResponseEntity<*> {
@@ -36,7 +36,7 @@ class ReportStateController @Autowired constructor(
     ): ResponseEntity<*> {
         validateBinding(bindingResult)
 
-        repostStateCommandService.addRepost(reportMember)
+        reportStateCommandService.addRepost(reportMember)
         return ReportStateResponse.reportSuccess()
     }
 }

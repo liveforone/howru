@@ -16,7 +16,7 @@ import howru.howru.member.dto.update.UpdatePassword
 import howru.howru.member.repository.MemberQuery
 import howru.howru.member.repository.MemberRepository
 import howru.howru.member.service.validator.MemberServiceValidator
-import howru.howru.reportState.service.command.RepostStateCommandService
+import howru.howru.reportState.service.command.ReportStateCommandService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -31,7 +31,7 @@ import java.util.*
 class MemberCommandService @Autowired constructor(
     private val memberRepository: MemberRepository,
     private val memberQuery: MemberQuery,
-    private val repostStateCommandService: RepostStateCommandService,
+    private val reportStateCommandService: ReportStateCommandService,
     private val authenticationManagerBuilder: AuthenticationManagerBuilder,
     private val jwtTokenProvider: JwtTokenProvider,
     private val memberServiceValidator: MemberServiceValidator
@@ -42,7 +42,7 @@ class MemberCommandService @Autowired constructor(
             memberServiceValidator.validateDuplicateEmail(email!!)
             Member.create(email, pw!!, nickName!!).also {
                 memberRepository.save(it)
-                repostStateCommandService.createRepostState(it)
+                reportStateCommandService.createRepostState(it)
             }
         }
     }
