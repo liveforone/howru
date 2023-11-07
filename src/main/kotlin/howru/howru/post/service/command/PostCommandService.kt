@@ -1,7 +1,7 @@
 package howru.howru.post.service.command
 
 import howru.howru.globalConfig.cache.constant.CacheName
-import howru.howru.member.repository.MemberRepository
+import howru.howru.member.repository.MemberQuery
 import howru.howru.post.cache.PostCache
 import howru.howru.post.domain.Post
 import howru.howru.post.dto.request.CreatePost
@@ -17,12 +17,12 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class PostCommandService @Autowired constructor(
     private val postRepository: PostRepository,
-    private val memberRepository: MemberRepository
+    private val memberQuery: MemberQuery
 ) {
     @CacheEvict(cacheNames = [CacheName.POST], key = PostCache.CREATE_WRITER)
     fun createPost(createPost: CreatePost): Long {
         return with(createPost) {
-            Post.create(writer = memberRepository.findOneByUUID(writerUUID!!), content!!)
+            Post.create(writer = memberQuery.findOneByUUID(writerUUID!!), content!!)
                 .run { postRepository.save(this).id!! }
         }
     }

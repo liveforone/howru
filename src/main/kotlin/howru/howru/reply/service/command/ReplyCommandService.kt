@@ -1,7 +1,7 @@
 package howru.howru.reply.service.command
 
 import howru.howru.comments.repository.CommentsRepository
-import howru.howru.member.repository.MemberRepository
+import howru.howru.member.repository.MemberQuery
 import howru.howru.reply.domain.Reply
 import howru.howru.reply.dto.request.CreateReply
 import howru.howru.reply.dto.request.RemoveReply
@@ -15,13 +15,13 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class ReplyCommandService @Autowired constructor(
     private val replyRepository: ReplyRepository,
-    private val memberRepository: MemberRepository,
+    private val memberQuery: MemberQuery,
     private val commentsRepository: CommentsRepository
 ) {
     fun createReply(createReply: CreateReply): Long {
         return with(createReply) {
             Reply.create(
-                writer = memberRepository.findOneByUUID(writerUUID!!),
+                writer = memberQuery.findOneByUUID(writerUUID!!),
                 comment = commentsRepository.findOneById(commentId!!),
                 content!!
             ).run { replyRepository.save(this).id!! }

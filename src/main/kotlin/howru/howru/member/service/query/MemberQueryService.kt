@@ -1,8 +1,8 @@
 package howru.howru.member.service.query
 
 import howru.howru.globalConfig.cache.constant.CacheName
-import howru.howru.member.repository.MemberRepository
 import howru.howru.member.cache.MemberCache
+import howru.howru.member.repository.MemberQuery
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
@@ -12,8 +12,8 @@ import java.util.*
 @Service
 @Transactional(readOnly = true)
 class MemberQueryService @Autowired constructor(
-    private val memberRepository: MemberRepository
+    private val memberQuery: MemberQuery
 ) {
     @Cacheable(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)
-    fun getMemberByUUID(uuid: UUID) = memberRepository.findOneDtoByUUID(uuid)
+    fun getMemberByUUID(uuid: UUID) = memberQuery.findOneDtoByUUID(uuid)
 }

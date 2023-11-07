@@ -4,7 +4,7 @@ import howru.howru.exception.exception.MemberException
 import howru.howru.exception.message.MemberExceptionMessage
 import howru.howru.member.domain.Member
 import howru.howru.member.domain.Role
-import howru.howru.member.repository.MemberRepository
+import howru.howru.member.repository.MemberQuery
 import howru.howru.reportState.service.command.RepostStateCommandService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.User
@@ -15,13 +15,13 @@ import org.springframework.stereotype.Service
 @Service
 class CustomUserDetailsService @Autowired constructor(
     private val repostStateCommandService: RepostStateCommandService,
-    private val memberRepository: MemberRepository
+    private val memberQuery: MemberQuery
 ) : UserDetailsService {
 
     override fun loadUserByUsername(email: String): UserDetails {
         val reportState = repostStateCommandService.releaseSuspend(email)
         check(reportState.isNotSuspend()) { throw MemberException(MemberExceptionMessage.SUSPEND_MEMBER, email) }
-        val member = memberRepository.findOneByEmail(email)
+        val member = memberQuery.findOneByEmail(email)
         return createUserDetails(member)
     }
 

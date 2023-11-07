@@ -13,6 +13,7 @@ import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.dto.request.WithdrawRequest
 import howru.howru.member.dto.update.UpdateEmail
 import howru.howru.member.dto.update.UpdatePassword
+import howru.howru.member.repository.MemberQuery
 import howru.howru.member.repository.MemberRepository
 import howru.howru.member.service.validator.MemberServiceValidator
 import howru.howru.reportState.service.command.RepostStateCommandService
@@ -29,6 +30,7 @@ import java.util.*
 @Transactional
 class MemberCommandService @Autowired constructor(
     private val memberRepository: MemberRepository,
+    private val memberQuery: MemberQuery,
     private val repostStateCommandService: RepostStateCommandService,
     private val authenticationManagerBuilder: AuthenticationManagerBuilder,
     private val jwtTokenProvider: JwtTokenProvider,
@@ -56,32 +58,32 @@ class MemberCommandService @Autowired constructor(
     @CacheEvict(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)
     fun updateEmail(updateEmail: UpdateEmail, uuid: UUID) {
         memberServiceValidator.validateDuplicateEmail(updateEmail.newEmail!!)
-        memberRepository.findOneByUUID(uuid)
+        memberQuery.findOneByUUID(uuid)
             .also { it.updateEmail(updateEmail.newEmail) }
     }
 
     fun updatePassword(updatePassword: UpdatePassword, uuid: UUID) {
         with(updatePassword) {
-            memberRepository.findOneByUUID(uuid)
+            memberQuery.findOneByUUID(uuid)
                 .also { it.updatePw(newPassword!!, oldPassword!!) }
         }
     }
 
     @CacheEvict(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)
     fun memberLockOn(uuid: UUID) {
-        memberRepository.findOneByUUID(uuid)
+        memberQuery.findOneByUUID(uuid)
             .also { it.lockOn() }
     }
 
     @CacheEvict(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)
     fun memberLockOff(uuid: UUID) {
-        memberRepository.findOneByUUID(uuid)
+        memberQuery.findOneByUUID(uuid)
             .also { it.lockOff() }
     }
 
     @CacheEvict(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)
     fun withdraw(withdrawRequest: WithdrawRequest, uuid: UUID) {
-        memberRepository.findOneByUUID(uuid)
+        memberQuery.findOneByUUID(uuid)
             .takeIf { isMatchPassword(withdrawRequest.pw!!, it.pw) }
             ?.also { memberRepository.delete(it) }
             ?: throw MemberException(MemberExceptionMessage.WRONG_PASSWORD, uuid.toString())
