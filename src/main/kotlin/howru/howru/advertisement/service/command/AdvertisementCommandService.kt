@@ -4,6 +4,7 @@ import howru.howru.advertisement.domain.Advertisement
 import howru.howru.advertisement.dto.request.CreateAdvertisement
 import howru.howru.advertisement.dto.update.UpdateAdContent
 import howru.howru.advertisement.dto.update.UpdateAdTitle
+import howru.howru.advertisement.repository.AdvertisementQuery
 import howru.howru.advertisement.repository.AdvertisementRepository
 import howru.howru.advertisement.service.command.constant.AdScheduleConstant
 import howru.howru.exception.exception.MemberException
@@ -21,6 +22,7 @@ import java.util.UUID
 @Transactional
 class AdvertisementCommandService @Autowired constructor(
     private val advertisementRepository: AdvertisementRepository,
+    private val advertisementQuery: AdvertisementQuery,
     private val memberRepository: MemberRepository
 ) {
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
@@ -45,7 +47,7 @@ class AdvertisementCommandService @Autowired constructor(
     fun editTitle(updateAdTitle: UpdateAdTitle, memberUUID: UUID) {
         require(memberRepository.findOneByUUID(memberUUID).isAdmin()) { throw MemberException(MemberExceptionMessage.NOT_ADMIN, memberUUID.toString()) }
         with(updateAdTitle) {
-            advertisementRepository.findOneById(id!!)
+            advertisementQuery.findOneById(id!!)
                 .also { it.editTitle(title!!) }
         }
     }
@@ -54,14 +56,14 @@ class AdvertisementCommandService @Autowired constructor(
     fun editContent(updateAdContent: UpdateAdContent, memberUUID: UUID) {
         require(memberRepository.findOneByUUID(memberUUID).isAdmin()) { throw MemberException(MemberExceptionMessage.NOT_ADMIN, memberUUID.toString()) }
         with(updateAdContent) {
-            advertisementRepository.findOneById(id!!)
+            advertisementQuery.findOneById(id!!)
                 .also { it.editContent(content!!) }
         }
     }
 
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
     fun removeAdById(id: Long, memberUUID: UUID) {
-        advertisementRepository.findOneById(id)
+        advertisementQuery.findOneById(id)
             .takeIf { memberRepository.findOneByUUID(memberUUID).isAdmin() }
             ?.also { advertisementRepository.delete(it) }
             ?: throw MemberException(MemberExceptionMessage.NOT_ADMIN, memberUUID.toString())
