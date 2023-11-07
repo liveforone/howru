@@ -48,8 +48,12 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
 	implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
 	implementation("io.jsonwebtoken:jjwt-jackson:0.11.5")
-	//jdsl config
+	//jdsl version 2.X.X config
 	implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-starter-jakarta:2.2.1.RELEASE")
+	//jdsl version 3.X.X config
+	implementation("com.linecorp.kotlin-jdsl:jpql-dsl:3.0.1")
+	implementation("com.linecorp.kotlin-jdsl:jpql-render:3.0.1")
+	implementation("com.linecorp.kotlin-jdsl:spring-data-jpa-support:3.0.1")
 	runtimeOnly("com.mysql:mysql-connector-j")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
