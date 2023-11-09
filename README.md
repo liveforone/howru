@@ -19,7 +19,7 @@
 ## 기술 스택
 * Framework : Spring Boot 3.1.5
 * Lang : Kotlin 1.9.10, Jvm17 
-* Data : Spring Data Jpa | Kotlin-JDSL-2.2.1.RELEASE | MySql 8.X 
+* Data : Spring Data Jpa | Kotlin-JDSL-2.2.1.RELEASE & 3.1 | MySql 8.X 
 * Security : Spring Security | Jwt(jjwt) 0.11.5 
 * Test : Junit5
 
