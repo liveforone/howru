@@ -6,10 +6,10 @@ import howru.howru.member.domain.Member
 import howru.howru.reportState.domain.ReportState
 import howru.howru.reportState.dto.response.ReportStateInfo
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Component
 import java.util.*
 
-@Repository
+@Component
 class ReportStateQuery @Autowired constructor(
     private val reportStateRepository: ReportStateRepository
 ) {

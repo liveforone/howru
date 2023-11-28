@@ -5,10 +5,10 @@ import howru.howru.exception.message.MemberExceptionMessage
 import howru.howru.member.domain.Member
 import howru.howru.member.dto.response.MemberInfo
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Component
 import java.util.*
 
-@Repository
+@Component
 class MemberQuery @Autowired constructor(
     private val memberRepository: MemberRepository
 ) {

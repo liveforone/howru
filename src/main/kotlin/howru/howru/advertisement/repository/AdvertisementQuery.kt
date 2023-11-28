@@ -6,10 +6,10 @@ import howru.howru.exception.exception.AdvertisementException
 import howru.howru.exception.message.AdvertisementExceptionMessage
 import howru.howru.globalUtil.getDateDigit
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Component
 import java.time.LocalDate
 
-@Repository
+@Component
 class AdvertisementQuery @Autowired constructor(
     private val advertisementRepository: AdvertisementRepository
 ) {
