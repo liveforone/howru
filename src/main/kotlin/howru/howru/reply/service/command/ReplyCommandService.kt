@@ -5,7 +5,7 @@ import howru.howru.member.repository.MemberQuery
 import howru.howru.reply.domain.Reply
 import howru.howru.reply.dto.request.CreateReply
 import howru.howru.reply.dto.request.RemoveReply
-import howru.howru.reply.dto.update.UpdateReplyContent
+import howru.howru.reply.dto.request.UpdateReplyContent
 import howru.howru.reply.repository.ReplyRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

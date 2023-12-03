@@ -1,4 +1,4 @@
-package howru.howru.comments.dto.update
+package howru.howru.comments.dto.request
 
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull

@@ -8,7 +8,7 @@ import howru.howru.reply.controller.constant.ReplyUrl
 import howru.howru.reply.controller.response.ReplyResponse
 import howru.howru.reply.dto.request.CreateReply
 import howru.howru.reply.dto.request.RemoveReply
-import howru.howru.reply.dto.update.UpdateReplyContent
+import howru.howru.reply.dto.request.UpdateReplyContent
 import howru.howru.reply.service.command.ReplyCommandService
 import howru.howru.reply.service.query.ReplyQueryService
 import jakarta.validation.Valid

@@ -3,7 +3,7 @@ package howru.howru.comments.service.command
 import howru.howru.comments.domain.Comments
 import howru.howru.comments.dto.request.CreateComments
 import howru.howru.comments.dto.request.RemoveComments
-import howru.howru.comments.dto.update.UpdateCommentsContent
+import howru.howru.comments.dto.request.UpdateCommentsContent
 import howru.howru.comments.repository.CommentsRepository
 import howru.howru.member.repository.MemberQuery
 import howru.howru.post.repository.PostRepository

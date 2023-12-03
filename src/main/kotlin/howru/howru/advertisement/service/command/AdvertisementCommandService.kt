@@ -2,8 +2,8 @@ package howru.howru.advertisement.service.command
 
 import howru.howru.advertisement.domain.Advertisement
 import howru.howru.advertisement.dto.request.CreateAdvertisement
-import howru.howru.advertisement.dto.update.UpdateAdContent
-import howru.howru.advertisement.dto.update.UpdateAdTitle
+import howru.howru.advertisement.dto.request.UpdateAdContent
+import howru.howru.advertisement.dto.request.UpdateAdTitle
 import howru.howru.advertisement.repository.AdvertisementQuery
 import howru.howru.advertisement.repository.AdvertisementRepository
 import howru.howru.advertisement.service.command.constant.AdScheduleConstant

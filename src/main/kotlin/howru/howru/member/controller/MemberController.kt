@@ -10,8 +10,8 @@ import howru.howru.member.controller.response.MemberResponse
 import howru.howru.member.dto.request.LoginRequest
 import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.dto.request.WithdrawRequest
-import howru.howru.member.dto.update.UpdateEmail
-import howru.howru.member.dto.update.UpdatePassword
+import howru.howru.member.dto.request.UpdateEmail
+import howru.howru.member.dto.request.UpdatePassword
 import howru.howru.member.service.command.MemberCommandService
 import howru.howru.member.service.query.MemberQueryService
 import jakarta.servlet.http.HttpServletResponse

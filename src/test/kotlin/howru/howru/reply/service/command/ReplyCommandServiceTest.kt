@@ -11,7 +11,7 @@ import howru.howru.post.service.command.PostCommandService
 import howru.howru.reply.domain.ReplyState
 import howru.howru.reply.dto.request.CreateReply
 import howru.howru.reply.dto.request.RemoveReply
-import howru.howru.reply.dto.update.UpdateReplyContent
+import howru.howru.reply.dto.request.UpdateReplyContent
 import howru.howru.reply.service.query.ReplyQueryService
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions

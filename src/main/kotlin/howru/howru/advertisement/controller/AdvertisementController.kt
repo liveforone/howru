@@ -5,8 +5,8 @@ import howru.howru.advertisement.controller.constant.AdvertisementParam
 import howru.howru.advertisement.controller.constant.AdvertisementUrl
 import howru.howru.advertisement.controller.response.AdvertisementResponse
 import howru.howru.advertisement.dto.request.CreateAdvertisement
-import howru.howru.advertisement.dto.update.UpdateAdContent
-import howru.howru.advertisement.dto.update.UpdateAdTitle
+import howru.howru.advertisement.dto.request.UpdateAdContent
+import howru.howru.advertisement.dto.request.UpdateAdTitle
 import howru.howru.advertisement.service.command.AdvertisementCommandService
 import howru.howru.advertisement.service.query.AdvertisementQueryService
 import howru.howru.globalUtil.validateBinding

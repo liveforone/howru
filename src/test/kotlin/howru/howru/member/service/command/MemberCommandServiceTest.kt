@@ -6,7 +6,7 @@ import howru.howru.member.domain.Role
 import howru.howru.member.dto.request.LoginRequest
 import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.dto.request.WithdrawRequest
-import howru.howru.member.dto.update.UpdateEmail
+import howru.howru.member.dto.request.UpdateEmail
 import howru.howru.member.service.query.MemberQueryService
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions

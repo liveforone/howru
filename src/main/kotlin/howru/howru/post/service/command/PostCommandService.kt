@@ -6,7 +6,7 @@ import howru.howru.post.cache.PostCache
 import howru.howru.post.domain.Post
 import howru.howru.post.dto.request.CreatePost
 import howru.howru.post.dto.request.RemovePost
-import howru.howru.post.dto.update.UpdatePostContent
+import howru.howru.post.dto.request.UpdatePostContent
 import howru.howru.post.repository.PostRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.annotation.CacheEvict

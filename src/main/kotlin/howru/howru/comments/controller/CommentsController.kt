@@ -6,7 +6,7 @@ import howru.howru.comments.controller.constant.CommentsUrl
 import howru.howru.comments.controller.response.CommentsResponse
 import howru.howru.comments.dto.request.CreateComments
 import howru.howru.comments.dto.request.RemoveComments
-import howru.howru.comments.dto.update.UpdateCommentsContent
+import howru.howru.comments.dto.request.UpdateCommentsContent
 import howru.howru.comments.service.command.CommentsCommandService
 import howru.howru.comments.service.query.CommentsQueryService
 import howru.howru.globalUtil.validateBinding
