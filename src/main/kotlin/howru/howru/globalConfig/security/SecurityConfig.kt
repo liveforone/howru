@@ -25,6 +25,7 @@ class SecurityConfig @Autowired constructor(
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain? {
         http.csrf { obj -> obj.disable() }
+        http.requestCache { cache -> cache.disable() }
         http.sessionManagement { session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
         http.authorizeHttpRequests { path ->
             path.requestMatchers(
