@@ -8,10 +8,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer
-import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer
-import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer
-import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -28,11 +24,9 @@ class SecurityConfig @Autowired constructor(
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain? {
-        http.csrf { obj: CsrfConfigurer<HttpSecurity> -> obj.disable() }
-        http.sessionManagement { session: SessionManagementConfigurer<HttpSecurity> ->
-            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        }
-        http.authorizeHttpRequests { path: AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry ->
+        http.csrf { obj -> obj.disable() }
+        http.sessionManagement { session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
+        http.authorizeHttpRequests { path ->
             path.requestMatchers(
                 MemberUrl.SIGNUP_MEMBER,
                 MemberUrl.LOGIN
@@ -42,9 +36,7 @@ class SecurityConfig @Autowired constructor(
             JwtAuthenticationFilter(jwtTokenProvider),
             UsernamePasswordAuthenticationFilter::class.java
         )
-        http.exceptionHandling { exception: ExceptionHandlingConfigurer<HttpSecurity> ->
-            exception.accessDeniedPage(MemberUrl.PROHIBITION)
-        }
+        http.exceptionHandling { exception -> exception.accessDeniedPage(MemberUrl.PROHIBITION) }
         return http.build()
     }
 }
