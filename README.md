@@ -53,5 +53,6 @@
 * [어플리케이션 캐시를 활용해 성능향상하기](https://github.com/liveforone/howru/blob/master/Documents/CACHE_FOR_PERFORMANCE.md)
 * [정지 기간이 있는 계정 정지 방법](https://github.com/liveforone/howru/blob/master/Documents/HOW_TO_SUSPEND_USER.md)
 * [추적가능한 예외처리](https://github.com/liveforone/howru/blob/master/Documents/TRACEABLE_EXCEPTION.md)
+* [controller advice와 똑같은 예외처리 in 필터](https://github.com/liveforone/howru/blob/master/Documents/FILTER_ERR_HANDLING.md)
 ## 비즈니스적 고민
 * [클린한 커뮤니티 만들기](https://github.com/liveforone/howru/blob/master/Documents/CLEAN_COMMUNITY.md)
