@@ -40,7 +40,7 @@ class JwtTokenProvider(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) {
 
     private fun generateRefreshToken(): String {
         return Jwts.builder()
-            .setExpiration(Date(Date().time + JwtConstant.TWO_HOUR_MS))
+            .setExpiration(Date(Date().time + JwtConstant.THIRTY_DAY))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()
     }
@@ -55,7 +55,7 @@ class JwtTokenProvider(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) {
         return UsernamePasswordAuthenticationToken(principal, JwtConstant.CREDENTIAL, authorities)
     }
 
-    private fun parseClaims(accessToken: String?): Claims {
+    private fun parseClaims(accessToken: String): Claims {
         return try {
             Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -67,20 +67,22 @@ class JwtTokenProvider(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) {
         }
     }
 
-    fun validateToken(token: String?): Boolean {
-        requireNotNull(token) { throw JwtCustomException(JwtExceptionMessage.TOKEN_IS_NULL) }
+    fun validateToken(token: String): Boolean {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token)
             return true
         } catch (e: MalformedJwtException) {
             logger().info(JwtExceptionMessage.INVALID_MESSAGE.message)
+            throw JwtCustomException(JwtExceptionMessage.EMPTY_CLAIMS)
         } catch (e: ExpiredJwtException) {
             logger().info(JwtExceptionMessage.EXPIRED_MESSAGE.message)
+            throw JwtCustomException(JwtExceptionMessage.EXPIRED_MESSAGE)
         } catch (e: UnsupportedJwtException) {
             logger().info(JwtExceptionMessage.UNSUPPORTED_MESSAGE.message)
+            throw JwtCustomException(JwtExceptionMessage.UNSUPPORTED_MESSAGE)
         } catch (e: SecurityException) {
             logger().info(JwtExceptionMessage.INVALID_MESSAGE.message)
+            throw JwtCustomException(JwtExceptionMessage.INVALID_MESSAGE)
         }
-        return false
     }
 }
