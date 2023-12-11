@@ -1,10 +1,10 @@
-package howru.howru.globalConfig.jwt
+package howru.howru.jwt
 
 import howru.howru.exception.exception.JwtCustomException
 import howru.howru.exception.message.JwtExceptionMessage
-import howru.howru.globalConfig.jwt.constant.JwtConstant
+import howru.howru.jwt.constant.JwtConstant
 import howru.howru.logger
-import howru.howru.member.dto.response.LoginInfo
+import howru.howru.jwt.dto.JwtTokenInfo
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
@@ -18,12 +18,14 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class JwtTokenProvider(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) {
-
+class JwtTokenProvider (
+    @Value(JwtConstant.SECRET_KEY_PATH) private var secretKey: String
+) {
     private val key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secretKey))
 
-    fun generateToken(authentication: Authentication): LoginInfo {
-        return LoginInfo.create(UUID.fromString(authentication.name), generateAccessToken(authentication), generateRefreshToken())
+    fun generateToken(authentication: Authentication): JwtTokenInfo {
+        val uuid = UUID.fromString(authentication.name)
+        return JwtTokenInfo.create(uuid, generateAccessToken(authentication), generateRefreshToken())
     }
 
     private fun generateAccessToken(authentication: Authentication): String {
@@ -40,7 +42,7 @@ class JwtTokenProvider(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) {
 
     private fun generateRefreshToken(): String {
         return Jwts.builder()
-            .setExpiration(Date(Date().time + JwtConstant.THIRTY_DAY))
+            .setExpiration(Date(Date().time + JwtConstant.THIRTY_DAY_MS))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()
     }
@@ -68,6 +70,9 @@ class JwtTokenProvider(@Value(JwtConstant.SECRET_KEY_PATH) secretKey: String) {
     }
 
     fun validateToken(token: String): Boolean {
+        if (token.isBlank()) {
+            throw JwtCustomException(JwtExceptionMessage.TOKEN_IS_NULL)
+        }
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token)
             return true

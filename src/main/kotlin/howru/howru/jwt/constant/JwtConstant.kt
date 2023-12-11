@@ -1,4 +1,4 @@
-package howru.howru.globalConfig.jwt.constant
+package howru.howru.jwt.constant
 
 object JwtConstant {
     const val HEADER = "Authorization"
@@ -7,7 +7,7 @@ object JwtConstant {
     const val EMPTY_PW = ""
     const val CREDENTIAL = ""
     const val TWO_HOUR_MS = 7200000
-    const val THIRTY_DAY = 2592000000
+    const val THIRTY_DAY_MS = 2592000000
     const val BEARER_TOKEN = "Bearer"
     const val SECRET_KEY_PATH = "\${jwt.secret}"
     const val TOKEN_SUB_INDEX = 7

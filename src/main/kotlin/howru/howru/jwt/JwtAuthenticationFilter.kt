@@ -1,9 +1,8 @@
-package howru.howru.globalConfig.jwt
+package howru.howru.jwt
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import howru.howru.exception.exception.JwtCustomException
-import howru.howru.exception.message.JwtExceptionMessage
-import howru.howru.globalConfig.jwt.constant.JwtConstant
+import howru.howru.jwt.constant.JwtConstant
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletRequest
 import jakarta.servlet.ServletResponse
@@ -24,7 +23,7 @@ class JwtAuthenticationFilter @Autowired constructor(
                 jwtTokenProvider.validateToken(it)
                 val authentication = jwtTokenProvider.getAuthentication(it)
                 SecurityContextHolder.getContext().authentication = authentication
-            } ?: throw JwtCustomException(JwtExceptionMessage.TOKEN_IS_NULL)
+            }
             chain.doFilter(request, response)
         } catch (e : JwtCustomException) {
             val httpResponse = response as HttpServletResponse

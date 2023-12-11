@@ -5,5 +5,6 @@ enum class JwtExceptionMessage(val status: Int, val message: String) {
     INVALID_MESSAGE(401, "Invalid JWT Token"),
     EXPIRED_MESSAGE(401, "Expired JWT Token"),
     UNSUPPORTED_MESSAGE(401, "Unsupported JWT Token"),
-    EMPTY_CLAIMS(404, "JWT claims string is empty.")
+    EMPTY_CLAIMS(404, "JWT claims string is empty."),
+    NOT_EXIST_REFRESH_TOKEN(404, "Refresh Token is not exist")
 }
