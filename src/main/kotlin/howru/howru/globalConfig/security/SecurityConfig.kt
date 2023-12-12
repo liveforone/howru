@@ -1,7 +1,7 @@
 package howru.howru.globalConfig.security
 
-import howru.howru.jwt.JwtAuthenticationFilter
-import howru.howru.jwt.JwtTokenProvider
+import howru.howru.jwt.filterLogic.JwtAuthenticationFilter
+import howru.howru.jwt.filterLogic.JwtTokenProvider
 import howru.howru.member.controller.constant.MemberUrl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -30,7 +30,8 @@ class SecurityConfig @Autowired constructor(
         http.authorizeHttpRequests { path ->
             path.requestMatchers(
                 MemberUrl.SIGNUP_MEMBER,
-                MemberUrl.LOGIN
+                MemberUrl.LOGIN,
+                MemberUrl.JWT_TOKEN_REISSUE
             ).permitAll().anyRequest().authenticated()
         }
         http.addFilterBefore(
