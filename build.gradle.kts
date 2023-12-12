@@ -21,7 +21,7 @@ noArg {
 }
 
 group = "howru"
-version = "1.1.4"
+version = "2.0.0"
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_17
