@@ -1,4 +1,4 @@
-package howru.howru.jwt
+package howru.howru.jwt.filterLogic
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import howru.howru.exception.exception.JwtCustomException
