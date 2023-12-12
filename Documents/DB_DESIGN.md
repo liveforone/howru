@@ -19,6 +19,14 @@ create table member (
 CREATE INDEX uuid_idx ON member (uuid);
 CREATE INDEX email_idx ON member (email);
 ```
+### refresh-token
+```sql
+create table refresh_token (
+    uuid BINARY(16) not null UNIQUE,
+    refresh_token varchar(255),
+    primary key (uuid)
+);
+```
 ### 신고상태 -> ReportState
 ```sql
 create table report_state (
