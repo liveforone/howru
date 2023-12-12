@@ -3,7 +3,7 @@
 ## 회원관리 기술
 * 세션보다 가볍고 관리하기 편한 Jwt 토큰을 활용해 서버에 부담을 최대한 줄이는 방식을 채택하였습니다.
 * 토큰관리는 가장 보편적인 방식인 프론트엔드의 로컬스토리지에서 jwt토큰을 관리하는것을 전제로 합니다.
-* 토큰의 만료시간은 2시간 입니다.
+* access 토큰의 만료시간은 2시간 입니다. refresh 토큰의 만료시간은 30일 입니다.
 
 ## 상세 설계
 * 외부 식별자 이름은 uuid로 합니다. 다른 도메인에서 사용하게된다면 memberUUID 형태로 사용합니다.
@@ -16,17 +16,21 @@
 * 회원은 잠금이 가능하며, 잠금 회원의 경우 맞팔로우한 회원만 회원의 게시글이나 프로필에 접근 가능합니다.
 * 잠금 상태는 회원가입시 기본적으로 off로 처리됩니다. 자유롭게 on/off 변경 가능합니다.
 * 정규화를 하여 회원의 상태와 신고 로직은 ReportState 테이블로 이관하였습니다.
+* refresh-token 또한 정규화를 통해 테이블을 생성하였지만, 회원문서에서 설명합니다.
+* refresh-token을 이용한 jwt 토큰 재발급 매커니즘은 [refresh token을 이용한 jwt 토큰 재발급 매커니즘](https://github.com/liveforone/howru/blob/master/Documents/JWT_TOKEN_REISSUE.md)을 참조하시면 됩니다.
 
 ## API 설계
 ```
 [POST] /member/signup
 [POST] /member/login
 [GET] /member/info
-[PUT] /member/{uuid}/update/email
-[PUT] /member/{uuid}/update/password
-[PUT] /member/{uuid}/lock-on
-[PUT] /member/{uuid}/lock-off
-[DELETE] /member/{uuid}/withdraw
+[PUT] /member/update/email
+[PUT] /member/update/password
+[PUT] /member/lock-on
+[PUT] /member/lock-off
+[PUT] /auth/reissue
+[POST] /member/logout
+[DELETE] /member/withdraw
 ```
 
 ## Json body 예시
@@ -62,6 +66,7 @@
 ```
 
 ## DB 설계
+### member
 ```sql
 create table member (
     id bigint not null auto_increment,
@@ -75,4 +80,12 @@ create table member (
 );
 CREATE INDEX uuid_idx ON member (uuid);
 CREATE INDEX email_idx ON member (email);
+```
+### refresh_token
+```sql
+create table refresh_token (
+    uuid BINARY(16) not null UNIQUE,
+    refresh_token varchar(255),
+    primary key (uuid)
+);
 ```
