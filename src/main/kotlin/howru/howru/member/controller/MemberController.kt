@@ -1,10 +1,12 @@
 package howru.howru.member.controller
 
+import howru.howru.exception.exception.MemberException
+import howru.howru.exception.message.MemberExceptionMessage
 import howru.howru.globalUtil.validateBinding
 import howru.howru.logger
 import howru.howru.member.controller.constant.MemberControllerConstant
 import howru.howru.member.controller.constant.MemberControllerLog
-import howru.howru.member.controller.constant.MemberParam
+import howru.howru.member.controller.constant.MemberHeader
 import howru.howru.member.controller.constant.MemberUrl
 import howru.howru.member.controller.response.MemberResponse
 import howru.howru.member.dto.request.LoginRequest
@@ -67,15 +69,29 @@ class MemberController @Autowired constructor(
         return MemberResponse.loginSuccess()
     }
 
+    @PutMapping(MemberUrl.JWT_TOKEN_REISSUE)
+    fun jwtTokenReissue(
+        @RequestHeader(MemberHeader.UUID) uuid: String?,
+        @RequestHeader(MemberHeader.REFRESH_TOKEN) refreshToken: String?
+    ): ResponseEntity<*> {
+        if (uuid.isNullOrBlank() || refreshToken.isNullOrBlank()) {
+            throw MemberException(MemberExceptionMessage.TOKEN_REISSUE_HEADER_IS_NULL, "UNRELIABLE-MEMBER")
+        }
+
+        val reissueJwtToken = memberCommandService.reissueJwtToken(UUID.fromString(uuid), refreshToken)
+        logger().info(MemberControllerLog.JWT_TOKEN_REISSUE.log)
+        return ResponseEntity.ok(reissueJwtToken)
+    }
+
     @PutMapping(MemberUrl.UPDATE_EMAIL)
     fun updateEmail(
-        @PathVariable(MemberParam.UUID) uuid: UUID,
         @RequestBody @Valid updateEmail: UpdateEmail,
-        bindingResult: BindingResult
+        bindingResult: BindingResult,
+        principal: Principal
     ): ResponseEntity<*> {
         validateBinding(bindingResult)
 
-        memberCommandService.updateEmail(updateEmail, uuid)
+        memberCommandService.updateEmail(updateEmail, UUID.fromString(principal.name))
         logger().info(MemberControllerLog.UPDATE_EMAIL_SUCCESS.log)
 
         return MemberResponse.updateEmailSuccess()
@@ -83,43 +99,50 @@ class MemberController @Autowired constructor(
 
     @PutMapping(MemberUrl.UPDATE_PASSWORD)
     fun updatePassword(
-        @PathVariable(MemberParam.UUID) uuid: UUID,
         @RequestBody @Valid updatePassword: UpdatePassword,
-        bindingResult: BindingResult
+        bindingResult: BindingResult,
+        principal: Principal
     ): ResponseEntity<*> {
         validateBinding(bindingResult)
 
-        memberCommandService.updatePassword(updatePassword, uuid)
+        memberCommandService.updatePassword(updatePassword, UUID.fromString(principal.name))
         logger().info(MemberControllerLog.UPDATE_PW_SUCCESS.log)
 
         return MemberResponse.updatePwSuccess()
     }
 
     @PutMapping(MemberUrl.LOCK_ON)
-    fun lockOn(@PathVariable(MemberParam.UUID) uuid: UUID): ResponseEntity<*> {
-        memberCommandService.memberLockOn(uuid)
+    fun lockOn(principal: Principal): ResponseEntity<*> {
+        memberCommandService.memberLockOn(UUID.fromString(principal.name))
         logger().info(MemberControllerLog.LOCK_ON_SUCCESS.log)
 
         return MemberResponse.lockOnSuccess()
     }
 
     @PutMapping(MemberUrl.LOCK_OFF)
-    fun lockOff(@PathVariable(MemberParam.UUID) uuid: UUID): ResponseEntity<*> {
-        memberCommandService.memberLockOff(uuid)
+    fun lockOff(principal: Principal): ResponseEntity<*> {
+        memberCommandService.memberLockOff(UUID.fromString(principal.name))
         logger().info(MemberControllerLog.LOCK_OFF_SUCCESS.log)
 
         return MemberResponse.lockOffSuccess()
     }
 
+    @PostMapping(MemberUrl.LOGOUT)
+    fun logout(principal: Principal): ResponseEntity<*> {
+        memberCommandService.logout(UUID.fromString(principal.name))
+        logger().info(MemberControllerLog.LOGOUT_SUCCESS.log)
+        return MemberResponse.logOutSuccess()
+    }
+
     @DeleteMapping(MemberUrl.WITHDRAW)
     fun withdraw(
-        @PathVariable(MemberParam.UUID) uuid: UUID,
         @RequestBody @Valid withdrawRequest: WithdrawRequest,
-        bindingResult: BindingResult
+        bindingResult: BindingResult,
+        principal: Principal
     ): ResponseEntity<*> {
         validateBinding(bindingResult)
 
-        memberCommandService.withdraw(withdrawRequest, uuid)
+        memberCommandService.withdraw(withdrawRequest, UUID.fromString(principal.name))
         logger().info(MemberControllerLog.WITHDRAW_SUCCESS.log)
 
         return MemberResponse.withdrawSuccess()
