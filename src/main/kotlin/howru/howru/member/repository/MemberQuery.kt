@@ -3,6 +3,7 @@ package howru.howru.member.repository
 import howru.howru.exception.exception.MemberException
 import howru.howru.exception.message.MemberExceptionMessage
 import howru.howru.member.domain.Member
+import howru.howru.member.domain.Role
 import howru.howru.member.dto.response.MemberInfo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -45,6 +46,14 @@ class MemberQuery @Autowired constructor(
                 path(Member::nickName),
                 path(Member::memberLock)
             ).from(entity(Member::class))
+                .where(path(Member::uuid).eq(uuid))
+        }.firstOrNull() ?: throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL, uuid.toString())
+    }
+
+    fun findAuthByUUID(uuid: UUID): Role {
+        return memberRepository.findAll {
+            select(path(Member::auth))
+                .from(entity(Member::class))
                 .where(path(Member::uuid).eq(uuid))
         }.firstOrNull() ?: throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL, uuid.toString())
     }
