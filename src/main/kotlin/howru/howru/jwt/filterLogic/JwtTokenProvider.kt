@@ -1,10 +1,12 @@
-package howru.howru.jwt
+package howru.howru.jwt.filterLogic
 
 import howru.howru.exception.exception.JwtCustomException
 import howru.howru.exception.message.JwtExceptionMessage
 import howru.howru.jwt.constant.JwtConstant
 import howru.howru.logger
 import howru.howru.jwt.dto.JwtTokenInfo
+import howru.howru.jwt.dto.ReissuedTokenInfo
+import howru.howru.member.domain.Role
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
@@ -18,9 +20,7 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class JwtTokenProvider (
-    @Value(JwtConstant.SECRET_KEY_PATH) private var secretKey: String
-) {
+class JwtTokenProvider (@Value(JwtConstant.SECRET_KEY_PATH) private var secretKey: String) {
     private val key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secretKey))
 
     fun generateToken(authentication: Authentication): JwtTokenInfo {
@@ -35,6 +35,19 @@ class JwtTokenProvider (
                 JwtConstant.CLAIM_NAME,
                 authentication.authorities.iterator().next().authority
             )
+            .setExpiration(Date(Date().time + JwtConstant.TWO_HOUR_MS))
+            .signWith(key, SignatureAlgorithm.HS256)
+            .compact()
+    }
+
+    fun reissueToken(uuid: UUID, role: Role): ReissuedTokenInfo {
+        return ReissuedTokenInfo.create(generateAccessTokenWhenReissue(uuid, role), generateRefreshToken())
+    }
+
+    private fun generateAccessTokenWhenReissue(uuid: UUID, role: Role): String {
+        return Jwts.builder()
+            .setSubject(uuid.toString())
+            .claim(JwtConstant.CLAIM_NAME, role.auth)
             .setExpiration(Date(Date().time + JwtConstant.TWO_HOUR_MS))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()
@@ -69,25 +82,24 @@ class JwtTokenProvider (
         }
     }
 
-    fun validateToken(token: String): Boolean {
+    fun validateToken(token: String) {
         if (token.isBlank()) {
             throw JwtCustomException(JwtExceptionMessage.TOKEN_IS_NULL)
         }
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token)
-            return true
         } catch (e: MalformedJwtException) {
-            logger().info(JwtExceptionMessage.INVALID_MESSAGE.message)
+            logger().info(JwtExceptionMessage.INVALID_TOKEN.message)
             throw JwtCustomException(JwtExceptionMessage.EMPTY_CLAIMS)
         } catch (e: ExpiredJwtException) {
-            logger().info(JwtExceptionMessage.EXPIRED_MESSAGE.message)
-            throw JwtCustomException(JwtExceptionMessage.EXPIRED_MESSAGE)
+            logger().info(JwtExceptionMessage.EXPIRED_JWT_TOKEN.message)
+            throw JwtCustomException(JwtExceptionMessage.EXPIRED_JWT_TOKEN)
         } catch (e: UnsupportedJwtException) {
-            logger().info(JwtExceptionMessage.UNSUPPORTED_MESSAGE.message)
-            throw JwtCustomException(JwtExceptionMessage.UNSUPPORTED_MESSAGE)
+            logger().info(JwtExceptionMessage.UNSUPPORTED.message)
+            throw JwtCustomException(JwtExceptionMessage.UNSUPPORTED)
         } catch (e: SecurityException) {
-            logger().info(JwtExceptionMessage.INVALID_MESSAGE.message)
-            throw JwtCustomException(JwtExceptionMessage.INVALID_MESSAGE)
+            logger().info(JwtExceptionMessage.INVALID_TOKEN.message)
+            throw JwtCustomException(JwtExceptionMessage.INVALID_TOKEN)
         }
     }
 }
