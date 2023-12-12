@@ -1,6 +1,7 @@
 package howru.howru.exception.controllerAdvice
 
 import howru.howru.exception.controllerAdvice.constant.MemberAdviceConstant
+import howru.howru.exception.exception.JwtCustomException
 import howru.howru.exception.exception.MemberException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -23,5 +24,12 @@ class MemberControllerAdvice {
         return ResponseEntity
             .status(memberException.memberExceptionMessage.status)
             .body(memberException.message + memberException.memberIdentifier)
+    }
+
+    @ExceptionHandler(JwtCustomException::class)
+    fun jwtCustomExceptionHandle(jwtCustomException: JwtCustomException): ResponseEntity<String> {
+        return ResponseEntity
+            .status(jwtCustomException.jwtExceptionMessage.status)
+            .body(jwtCustomException.message)
     }
 }
