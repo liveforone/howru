@@ -2,7 +2,7 @@ package howru.howru.jwt.dto
 
 import java.util.UUID
 
-class JwtTokenInfo private constructor(
+data class JwtTokenInfo (
     val uuid: UUID,
     val accessToken: String,
     val refreshToken: String
