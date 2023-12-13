@@ -2,7 +2,7 @@ package howru.howru.reply.controller
 
 import howru.howru.globalUtil.validateBinding
 import howru.howru.logger
-import howru.howru.reply.controller.constant.ReplyControllerLog
+import howru.howru.reply.log.ReplyControllerLog
 import howru.howru.reply.controller.constant.ReplyParam
 import howru.howru.reply.controller.constant.ReplyUrl
 import howru.howru.reply.controller.response.ReplyResponse
@@ -62,7 +62,7 @@ class ReplyController @Autowired constructor(
         validateBinding(bindingResult)
 
         replyCommandService.createReply(createReply)
-        logger().info(ReplyControllerLog.CREATE_SUCCESS.log)
+        logger().info(ReplyControllerLog.CREATE_SUCCESS + createReply.writerUUID)
 
         return ReplyResponse.createReplySuccess()
     }
@@ -75,7 +75,7 @@ class ReplyController @Autowired constructor(
         validateBinding(bindingResult)
 
         replyCommandService.editReply(updateReplyContent)
-        logger().info(ReplyControllerLog.EDIT_SUCCESS.log)
+        logger().info(ReplyControllerLog.EDIT_SUCCESS + updateReplyContent.id)
 
         return ReplyResponse.editReplySuccess()
     }
@@ -88,7 +88,7 @@ class ReplyController @Autowired constructor(
         validateBinding(bindingResult)
 
         replyCommandService.removeReply(removeReply)
-        logger().info(ReplyControllerLog.DELETE_SUCCESS.log)
+        logger().info(ReplyControllerLog.DELETE_SUCCESS + removeReply.id)
 
         return ReplyResponse.removeReplySuccess()
     }
