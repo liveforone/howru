@@ -8,6 +8,7 @@ import howru.howru.globalUtil.isMatchPassword
 import howru.howru.jwt.dto.JwtTokenInfo
 import howru.howru.jwt.dto.ReissuedTokenInfo
 import howru.howru.jwt.service.JwtTokenService
+import howru.howru.logger
 import howru.howru.member.cache.MemberCache
 import howru.howru.member.domain.Member
 import howru.howru.member.dto.request.LoginRequest
@@ -15,6 +16,7 @@ import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.dto.request.WithdrawRequest
 import howru.howru.member.dto.request.UpdateEmail
 import howru.howru.member.dto.request.UpdatePassword
+import howru.howru.member.log.MemberServiceLog
 import howru.howru.member.repository.MemberQuery
 import howru.howru.member.repository.MemberRepository
 import howru.howru.member.service.validator.MemberServiceValidator
@@ -68,27 +70,23 @@ class MemberCommandService @Autowired constructor(
     @CacheEvict(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)
     fun updateEmail(updateEmail: UpdateEmail, uuid: UUID) {
         memberServiceValidator.validateDuplicateEmail(updateEmail.newEmail!!)
-        memberQuery.findOneByUUID(uuid)
-            .also { it.updateEmail(updateEmail.newEmail) }
+        memberQuery.findOneByUUID(uuid).also { it.updateEmail(updateEmail.newEmail) }
     }
 
     fun updatePassword(updatePassword: UpdatePassword, uuid: UUID) {
         with(updatePassword) {
-            memberQuery.findOneByUUID(uuid)
-                .also { it.updatePw(newPassword!!, oldPassword!!) }
+            memberQuery.findOneByUUID(uuid).also { it.updatePw(newPassword!!, oldPassword!!) }
         }
     }
 
     @CacheEvict(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)
     fun memberLockOn(uuid: UUID) {
-        memberQuery.findOneByUUID(uuid)
-            .also { it.lockOn() }
+        memberQuery.findOneByUUID(uuid).also { it.lockOn() }
     }
 
     @CacheEvict(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)
     fun memberLockOff(uuid: UUID) {
-        memberQuery.findOneByUUID(uuid)
-            .also { it.lockOff() }
+        memberQuery.findOneByUUID(uuid).also { it.lockOff() }
     }
 
     @CacheEvict(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)
@@ -103,6 +101,6 @@ class MemberCommandService @Autowired constructor(
             ?.also {
                 memberRepository.delete(it)
                 jwtTokenService.removeRefreshToken(uuid)
-            } ?: throw MemberException(MemberExceptionMessage.WRONG_PASSWORD, uuid.toString())
+            } ?: logger().warn(MemberServiceLog.WRONG_PW + uuid); throw MemberException(MemberExceptionMessage.WRONG_PASSWORD, uuid.toString())
     }
 }
