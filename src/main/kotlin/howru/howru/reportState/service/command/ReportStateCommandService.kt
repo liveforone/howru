@@ -1,11 +1,9 @@
 package howru.howru.reportState.service.command
 
-import howru.howru.logger
 import howru.howru.member.domain.Member
 import howru.howru.reportState.domain.ReportState
 import howru.howru.reportState.dto.request.ReportMember
 import howru.howru.reportState.repository.ReportStateQuery
-import howru.howru.reportState.service.command.log.ReportLog
 import howru.howru.reportState.repository.ReportStateRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -22,15 +20,12 @@ class ReportStateCommandService @Autowired constructor(
     }
 
     fun releaseSuspend(email: String): ReportState {
-        return reportStateQuery.findOneByMemberEmail(email)
-            .also { it.releaseSuspend() }
+        return reportStateQuery.findOneByMemberEmail(email).also { it.releaseSuspend() }
     }
 
     fun addRepost(reportMember: ReportMember) {
         with(reportMember) {
-            reportStateQuery.findOneByMemberUUID(memberUUID!!)
-                .also { it.addReport() }
-            logger().info(ReportLog.REPORT_MEMBER.log + memberUUID)
+            reportStateQuery.findOneByMemberUUID(memberUUID!!).also { it.addReport() }
         }
     }
 }
