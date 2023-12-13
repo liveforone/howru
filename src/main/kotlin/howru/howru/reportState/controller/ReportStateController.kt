@@ -1,10 +1,12 @@
 package howru.howru.reportState.controller
 
 import howru.howru.globalUtil.validateBinding
+import howru.howru.logger
 import howru.howru.reportState.controller.constant.ReportStateParam
 import howru.howru.reportState.controller.constant.ReportStateUrl
 import howru.howru.reportState.controller.response.ReportStateResponse
 import howru.howru.reportState.dto.request.ReportMember
+import howru.howru.reportState.log.ReportStateControllerLog
 import howru.howru.reportState.service.command.ReportStateCommandService
 import howru.howru.reportState.service.query.ReportStateQueryService
 import jakarta.validation.Valid
@@ -37,6 +39,7 @@ class ReportStateController @Autowired constructor(
         validateBinding(bindingResult)
 
         reportStateCommandService.addRepost(reportMember)
+        logger().info(ReportStateControllerLog.REPORT_MEMBER + reportMember.memberUUID)
         return ReportStateResponse.reportSuccess()
     }
 }
