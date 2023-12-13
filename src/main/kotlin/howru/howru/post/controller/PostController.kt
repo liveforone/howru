@@ -2,7 +2,7 @@ package howru.howru.post.controller
 
 import howru.howru.globalUtil.validateBinding
 import howru.howru.logger
-import howru.howru.post.controller.constant.PostControllerLog
+import howru.howru.post.log.PostControllerLog
 import howru.howru.post.controller.constant.PostParam
 import howru.howru.post.controller.constant.PostUrl
 import howru.howru.post.controller.response.PostResponse
@@ -96,7 +96,7 @@ class PostController @Autowired constructor(
         validateBinding(bindingResult)
 
         postCommandService.createPost(createPost)
-        logger().info(PostControllerLog.CREATE_POST_SUCCESS.log)
+        logger().info(PostControllerLog.CREATE_POST_SUCCESS + createPost.writerUUID)
 
         return PostResponse.createPostSuccess()
     }
@@ -109,7 +109,7 @@ class PostController @Autowired constructor(
         validateBinding(bindingResult)
 
         postCommandService.editContent(updatePostContent)
-        logger().info(PostControllerLog.EDIT_CONTENT_SUCCESS.log)
+        logger().info(PostControllerLog.EDIT_CONTENT_SUCCESS + updatePostContent.id)
 
         return PostResponse.editPostSuccess()
     }
@@ -122,7 +122,7 @@ class PostController @Autowired constructor(
         validateBinding(bindingResult)
 
         postCommandService.removePost(removePost)
-        logger().info(PostControllerLog.DELETE_POST_SUCCESS.log)
+        logger().info(PostControllerLog.DELETE_POST_SUCCESS + removePost.id)
 
         return PostResponse.removePostSuccess()
     }
