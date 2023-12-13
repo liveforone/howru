@@ -4,9 +4,11 @@ import howru.howru.exception.exception.SubscribeException
 import howru.howru.exception.message.SubscribeExceptionMessage
 import howru.howru.globalConfig.cache.constant.CacheName
 import howru.howru.globalUtil.extractKeywords
+import howru.howru.logger
 import howru.howru.member.service.query.MemberQueryService
 import howru.howru.post.cache.PostCache
 import howru.howru.post.dto.response.PostInfo
+import howru.howru.post.log.PostServiceLog
 import howru.howru.post.repository.PostRepository
 import howru.howru.subscribe.service.query.SubscribeQueryService
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,7 +35,7 @@ class PostQueryService @Autowired constructor(
         } else {
             takeIf { subscribeQueryService.isFollowee(writerUUID, memberUUID) }
                 ?.run { postRepository.findPostsBySomeone(writerUUID, lastId) }
-                ?: throw SubscribeException(SubscribeExceptionMessage.NOT_FOLLOWER, memberUUID)
+                ?: logger().warn(PostServiceLog.NOT_FOLLOWER + writerUUID); throw SubscribeException(SubscribeExceptionMessage.NOT_FOLLOWER, memberUUID)
         }
     }
     fun getPostsOfFollowee(followerUUID: UUID, lastId: Long?): List<PostInfo> {
