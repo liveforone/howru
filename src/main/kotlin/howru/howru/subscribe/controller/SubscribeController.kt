@@ -2,7 +2,7 @@ package howru.howru.subscribe.controller
 
 import howru.howru.globalUtil.validateBinding
 import howru.howru.logger
-import howru.howru.subscribe.controller.constant.SubscribeControllerLog
+import howru.howru.subscribe.log.SubscribeControllerLog
 import howru.howru.subscribe.controller.constant.SubscribeParam
 import howru.howru.subscribe.controller.constant.SubscribeUrl
 import howru.howru.subscribe.controller.response.SubscribeResponse
@@ -68,7 +68,7 @@ class SubscribeController @Autowired constructor(
         validateBinding(bindingResult)
 
         subscribeCommandService.createSubscribe(createSubscribe)
-        logger().info(SubscribeControllerLog.SUBSCRIBE_SUCCESS.log)
+        logger().info(SubscribeControllerLog.SUBSCRIBE_SUCCESS + createSubscribe.followerUUID + SubscribeControllerLog.FOLLOWEE_INSERT_LOG + createSubscribe.followeeUUID)
 
         return SubscribeResponse.subscribeSuccess()
     }
@@ -81,7 +81,7 @@ class SubscribeController @Autowired constructor(
         validateBinding(bindingResult)
 
         subscribeCommandService.unsubscribe(unsubscribeRequest)
-        logger().info(SubscribeControllerLog.UNSUBSCRIBE_SUCCESS.log)
+        logger().info(SubscribeControllerLog.UNSUBSCRIBE_SUCCESS + unsubscribeRequest.followerUUID + SubscribeControllerLog.FOLLOWEE_INSERT_LOG + unsubscribeRequest.followeeUUID)
 
         return SubscribeResponse.unsubscribeSuccess()
     }
