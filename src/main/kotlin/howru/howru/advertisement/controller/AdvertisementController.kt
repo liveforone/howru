@@ -1,6 +1,6 @@
 package howru.howru.advertisement.controller
 
-import howru.howru.advertisement.controller.constant.AdvertisementControllerLog
+import howru.howru.advertisement.log.AdControllerLog
 import howru.howru.advertisement.controller.constant.AdvertisementParam
 import howru.howru.advertisement.controller.constant.AdvertisementUrl
 import howru.howru.advertisement.controller.response.AdvertisementResponse
@@ -70,7 +70,7 @@ class AdvertisementController @Autowired constructor(
         validateBinding(bindingResult)
 
         advertisementCommandService.createHalfAd(createAdvertisement, UUID.fromString(principal.name))
-        logger().info(AdvertisementControllerLog.CREATE_SUCCESS.log)
+        logger().info(AdControllerLog.CREATE_SUCCESS + createAdvertisement.company)
 
         return AdvertisementResponse.createHalfSuccess()
     }
@@ -84,7 +84,7 @@ class AdvertisementController @Autowired constructor(
         validateBinding(bindingResult)
 
         advertisementCommandService.createYearAd(createAdvertisement, UUID.fromString(principal.name))
-        logger().info(AdvertisementControllerLog.CREATE_SUCCESS.log)
+        logger().info(AdControllerLog.CREATE_SUCCESS + createAdvertisement.company)
 
         return AdvertisementResponse.createYearSuccess()
     }
@@ -98,7 +98,7 @@ class AdvertisementController @Autowired constructor(
         validateBinding(bindingResult)
 
         advertisementCommandService.editTitle(updateAdTitle, UUID.fromString(principal.name))
-        logger().info(AdvertisementControllerLog.EDIT_TITLE_SUCCESS.log)
+        logger().info(AdControllerLog.EDIT_TITLE_SUCCESS + updateAdTitle.id)
 
         return AdvertisementResponse.editTitleSuccess()
     }
@@ -112,7 +112,7 @@ class AdvertisementController @Autowired constructor(
         validateBinding(bindingResult)
 
         advertisementCommandService.editContent(updateAdContent, UUID.fromString(principal.name))
-        logger().info(AdvertisementControllerLog.EDIT_CONTENT_SUCCESS.log)
+        logger().info(AdControllerLog.EDIT_CONTENT_SUCCESS + updateAdContent.id)
 
         return AdvertisementResponse.editContentSuccess()
     }
@@ -123,7 +123,7 @@ class AdvertisementController @Autowired constructor(
         principal: Principal
     ): ResponseEntity<*> {
         advertisementCommandService.removeAdById(id, UUID.fromString(principal.name))
-        logger().info(AdvertisementControllerLog.DELETE_SUCCESS.log)
+        logger().info(AdControllerLog.DELETE_SUCCESS + id)
 
         return AdvertisementResponse.removeAdSuccess()
     }
