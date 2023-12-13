@@ -3,6 +3,7 @@ package howru.howru.jwt.filterLogic
 import com.fasterxml.jackson.databind.ObjectMapper
 import howru.howru.exception.exception.JwtCustomException
 import howru.howru.jwt.constant.JwtConstant
+import howru.howru.logger
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletRequest
 import jakarta.servlet.ServletResponse
@@ -30,6 +31,7 @@ class JwtAuthenticationFilter @Autowired constructor(
             httpResponse.status = e.jwtExceptionMessage.status
             httpResponse.contentType = MediaType.APPLICATION_JSON_VALUE
             val errorResponse = e.message
+            logger().warn(e.message)
             val objectMapper = ObjectMapper()
             httpResponse.writer.write(objectMapper.writeValueAsString(errorResponse))
         }
