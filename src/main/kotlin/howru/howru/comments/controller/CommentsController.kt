@@ -1,6 +1,6 @@
 package howru.howru.comments.controller
 
-import howru.howru.comments.controller.constant.CommentsControllerLog
+import howru.howru.comments.log.CommentsControllerLog
 import howru.howru.comments.controller.constant.CommentsParam
 import howru.howru.comments.controller.constant.CommentsUrl
 import howru.howru.comments.controller.response.CommentsResponse
@@ -72,7 +72,7 @@ class CommentsController @Autowired constructor(
         validateBinding(bindingResult)
 
         commentsCommandService.createComment(createComments)
-        logger().info(CommentsControllerLog.CREATE_COMMENT_SUCCESS.log)
+        logger().info(CommentsControllerLog.CREATE_COMMENT_SUCCESS + createComments.writerUUID)
 
         return CommentsResponse.createCommentSuccess()
     }
@@ -85,7 +85,7 @@ class CommentsController @Autowired constructor(
         validateBinding(bindingResult)
 
         commentsCommandService.editComment(updateCommentsContent)
-        logger().info(CommentsControllerLog.EDIT_COMMENT_SUCCESS.log)
+        logger().info(CommentsControllerLog.EDIT_COMMENT_SUCCESS + updateCommentsContent.id)
 
         return CommentsResponse.editCommentSuccess()
     }
@@ -98,7 +98,7 @@ class CommentsController @Autowired constructor(
         validateBinding(bindingResult)
 
         commentsCommandService.removeComment(removeComments)
-        logger().info(CommentsControllerLog.DELETE_COMMENTS_SUCCESS.log)
+        logger().info(CommentsControllerLog.DELETE_COMMENTS_SUCCESS + removeComments.id)
 
         return CommentsResponse.removeCommentSuccess()
     }
