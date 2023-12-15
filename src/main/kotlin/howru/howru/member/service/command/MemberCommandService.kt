@@ -101,6 +101,10 @@ class MemberCommandService @Autowired constructor(
             ?.also {
                 memberRepository.delete(it)
                 jwtTokenService.removeRefreshToken(uuid)
-            } ?: logger().warn(MemberServiceLog.WRONG_PW + uuid); throw MemberException(MemberExceptionMessage.WRONG_PASSWORD, uuid.toString())
+            }
+            ?: run {
+                logger().warn(MemberServiceLog.WRONG_PW + uuid)
+                throw MemberException(MemberExceptionMessage.WRONG_PASSWORD, uuid.toString())
+            }
     }
 }

@@ -35,7 +35,7 @@ class PostQueryService @Autowired constructor(
         } else {
             takeIf { subscribeQueryService.isFollowee(writerUUID, memberUUID) }
                 ?.run { postRepository.findPostsBySomeone(writerUUID, lastId) }
-                ?: logger().warn(PostServiceLog.NOT_FOLLOWER + writerUUID); throw SubscribeException(SubscribeExceptionMessage.NOT_FOLLOWER, memberUUID)
+                ?: run { logger().warn(PostServiceLog.NOT_FOLLOWER + writerUUID); throw SubscribeException(SubscribeExceptionMessage.NOT_FOLLOWER, memberUUID) }
         }
     }
     fun getPostsOfFollowee(followerUUID: UUID, lastId: Long?): List<PostInfo> {

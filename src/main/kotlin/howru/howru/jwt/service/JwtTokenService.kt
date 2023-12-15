@@ -20,6 +20,11 @@ class JwtTokenService @Autowired constructor(
     private val refreshTokenRepository: RefreshTokenRepository,
     private val jwtTokenProvider: JwtTokenProvider
 ) {
+    @Transactional(readOnly = true)
+    fun getRefreshToken(uuid: UUID): RefreshToken {
+        return refreshTokenRepository.findById(uuid).orElseThrow { logger().warn(JwtServiceLog.NOT_EXIST_REFRESH_TOKEN + uuid); throw JwtCustomException(JwtExceptionMessage.NOT_EXIST_REFRESH_TOKEN) }
+    }
+
     fun createRefreshToken(uuid: UUID, refreshToken: String) {
         refreshTokenRepository.save(RefreshToken.create(uuid, refreshToken))
     }
@@ -33,7 +38,8 @@ class JwtTokenService @Autowired constructor(
                 val reissueToken = jwtTokenProvider.reissueToken(uuid, role)
                 it.reissueRefreshToken(reissueToken.refreshToken)
                 return reissueToken
-            } ?: logger().warn(JwtServiceLog.UN_MATCH_REFRESH_TOKEN + uuid); throw JwtCustomException(JwtExceptionMessage.UN_MATCH_REFRESH_TOKEN)
+            }
+            ?: run { logger().warn(JwtServiceLog.UN_MATCH_REFRESH_TOKEN + uuid); throw JwtCustomException(JwtExceptionMessage.UN_MATCH_REFRESH_TOKEN) }
     }
 
     fun clearRefreshToken(uuid: UUID) {

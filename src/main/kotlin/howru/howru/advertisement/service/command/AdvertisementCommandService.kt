@@ -80,7 +80,7 @@ class AdvertisementCommandService @Autowired constructor(
         advertisementQuery.findOneById(id)
             .takeIf { memberQuery.findOneByUUID(memberUUID).isAdmin() }
             ?.also { advertisementRepository.delete(it) }
-            ?: logger().warn(AdServiceLog.ACCESS_NON_ADMIN + memberUUID); throw MemberException(MemberExceptionMessage.NOT_ADMIN, memberUUID.toString())
+            ?.run { logger().warn(AdServiceLog.ACCESS_NON_ADMIN + memberUUID); throw MemberException(MemberExceptionMessage.NOT_ADMIN, memberUUID.toString()) }
     }
 
     @Scheduled(cron = AdScheduleConstant.DELETE_EXPIRED_POLICY)
