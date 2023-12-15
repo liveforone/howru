@@ -22,16 +22,6 @@
 * 이런 추상화는 너무나 깔끔한 시스템을 만들 수 있기 때문이다. 그런데 이때 간과하는 것이 로그이다. 
 * 예외는 분명 잘못된 input이나 logic, 에러 등에 의해서 발생하는 것인데 이를 그냥 client로 넘겨주기만 한다? 이는 적절치 않다고 생각된다.
 * 이러한 예외에 대해서도 warn 혹은 error 레벨의 로그를 남겨야 한다고 본다. 필자는 대부분의 경우 warn level의 로그를 남긴다.
-* 코틀린에서 check() {} 혹은 require() {} 구문으로 input에서 잘못된 부분을 찾아 에러를 throw하는 경우가 많을 것이다.
-* 또한 takeIf를 통해 체크하는 경우 ?: 에 로그와 에러를 던지지 말고(이렇게 하면 로그가 안찍힌다.) ?.run {} 구문을 활용해서 로그와 에러를 던지면 된다.
-```kotlin
-fun removeAdById(id: Long, memberUUID: UUID) {
-        advertisementQuery.findOneById(id)
-            .takeIf { memberQuery.findOneByUUID(memberUUID).isAdmin() }
-            ?.also { advertisementRepository.delete(it) }
-            ?.run { logger().warn(AdServiceLog.ACCESS_NON_ADMIN + memberUUID); throw MemberException(MemberExceptionMessage.NOT_ADMIN, memberUUID.toString()) }
-    }
-```
 
 
 ## 로그의 식별자
