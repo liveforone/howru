@@ -1,6 +1,9 @@
 package howru.howru.member.service.command
 
+import howru.howru.exception.exception.JwtCustomException
 import howru.howru.exception.exception.MemberException
+import howru.howru.jwt.service.JwtTokenService
+import howru.howru.logger
 import howru.howru.member.domain.MemberLock
 import howru.howru.member.domain.Role
 import howru.howru.member.dto.request.LoginRequest
@@ -19,7 +22,8 @@ import org.springframework.transaction.annotation.Transactional
 class MemberCommandServiceTest @Autowired constructor(
     private val entityManager: EntityManager,
     private val memberCommandService: MemberCommandService,
-    private val memberQueryService: MemberQueryService
+    private val memberQueryService: MemberQueryService,
+    private val jwtTokenService: JwtTokenService
 ) {
 
     private fun flushAndClear() {
@@ -42,9 +46,31 @@ class MemberCommandServiceTest @Autowired constructor(
 
         //then
         val loginRequest = LoginRequest(email, pw)
-        val loginInfo = memberCommandService.login(loginRequest)
-        Assertions.assertThat(memberQueryService.getMemberByUUID(loginInfo.uuid).auth)
+        val jwtTokenInfo = memberCommandService.login(loginRequest)
+        Assertions.assertThat(memberQueryService.getMemberByUUID(jwtTokenInfo.uuid).auth)
             .isEqualTo(Role.MEMBER)
+    }
+
+    @Test
+    @Transactional
+    fun reissueJwtToken() {
+        //given
+        val email = "reissue_token_test@gmail.com"
+        val pw = "1234"
+        val nickName = "nickName"
+        val request = SignupRequest(email, pw, nickName)
+        memberCommandService.signupMember(request)
+        flushAndClear()
+        val loginRequest = LoginRequest(email, pw)
+        val jwtTokenInfo = memberCommandService.login(loginRequest)
+
+        //when
+        val reissueJwtToken = memberCommandService.reissueJwtToken(jwtTokenInfo.uuid, jwtTokenInfo.refreshToken)
+        flushAndClear()
+
+        //then
+        val jwtTokenInfo2 = memberCommandService.login(loginRequest)
+        Assertions.assertThat(reissueJwtToken.refreshToken).isEqualTo(jwtTokenInfo2.refreshToken)
     }
 
     @Test
@@ -139,6 +165,8 @@ class MemberCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //then
+        Assertions.assertThatThrownBy { jwtTokenService.getRefreshToken(uuid) }
+            .isInstanceOf(JwtCustomException::class.java)
         Assertions.assertThatThrownBy { (memberQueryService.getMemberByUUID(uuid)) }
             .isInstanceOf(MemberException::class.java)
     }
