@@ -33,13 +33,13 @@ class JwtTokenService @Autowired constructor(
         jwtTokenProvider.validateToken(refreshToken)
         refreshTokenRepository.findById(uuid)
             .orElseThrow { logger().warn(JwtServiceLog.NOT_EXIST_REFRESH_TOKEN + uuid); throw JwtCustomException(JwtExceptionMessage.NOT_EXIST_REFRESH_TOKEN) }
-            .takeIf { it.refreshToken.isNullOrBlank() && it.refreshToken.equals(refreshToken) }
-            ?.let {
+            .let {
+                check(it.refreshToken.equals(refreshToken)) { logger().warn(JwtServiceLog.UN_MATCH_REFRESH_TOKEN + uuid); throw JwtCustomException(JwtExceptionMessage.UN_MATCH_REFRESH_TOKEN) }
+
                 val reissueToken = jwtTokenProvider.reissueToken(uuid, role)
                 it.reissueRefreshToken(reissueToken.refreshToken)
                 return reissueToken
             }
-            ?: run { logger().warn(JwtServiceLog.UN_MATCH_REFRESH_TOKEN + uuid); throw JwtCustomException(JwtExceptionMessage.UN_MATCH_REFRESH_TOKEN) }
     }
 
     fun clearRefreshToken(uuid: UUID) {
