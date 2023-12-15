@@ -123,7 +123,7 @@ class AdvertisementController @Autowired constructor(
         principal: Principal
     ): ResponseEntity<*> {
         advertisementCommandService.removeAdById(id, UUID.fromString(principal.name))
-        logger().info(AdControllerLog.DELETE_SUCCESS + id)
+        logger().info(AdControllerLog.REMOVE_SUCCESS + id)
 
         return AdvertisementResponse.removeAdSuccess()
     }

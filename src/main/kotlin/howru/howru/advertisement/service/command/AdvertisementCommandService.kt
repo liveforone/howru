@@ -30,7 +30,7 @@ class AdvertisementCommandService @Autowired constructor(
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
     fun createHalfAd(createAdvertisement: CreateAdvertisement, memberUUID: UUID): Long {
         require(memberQuery.findOneByUUID(memberUUID).isAdmin()) {
-            logger().warn(AdServiceLog.ACCESS_NON_ADMIN + memberUUID)
+            logger().warn(AdServiceLog.ACCESS_NON_ADMIN_USER + memberUUID)
             throw MemberException(MemberExceptionMessage.NOT_ADMIN, memberUUID.toString())
         }
         return with(createAdvertisement) {
@@ -42,7 +42,7 @@ class AdvertisementCommandService @Autowired constructor(
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
     fun createYearAd(createAdvertisement: CreateAdvertisement, memberUUID: UUID): Long {
         require(memberQuery.findOneByUUID(memberUUID).isAdmin()) {
-            logger().warn(AdServiceLog.ACCESS_NON_ADMIN + memberUUID)
+            logger().warn(AdServiceLog.ACCESS_NON_ADMIN_USER + memberUUID)
             throw MemberException(MemberExceptionMessage.NOT_ADMIN, memberUUID.toString())
         }
         return with(createAdvertisement) {
@@ -54,7 +54,7 @@ class AdvertisementCommandService @Autowired constructor(
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
     fun editTitle(updateAdTitle: UpdateAdTitle, memberUUID: UUID) {
         require(memberQuery.findOneByUUID(memberUUID).isAdmin()) {
-            logger().warn(AdServiceLog.ACCESS_NON_ADMIN + memberUUID)
+            logger().warn(AdServiceLog.ACCESS_NON_ADMIN_USER + memberUUID)
             throw MemberException(MemberExceptionMessage.NOT_ADMIN, memberUUID.toString())
         }
         with(updateAdTitle) {
@@ -66,7 +66,7 @@ class AdvertisementCommandService @Autowired constructor(
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
     fun editContent(updateAdContent: UpdateAdContent, memberUUID: UUID) {
         require(memberQuery.findOneByUUID(memberUUID).isAdmin()) {
-            logger().warn(AdServiceLog.ACCESS_NON_ADMIN + memberUUID)
+            logger().warn(AdServiceLog.ACCESS_NON_ADMIN_USER + memberUUID)
             throw MemberException(MemberExceptionMessage.NOT_ADMIN, memberUUID.toString())
         }
         with(updateAdContent) {
@@ -80,7 +80,7 @@ class AdvertisementCommandService @Autowired constructor(
         advertisementQuery.findOneById(id)
             .takeIf { memberQuery.findOneByUUID(memberUUID).isAdmin() }
             ?.also { advertisementRepository.delete(it) }
-            ?: run { logger().warn(AdServiceLog.ACCESS_NON_ADMIN + memberUUID); throw MemberException(MemberExceptionMessage.NOT_ADMIN, memberUUID.toString()) }
+            ?: run { logger().warn(AdServiceLog.ACCESS_NON_ADMIN_USER + memberUUID); throw MemberException(MemberExceptionMessage.NOT_ADMIN, memberUUID.toString()) }
     }
 
     @Scheduled(cron = AdScheduleConstant.DELETE_EXPIRED_POLICY)

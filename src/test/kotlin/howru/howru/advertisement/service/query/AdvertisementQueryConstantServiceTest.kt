@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @SpringBootTest
-class AdvertisementQueryServiceTest @Autowired constructor(
+class AdvertisementQueryConstantServiceTest @Autowired constructor(
     private val entityManager: EntityManager,
     private val memberCommandService: MemberCommandService,
     private val advertisementCommandService: AdvertisementCommandService,
