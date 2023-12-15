@@ -5,5 +5,5 @@ object PostCache {
     const val WRITER_KEY = "#writerUUID"
     const val CREATE_WRITER = "#createPost.writerUUID"
     const val UPDATE_ID = "#updatePostContent.id"
-    const val DELETE_ID = "#deletePost.id"
+    const val DELETE_ID = "#removePost.id"
 }
