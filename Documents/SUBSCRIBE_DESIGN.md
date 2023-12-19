@@ -25,10 +25,10 @@
 
 ## API 설계
 ```
-[GET] /subscribe/following/{followerUUID} : 팔로잉 가져오기
-[GET] /subscribe/follower/{followeeUUID} : 팔로워 가져오기
-[GET] /subscribe/count/following/{followerUUID} : 팔로잉 수 가져오기
-[GET] /subscribe/count/follower/{followeeUUID} : 팔로워 수 가져오기
+[GET] /subscribe/{followerUUID}/following : 팔로잉 가져오기
+[GET] /subscribe/{followeeUUID}/follower : 팔로워 가져오기
+[GET] /subscribe/{followerUUID}/count/following : 팔로잉 수 가져오기
+[GET] /subscribe/{followeeUUID}/count/follower : 팔로워 수 가져오기
 [POST] /subscribe/create : 구독
 [DELETE] /unsubscribe : 구독 취소
 ```
