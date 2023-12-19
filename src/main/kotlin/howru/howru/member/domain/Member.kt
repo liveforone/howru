@@ -63,6 +63,15 @@ class Member private constructor(
         memberLock = MemberLock.OFF
     }
 
+    fun withdraw() {
+        this.auth = Role.WITHDRAW
+    }
+
+    fun recovery(inputPw: String) {
+        require (isMatchPassword(inputPw, pw)) { throw MemberException(MemberExceptionMessage.WRONG_PASSWORD, uuid.toString()) }
+        this.auth = Role.MEMBER
+    }
+
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
         arrayListOf<GrantedAuthority>(SimpleGrantedAuthority(auth.auth))
