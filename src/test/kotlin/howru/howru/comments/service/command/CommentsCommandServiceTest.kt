@@ -92,8 +92,8 @@ class CommentsCommandServiceTest @Autowired constructor(
 
         //when
         val updateContent = "updated_comment"
-        val updateRequest = UpdateCommentsContent(commentId, memberUUID, updateContent)
-        commentsCommandService.editComment(updateRequest)
+        val updateRequest = UpdateCommentsContent(memberUUID, updateContent)
+        commentsCommandService.editComment(commentId, updateRequest)
         flushAndClear()
 
         //then
@@ -112,8 +112,8 @@ class CommentsCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val deleteRequest = RemoveComments(commentId, memberUUID)
-        commentsCommandService.removeComment(deleteRequest)
+        val deleteRequest = RemoveComments(memberUUID)
+        commentsCommandService.removeComment(commentId, deleteRequest)
         flushAndClear()
 
         //then

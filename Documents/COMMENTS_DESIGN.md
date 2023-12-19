@@ -13,13 +13,13 @@
 
 ## API 설계
 ```
-[GET] /comments/detail/{id}
+[GET] /comments/{id}
 [GET] /comments/writer/{writerUUID} : 사용자가 작성한 댓글
 [GET] /comments/post/{postId} : 게시글에 속한 댓글
 [GET] /comments/someone/{writerUUID} : 다른 사용자가 작성한 게시글
 [POST] /comments/create
-[PUT] /comments/edit
-[DELETE] /comments/delete
+[PUT] /comments/{id}/edit
+[DELETE] /comments/{id}/remove
 ```
 
 ## Json Body 예시
@@ -33,14 +33,12 @@
 
 [UpdateCommentsContent]
 {
-  "id": 3,
   "writerUUID": "86bd534f-3044-47df-bf8f-7531b343870e",
   "content": "updated comment"
 }
 
 [DeleteComments]
 {
-  "id": 3,
   "writerUUID": "86bd534f-3044-47df-bf8f-7531b343870e"
 }
 ```

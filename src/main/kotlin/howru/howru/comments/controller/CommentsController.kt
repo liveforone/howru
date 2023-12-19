@@ -12,6 +12,7 @@ import howru.howru.comments.service.query.CommentsQueryService
 import howru.howru.globalUtil.validateBinding
 import howru.howru.logger
 import jakarta.validation.Valid
+import jakarta.validation.constraints.Positive
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
@@ -31,7 +32,7 @@ class CommentsController @Autowired constructor(
     private val commentsCommandService: CommentsCommandService
 ) {
     @GetMapping(CommentsUrl.DETAIL)
-    fun detail(@PathVariable(CommentsParam.ID) id: Long): ResponseEntity<*> {
+    fun detail(@PathVariable(CommentsParam.ID) @Positive id: Long): ResponseEntity<*> {
         val comment = commentsQueryService.getCommentById(id)
         return CommentsResponse.detailSuccess(comment)
     }
@@ -79,26 +80,28 @@ class CommentsController @Autowired constructor(
 
     @PutMapping(CommentsUrl.EDIT)
     fun editComment(
+        @PathVariable(CommentsParam.ID) @Positive id: Long,
         @RequestBody @Valid updateCommentsContent: UpdateCommentsContent,
         bindingResult: BindingResult
     ): ResponseEntity<*> {
         validateBinding(bindingResult)
 
-        commentsCommandService.editComment(updateCommentsContent)
-        logger().info(CommentsControllerLog.EDIT_COMMENT_SUCCESS + updateCommentsContent.id)
+        commentsCommandService.editComment(id, updateCommentsContent)
+        logger().info(CommentsControllerLog.EDIT_COMMENT_SUCCESS + id)
 
         return CommentsResponse.editCommentSuccess()
     }
 
     @DeleteMapping(CommentsUrl.REMOVE)
     fun removeComment(
+        @PathVariable(CommentsParam.ID) @Positive id: Long,
         @RequestBody @Valid removeComments: RemoveComments,
         bindingResult: BindingResult
     ): ResponseEntity<*> {
         validateBinding(bindingResult)
 
-        commentsCommandService.removeComment(removeComments)
-        logger().info(CommentsControllerLog.DELETE_COMMENTS_SUCCESS + removeComments.id)
+        commentsCommandService.removeComment(id, removeComments)
+        logger().info(CommentsControllerLog.DELETE_COMMENTS_SUCCESS + id)
 
         return CommentsResponse.removeCommentSuccess()
     }
