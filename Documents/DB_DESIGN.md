@@ -1,7 +1,7 @@
 # DB 설계
 
 ## ER-Diagram
-![image](https://github.com/liveforone/howru/assets/88976237/18e37e6f-5597-4300-828f-d61042353849)
+![스크린샷(216)](https://github.com/liveforone/howru/assets/88976237/0994b695-bf15-4ca6-8fd2-a77f8642a541)
 
 ## 테이블 생성 및 제약조건 명시
 ### 회원 -> Member
@@ -17,7 +17,9 @@ create table member (
     primary key (id)
 );
 CREATE INDEX uuid_idx ON member (uuid);
+CREATE INDEX uuid_auth_idx ON member (uuid, auth);
 CREATE INDEX email_idx ON member (email);
+CREATE INDEX email_auth_idx ON member (email, auth);
 ```
 ### refresh-token
 ```sql
