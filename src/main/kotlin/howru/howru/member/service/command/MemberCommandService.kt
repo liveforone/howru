@@ -11,11 +11,7 @@ import howru.howru.jwt.service.JwtTokenService
 import howru.howru.logger
 import howru.howru.member.cache.MemberCache
 import howru.howru.member.domain.Member
-import howru.howru.member.dto.request.LoginRequest
-import howru.howru.member.dto.request.SignupRequest
-import howru.howru.member.dto.request.WithdrawRequest
-import howru.howru.member.dto.request.UpdateEmail
-import howru.howru.member.dto.request.UpdatePassword
+import howru.howru.member.dto.request.*
 import howru.howru.member.log.MemberServiceLog
 import howru.howru.member.repository.MemberQuery
 import howru.howru.member.repository.MemberRepository
@@ -94,12 +90,18 @@ class MemberCommandService @Autowired constructor(
         jwtTokenService.clearRefreshToken(uuid)
     }
 
+    fun recovery(recoveryRequest: RecoveryRequest) {
+        with(recoveryRequest) {
+            memberQuery.findOneByEmailAllowWithdraw(email!!).also { it.recovery(pw!!) }
+        }
+    }
+
     @CacheEvict(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)
     fun withdraw(withdrawRequest: WithdrawRequest, uuid: UUID) {
         memberQuery.findOneByUUID(uuid)
             .takeIf { isMatchPassword(withdrawRequest.pw!!, it.pw) }
             ?.also {
-                memberRepository.delete(it)
+                it.withdraw()
                 jwtTokenService.removeRefreshToken(uuid)
             }
             ?: run {

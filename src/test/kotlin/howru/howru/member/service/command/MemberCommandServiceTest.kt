@@ -5,10 +5,7 @@ import howru.howru.exception.exception.MemberException
 import howru.howru.jwt.service.JwtTokenService
 import howru.howru.member.domain.MemberLock
 import howru.howru.member.domain.Role
-import howru.howru.member.dto.request.LoginRequest
-import howru.howru.member.dto.request.SignupRequest
-import howru.howru.member.dto.request.UpdateEmail
-import howru.howru.member.dto.request.WithdrawRequest
+import howru.howru.member.dto.request.*
 import howru.howru.member.service.query.MemberQueryService
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions
@@ -140,6 +137,30 @@ class MemberCommandServiceTest @Autowired constructor(
         //then
         Assertions.assertThat(memberQueryService.getMemberByUUID(uuid).memberLock)
             .isEqualTo(MemberLock.OFF)
+    }
+
+    @Test
+    @Transactional
+    fun recoveryTest() {
+        //given
+        val email = "recovery_test@gmail.com"
+        val pw = "1234"
+        val nickName = "nickName"
+        val request = SignupRequest(email, pw, nickName)
+        memberCommandService.signupMember(request)
+        flushAndClear()
+        val loginRequest = LoginRequest(email, pw)
+        val uuid = memberCommandService.login(loginRequest).uuid
+        val withdrawRequest = WithdrawRequest(pw)
+        memberCommandService.withdraw(withdrawRequest, uuid)
+        flushAndClear()
+
+        //when
+        memberCommandService.recovery(RecoveryRequest(email, pw))
+        flushAndClear()
+
+        //then
+        Assertions.assertThat(memberQueryService.getMemberByUUID(uuid)).isNotNull
     }
 
     /*
