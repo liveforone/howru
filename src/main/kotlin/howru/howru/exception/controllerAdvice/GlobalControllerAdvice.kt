@@ -2,6 +2,7 @@ package howru.howru.exception.controllerAdvice
 
 import howru.howru.exception.controllerAdvice.constant.GlobalAdviceConstant
 import howru.howru.exception.exception.BindingException
+import jakarta.validation.ConstraintViolationException
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -23,5 +24,12 @@ class GlobalControllerAdvice {
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .body(bindingException.message)
+    }
+
+    @ExceptionHandler(ConstraintViolationException::class)
+    fun constraintViolationException(ex: ConstraintViolationException): ResponseEntity<*>  {
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(ex.message)
     }
 }

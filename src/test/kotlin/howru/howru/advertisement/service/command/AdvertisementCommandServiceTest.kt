@@ -96,8 +96,8 @@ class AdvertisementCommandServiceTest @Autowired constructor(
 
         //when
         val updatedTitle = "updated title"
-        val updateRequest = UpdateAdTitle(adId, updatedTitle)
-        advertisementCommandService.editTitle(updateRequest, adminUUID)
+        val updateRequest = UpdateAdTitle(updatedTitle)
+        advertisementCommandService.editTitle(adId, updateRequest, adminUUID)
         flushAndClear()
 
         //then
@@ -118,8 +118,8 @@ class AdvertisementCommandServiceTest @Autowired constructor(
 
         //when
         val updatedContent = "updated content"
-        val updateRequest = UpdateAdContent(adId, updatedContent)
-        advertisementCommandService.editContent(updateRequest, adminUUID)
+        val updateRequest = UpdateAdContent(updatedContent)
+        advertisementCommandService.editContent(adId, updateRequest, adminUUID)
         flushAndClear()
 
         //then

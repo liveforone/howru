@@ -12,6 +12,7 @@ import howru.howru.advertisement.service.query.AdvertisementQueryService
 import howru.howru.globalUtil.validateBinding
 import howru.howru.logger
 import jakarta.validation.Valid
+import jakarta.validation.constraints.Positive
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
@@ -32,7 +33,7 @@ class AdvertisementController @Autowired constructor(
     private val advertisementCommandService: AdvertisementCommandService
 ) {
     @GetMapping(AdvertisementUrl.DETAIL)
-    fun detail(@PathVariable(AdvertisementParam.ID) id: Long): ResponseEntity<*> {
+    fun detail(@PathVariable(AdvertisementParam.ID) @Positive id: Long): ResponseEntity<*> {
         val ad = advertisementQueryService.getOneById(id)
         return AdvertisementResponse.detailSuccess(ad)
     }
@@ -91,35 +92,37 @@ class AdvertisementController @Autowired constructor(
 
     @PutMapping(AdvertisementUrl.EDIT_TITLE)
     fun editTitle(
+        @PathVariable(AdvertisementParam.ID) @Positive id: Long,
         @RequestBody @Valid updateAdTitle: UpdateAdTitle,
         bindingResult: BindingResult,
         principal: Principal
     ): ResponseEntity<*> {
         validateBinding(bindingResult)
 
-        advertisementCommandService.editTitle(updateAdTitle, UUID.fromString(principal.name))
-        logger().info(AdControllerLog.EDIT_TITLE_SUCCESS + updateAdTitle.id)
+        advertisementCommandService.editTitle(id, updateAdTitle, UUID.fromString(principal.name))
+        logger().info(AdControllerLog.EDIT_TITLE_SUCCESS + id)
 
         return AdvertisementResponse.editTitleSuccess()
     }
 
     @PutMapping(AdvertisementUrl.EDIT_CONTENT)
     fun editContent(
+        @PathVariable(AdvertisementParam.ID) @Positive id: Long,
         @RequestBody @Valid updateAdContent: UpdateAdContent,
         bindingResult: BindingResult,
         principal: Principal
     ): ResponseEntity<*> {
         validateBinding(bindingResult)
 
-        advertisementCommandService.editContent(updateAdContent, UUID.fromString(principal.name))
-        logger().info(AdControllerLog.EDIT_CONTENT_SUCCESS + updateAdContent.id)
+        advertisementCommandService.editContent(id, updateAdContent, UUID.fromString(principal.name))
+        logger().info(AdControllerLog.EDIT_CONTENT_SUCCESS + id)
 
         return AdvertisementResponse.editContentSuccess()
     }
 
     @DeleteMapping(AdvertisementUrl.REMOVE)
     fun removeAd(
-        @PathVariable(AdvertisementParam.ID) id: Long,
+        @PathVariable(AdvertisementParam.ID) @Positive id: Long,
         principal: Principal
     ): ResponseEntity<*> {
         advertisementCommandService.removeAdById(id, UUID.fromString(principal.name))

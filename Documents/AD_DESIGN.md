@@ -10,16 +10,16 @@
 
 ## API 설계
 ```
-[GET] /advertisement/detail/{id}
-[GET] /advertisement/all
+[GET] /advertisement/{id}
+[GET] /advertisement
 [GET] /advertisement/search-company
 [GET] /advertisement/expired
 [GET] /advertisement/random
-[POST] /advertisement/create/half
-[POST] /advertisement/create/year
-[PUT] /advertisement/edit/title
-[PUT] /advertisement/edit/content
-[DELETE] /advertisement/delete/{id}
+[POST] /advertisement/create-half
+[POST] /advertisement/create-year
+[PUT] /advertisement/{id}/edit-title
+[PUT] /advertisement/{id}/edit-content
+[DELETE] /advertisement/{id}/remove
 ```
 
 ## Json Body 예시
@@ -33,13 +33,11 @@
 
 [UpdateAdTitle]
 {
-  "id": 1,
   "title": "update_ad_title"
 }
 
 [UdpateAdContent]
 {
-  "id": 1,
   "content": "update_ad_content"
 }
 ```

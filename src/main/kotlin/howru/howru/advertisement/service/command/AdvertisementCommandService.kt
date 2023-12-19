@@ -52,25 +52,25 @@ class AdvertisementCommandService @Autowired constructor(
     }
 
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
-    fun editTitle(updateAdTitle: UpdateAdTitle, memberUUID: UUID) {
+    fun editTitle(id: Long, updateAdTitle: UpdateAdTitle, memberUUID: UUID) {
         require(memberQuery.findOneByUUID(memberUUID).isAdmin()) {
             logger().warn(AdServiceLog.ACCESS_NON_ADMIN_USER + memberUUID)
             throw MemberException(MemberExceptionMessage.NOT_ADMIN, memberUUID.toString())
         }
         with(updateAdTitle) {
-            advertisementQuery.findOneById(id!!)
+            advertisementQuery.findOneById(id)
                 .also { it.editTitle(title!!) }
         }
     }
 
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
-    fun editContent(updateAdContent: UpdateAdContent, memberUUID: UUID) {
+    fun editContent(id: Long, updateAdContent: UpdateAdContent, memberUUID: UUID) {
         require(memberQuery.findOneByUUID(memberUUID).isAdmin()) {
             logger().warn(AdServiceLog.ACCESS_NON_ADMIN_USER + memberUUID)
             throw MemberException(MemberExceptionMessage.NOT_ADMIN, memberUUID.toString())
         }
         with(updateAdContent) {
-            advertisementQuery.findOneById(id!!)
+            advertisementQuery.findOneById(id)
                 .also { it.editContent(content!!) }
         }
     }
