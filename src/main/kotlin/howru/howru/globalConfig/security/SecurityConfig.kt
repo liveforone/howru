@@ -31,7 +31,8 @@ class SecurityConfig @Autowired constructor(
             path.requestMatchers(
                 MemberUrl.SIGNUP_MEMBER,
                 MemberUrl.LOGIN,
-                MemberUrl.JWT_TOKEN_REISSUE
+                MemberUrl.JWT_TOKEN_REISSUE,
+                MemberUrl.RECOVERY
             ).permitAll().anyRequest().authenticated()
         }
         http.addFilterBefore(
