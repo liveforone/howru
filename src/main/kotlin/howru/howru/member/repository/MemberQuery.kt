@@ -25,7 +25,7 @@ class MemberQuery @Autowired constructor(
         return memberRepository.findAll {
             select(entity(Member::class))
                 .from(entity(Member::class))
-                .where(path(Member::email).eq(email))
+                .where(path(Member::email).eq(email).and(path(Member::auth).notEqual(Role.WITHDRAW)))
         }.firstOrNull() ?: throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL, email)
     }
 
@@ -33,8 +33,16 @@ class MemberQuery @Autowired constructor(
         return memberRepository.findAll {
             select(entity(Member::class))
                 .from(entity(Member::class))
-                .where(path(Member::uuid).eq(uuid))
+                .where(path(Member::uuid).eq(uuid).and(path(Member::auth).notEqual(Role.WITHDRAW)))
         }.firstOrNull() ?: throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL, uuid.toString())
+    }
+
+    fun findOneByEmailAllowWithdraw(email: String): Member {
+        return memberRepository.findAll {
+            select(entity(Member::class))
+                .from(entity(Member::class))
+                .where(path(Member::email).eq(email))
+        }.firstOrNull() ?: throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL, email)
     }
 
     fun findOneDtoByUUID(uuid: UUID): MemberInfo {
@@ -46,7 +54,7 @@ class MemberQuery @Autowired constructor(
                 path(Member::nickName),
                 path(Member::memberLock)
             ).from(entity(Member::class))
-                .where(path(Member::uuid).eq(uuid))
+                .where(path(Member::uuid).eq(uuid).and(path(Member::auth).notEqual(Role.WITHDRAW)))
         }.firstOrNull() ?: throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL, uuid.toString())
     }
 
@@ -54,7 +62,7 @@ class MemberQuery @Autowired constructor(
         return memberRepository.findAll {
             select(path(Member::auth))
                 .from(entity(Member::class))
-                .where(path(Member::uuid).eq(uuid))
+                .where(path(Member::uuid).eq(uuid).and(path(Member::auth).notEqual(Role.WITHDRAW)))
         }.firstOrNull() ?: throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL, uuid.toString())
     }
 }
