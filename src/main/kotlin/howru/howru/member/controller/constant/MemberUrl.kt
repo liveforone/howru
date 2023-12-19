@@ -10,6 +10,7 @@ object MemberUrl {
     const val LOCK_ON = "/member/lock-on"
     const val LOCK_OFF = "/member/lock-off"
     const val LOGOUT = "/member/logout"
+    const val RECOVERY = "/member/recovery"
     const val WITHDRAW = "/member/withdraw"
     const val PROHIBITION = "/prohibition"
 }

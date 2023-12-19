@@ -9,11 +9,7 @@ import howru.howru.member.log.MemberControllerLog
 import howru.howru.member.controller.constant.MemberHeader
 import howru.howru.member.controller.constant.MemberUrl
 import howru.howru.member.controller.response.MemberResponse
-import howru.howru.member.dto.request.LoginRequest
-import howru.howru.member.dto.request.SignupRequest
-import howru.howru.member.dto.request.WithdrawRequest
-import howru.howru.member.dto.request.UpdateEmail
-import howru.howru.member.dto.request.UpdatePassword
+import howru.howru.member.dto.request.*
 import howru.howru.member.service.command.MemberCommandService
 import howru.howru.member.service.query.MemberQueryService
 import jakarta.servlet.http.HttpServletResponse
@@ -138,6 +134,18 @@ class MemberController @Autowired constructor(
         memberCommandService.logout(memberUUID)
         logger().info(MemberControllerLog.LOGOUT_SUCCESS + memberUUID)
         return MemberResponse.logOutSuccess()
+    }
+
+    @PostMapping(MemberUrl.RECOVERY)
+    fun recovery(
+        @RequestBody @Valid recoveryRequest: RecoveryRequest,
+        bindingResult: BindingResult
+    ): ResponseEntity<*> {
+        validateBinding(bindingResult)
+
+        memberCommandService.recovery(recoveryRequest)
+        logger().info(MemberControllerLog.RECOVERY_SUCCESS + recoveryRequest.email)
+        return MemberResponse.recoverySuccess()
     }
 
     @DeleteMapping(MemberUrl.WITHDRAW)

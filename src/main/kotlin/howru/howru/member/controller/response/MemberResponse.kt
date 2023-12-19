@@ -12,6 +12,7 @@ object MemberResponse {
     private const val LOCK_ON_SUCCESS = "프로필 잠금에 성공하였습니다."
     private const val LOCK_OFF_SUCCESS = "프로필 잠금 해제에 성공하였습니다."
     private const val LOGOUT_SUCCESS = "로그아웃에 성공하였습니다."
+    private const val RECOVERY_SUCCESS = "계정 복구에 성공하였습니다."
     private const val WITHDRAW_SUCCESS = "회원탈퇴를 성공적으로 마쳤습니다.\n안녕히가세요."
 
     fun infoSuccess(member: MemberInfo) = ResponseEntity.ok(member)
@@ -22,5 +23,6 @@ object MemberResponse {
     fun lockOnSuccess() = ResponseEntity.ok(LOCK_ON_SUCCESS)
     fun lockOffSuccess() = ResponseEntity.ok(LOCK_OFF_SUCCESS)
     fun logOutSuccess() = ResponseEntity.ok(LOGOUT_SUCCESS)
+    fun recoverySuccess() = ResponseEntity.ok(RECOVERY_SUCCESS)
     fun withdrawSuccess() = ResponseEntity.ok(WITHDRAW_SUCCESS)
 }
