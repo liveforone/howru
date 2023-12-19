@@ -27,18 +27,18 @@ class PostCommandService @Autowired constructor(
         }
     }
 
-    @CacheEvict(cacheNames = [CacheName.POST], key = PostCache.UPDATE_ID)
-    fun editContent(updatePostContent: UpdatePostContent) {
+    @CacheEvict(cacheNames = [CacheName.POST], key = PostCache.ID_KEY)
+    fun editContent(id: Long, updatePostContent: UpdatePostContent) {
         with(updatePostContent) {
-            postRepository.findOneByIdAndWriter(id!!, writerUUID!!)
+            postRepository.findOneByIdAndWriter(id, writerUUID!!)
                 .also { it.editContent(content!!) }
         }
     }
 
-    @CacheEvict(cacheNames = [CacheName.POST], key = PostCache.DELETE_ID)
-    fun removePost(removePost: RemovePost) {
+    @CacheEvict(cacheNames = [CacheName.POST], key = PostCache.ID_KEY)
+    fun removePost(id: Long, removePost: RemovePost) {
         with(removePost) {
-            postRepository.findOneByIdAndWriter(id!!, writerUUID!!)
+            postRepository.findOneByIdAndWriter(id, writerUUID!!)
                 .also { postRepository.delete(it) }
         }
     }

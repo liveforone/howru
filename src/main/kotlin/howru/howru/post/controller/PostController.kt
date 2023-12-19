@@ -12,6 +12,7 @@ import howru.howru.post.dto.request.UpdatePostContent
 import howru.howru.post.service.command.PostCommandService
 import howru.howru.post.service.query.PostQueryService
 import jakarta.validation.Valid
+import jakarta.validation.constraints.Positive
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
@@ -31,7 +32,7 @@ class PostController @Autowired constructor(
     private val postCommandService: PostCommandService
 ) {
     @GetMapping(PostUrl.DETAIL)
-    fun detail(@PathVariable(PostParam.ID) id: Long): ResponseEntity<*> {
+    fun detail(@PathVariable(PostParam.ID) @Positive id: Long): ResponseEntity<*> {
         val postDetail = postQueryService.getPostById(id)
         return PostResponse.postDetailSuccess(postDetail)
     }
@@ -103,26 +104,28 @@ class PostController @Autowired constructor(
 
     @PutMapping(PostUrl.EDIT_CONTENT)
     fun editContent(
+        @PathVariable(PostParam.ID) @Positive id: Long,
         @RequestBody @Valid updatePostContent: UpdatePostContent,
         bindingResult: BindingResult
     ): ResponseEntity<*> {
         validateBinding(bindingResult)
 
-        postCommandService.editContent(updatePostContent)
-        logger().info(PostControllerLog.EDIT_CONTENT_SUCCESS + updatePostContent.id)
+        postCommandService.editContent(id, updatePostContent)
+        logger().info(PostControllerLog.EDIT_CONTENT_SUCCESS + id)
 
         return PostResponse.editPostSuccess()
     }
 
     @DeleteMapping(PostUrl.REMOVE)
     fun removePost(
+        @PathVariable(PostParam.ID) @Positive id: Long,
         @RequestBody @Valid removePost: RemovePost,
         bindingResult: BindingResult
     ): ResponseEntity<*> {
         validateBinding(bindingResult)
 
-        postCommandService.removePost(removePost)
-        logger().info(PostControllerLog.DELETE_POST_SUCCESS + removePost.id)
+        postCommandService.removePost(id, removePost)
+        logger().info(PostControllerLog.DELETE_POST_SUCCESS + id)
 
         return PostResponse.removePostSuccess()
     }

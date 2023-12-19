@@ -21,16 +21,16 @@
 
 ## API 설계
 ```
-[GET] /post/detail/{id}
+[GET] /post/{id}
 [GET] /post/my-post/{memberUUID}
-[GET] /post/all
+[GET] /post
 [GET] /post/writer/{writerUUID}
 [GET] /post/followee/{followerUUID}
 [GET] /post/recommend
 [GET] /post/count/{writerUUID}
 [POST] /post/create
-[PUT] /post/edit/content
-[DELETE] /post/delete
+[PUT] /post/{id}/edit-content
+[DELETE] /post/{id}/remove
 ```
 
 ## Json Body 설계
@@ -43,14 +43,12 @@
 
 [UpdatePostContent]
 {
-  "id": 1,
   "writerUUID": "1d390047-ac36-433b-b73a-8c9ec00405b9",
   "content": "update content."
 }
 
 [DeletePost]
 {
-  "id": 1,
   "writerUUID": "a784848d-b1ce-4b1a-946d-7b343ebdd373"
 }
 ```

@@ -74,8 +74,8 @@ class PostCommandServiceTest @Autowired constructor(
 
         //when
         val updatedContent = "updated_content"
-        val updateRequest = UpdatePostContent(postId, writerUUID, updatedContent)
-        postCommandService.editContent(updateRequest)
+        val updateRequest = UpdatePostContent(writerUUID, updatedContent)
+        postCommandService.editContent(postId, updateRequest)
         flushAndClear()
 
         //then
@@ -95,8 +95,8 @@ class PostCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val deleteRequest = RemovePost(postId, writerUUID)
-        postCommandService.removePost(deleteRequest)
+        val deleteRequest = RemovePost(writerUUID)
+        postCommandService.removePost(postId, deleteRequest)
         flushAndClear()
 
         //then
