@@ -17,8 +17,8 @@
 [GET] /advertisement/random
 [POST] /advertisement/create-half
 [POST] /advertisement/create-year
-[PUT] /advertisement/{id}/edit-title
-[PUT] /advertisement/{id}/edit-content
+[PATCH] /advertisement/{id}/edit-title
+[PATCH] /advertisement/{id}/edit-content
 [DELETE] /advertisement/{id}/remove
 ```
 

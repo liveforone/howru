@@ -84,7 +84,7 @@ class MemberController @Autowired constructor(
         return ResponseEntity.ok(reissueJwtToken)
     }
 
-    @PutMapping(MemberUrl.UPDATE_EMAIL)
+    @PatchMapping(MemberUrl.UPDATE_EMAIL)
     fun updateEmail(
         @RequestBody @Valid updateEmail: UpdateEmail,
         bindingResult: BindingResult,
@@ -99,7 +99,7 @@ class MemberController @Autowired constructor(
         return MemberResponse.updateEmailSuccess()
     }
 
-    @PutMapping(MemberUrl.UPDATE_PASSWORD)
+    @PatchMapping(MemberUrl.UPDATE_PASSWORD)
     fun updatePassword(
         @RequestBody @Valid updatePassword: UpdatePassword,
         bindingResult: BindingResult,
@@ -114,7 +114,7 @@ class MemberController @Autowired constructor(
         return MemberResponse.updatePwSuccess()
     }
 
-    @PutMapping(MemberUrl.LOCK_ON)
+    @PatchMapping(MemberUrl.LOCK_ON)
     fun lockOn(principal: Principal): ResponseEntity<*> {
         val memberUUID = UUID.fromString(principal.name)
         memberCommandService.memberLockOn(memberUUID)
@@ -123,7 +123,7 @@ class MemberController @Autowired constructor(
         return MemberResponse.lockOnSuccess()
     }
 
-    @PutMapping(MemberUrl.LOCK_OFF)
+    @PatchMapping(MemberUrl.LOCK_OFF)
     fun lockOff(principal: Principal): ResponseEntity<*> {
         val memberUUID = UUID.fromString(principal.name)
         memberCommandService.memberLockOff(memberUUID)

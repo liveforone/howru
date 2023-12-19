@@ -24,10 +24,10 @@
 [POST] /member/signup
 [POST] /member/login
 [GET] /member/info
-[PUT] /member/update/email
-[PUT] /member/update/password
-[PUT] /member/lock-on
-[PUT] /member/lock-off
+[PATCH] /member/update/email
+[PATCH] /member/update/password
+[PATCH] /member/lock-on
+[PATCH] /member/lock-off
 [PUT] /auth/reissue
 [POST] /member/logout
 [DELETE] /member/withdraw

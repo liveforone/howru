@@ -29,7 +29,7 @@
 [GET] /post/recommend
 [GET] /post/count/{writerUUID}
 [POST] /post/create
-[PUT] /post/{id}/edit-content
+[PATCH] /post/{id}/edit-content
 [DELETE] /post/{id}/remove
 ```
 

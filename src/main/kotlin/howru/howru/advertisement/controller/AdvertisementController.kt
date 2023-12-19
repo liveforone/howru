@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -90,7 +91,7 @@ class AdvertisementController @Autowired constructor(
         return AdvertisementResponse.createYearSuccess()
     }
 
-    @PutMapping(AdvertisementUrl.EDIT_TITLE)
+    @PatchMapping(AdvertisementUrl.EDIT_TITLE)
     fun editTitle(
         @PathVariable(AdvertisementParam.ID) @Positive id: Long,
         @RequestBody @Valid updateAdTitle: UpdateAdTitle,
@@ -105,7 +106,7 @@ class AdvertisementController @Autowired constructor(
         return AdvertisementResponse.editTitleSuccess()
     }
 
-    @PutMapping(AdvertisementUrl.EDIT_CONTENT)
+    @PatchMapping(AdvertisementUrl.EDIT_CONTENT)
     fun editContent(
         @PathVariable(AdvertisementParam.ID) @Positive id: Long,
         @RequestBody @Valid updateAdContent: UpdateAdContent,

@@ -13,7 +13,7 @@
 [GET] /reply/belong/writer/{writerUUID} : 사용자가 작성한 대댓글, 작성자만 접근 가능합니다.(프론트에서 제어)
 [GET] /reply/belong/comment/{commentId} : 댓글에 속한 대댓글
 [POST] /reply/create
-[PUT] /reply/{id}/edit
+[PATCH] /reply/{id}/edit
 [DELETE] /reply/{id}/remove
 ```
 

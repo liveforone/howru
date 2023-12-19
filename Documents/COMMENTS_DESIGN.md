@@ -18,7 +18,7 @@
 [GET] /comments/post/{postId} : 게시글에 속한 댓글
 [GET] /comments/someone/{writerUUID} : 다른 사용자가 작성한 게시글
 [POST] /comments/create
-[PUT] /comments/{id}/edit
+[PATCH] /comments/{id}/edit
 [DELETE] /comments/{id}/remove
 ```
 
