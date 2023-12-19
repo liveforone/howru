@@ -28,16 +28,16 @@ class ReplyCommandService @Autowired constructor(
         }
     }
 
-    fun editReply(updateReplyContent: UpdateReplyContent) {
+    fun editReply(id: Long, updateReplyContent: UpdateReplyContent) {
         with(updateReplyContent) {
-            replyRepository.findOneByIdAndWriter(id!!, writerUUID!!)
+            replyRepository.findOneByIdAndWriter(id, writerUUID!!)
                 .also { it.editContent(content!!) }
         }
     }
 
-    fun removeReply(removeReply: RemoveReply) {
+    fun removeReply(id: Long, removeReply: RemoveReply) {
         with(removeReply) {
-            replyRepository.findOneByIdAndWriter(id!!, writerUUID!!)
+            replyRepository.findOneByIdAndWriter(id, writerUUID!!)
                 .also { replyRepository.delete(it) }
         }
     }

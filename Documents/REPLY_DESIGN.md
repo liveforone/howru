@@ -9,12 +9,12 @@
 
 ## API 설계
 ```
-[GET] /reply/detail/{id} : 대댓글 상세
+[GET] /reply/{id} : 대댓글 상세
 [GET] /reply/belong/writer/{writerUUID} : 사용자가 작성한 대댓글, 작성자만 접근 가능합니다.(프론트에서 제어)
 [GET] /reply/belong/comment/{commentId} : 댓글에 속한 대댓글
 [POST] /reply/create
-[PUT] /reply/edit
-[DELETE] /reply/delete
+[PUT] /reply/{id}/edit
+[DELETE] /reply/{id}/remove
 ```
 
 ## Json Body 예시
@@ -28,14 +28,12 @@
 
 [UpdateReplyContent]
 {
-  "id": 1,
   "writerUUID": "b05a66cd-0a55-45b8-918f-a74820d96d64",
   "content": "updated reply"
 }
 
 [DeleteReply]
 {
-  "id": 1,
   "writerUUID": "70033e13-275a-426d-b8bf-50b264a3e689"
 }
 ```

@@ -118,8 +118,8 @@ class ReplyCommandServiceTest @Autowired constructor(
 
         //when
         val updatedContent = "updated reply"
-        val updateRequest = UpdateReplyContent(replyId, memberUUID, updatedContent)
-        replyCommandService.editReply(updateRequest)
+        val updateRequest = UpdateReplyContent(memberUUID, updatedContent)
+        replyCommandService.editReply(replyId, updateRequest)
         flushAndClear()
 
         //then
@@ -139,8 +139,8 @@ class ReplyCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val deleteRequest = RemoveReply(replyId, memberUUID)
-        replyCommandService.removeReply(deleteRequest)
+        val deleteRequest = RemoveReply(memberUUID)
+        replyCommandService.removeReply(replyId, deleteRequest)
         flushAndClear()
 
         //then

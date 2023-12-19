@@ -12,6 +12,7 @@ import howru.howru.reply.dto.request.UpdateReplyContent
 import howru.howru.reply.service.command.ReplyCommandService
 import howru.howru.reply.service.query.ReplyQueryService
 import jakarta.validation.Valid
+import jakarta.validation.constraints.Positive
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
@@ -31,7 +32,7 @@ class ReplyController @Autowired constructor(
     private val replyCommandService: ReplyCommandService
 ) {
     @GetMapping(ReplyUrl.DETAIL)
-    fun detail(@PathVariable(ReplyParam.ID) id: Long): ResponseEntity<*> {
+    fun detail(@PathVariable(ReplyParam.ID) @Positive id: Long): ResponseEntity<*> {
         val reply = replyQueryService.getReplyById(id)
         return ReplyResponse.detailSuccess(reply)
     }
@@ -69,26 +70,28 @@ class ReplyController @Autowired constructor(
 
     @PutMapping(ReplyUrl.EDIT)
     fun edit(
+        @PathVariable(ReplyParam.ID) @Positive id: Long,
         @RequestBody @Valid updateReplyContent: UpdateReplyContent,
         bindingResult: BindingResult
     ): ResponseEntity<*> {
         validateBinding(bindingResult)
 
-        replyCommandService.editReply(updateReplyContent)
-        logger().info(ReplyControllerLog.EDIT_SUCCESS + updateReplyContent.id)
+        replyCommandService.editReply(id, updateReplyContent)
+        logger().info(ReplyControllerLog.EDIT_SUCCESS + id)
 
         return ReplyResponse.editReplySuccess()
     }
 
     @DeleteMapping(ReplyUrl.REMOVE)
     fun remove(
+        @PathVariable(ReplyParam.ID) @Positive id: Long,
         @RequestBody @Valid removeReply: RemoveReply,
         bindingResult: BindingResult
     ): ResponseEntity<*> {
         validateBinding(bindingResult)
 
-        replyCommandService.removeReply(removeReply)
-        logger().info(ReplyControllerLog.DELETE_SUCCESS + removeReply.id)
+        replyCommandService.removeReply(id, removeReply)
+        logger().info(ReplyControllerLog.DELETE_SUCCESS + id)
 
         return ReplyResponse.removeReplySuccess()
     }
