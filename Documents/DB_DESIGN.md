@@ -22,6 +22,8 @@ CREATE INDEX email_idx ON member (email);
 CREATE INDEX email_auth_idx ON member (email, auth);
 ```
 ### refresh-token
+* refresh-token은 member와 1:1관계이다.
+* 단순한 구조이면서 1:1관계이므로 fk(uuid)를 pk로 매핑한다.
 ```sql
 create table refresh_token (
     uuid BINARY(16) not null UNIQUE,
@@ -30,6 +32,7 @@ create table refresh_token (
 );
 ```
 ### 신고상태 -> ReportState
+* report_state와 member는 1:1 관계이다.
 ```sql
 create table report_state (
      id bigint not null auto_increment,
@@ -42,6 +45,8 @@ create table report_state (
 );
 ```
 ### 구독 -> Subscribe
+* 복합키를 갖고 있다.
+* 복합키는 팔로우 되는사람(followee), 팔로우 하는 사람(follower)로 구성된다.
 ```sql
 create table subscribe (
     timestamp integer,
@@ -52,6 +57,7 @@ create table subscribe (
 CREATE INDEX subscribe_timestamp_idx ON Subscribe (timestamp);
 ```
 ### 게시글 -> Post
+* post는 member와 N:1관계를 맺는다.
 ```sql
 create table post (
     id bigint not null auto_increment,
@@ -65,6 +71,7 @@ create table post (
 CREATE INDEX post_content_idx ON Post (content);
 ```
 ### 좋아요 -> Likes
+* 복합키를 가진다. 복합키는 회원의 외부식별자(uuid)와 게시글 id로 구성된다.
 ```sql
 create table likes (
      timestamp integer,
@@ -75,6 +82,8 @@ create table likes (
 CREATE INDEX likes_timestamp_idx ON Likes (timestamp);
 ```
 ### 댓글 -> Comments
+* 댓글은 회원(member)테이블과 N:1 관계를 맺는다.
+* 댓글은 게시글(post) 테이블과 N:1 관계를 맺는다. 
 ```sql
 create table comments (
      id bigint not null auto_increment,
@@ -89,6 +98,8 @@ create table comments (
 );
 ```
 ### 대댓글 -> Reply
+* 대댓글은 댓글(Comments)과 N:1 관계를 맺는다.
+* 대댓글은 회원(Member)와 N:1 관계를 맺는다.
 ```sql
 create table reply (
      id bigint not null auto_increment,
