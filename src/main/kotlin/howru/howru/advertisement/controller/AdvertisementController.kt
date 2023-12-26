@@ -7,6 +7,7 @@ import howru.howru.advertisement.controller.response.AdvertisementResponse
 import howru.howru.advertisement.dto.request.CreateAdvertisement
 import howru.howru.advertisement.dto.request.UpdateAdContent
 import howru.howru.advertisement.dto.request.UpdateAdTitle
+import howru.howru.advertisement.dto.response.AdvertisementInfo
 import howru.howru.advertisement.service.command.AdvertisementCommandService
 import howru.howru.advertisement.service.query.AdvertisementQueryService
 import howru.howru.globalUtil.validateBinding
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -34,61 +34,61 @@ class AdvertisementController @Autowired constructor(
     private val advertisementCommandService: AdvertisementCommandService
 ) {
     @GetMapping(AdvertisementUrl.DETAIL)
-    fun detail(@PathVariable(AdvertisementParam.ID) @Positive id: Long): ResponseEntity<*> {
+    fun detail(@PathVariable(AdvertisementParam.ID) @Positive id: Long): ResponseEntity<AdvertisementInfo> {
         val ad = advertisementQueryService.getOneById(id)
         return AdvertisementResponse.detailSuccess(ad)
     }
 
     @GetMapping(AdvertisementUrl.ALL_AD)
-    fun allAd(): ResponseEntity<*> {
+    fun allAd(): ResponseEntity<List<AdvertisementInfo?>> {
         val ads = advertisementQueryService.getAllAdvertisement()
         return AdvertisementResponse.allAdSuccess(ads)
     }
 
-    @GetMapping(AdvertisementUrl.SEARCH_COMPANY)
-    fun searchAdByCompany(@RequestParam(AdvertisementParam.COMPANY) company: String): ResponseEntity<*> {
+    @GetMapping(AdvertisementUrl.SEARCH_COMPANY_AD)
+    fun searchCompanyAd(@RequestParam(AdvertisementParam.COMPANY) company: String): ResponseEntity<List<AdvertisementInfo?>> {
         val ads = advertisementQueryService.searchAdByCompany(company)
         return AdvertisementResponse.searchAdByCompanySuccess(ads)
     }
 
     @GetMapping(AdvertisementUrl.EXPIRED_AD)
-    fun expiredAd(): ResponseEntity<*> {
+    fun expiredAd(): ResponseEntity<List<AdvertisementInfo?>> {
         val ads = advertisementQueryService.getExpiredAd()
         return AdvertisementResponse.expiredAdSuccess(ads)
     }
 
-    @GetMapping(AdvertisementUrl.RANDOM)
-    fun randomAd(): ResponseEntity<*> {
+    @GetMapping(AdvertisementUrl.RANDOM_AD)
+    fun randomAd(): ResponseEntity<AdvertisementInfo> {
         val ad = advertisementQueryService.getRandomAd()
         return AdvertisementResponse.randomAdSuccess(ad)
     }
 
-    @PostMapping(AdvertisementUrl.CREATE_HALF)
-    fun createHalf(
+    @PostMapping(AdvertisementUrl.CREATE_HALF_AD)
+    fun createHalfAd(
         @RequestBody @Valid createAdvertisement: CreateAdvertisement,
         bindingResult: BindingResult,
         principal: Principal
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         advertisementCommandService.createHalfAd(createAdvertisement, UUID.fromString(principal.name))
         logger().info(AdControllerLog.CREATE_SUCCESS + createAdvertisement.company)
 
-        return AdvertisementResponse.createHalfSuccess()
+        return AdvertisementResponse.createHalfAdSuccess()
     }
 
-    @PostMapping(AdvertisementUrl.CREATE_YEAR)
+    @PostMapping(AdvertisementUrl.CREATE_YEAR_AD)
     fun createYear(
         @RequestBody @Valid createAdvertisement: CreateAdvertisement,
         bindingResult: BindingResult,
         principal: Principal
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         advertisementCommandService.createYearAd(createAdvertisement, UUID.fromString(principal.name))
         logger().info(AdControllerLog.CREATE_SUCCESS + createAdvertisement.company)
 
-        return AdvertisementResponse.createYearSuccess()
+        return AdvertisementResponse.createYearAdSuccess()
     }
 
     @PatchMapping(AdvertisementUrl.EDIT_TITLE)
@@ -97,7 +97,7 @@ class AdvertisementController @Autowired constructor(
         @RequestBody @Valid updateAdTitle: UpdateAdTitle,
         bindingResult: BindingResult,
         principal: Principal
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         advertisementCommandService.editTitle(id, updateAdTitle, UUID.fromString(principal.name))
@@ -112,7 +112,7 @@ class AdvertisementController @Autowired constructor(
         @RequestBody @Valid updateAdContent: UpdateAdContent,
         bindingResult: BindingResult,
         principal: Principal
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         advertisementCommandService.editContent(id, updateAdContent, UUID.fromString(principal.name))
@@ -121,11 +121,11 @@ class AdvertisementController @Autowired constructor(
         return AdvertisementResponse.editContentSuccess()
     }
 
-    @DeleteMapping(AdvertisementUrl.REMOVE)
+    @DeleteMapping(AdvertisementUrl.REMOVE_AD)
     fun removeAd(
         @PathVariable(AdvertisementParam.ID) @Positive id: Long,
         principal: Principal
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         advertisementCommandService.removeAdById(id, UUID.fromString(principal.name))
         logger().info(AdControllerLog.REMOVE_SUCCESS + id)
 
