@@ -3,6 +3,7 @@ package howru.howru.member.controller
 import howru.howru.exception.exception.MemberException
 import howru.howru.exception.message.MemberExceptionMessage
 import howru.howru.globalUtil.validateBinding
+import howru.howru.jwt.dto.ReissuedTokenInfo
 import howru.howru.logger
 import howru.howru.member.controller.constant.MemberControllerConstant
 import howru.howru.member.log.MemberControllerLog
@@ -10,6 +11,7 @@ import howru.howru.member.controller.constant.MemberHeader
 import howru.howru.member.controller.constant.MemberUrl
 import howru.howru.member.controller.response.MemberResponse
 import howru.howru.member.dto.request.*
+import howru.howru.member.dto.response.MemberInfo
 import howru.howru.member.service.command.MemberCommandService
 import howru.howru.member.service.query.MemberQueryService
 import jakarta.servlet.http.HttpServletResponse
@@ -28,7 +30,7 @@ class MemberController @Autowired constructor(
 ) {
 
     @GetMapping(MemberUrl.INFO)
-    fun memberInfo(principal: Principal): ResponseEntity<*> {
+    fun memberInfo(principal: Principal): ResponseEntity<MemberInfo> {
         val member = memberQueryService.getMemberByUUID(uuid = UUID.fromString(principal.name))
         return MemberResponse.infoSuccess(member)
     }
@@ -37,7 +39,7 @@ class MemberController @Autowired constructor(
     fun signupMember(
         @RequestBody @Valid signupRequest: SignupRequest,
         bindingResult: BindingResult
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         memberCommandService.signupMember(signupRequest)
@@ -51,7 +53,7 @@ class MemberController @Autowired constructor(
         @RequestBody @Valid loginRequest: LoginRequest,
         bindingResult: BindingResult,
         response: HttpServletResponse
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         val tokenInfo = memberCommandService.login(loginRequest)
@@ -69,7 +71,7 @@ class MemberController @Autowired constructor(
     fun jwtTokenReissue(
         @RequestHeader(MemberHeader.UUID) uuid: String?,
         @RequestHeader(MemberHeader.REFRESH_TOKEN) refreshToken: String?
-    ): ResponseEntity<*> {
+    ): ResponseEntity<ReissuedTokenInfo> {
         if (uuid.isNullOrBlank() || refreshToken.isNullOrBlank()) {
             throw MemberException(MemberExceptionMessage.TOKEN_REISSUE_HEADER_IS_NULL, "UNRELIABLE-MEMBER")
         }
@@ -85,7 +87,7 @@ class MemberController @Autowired constructor(
         @RequestBody @Valid updateEmail: UpdateEmail,
         bindingResult: BindingResult,
         principal: Principal
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         val memberUUID = UUID.fromString(principal.name)
@@ -100,7 +102,7 @@ class MemberController @Autowired constructor(
         @RequestBody @Valid updatePassword: UpdatePassword,
         bindingResult: BindingResult,
         principal: Principal
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         val memberUUID = UUID.fromString(principal.name)
@@ -111,7 +113,7 @@ class MemberController @Autowired constructor(
     }
 
     @PatchMapping(MemberUrl.LOCK_ON)
-    fun lockOn(principal: Principal): ResponseEntity<*> {
+    fun lockOn(principal: Principal): ResponseEntity<String> {
         val memberUUID = UUID.fromString(principal.name)
         memberCommandService.memberLockOn(memberUUID)
         logger().info(MemberControllerLog.LOCK_ON_SUCCESS + memberUUID)
@@ -120,7 +122,7 @@ class MemberController @Autowired constructor(
     }
 
     @PatchMapping(MemberUrl.LOCK_OFF)
-    fun lockOff(principal: Principal): ResponseEntity<*> {
+    fun lockOff(principal: Principal): ResponseEntity<String> {
         val memberUUID = UUID.fromString(principal.name)
         memberCommandService.memberLockOff(memberUUID)
         logger().info(MemberControllerLog.LOCK_OFF_SUCCESS + memberUUID)
@@ -129,7 +131,7 @@ class MemberController @Autowired constructor(
     }
 
     @PostMapping(MemberUrl.LOGOUT)
-    fun logout(principal: Principal): ResponseEntity<*> {
+    fun logout(principal: Principal): ResponseEntity<String> {
         val memberUUID = UUID.fromString(principal.name)
         memberCommandService.logout(memberUUID)
         logger().info(MemberControllerLog.LOGOUT_SUCCESS + memberUUID)
@@ -140,7 +142,7 @@ class MemberController @Autowired constructor(
     fun recovery(
         @RequestBody @Valid recoveryRequest: RecoveryRequest,
         bindingResult: BindingResult
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         memberCommandService.recovery(recoveryRequest)
@@ -153,7 +155,7 @@ class MemberController @Autowired constructor(
         @RequestBody @Valid withdrawRequest: WithdrawRequest,
         bindingResult: BindingResult,
         principal: Principal
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         val memberUUID = UUID.fromString(principal.name)

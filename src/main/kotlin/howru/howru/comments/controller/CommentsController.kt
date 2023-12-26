@@ -7,6 +7,7 @@ import howru.howru.comments.controller.response.CommentsResponse
 import howru.howru.comments.dto.request.CreateComments
 import howru.howru.comments.dto.request.RemoveComments
 import howru.howru.comments.dto.request.UpdateCommentsContent
+import howru.howru.comments.dto.response.CommentsInfo
 import howru.howru.comments.service.command.CommentsCommandService
 import howru.howru.comments.service.query.CommentsQueryService
 import howru.howru.globalUtil.validateBinding
@@ -25,7 +26,7 @@ class CommentsController @Autowired constructor(
     private val commentsCommandService: CommentsCommandService
 ) {
     @GetMapping(CommentsUrl.DETAIL)
-    fun detail(@PathVariable(CommentsParam.ID) @Positive id: Long): ResponseEntity<*> {
+    fun detail(@PathVariable(CommentsParam.ID) @Positive id: Long): ResponseEntity<CommentsInfo> {
         val comment = commentsQueryService.getCommentById(id)
         return CommentsResponse.detailSuccess(comment)
     }
@@ -34,7 +35,7 @@ class CommentsController @Autowired constructor(
     fun commentsByWriter(
         @PathVariable(CommentsParam.WRITER_UUID) writerUUID: UUID,
         @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
-    ): ResponseEntity<*> {
+    ): ResponseEntity<List<CommentsInfo>> {
         val comments = commentsQueryService.getCommentsByWriter(writerUUID, lastId)
         return CommentsResponse.commentsByWriterSuccess(comments)
     }
@@ -43,7 +44,7 @@ class CommentsController @Autowired constructor(
     fun commentsByPost(
         @PathVariable(CommentsParam.POST_ID) postId: Long,
         @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
-    ): ResponseEntity<*> {
+    ): ResponseEntity<List<CommentsInfo>> {
         val comments = commentsQueryService.getCommentsByPost(postId, lastId)
         return CommentsResponse.commentsByPostSuccess(comments)
     }
@@ -53,7 +54,7 @@ class CommentsController @Autowired constructor(
         @PathVariable(CommentsParam.WRITER_UUID) writerUUID: UUID,
         @RequestParam(CommentsParam.MEMBER_UUID) memberUUID: UUID,
         @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
-    ): ResponseEntity<*> {
+    ): ResponseEntity<List<CommentsInfo>> {
         val comments = commentsQueryService.getCommentsBySomeone(writerUUID, memberUUID, lastId)
         return CommentsResponse.commentsBySomeoneSuccess(comments)
     }
@@ -62,7 +63,7 @@ class CommentsController @Autowired constructor(
     fun createComment(
         @RequestBody @Valid createComments: CreateComments,
         bindingResult: BindingResult
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         commentsCommandService.createComment(createComments)
@@ -76,7 +77,7 @@ class CommentsController @Autowired constructor(
         @PathVariable(CommentsParam.ID) @Positive id: Long,
         @RequestBody @Valid updateCommentsContent: UpdateCommentsContent,
         bindingResult: BindingResult
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         commentsCommandService.editComment(id, updateCommentsContent)
@@ -90,7 +91,7 @@ class CommentsController @Autowired constructor(
         @PathVariable(CommentsParam.ID) @Positive id: Long,
         @RequestBody @Valid removeComments: RemoveComments,
         bindingResult: BindingResult
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         commentsCommandService.removeComment(id, removeComments)

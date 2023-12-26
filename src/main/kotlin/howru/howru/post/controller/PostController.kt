@@ -9,6 +9,7 @@ import howru.howru.post.controller.response.PostResponse
 import howru.howru.post.dto.request.CreatePost
 import howru.howru.post.dto.request.RemovePost
 import howru.howru.post.dto.request.UpdatePostContent
+import howru.howru.post.dto.response.PostInfo
 import howru.howru.post.service.command.PostCommandService
 import howru.howru.post.service.query.PostQueryService
 import jakarta.validation.Valid
@@ -25,7 +26,7 @@ class PostController @Autowired constructor(
     private val postCommandService: PostCommandService
 ) {
     @GetMapping(PostUrl.DETAIL)
-    fun detail(@PathVariable(PostParam.ID) @Positive id: Long): ResponseEntity<*> {
+    fun detail(@PathVariable(PostParam.ID) @Positive id: Long): ResponseEntity<PostInfo> {
         val postDetail = postQueryService.getPostById(id)
         return PostResponse.postDetailSuccess(postDetail)
     }
@@ -34,13 +35,13 @@ class PostController @Autowired constructor(
     fun myPost(
         @PathVariable(PostParam.MEMBER_UUID) memberUUID: UUID,
         @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
-    ): ResponseEntity<*> {
+    ): ResponseEntity<List<PostInfo>> {
         val myPosts = postQueryService.getMyPosts(memberUUID, lastId)
         return PostResponse.myPostSuccess(myPosts)
     }
 
     @GetMapping(PostUrl.ALL_POST)
-    fun allPost(@RequestParam(PostParam.LAST_ID, required = false) lastId: Long?): ResponseEntity<*> {
+    fun allPost(@RequestParam(PostParam.LAST_ID, required = false) lastId: Long?): ResponseEntity<List<PostInfo>> {
         val allPosts = postQueryService.getAllPosts(lastId)
         return PostResponse.allPostSuccess(allPosts)
     }
@@ -50,7 +51,7 @@ class PostController @Autowired constructor(
         @PathVariable(PostParam.WRITER_UUID) writerUUID: UUID,
         @RequestParam(PostParam.MEMBER_UUID) memberUUID: UUID,
         @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
-    ): ResponseEntity<*> {
+    ): ResponseEntity<List<PostInfo>> {
         val postsOfWriter = postQueryService.getPostsBySomeone(writerUUID, memberUUID, lastId)
         return PostResponse.postOfWriterSuccess(postsOfWriter)
     }
@@ -59,25 +60,25 @@ class PostController @Autowired constructor(
     fun postOfFollowee(
         @PathVariable(PostParam.FOLLOWER_UUID) followerUUID: UUID,
         @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
-    ): ResponseEntity<*> {
+    ): ResponseEntity<List<PostInfo>> {
         val postsOfFollowee = postQueryService.getPostsOfFollowee(followerUUID, lastId)
         return PostResponse.postOfFolloweeSuccess(postsOfFollowee)
     }
 
     @GetMapping(PostUrl.RECOMMEND)
-    fun recommendPost(@RequestParam(PostParam.CONTENT) content: String): ResponseEntity<*> {
+    fun recommendPost(@RequestParam(PostParam.CONTENT) content: String): ResponseEntity<List<PostInfo>> {
         val recommendPosts = postQueryService.getRecommendPosts(content)
         return PostResponse.recommendPostSuccess(recommendPosts)
     }
 
     @GetMapping(PostUrl.RANDOM)
-    fun randomPost(): ResponseEntity<*> {
+    fun randomPost(): ResponseEntity<List<PostInfo>> {
         val randomPosts = postQueryService.getRandomPosts()
         return PostResponse.randomPostSuccess(randomPosts)
     }
 
     @GetMapping(PostUrl.COUNT_POST_BY_WRITER)
-    fun countPostByWriter(@PathVariable(PostParam.WRITER_UUID) writerUUID: UUID): ResponseEntity<*> {
+    fun countPostByWriter(@PathVariable(PostParam.WRITER_UUID) writerUUID: UUID): ResponseEntity<Long> {
         val countPost = postQueryService.countPostsByWriter(writerUUID)
         return PostResponse.countPostOfWriterSuccess(countPost)
     }
@@ -86,7 +87,7 @@ class PostController @Autowired constructor(
     fun createPost(
         @RequestBody @Valid createPost: CreatePost,
         bindingResult: BindingResult
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         postCommandService.createPost(createPost)
@@ -100,7 +101,7 @@ class PostController @Autowired constructor(
         @PathVariable(PostParam.ID) @Positive id: Long,
         @RequestBody @Valid updatePostContent: UpdatePostContent,
         bindingResult: BindingResult
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         postCommandService.editContent(id, updatePostContent)
@@ -114,7 +115,7 @@ class PostController @Autowired constructor(
         @PathVariable(PostParam.ID) @Positive id: Long,
         @RequestBody @Valid removePost: RemovePost,
         bindingResult: BindingResult
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         postCommandService.removePost(id, removePost)

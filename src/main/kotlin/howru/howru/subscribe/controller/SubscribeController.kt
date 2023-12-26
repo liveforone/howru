@@ -8,6 +8,7 @@ import howru.howru.subscribe.controller.constant.SubscribeUrl
 import howru.howru.subscribe.controller.response.SubscribeResponse
 import howru.howru.subscribe.dto.request.CreateSubscribe
 import howru.howru.subscribe.dto.request.UnsubscribeRequest
+import howru.howru.subscribe.dto.response.SubscribeInfo
 import howru.howru.subscribe.service.command.SubscribeCommandService
 import howru.howru.subscribe.service.query.SubscribeQueryService
 import jakarta.validation.Valid
@@ -33,7 +34,7 @@ class SubscribeController @Autowired constructor(
         @PathVariable(SubscribeParam.FOLLOWER_UUID) followerUUID: UUID,
         @RequestParam(SubscribeParam.LAST_FOLLOWEE_UUID, required = false) lastFolloweeUUID: UUID?,
         @RequestParam(SubscribeParam.LAST_FOLLOWER_UUID, required = false) lastFollowerUUID: UUID?
-    ): ResponseEntity<*> {
+    ): ResponseEntity<List<SubscribeInfo>> {
         val subscribes = subscribeQueryService.getSubscribesByFollower(followerUUID, lastFolloweeUUID, lastFollowerUUID)
         return SubscribeResponse.getFollowingSuccess(subscribes)
     }
@@ -43,19 +44,19 @@ class SubscribeController @Autowired constructor(
         @PathVariable(SubscribeParam.FOLLOWEE_UUID) followeeUUID: UUID,
         @RequestParam(SubscribeParam.LAST_FOLLOWEE_UUID, required = false) lastFolloweeUUID: UUID?,
         @RequestParam(SubscribeParam.LAST_FOLLOWER_UUID, required = false) lastFollowerUUID: UUID?
-    ): ResponseEntity<*> {
+    ): ResponseEntity<List<SubscribeInfo>> {
         val subscribes = subscribeQueryService.getSubscribesByFollowee(followeeUUID, lastFolloweeUUID, lastFollowerUUID)
         return SubscribeResponse.getFollowerSuccess(subscribes)
     }
 
     @GetMapping(SubscribeUrl.COUNT_FOLLOWING)
-    fun countFollowing(@PathVariable(SubscribeParam.FOLLOWER_UUID) followerUUID: UUID): ResponseEntity<*> {
+    fun countFollowing(@PathVariable(SubscribeParam.FOLLOWER_UUID) followerUUID: UUID): ResponseEntity<Long> {
         val countOfSubscribes = subscribeQueryService.getCountSubscribes(followerUUID)
         return SubscribeResponse.countFollowingSuccess(countOfSubscribes)
     }
 
     @GetMapping(SubscribeUrl.COUNT_FOLLOWER)
-    fun countFollower(@PathVariable(SubscribeParam.FOLLOWEE_UUID) followeeUUID: UUID): ResponseEntity<*> {
+    fun countFollower(@PathVariable(SubscribeParam.FOLLOWEE_UUID) followeeUUID: UUID): ResponseEntity<Long> {
         val countOfFollower = subscribeQueryService.getCountFollower(followeeUUID)
         return SubscribeResponse.countFollowerSuccess(countOfFollower)
     }
@@ -64,7 +65,7 @@ class SubscribeController @Autowired constructor(
     fun subscribe(
         @RequestBody @Valid createSubscribe: CreateSubscribe,
         bindingResult: BindingResult
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         subscribeCommandService.createSubscribe(createSubscribe)
@@ -77,7 +78,7 @@ class SubscribeController @Autowired constructor(
     fun unsubscribe(
         @RequestBody @Valid unsubscribeRequest: UnsubscribeRequest,
         bindingResult: BindingResult
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         subscribeCommandService.unsubscribe(unsubscribeRequest)

@@ -6,6 +6,7 @@ import howru.howru.reportState.controller.constant.ReportStateParam
 import howru.howru.reportState.controller.constant.ReportStateUrl
 import howru.howru.reportState.controller.response.ReportStateResponse
 import howru.howru.reportState.dto.request.ReportMember
+import howru.howru.reportState.dto.response.ReportStateInfo
 import howru.howru.reportState.log.ReportStateControllerLog
 import howru.howru.reportState.service.command.ReportStateCommandService
 import howru.howru.reportState.service.query.ReportStateQueryService
@@ -26,7 +27,7 @@ class ReportStateController @Autowired constructor(
     private val reportStateCommandService: ReportStateCommandService
 ) {
     @GetMapping(ReportStateUrl.REPORT_STATE_INFO)
-    fun reportStateInfo(@PathVariable(ReportStateParam.MEMBER_UUID) memberUUID: UUID): ResponseEntity<*> {
+    fun reportStateInfo(@PathVariable(ReportStateParam.MEMBER_UUID) memberUUID: UUID): ResponseEntity<ReportStateInfo> {
         val reportState = reportStateQueryService.getOneByMemberUUID(memberUUID)
         return ReportStateResponse.infoSuccess(reportState)
     }
@@ -35,7 +36,7 @@ class ReportStateController @Autowired constructor(
     fun reportMember(
         @RequestBody @Valid reportMember: ReportMember,
         bindingResult: BindingResult
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         reportStateCommandService.addRepost(reportMember)

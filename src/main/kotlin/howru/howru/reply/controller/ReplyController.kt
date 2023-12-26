@@ -9,6 +9,7 @@ import howru.howru.reply.controller.response.ReplyResponse
 import howru.howru.reply.dto.request.CreateReply
 import howru.howru.reply.dto.request.RemoveReply
 import howru.howru.reply.dto.request.UpdateReplyContent
+import howru.howru.reply.dto.response.ReplyInfo
 import howru.howru.reply.service.command.ReplyCommandService
 import howru.howru.reply.service.query.ReplyQueryService
 import jakarta.validation.Valid
@@ -25,7 +26,7 @@ class ReplyController @Autowired constructor(
     private val replyCommandService: ReplyCommandService
 ) {
     @GetMapping(ReplyUrl.DETAIL)
-    fun detail(@PathVariable(ReplyParam.ID) @Positive id: Long): ResponseEntity<*> {
+    fun detail(@PathVariable(ReplyParam.ID) @Positive id: Long): ResponseEntity<ReplyInfo> {
         val reply = replyQueryService.getReplyById(id)
         return ReplyResponse.detailSuccess(reply)
     }
@@ -34,7 +35,7 @@ class ReplyController @Autowired constructor(
     fun belongWriter(
         @PathVariable(ReplyParam.WRITER_UUID) writerUUID: UUID,
         @RequestParam(ReplyParam.LAST_ID, required = false) lastId: Long?
-    ): ResponseEntity<*> {
+    ): ResponseEntity<List<ReplyInfo>> {
         val replies = replyQueryService.getRepliesByWriter(writerUUID, lastId)
         return ReplyResponse.belongWriterSuccess(replies)
     }
@@ -43,7 +44,7 @@ class ReplyController @Autowired constructor(
     fun belongComment(
         @PathVariable(ReplyParam.COMMENT_ID) commentId: Long,
         @RequestParam(ReplyParam.LAST_ID, required = false) lastId: Long?
-    ): ResponseEntity<*> {
+    ): ResponseEntity<List<ReplyInfo>> {
         val replies = replyQueryService.getRepliesByComment(commentId, lastId)
         return ReplyResponse.belongCommentSuccess(replies)
     }
@@ -52,7 +53,7 @@ class ReplyController @Autowired constructor(
     fun create(
         @RequestBody @Valid createReply: CreateReply,
         bindingResult: BindingResult
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         replyCommandService.createReply(createReply)
@@ -66,7 +67,7 @@ class ReplyController @Autowired constructor(
         @PathVariable(ReplyParam.ID) @Positive id: Long,
         @RequestBody @Valid updateReplyContent: UpdateReplyContent,
         bindingResult: BindingResult
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         replyCommandService.editReply(id, updateReplyContent)
@@ -80,7 +81,7 @@ class ReplyController @Autowired constructor(
         @PathVariable(ReplyParam.ID) @Positive id: Long,
         @RequestBody @Valid removeReply: RemoveReply,
         bindingResult: BindingResult
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         replyCommandService.removeReply(id, removeReply)

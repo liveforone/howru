@@ -7,6 +7,8 @@ import howru.howru.likes.controller.constant.LikesUrl
 import howru.howru.likes.controller.response.LikesResponse
 import howru.howru.likes.dto.request.CreateLikes
 import howru.howru.likes.dto.request.RemoveLikes
+import howru.howru.likes.dto.response.LikesBelongMemberInfo
+import howru.howru.likes.dto.response.LikesBelongPostInfo
 import howru.howru.likes.service.command.LikesCommandService
 import howru.howru.likes.service.query.LikesQueryService
 import howru.howru.logger
@@ -32,7 +34,7 @@ class LikesController @Autowired constructor(
     fun likesBelongMember(
         @PathVariable(LikesParam.MEMBER_UUID) memberUUID: UUID,
         @RequestParam(LikesParam.LAST_POST_ID, required = false) lastPostId: Long?
-    ): ResponseEntity<*> {
+    ): ResponseEntity<List<LikesBelongMemberInfo>> {
         val likes = likesQueryService.getLikesBelongMember(memberUUID, lastPostId)
         return LikesResponse.belongMemberSuccess(likes)
     }
@@ -41,7 +43,7 @@ class LikesController @Autowired constructor(
     fun likesBelongPost(
         @PathVariable(LikesParam.POST_ID) postId: Long,
         @RequestParam(LikesParam.LAST_MEMBER_UUID, required = false) lastMemberUUID: UUID?
-    ): ResponseEntity<*> {
+    ): ResponseEntity<List<LikesBelongPostInfo>> {
         val likes = likesQueryService.getLikesBelongPost(postId, lastMemberUUID)
         return LikesResponse.belongPostSuccess(likes)
     }
@@ -50,7 +52,7 @@ class LikesController @Autowired constructor(
     fun like(
         @RequestBody @Valid createLikes: CreateLikes,
         bindingResult: BindingResult
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         likesCommandService.createLikes(createLikes)
@@ -63,7 +65,7 @@ class LikesController @Autowired constructor(
     fun dislike(
         @RequestBody @Valid removeLikes: RemoveLikes,
         bindingResult: BindingResult
-    ): ResponseEntity<*> {
+    ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
         likesCommandService.removeLikes(removeLikes)
