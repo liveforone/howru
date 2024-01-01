@@ -16,8 +16,8 @@ class AdvertisementQueryService @Autowired constructor(
 ) {
     fun getOneById(id: Long) = advertisementQuery.findOneDtoById(id)
     @Cacheable(cacheNames = [CacheName.ADVERTISEMENT])
-    fun getAllAdvertisement() = advertisementQuery.findAllAdvertisement()
+    fun getAllAdvertisements() = advertisementQuery.findAllAdvertisements()
     fun searchAdByCompany(company: String) = advertisementQuery.searchAdByCompany(company)
-    fun getExpiredAd() = advertisementQuery.findExpiredAd()
+    fun getExpiredAds() = advertisementQuery.findExpiredAds()
     fun getRandomAd() = advertisementRepository.findRandomAd()
 }

@@ -39,7 +39,7 @@ class PostQueryService @Autowired constructor(
         }
     }
     fun getPostsOfFollowee(followerUUID: UUID, lastId: Long?): List<PostInfo> {
-        val followeeUUID = subscribeQueryService.getFollowee(followerUUID)
+        val followeeUUID = subscribeQueryService.getFollowees(followerUUID)
         return postRepository.findPostsByFollowee(followeeUUID, lastId)
     }
     fun getRecommendPosts(content: String): List<PostInfo> {
@@ -47,5 +47,5 @@ class PostQueryService @Autowired constructor(
     }
     fun getRandomPosts() = postRepository.findRandomPosts()
     @Cacheable(cacheNames = [CacheName.POST], key = PostCache.WRITER_KEY)
-    fun countPostsByWriter(writerUUID: UUID) = postRepository.countPostByWriter(writerUUID)
+    fun getCountOfPostsByWriter(writerUUID: UUID) = postRepository.countOfPostByWriter(writerUUID)
 }

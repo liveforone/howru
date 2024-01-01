@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @SpringBootTest
-class AdvertisementQueryConstantServiceTest @Autowired constructor(
+class AdvertisementSqlServiceTest @Autowired constructor(
     private val entityManager: EntityManager,
     private val memberCommandService: MemberCommandService,
     private val advertisementCommandService: AdvertisementCommandService,
@@ -69,7 +69,7 @@ class AdvertisementQueryConstantServiceTest @Autowired constructor(
         }
 
         ///when
-        val allAd = advertisementQueryService.getAllAdvertisement()
+        val allAd = advertisementQueryService.getAllAdvertisements()
 
         //then
         //id desc 로 조회하기 때문에 앞쪽 값일 수록 최근값이라 뒤에 붙는 숫자가 늘어난다.
@@ -110,7 +110,7 @@ class AdvertisementQueryConstantServiceTest @Autowired constructor(
         }
 
         //when
-        val adList = advertisementQueryService.getExpiredAd()
+        val adList = advertisementQueryService.getExpiredAds()
 
         //then
         Assertions.assertThat(adList).isEmpty()

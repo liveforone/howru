@@ -10,5 +10,5 @@ object MemberControllerLog {
     const val LOGOUT_SUCCESS = "회원 로그아웃 성공. 회원 UUID : "
     const val RECOVERY_SUCCESS = "회원 계정 복구 성공. 회원 Email : "
     const val WITHDRAW_SUCCESS = "회원탈퇴 성공. 회원 UUID : "
-    const val JWT_TOKEN_REISSUE = "JWT 토큰 갱신 성공. 회원 UUID : "
+    const val JWT_TOKEN_REISSUE_SUCCESS = "JWT 토큰 갱신 성공. 회원 UUID : "
 }

@@ -33,6 +33,14 @@ class LikesRepositoryImpl @Autowired constructor(
         }
     }
 
+    override fun countOfLikesByPost(postId: Long): Long {
+        return queryFactory.singleQuery {
+            select(count(entity(Likes::class)))
+            from(Likes::class)
+            where(col(Likes::postId).equal(postId))
+        }
+    }
+
     override fun findLikesBelongMember(memberUUID: UUID, lastPostId: Long?): List<LikesBelongMemberInfo> {
         return queryFactory.listQuery {
             select(listOf(col(Likes::postId)))

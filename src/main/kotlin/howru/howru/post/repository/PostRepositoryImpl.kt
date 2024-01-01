@@ -156,7 +156,7 @@ class PostRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun countPostByWriter(writerUUID: UUID): Long {
+    override fun countOfPostByWriter(writerUUID: UUID): Long {
         return queryFactory.singleQuery {
             select(count(entity(Post::class)))
             from(Post::class)

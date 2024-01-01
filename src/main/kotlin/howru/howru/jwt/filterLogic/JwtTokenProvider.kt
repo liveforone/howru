@@ -95,8 +95,8 @@ class JwtTokenProvider (@Value(JwtConstant.SECRET_KEY_PATH) private var secretKe
             logger().info(JwtExceptionMessage.EXPIRED_JWT_TOKEN.message)
             throw JwtCustomException(JwtExceptionMessage.EXPIRED_JWT_TOKEN)
         } catch (e: UnsupportedJwtException) {
-            logger().info(JwtExceptionMessage.UNSUPPORTED.message)
-            throw JwtCustomException(JwtExceptionMessage.UNSUPPORTED)
+            logger().info(JwtExceptionMessage.UNSUPPORTED_TOKEN.message)
+            throw JwtCustomException(JwtExceptionMessage.UNSUPPORTED_TOKEN)
         } catch (e: SecurityException) {
             logger().info(JwtExceptionMessage.INVALID_TOKEN.message)
             throw JwtCustomException(JwtExceptionMessage.INVALID_TOKEN)

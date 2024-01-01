@@ -41,7 +41,7 @@ class AdvertisementController @Autowired constructor(
 
     @GetMapping(AdvertisementUrl.ALL_AD)
     fun allAd(): ResponseEntity<List<AdvertisementInfo?>> {
-        val ads = advertisementQueryService.getAllAdvertisement()
+        val ads = advertisementQueryService.getAllAdvertisements()
         return AdvertisementResponse.allAdSuccess(ads)
     }
 
@@ -53,7 +53,7 @@ class AdvertisementController @Autowired constructor(
 
     @GetMapping(AdvertisementUrl.EXPIRED_AD)
     fun expiredAd(): ResponseEntity<List<AdvertisementInfo?>> {
-        val ads = advertisementQueryService.getExpiredAd()
+        val ads = advertisementQueryService.getExpiredAds()
         return AdvertisementResponse.expiredAdSuccess(ads)
     }
 

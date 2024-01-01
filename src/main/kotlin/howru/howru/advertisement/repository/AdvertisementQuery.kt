@@ -35,7 +35,7 @@ class AdvertisementQuery @Autowired constructor(
         }.firstOrNull() ?: throw AdvertisementException(AdvertisementExceptionMessage.AD_IS_NULL, id)
     }
 
-    fun findAllAdvertisement(): List<AdvertisementInfo?> {
+    fun findAllAdvertisements(): List<AdvertisementInfo?> {
         return advertisementRepository.findAll {
             selectNew<AdvertisementInfo>(
                 path(Advertisement::id),
@@ -64,7 +64,7 @@ class AdvertisementQuery @Autowired constructor(
         }
     }
 
-    fun findExpiredAd(): List<AdvertisementInfo?> {
+    fun findExpiredAds(): List<AdvertisementInfo?> {
         return advertisementRepository.findAll {
             selectNew<AdvertisementInfo>(
                 path(Advertisement::id),

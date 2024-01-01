@@ -15,15 +15,13 @@ class LikesCommandService @Autowired constructor(
 ) {
     fun createLikes(createLikes: CreateLikes) {
         with(createLikes) {
-            Likes.create(memberUUID!!, postId!!)
-                .also { likesRepository.save(it) }
+            Likes.create(memberUUID!!, postId!!).also { likesRepository.save(it) }
         }
     }
 
     fun removeLikes(removeLikes: RemoveLikes) {
         with(removeLikes) {
-            likesRepository.findOneById(memberUUID!!, postId!!)
-                .also { likesRepository.delete(it) }
+            likesRepository.findOneById(memberUUID!!, postId!!).also { likesRepository.delete(it) }
         }
     }
 }

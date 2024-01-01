@@ -19,7 +19,7 @@ class PostCommandService @Autowired constructor(
     private val postRepository: PostRepository,
     private val memberQuery: MemberQuery
 ) {
-    @CacheEvict(cacheNames = [CacheName.POST], key = PostCache.CREATE_WRITER)
+    @CacheEvict(cacheNames = [CacheName.POST], key = PostCache.CREATE_DTO_WRITER_KEY)
     fun createPost(createPost: CreatePost): Long {
         return with(createPost) {
             Post.create(writer = memberQuery.findOneByUUID(writerUUID!!), content!!)

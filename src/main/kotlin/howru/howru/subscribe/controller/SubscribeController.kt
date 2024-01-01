@@ -51,13 +51,13 @@ class SubscribeController @Autowired constructor(
 
     @GetMapping(SubscribeUrl.COUNT_FOLLOWING)
     fun countFollowing(@PathVariable(SubscribeParam.FOLLOWER_UUID) followerUUID: UUID): ResponseEntity<Long> {
-        val countOfSubscribes = subscribeQueryService.getCountSubscribes(followerUUID)
+        val countOfSubscribes = subscribeQueryService.getCountOfSubscribes(followerUUID)
         return SubscribeResponse.countFollowingSuccess(countOfSubscribes)
     }
 
     @GetMapping(SubscribeUrl.COUNT_FOLLOWER)
     fun countFollower(@PathVariable(SubscribeParam.FOLLOWEE_UUID) followeeUUID: UUID): ResponseEntity<Long> {
-        val countOfFollower = subscribeQueryService.getCountFollower(followeeUUID)
+        val countOfFollower = subscribeQueryService.getCountOfFollower(followeeUUID)
         return SubscribeResponse.countFollowerSuccess(countOfFollower)
     }
 

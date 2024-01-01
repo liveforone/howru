@@ -1,6 +1,6 @@
-package howru.howru.subscribe.repository.query
+package howru.howru.subscribe.repository.sql
 
-object SubscribeQuery {
+object SubscribeSql {
     const val IS_FOLLOWEE = "SELECT CASE WHEN EXISTS (" +
             "SELECT 1 FROM Subscribe s " +
             "WHERE s.followeeUUID = :followeeUUID AND s.followerUUID = :followerUUID" +
@@ -13,4 +13,7 @@ object SubscribeQuery {
             "SELECT 1 FROM Subscribe s2 " +
             "WHERE s2.followeeUUID = :followerUUID AND s2.followerUUID = :followeeUUID" +
             ") THEN true ELSE false END"
+
+    const val FOLLOWEE_UUID = "followeeUUID"
+    const val FOLLOWER_UUID = "followerUUID"
 }

@@ -7,7 +7,7 @@ import howru.howru.jwt.dto.ReissuedTokenInfo
 import howru.howru.logger
 import howru.howru.member.controller.constant.MemberControllerConstant
 import howru.howru.member.log.MemberControllerLog
-import howru.howru.member.controller.constant.MemberHeader
+import howru.howru.member.controller.constant.MemberRequestHeaderConstant
 import howru.howru.member.controller.constant.MemberUrl
 import howru.howru.member.controller.response.MemberResponse
 import howru.howru.member.dto.request.*
@@ -69,8 +69,8 @@ class MemberController @Autowired constructor(
 
     @PutMapping(MemberUrl.JWT_TOKEN_REISSUE)
     fun jwtTokenReissue(
-        @RequestHeader(MemberHeader.UUID) uuid: String?,
-        @RequestHeader(MemberHeader.REFRESH_TOKEN) refreshToken: String?
+        @RequestHeader(MemberRequestHeaderConstant.UUID) uuid: String?,
+        @RequestHeader(MemberRequestHeaderConstant.REFRESH_TOKEN) refreshToken: String?
     ): ResponseEntity<ReissuedTokenInfo> {
         if (uuid.isNullOrBlank() || refreshToken.isNullOrBlank()) {
             throw MemberException(MemberExceptionMessage.TOKEN_REISSUE_HEADER_IS_NULL, "UNRELIABLE-MEMBER")
@@ -78,7 +78,8 @@ class MemberController @Autowired constructor(
 
         val memberUUID = UUID.fromString(uuid)
         val reissueJwtToken = memberCommandService.reissueJwtToken(memberUUID, refreshToken)
-        logger().info(MemberControllerLog.JWT_TOKEN_REISSUE + memberUUID)
+        logger().info(MemberControllerLog.JWT_TOKEN_REISSUE_SUCCESS + memberUUID)
+
         return ResponseEntity.ok(reissueJwtToken)
     }
 
@@ -135,6 +136,7 @@ class MemberController @Autowired constructor(
         val memberUUID = UUID.fromString(principal.name)
         memberCommandService.logout(memberUUID)
         logger().info(MemberControllerLog.LOGOUT_SUCCESS + memberUUID)
+
         return MemberResponse.logOutSuccess()
     }
 
@@ -147,6 +149,7 @@ class MemberController @Autowired constructor(
 
         memberCommandService.recovery(recoveryRequest)
         logger().info(MemberControllerLog.RECOVERY_SUCCESS + recoveryRequest.email)
+
         return MemberResponse.recoverySuccess()
     }
 

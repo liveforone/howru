@@ -11,6 +11,7 @@ import java.util.UUID
 class LikesQueryService @Autowired constructor(
     private val likesRepository: LikesRepository
 ) {
+    fun getCountOfLikesByPost(postId: Long) = likesRepository.countOfLikesByPost(postId)
     fun getLikesBelongMember(memberUUID: UUID, lastPostId: Long?) = likesRepository.findLikesBelongMember(memberUUID, lastPostId)
     fun getLikesBelongPost(postId: Long, lastMemberUUID: UUID?) = likesRepository.findLikesBelongPost(postId, lastMemberUUID)
 }

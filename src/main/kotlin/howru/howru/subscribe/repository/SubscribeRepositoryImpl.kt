@@ -64,7 +64,7 @@ class SubscribeRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findFollowee(followerUUID: UUID): List<UUID> {
+    override fun findFollowees(followerUUID: UUID): List<UUID> {
         return queryFactory.listQuery {
             select(col(Subscribe::followeeUUID))
             from(Subscribe::class)
@@ -73,7 +73,7 @@ class SubscribeRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun countSubscribesByFollower(followerUUID: UUID): Long {
+    override fun countOfSubscribesByFollower(followerUUID: UUID): Long {
         return queryFactory.singleQuery {
             select(count(entity(Subscribe::class)))
             from(Subscribe::class)
@@ -81,7 +81,7 @@ class SubscribeRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun countFollowersByFollowee(followeeUUID: UUID): Long {
+    override fun countOfFollowersByFollowee(followeeUUID: UUID): Long {
         return queryFactory.singleQuery {
             select(count(entity(Subscribe::class)))
             from(Subscribe::class)

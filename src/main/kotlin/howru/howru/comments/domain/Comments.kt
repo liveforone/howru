@@ -32,7 +32,7 @@ class Comments private constructor(
             Comments(writer = writer, post = post, content = content)
     }
 
-    fun editContent(content: String) {
+    fun editContentAndState(content: String) {
         this.content = content
         commentsState = CommentsState.EDITED
     }

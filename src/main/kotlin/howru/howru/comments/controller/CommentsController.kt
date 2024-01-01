@@ -6,7 +6,7 @@ import howru.howru.comments.controller.constant.CommentsUrl
 import howru.howru.comments.controller.response.CommentsResponse
 import howru.howru.comments.dto.request.CreateComments
 import howru.howru.comments.dto.request.RemoveComments
-import howru.howru.comments.dto.request.UpdateCommentsContent
+import howru.howru.comments.dto.request.UpdateComments
 import howru.howru.comments.dto.response.CommentsInfo
 import howru.howru.comments.service.command.CommentsCommandService
 import howru.howru.comments.service.query.CommentsQueryService
@@ -59,35 +59,35 @@ class CommentsController @Autowired constructor(
         return CommentsResponse.commentsBySomeoneSuccess(comments)
     }
 
-    @PostMapping(CommentsUrl.CREATE)
-    fun createComment(
+    @PostMapping(CommentsUrl.CREATE_COMMENTS)
+    fun createComments(
         @RequestBody @Valid createComments: CreateComments,
         bindingResult: BindingResult
     ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
-        commentsCommandService.createComment(createComments)
-        logger().info(CommentsControllerLog.CREATE_COMMENT_SUCCESS + createComments.writerUUID)
+        commentsCommandService.createComments(createComments)
+        logger().info(CommentsControllerLog.CREATE_COMMENTS_SUCCESS + createComments.writerUUID)
 
-        return CommentsResponse.createCommentSuccess()
+        return CommentsResponse.createCommentsSuccess()
     }
 
-    @PatchMapping(CommentsUrl.EDIT)
-    fun editComment(
+    @PatchMapping(CommentsUrl.EDIT_COMMENTS)
+    fun editComments(
         @PathVariable(CommentsParam.ID) @Positive id: Long,
-        @RequestBody @Valid updateCommentsContent: UpdateCommentsContent,
+        @RequestBody @Valid updateComments: UpdateComments,
         bindingResult: BindingResult
     ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
-        commentsCommandService.editComment(id, updateCommentsContent)
-        logger().info(CommentsControllerLog.EDIT_COMMENT_SUCCESS + id)
+        commentsCommandService.editComment(id, updateComments)
+        logger().info(CommentsControllerLog.EDIT_COMMENTS_SUCCESS + id)
 
-        return CommentsResponse.editCommentSuccess()
+        return CommentsResponse.editCommentsSuccess()
     }
 
-    @DeleteMapping(CommentsUrl.REMOVE)
-    fun removeComment(
+    @DeleteMapping(CommentsUrl.REMOVE_COMMENTS)
+    fun removeComments(
         @PathVariable(CommentsParam.ID) @Positive id: Long,
         @RequestBody @Valid removeComments: RemoveComments,
         bindingResult: BindingResult
@@ -97,6 +97,6 @@ class CommentsController @Autowired constructor(
         commentsCommandService.removeComment(id, removeComments)
         logger().info(CommentsControllerLog.DELETE_COMMENTS_SUCCESS + id)
 
-        return CommentsResponse.removeCommentSuccess()
+        return CommentsResponse.removeCommentsSuccess()
     }
 }

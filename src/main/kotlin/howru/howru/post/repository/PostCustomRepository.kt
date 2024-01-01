@@ -13,5 +13,5 @@ interface PostCustomRepository {
     fun findPostsBySomeone(someoneUUID: UUID, lastId: Long?): List<PostInfo>
     fun findPostsByFollowee(followeeUUID: List<UUID>, lastId: Long?): List<PostInfo>
     fun findRecommendPosts(keyword: String?): List<PostInfo>
-    fun countPostByWriter(writerUUID: UUID): Long
+    fun countOfPostByWriter(writerUUID: UUID): Long
 }

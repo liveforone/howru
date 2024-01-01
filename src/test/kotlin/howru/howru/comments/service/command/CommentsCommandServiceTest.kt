@@ -3,7 +3,7 @@ package howru.howru.comments.service.command
 import howru.howru.comments.domain.CommentsState
 import howru.howru.comments.dto.request.CreateComments
 import howru.howru.comments.dto.request.RemoveComments
-import howru.howru.comments.dto.request.UpdateCommentsContent
+import howru.howru.comments.dto.request.UpdateComments
 import howru.howru.comments.service.query.CommentsQueryService
 import howru.howru.exception.exception.CommentsException
 import howru.howru.member.dto.request.LoginRequest
@@ -73,7 +73,7 @@ class CommentsCommandServiceTest @Autowired constructor(
 
         //when
         val request = CreateComments(memberUUID, postId, content)
-        val commentId = commentsCommandService.createComment(request)
+        val commentId = commentsCommandService.createComments(request)
         flushAndClear()
 
         //then
@@ -87,12 +87,12 @@ class CommentsCommandServiceTest @Autowired constructor(
         val memberUUID = createMember()
         val postId = createPost()
         val request = CreateComments(memberUUID, postId, "test_comments")
-        val commentId = commentsCommandService.createComment(request)
+        val commentId = commentsCommandService.createComments(request)
         flushAndClear()
 
         //when
         val updateContent = "updated_comment"
-        val updateRequest = UpdateCommentsContent(memberUUID, updateContent)
+        val updateRequest = UpdateComments(memberUUID, updateContent)
         commentsCommandService.editComment(commentId, updateRequest)
         flushAndClear()
 
@@ -108,7 +108,7 @@ class CommentsCommandServiceTest @Autowired constructor(
         val memberUUID = createMember()
         val postId = createPost()
         val request = CreateComments(memberUUID, postId, "test_comments")
-        val commentId = commentsCommandService.createComment(request)
+        val commentId = commentsCommandService.createComments(request)
         flushAndClear()
 
         //when

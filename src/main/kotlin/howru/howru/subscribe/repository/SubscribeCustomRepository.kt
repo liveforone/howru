@@ -9,7 +9,7 @@ interface SubscribeCustomRepository {
     fun findOneByUUID(followeeUUID: UUID, followerUUID: UUID): Subscribe
     fun findSubscribesByFollower(followerUUID: UUID, lastFolloweeUUID: UUID?, lastFollowerUUID: UUID?): List<SubscribeInfo>
     fun findSubscribesByFollowee(followeeUUID: UUID, lastFolloweeUUID: UUID?, lastFollowerUUID: UUID?): List<SubscribeInfo>
-    fun findFollowee(followerUUID: UUID): List<UUID>
-    fun countSubscribesByFollower(followerUUID: UUID): Long
-    fun countFollowersByFollowee(followeeUUID: UUID): Long
+    fun findFollowees(followerUUID: UUID): List<UUID>
+    fun countOfSubscribesByFollower(followerUUID: UUID): Long
+    fun countOfFollowersByFollowee(followeeUUID: UUID): Long
 }

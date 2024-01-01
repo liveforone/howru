@@ -40,7 +40,8 @@ class ReportStateController @Autowired constructor(
         validateBinding(bindingResult)
 
         reportStateCommandService.addRepost(reportMember)
-        logger().info(ReportStateControllerLog.REPORT_MEMBER + reportMember.memberUUID)
+        logger().info(ReportStateControllerLog.REPORT_MEMBER_SUCCESS + reportMember.memberUUID)
+
         return ReportStateResponse.reportSuccess()
     }
 }

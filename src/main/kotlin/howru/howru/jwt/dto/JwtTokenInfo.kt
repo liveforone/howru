@@ -8,8 +8,6 @@ data class JwtTokenInfo (
     val refreshToken: String
 ) {
     companion object {
-        fun create(uuid: UUID, accessToken:String, refreshToken:String): JwtTokenInfo {
-            return JwtTokenInfo(uuid, accessToken, refreshToken)
-        }
+        fun create(uuid: UUID, accessToken:String, refreshToken:String) = JwtTokenInfo(uuid, accessToken, refreshToken)
     }
 }

@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @SpringBootTest
-class PostQueryServiceTest @Autowired constructor(
+class PostSqlServiceTest @Autowired constructor(
     private val entityManager: EntityManager,
     private val memberCommandService: MemberCommandService,
     private val subscribeCommandService: SubscribeCommandService,
@@ -240,7 +240,7 @@ class PostQueryServiceTest @Autowired constructor(
 
     @Test
     @Transactional
-    fun countPostsByWriterTest() {
+    fun getCountOfPostsByWriterTest() {
         //given
         val writerUUID = createWriter1()
         val countOfRepeatCreatePost = 10
@@ -252,7 +252,7 @@ class PostQueryServiceTest @Autowired constructor(
         }
 
         //when
-        val countOfPosts = postQueryService.countPostsByWriter(writerUUID)
+        val countOfPosts = postQueryService.getCountOfPostsByWriter(writerUUID)
 
         //then
         Assertions.assertThat(countOfPosts).isEqualTo(countOfRepeatCreatePost.toLong())

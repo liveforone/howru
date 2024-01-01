@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @SpringBootTest
-class SubscribeQueryServiceTest @Autowired constructor(
+class SubscribeSqlServiceTest @Autowired constructor(
     private val entityManager: EntityManager,
     private val memberCommandService: MemberCommandService,
     private val subscribeCommandService: SubscribeCommandService,
@@ -93,7 +93,7 @@ class SubscribeQueryServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val countFollower = subscribeQueryService.getCountFollower(followeeUUID)
+        val countFollower = subscribeQueryService.getCountOfFollower(followeeUUID)
 
         //then
         Assertions.assertThat(countFollower).isEqualTo(1)
@@ -116,7 +116,7 @@ class SubscribeQueryServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val countFollower = subscribeQueryService.getCountFollower(followeeUUID)
+        val countFollower = subscribeQueryService.getCountOfFollower(followeeUUID)
 
         //then
         Assertions.assertThat(countFollower).isEqualTo(1)

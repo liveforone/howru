@@ -88,7 +88,7 @@ class CommentsQueryServiceTest @Autowired constructor(
         val postId = createPost()
         val content = "test_comments"
         val request = CreateComments(memberUUID, postId, content)
-        val commentId = commentsCommandService.createComment(request)
+        val commentId = commentsCommandService.createComments(request)
         flushAndClear()
 
         //when
@@ -107,7 +107,7 @@ class CommentsQueryServiceTest @Autowired constructor(
         val content = "test_comments"
         repeat(2) {
             val request = CreateComments(memberUUID, postId, content)
-            commentsCommandService.createComment(request)
+            commentsCommandService.createComments(request)
             flushAndClear()
         }
 
@@ -126,10 +126,10 @@ class CommentsQueryServiceTest @Autowired constructor(
         val postId = createPost()
         val content = "test_comments"
         val request1 = CreateComments(memberUUID, postId, content)
-        commentsCommandService.createComment(request1)
+        commentsCommandService.createComments(request1)
         flushAndClear()
         val request2 = CreateComments(memberUUID, postId, content)
-        val commentId2 = commentsCommandService.createComment(request2)
+        val commentId2 = commentsCommandService.createComments(request2)
         flushAndClear()
 
         //when
@@ -148,7 +148,7 @@ class CommentsQueryServiceTest @Autowired constructor(
         val content = "test_comments"
         repeat(2) {
             val request = CreateComments(memberUUID, postId, content)
-            commentsCommandService.createComment(request)
+            commentsCommandService.createComments(request)
             flushAndClear()
         }
 
@@ -167,10 +167,10 @@ class CommentsQueryServiceTest @Autowired constructor(
         val postId = createPost()
         val content = "test_comments"
         val request1 = CreateComments(memberUUID, postId, content)
-        commentsCommandService.createComment(request1)
+        commentsCommandService.createComments(request1)
         flushAndClear()
         val request2 = CreateComments(memberUUID, postId, content)
-        val commentId2 = commentsCommandService.createComment(request2)
+        val commentId2 = commentsCommandService.createComments(request2)
         flushAndClear()
 
         //when
@@ -191,7 +191,7 @@ class CommentsQueryServiceTest @Autowired constructor(
         val postId = createPost()
         val content = "test_comments"
         val request1 = CreateComments(memberUUID, postId, content)
-        commentsCommandService.createComment(request1)
+        commentsCommandService.createComments(request1)
         flushAndClear()
 
         //when
@@ -212,7 +212,7 @@ class CommentsQueryServiceTest @Autowired constructor(
         val postId = createPost()
         val content = "test_comments"
         val request1 = CreateComments(memberUUID, postId, content)
-        val commentId = commentsCommandService.createComment(request1)
+        val commentId = commentsCommandService.createComments(request1)
         flushAndClear()
 
         //when

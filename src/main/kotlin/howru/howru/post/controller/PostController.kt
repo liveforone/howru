@@ -79,7 +79,7 @@ class PostController @Autowired constructor(
 
     @GetMapping(PostUrl.COUNT_POST_BY_WRITER)
     fun countPostByWriter(@PathVariable(PostParam.WRITER_UUID) writerUUID: UUID): ResponseEntity<Long> {
-        val countPost = postQueryService.countPostsByWriter(writerUUID)
+        val countPost = postQueryService.getCountOfPostsByWriter(writerUUID)
         return PostResponse.countPostOfWriterSuccess(countPost)
     }
 

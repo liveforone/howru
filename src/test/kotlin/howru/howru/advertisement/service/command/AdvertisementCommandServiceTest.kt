@@ -159,7 +159,7 @@ class AdvertisementCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        advertisementCommandService.removeExpiredThreeMonthSchedule()
+        advertisementCommandService.removeExpiredAdImSchedule()
         flushAndClear()
 
         //when

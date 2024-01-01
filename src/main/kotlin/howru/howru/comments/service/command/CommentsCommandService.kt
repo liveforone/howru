@@ -3,7 +3,7 @@ package howru.howru.comments.service.command
 import howru.howru.comments.domain.Comments
 import howru.howru.comments.dto.request.CreateComments
 import howru.howru.comments.dto.request.RemoveComments
-import howru.howru.comments.dto.request.UpdateCommentsContent
+import howru.howru.comments.dto.request.UpdateComments
 import howru.howru.comments.repository.CommentsRepository
 import howru.howru.member.repository.MemberQuery
 import howru.howru.post.repository.PostRepository
@@ -18,7 +18,7 @@ class CommentsCommandService @Autowired constructor(
     private val memberQuery: MemberQuery,
     private val postRepository: PostRepository
 ) {
-    fun createComment(createComments: CreateComments): Long {
+    fun createComments(createComments: CreateComments): Long {
         return with(createComments) {
             Comments.create(
                 writer = memberQuery.findOneByUUID(writerUUID!!),
@@ -28,10 +28,10 @@ class CommentsCommandService @Autowired constructor(
         }
     }
 
-    fun editComment(id: Long, updateCommentsContent: UpdateCommentsContent) {
-        with(updateCommentsContent) {
+    fun editComment(id: Long, updateComments: UpdateComments) {
+        with(updateComments) {
             commentsRepository.findOneByIdAndWriter(id, writerUUID!!)
-                .also { it.editContent(content!!) }
+                .also { it.editContentAndState(content!!) }
         }
     }
 

@@ -49,7 +49,7 @@ class AdvertisementRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findAllAdvertisement(): List<AdvertisementInfo> {
+    override fun findAllAdvertisements(): List<AdvertisementInfo> {
         return queryFactory.listQuery {
             select(listOf(
                 col(Advertisement::id),
@@ -80,7 +80,7 @@ class AdvertisementRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findExpiredAd(): List<AdvertisementInfo> {
+    override fun findExpiredAds(): List<AdvertisementInfo> {
         return queryFactory.listQuery {
             select(listOf(
                 col(Advertisement::id),

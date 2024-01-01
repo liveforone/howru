@@ -17,7 +17,7 @@ class CommentsTest {
 
         //when
         val updatedContent = "updated_content"
-        comments.editContent(updatedContent)
+        comments.editContentAndState(updatedContent)
 
         //then
         Assertions.assertThat(comments.content).isEqualTo(updatedContent)

@@ -79,7 +79,7 @@ class ReplyQueryServiceTest @Autowired constructor(
         val postId = createPost()
         val content = "test_comment"
         val request = CreateComments(memberUUID, postId, content)
-        val commentId = commentsCommandService.createComment(request)
+        val commentId = commentsCommandService.createComments(request)
         flushAndClear()
         return commentId
     }

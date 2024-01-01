@@ -30,13 +30,19 @@ class LikesController @Autowired constructor(
     private val likesQueryService: LikesQueryService,
     private val likesCommandService: LikesCommandService
 ) {
+    @GetMapping(LikesUrl.COUNT_OF_LIKES_IN_POST)
+    fun countOfLikesInPost(@PathVariable(LikesParam.POST_ID) postId: Long): ResponseEntity<Long> {
+        val countOfLikes = likesQueryService.getCountOfLikesByPost(postId)
+        return LikesResponse.countOfLikesInPostSuccess(countOfLikes)
+    }
+
     @GetMapping(LikesUrl.LIKES_BELONG_MEMBER)
     fun likesBelongMember(
         @PathVariable(LikesParam.MEMBER_UUID) memberUUID: UUID,
         @RequestParam(LikesParam.LAST_POST_ID, required = false) lastPostId: Long?
     ): ResponseEntity<List<LikesBelongMemberInfo>> {
         val likes = likesQueryService.getLikesBelongMember(memberUUID, lastPostId)
-        return LikesResponse.belongMemberSuccess(likes)
+        return LikesResponse.likesBelongMemberSuccess(likes)
     }
 
     @GetMapping(LikesUrl.LIKES_BELONG_POST)
@@ -45,7 +51,7 @@ class LikesController @Autowired constructor(
         @RequestParam(LikesParam.LAST_MEMBER_UUID, required = false) lastMemberUUID: UUID?
     ): ResponseEntity<List<LikesBelongPostInfo>> {
         val likes = likesQueryService.getLikesBelongPost(postId, lastMemberUUID)
-        return LikesResponse.belongPostSuccess(likes)
+        return LikesResponse.likesBelongPostSuccess(likes)
     }
 
     @PostMapping(LikesUrl.LIKE)

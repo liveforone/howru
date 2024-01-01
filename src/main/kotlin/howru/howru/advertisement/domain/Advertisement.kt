@@ -12,9 +12,7 @@ class Advertisement private constructor(
     @Column(nullable = false) val company: String,
     @Column(nullable = false) var title: String,
     @Column(nullable = false, columnDefinition = AdvertisementConstant.CONTENT_TYPE) var content: String,
-    @Column(nullable = false, updatable = false, columnDefinition = DATE_TYPE) val createdDate: Int = getDateDigit(
-        LocalDate.now()
-    ),
+    @Column(nullable = false, updatable = false, columnDefinition = DATE_TYPE) val createdDate: Int = getDateDigit(LocalDate.now()),
     @Column(nullable = false, updatable = false, columnDefinition = DATE_TYPE) val endDate: Int
 ) {
     companion object {
@@ -23,7 +21,7 @@ class Advertisement private constructor(
                 company = company,
                 title = title,
                 content = content,
-                endDate = getDateDigit(LocalDate.now().plusMonths(AdvertisementConstant.HALF_MONTH))
+                endDate = getDateDigit(LocalDate.now().plusMonths(AdvertisementConstant.HALF_MONTH_TYPE))
             )
         }
 
@@ -32,7 +30,7 @@ class Advertisement private constructor(
                 company = company,
                 title = title,
                 content = content,
-                endDate = getDateDigit(LocalDate.now().plusYears(AdvertisementConstant.ONE_YEAR))
+                endDate = getDateDigit(LocalDate.now().plusYears(AdvertisementConstant.ONE_YEAR_TYPE))
             )
         }
     }
