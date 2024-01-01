@@ -29,7 +29,7 @@
 * 이 api는 시큐리티가 막지 않도록 permit all로 설정함에 유의한다.
 * 헤더의 uuid(회원의 식별자)로 db에 저장된 refresh token을 찾는다.
 * 찾은 refresh token과 헤더의 refresh token을 비교하고, 유효성 검사(만료/일치한지/empty 등)를 진행한다.
-* 유효성이 적절하다 판단되면 access token과 refresh 토큰을 새로 발급하여 client에게 전달하고, db의 refresh 토큰의 값을 변경한다.
+* 유효성이 적절하다 판단되면 access token과 refresh 토큰을 새로 발급(refresh token rotation)하여 client에게 전달하고, db의 refresh 토큰의 값을 변경한다.
 * client는 다시 새 access 토큰을 헤더에 삽입하여 기존의 url로 재요청한다.
 
 ## 로그아웃 동작방식
