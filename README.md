@@ -16,20 +16,21 @@
 * 성능의 문제는 대부분 쿼리에서 발생합니다.
 * 다양한 쿼리 방법들을 시도해보며 성능이 좋은 쿼리를 찾기 위해 분석하였고, 이를 적용한 코드를 확인하실 수 있습니다.
 * 특히나 구독(Subscribe) 도메인과 게시글(Post) 도메인에서 확인하실 수 있습니다.
+* 모든 문서는 Documents 디렉토리에 존재합니다. 코드 최상단에 매핑되어있는 문서 id를 통해 문서를 쉽게 검색하고 유지보수 할 수 있습니다.
 ## 기술 스택
-* Framework : Spring Boot 3.2.0
-* Lang : Kotlin 1.9.21, Jvm17 
-* Data : Spring Data Jpa | Kotlin-JDSL-2.2.1.RELEASE & 3.1.1 | MySql 8.X 
+* Framework : Spring Boot 3.2.1
+* Lang : Kotlin 1.9.20, Jvm17 
+* Data : Spring Data Jpa | Kotlin-JDSL-2.2.1.RELEASE & 3.2.0 | MySql 8.X 
 * Security : Spring Security | Jwt(jjwt) 0.11.5 
 * Test : Junit5
 
 # 2. 프로젝트 설계
 ## 시스템 설계
-* [전체 설계](https://github.com/liveforone/howru/blob/master/Documents/DESIGN.md)
-* [DB 설계](https://github.com/liveforone/howru/blob/master/Documents/DB_DESIGN.md)
-* [rest-ful한 api 설계](https://github.com/liveforone/howru/blob/master/Documents/REST_FUL_API_DESIGN.md)
+* [1 : 전체 설계](https://github.com/liveforone/howru/blob/master/Documents/DESIGN.md)
+* [2 : DB 설계](https://github.com/liveforone/howru/blob/master/Documents/DB_DESIGN.md)
+* [3 : rest-ful한 api 설계](https://github.com/liveforone/howru/blob/master/Documents/REST_FUL_API_DESIGN.md)
 ## 엔티티 설계
-* [회원 설계](https://github.com/liveforone/howru/blob/master/Documents/MEMBER_DESIGN.md)
+* [4 : 회원 & JWT 설계](https://github.com/liveforone/howru/blob/master/Documents/MEMBER_DESIGN.md)
 * [신고상태 설계](https://github.com/liveforone/howru/blob/master/Documents/REPORT_STATE_DESIGN.md)
 * [팔로잉(구독) 설계](https://github.com/liveforone/howru/blob/master/Documents/SUBSCRIBE_DESIGN.md)
 * [게시글 설계](https://github.com/liveforone/howru/blob/master/Documents/POST_DESIGN.md)
