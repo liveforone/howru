@@ -21,6 +21,7 @@
 * Lang : Kotlin 1.9.20, Jvm17 
 * Data : Spring Data Jpa | Kotlin-JDSL-2.2.1.RELEASE & 3.2.0 | MySql 8.X 
 * Security : Spring Security | Jwt(jjwt) 0.11.5 
+* Cache : Caffeine 3.1.8
 * Test : Junit5
 
 # 2. 프로젝트 설계
