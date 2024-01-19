@@ -46,7 +46,7 @@ fun releaseSuspend() {
 enum class MemberState { NORMAL, SUSPEND_MONTH, SUSPEND_SIX_MONTH, SUSPEND_FOREVER }
 ```
 * 정지되었는지 판별하는 코드는 아래와 같다.
-* 필자는 로그인시 require() 혹은 check() 함수를 사용할 것이라서, 조건에 true한 함수를 만들었다.
+* 필자는 로그인시 `require()` 혹은 `check()` 함수를 사용할 것이라서, 조건에 true한 함수를 만들었다.
 ```kotlin
 fun isNotSuspend() = memberState == MemberState.NORMAL
 ```

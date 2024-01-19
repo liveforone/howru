@@ -26,7 +26,7 @@ foreign key (member_id) references Member (id) on delete cascade
 
 ## 결론
 * on delete cascade 를 사용하고 싶거나, 단방향 관계에서 delete cascade를 걸고 싶거나
-* 여러 delete 쿼리가 나가는 것이 마음에 들지 않는다면 @OnDelete는 아주 좋은 대안이 된다.
+* 여러 delete 쿼리가 나가는 것이 마음에 들지 않는다면 `@OnDelete`는 아주 좋은 대안이 된다.
 * 그러나 jpa의 cascade와 마찬가지로 fk의 값을 변경하거나(set null), fk가 속해있는 데이터를 삭제하는 등의 행위는
 * 상당히 위험하고 신중하게 결정하여 프로그래밍 해야한다.
 * 이런 저런 이유로, 안전하게 코드로 처리하기 위해서 직접 delete 처리하는 벌크 쿼리를 만들어 날릴 수도 있겠으나(이전에는 필자가 그런 방식을 썻다.)

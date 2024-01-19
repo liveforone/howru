@@ -2,12 +2,12 @@
 
 ## Jdsl 버전
 * limit 함수를 지원하지 않는 jdsl v3에서는 사용이 불가합니다. 
-* v3에서는 PageRequest를 사용한 페이징만 가능합니다.
+* v3에서는 `PageRequest`를 사용한 페이징만 가능합니다.
 * 반드시 jdsl v2 버전에서만 사용하시기 바랍니다.(v3에서 커스텀 dsl로 ltLastId 함수를 만드는 것은 가능합니다.)
 
 ## 복합키를 사용하는 테이블에서 페이징
 * 현재 모든 프로젝트, 그리고 해당 프로젝트에 no-offset 페이징을 적용하고 있습니다.
-* 이는 no-offset 페이징의 성능 때문인데요, no-offset 페이징은 auto increment pk를 기반으로 동작합니다.
+* 이는 `no-offset` 페이징의 성능 때문인데요, no-offset 페이징은 auto increment pk를 기반으로 동작합니다.
 * 복합키는 auto increment pk가 없습니다. 두개의 키로 pk를 구성하고 있습니다.
 * 이러한 복합키는 정렬이 어렵다는 단점때문에 [JPA에서 복합키로 조회 쿼리 최적화](https://github.com/liveforone/howru/blob/master/Documents/COMPOSITE_KEY_IN_JPA.md) 에서도 보실 수 있듯이 
 * 복합키에는 timestamp 라는 int형 unix timestamp를 넣어서 사용하고 있습니다.
@@ -19,7 +19,7 @@
 
 ## 코드로 보기
 * 일단 lastUUID를 이용해서 timestamp를 찾아야합니다.
-* criteria에서 singleQuery는 noresult exception이 발생할 수 있기 때문에 예외처리를 반드시 해줍니다.
+* criteria에서 `singleQuery`는 noresult exception이 발생할 수 있기 때문에 예외처리를 반드시 해줍니다.
 * 특히나 int 리턴 타입에서 자주 발생합니다.
 * 페이징을 하다보면 맨 마지막 데이터에 접근할 수도 있습니다. 맨 마지막 데이터를 바탕으로 no-offset 페이징을 처리하게 되면
 * 반드시 no result exception에러가 발생합니다. 따라서 맨 마지막 데이터임을 전달 하도록 0을 전달하여(id도 1부터 시작하고, timestamp도 0은 없습니다.) 마지막 데이터임을 표시하여 줍니다.

@@ -7,14 +7,20 @@
 * 따라서 setter는 머릿속에서 지우고, 사용하지 않도록한다. 아니 setter는 아예 모르는 거다.
 * 변경은 기존의 자바코드로 했던 방법과 같이 변경 메서드를 만들어서 처리하도록한다.
 * 팀으로 개발을 진행할 때에도 보일러코드를 남기지 않기위해, 팀 컨벤션으로 setter를 아예 사용하지 않는것을 기본으로 한다.
+* 영구적/논리적으로 변경이 필요하지 않을 값에 한해 `val`(불변)으로 선언하여 setter를 막는다. 
 * trade off의 영역이다. 컨벤션으로 맞추자.
+### 타입은 기본적으로 불변으로 한다.
+* 논리적으로 변경이 필요한 값이 아니라면 `val`로 선언하여, 불변하도록 한다.
+* `val`는 setter를 만들지 않고, getter만 만들기에 처음 설명한 setter문제를 고민할 필요도 없으며,
+* 사이드 이펙트를 발생시키지 않는다.
 ### 외부 식별자
 * uuid 형식의 외부 식별자를 두어, primary key가 외부로 노출되지 않도록 한다.
 * primary key는 오로지 조인과 내부적인 동작을 위해서만 사용한다.
 * no-offset 페이징시에 primary key 조회 쿼리가 더 날라가지만 보안성을 위해서 외부식별자를 반드시 사용한다.
 * 외부 식별자 타입은 바이너리 16으로 설정한다.
+* 모든 데이터에 한해 외부 식별자를 사용하라는 것은 아니지만, 보안이 중요한 테이블과 회원 테이블은 반드시 외부 식별자를 사용한다.
 ### @Enumerated 대신에 Converter를 사용
-* 스프링 부트 3.0.0 버전에서 @Enumerated 어노테이션이 작동하지 않는 문제가 발생했다.
+* 스프링 부트 3.0.0 버전에서 `@Enumerated` 어노테이션이 작동하지 않는 문제가 발생했다.
 * 이러한 문제로 해당 어노테이션을 불신하게 되었고, 코드로 동작하는 converter를 이용해서 타입을 변경하도록 한다.
 ### 적정 타입/크기 사용
 * 테이블의 필드들은 적절한 타입과 크기를 사용한다.
@@ -25,15 +31,11 @@
 ### on delete cascade는 조심히 다룬다.
 * on delete cascade는 hibernate log를 남기지 않고 삭제시켜버린다.
 * 논리적으로 합당한 경우에만 on delete cascade를 사용하도록 한다.
-### 타입은 기본적으로 불변으로 한다.
-* 논리적으로 변경이 필요한 값이 아니라면 val로 선언하여, 불변하도록 한다.
-* val는 setter를 만들지 않고, getter만 만들기에 처음 설명한 setter문제를 고민할 필요도 없으며,
-* 사이드 이펙트를 발생시키지 않는다.
 
 ## DTO
 ### dto는 val로 선언하고, nullable하게 한다.
 * dto의 값을 validation하는 것이 기본적인 dto setting이다.
-* 이 경우 val로 선언하고 ?를 사용하여 nullable하게 받아야 적절한 validation이 가능해진다.
+* 이 경우 val로 선언하고 `?`를 사용하여 nullable하게 받아야 적절한 validation이 가능해진다.
 ### DTO는 필요에 따라 생성한다.
 * dto projection마다 필요한 dto, request유형에 따라 필요한 dto 등, 필요에 따른, 필요에 종속적인 dto를 생성하여 사용한다.
 * 일례로 회원가입과 로그인 이라면, SignupRequestDto, LoginRequestDto 처럼 각 필요와 이벤트에 맞추어 dto를 생성하는 것이 좋다.
@@ -62,9 +64,9 @@
 ### response 객체를 따로 만든다.
 * response의 경우 rest-api를 사용한다면 ResponseEntity 같은 객체를 이용해 status와 body 옵션 등을 줄것이다.
 * 그러나 이러한 코드는 보기도 좋지 않고, 관리하기 까다롭다.
-* 따라서 response 객체를 만들어서 처리한다. response 객체안에는 return할 response를 담은 함수,
+* 따라서 response를 추상화한 객체를 만들어서 처리한다. response 객체안에는 return할 response를 담은 함수,
 * 즉 ResponseEntity의 wrapper와 클라이언트에게 전달할 메세지 상수등을 담는다.
-### validation은 binding에 대해서만 진행한다.
+### 컨트롤러 단에서의 validation은 binding에 대해서만 진행한다.
 * validation은 binding에 한하여서만 진행한다. 깊은 수준의 검증은 service나 다른 계층으로 넘긴다.
 * validateBinding을 하는 최상위 함수를 만들어서, binding result를 검증한다.
 ### Command의 경우 log를 반드시 찍는다.
@@ -142,6 +144,12 @@
 ### 예외는 추적가능하도록 한다
 * 이것에 관한 것은 별도의 문서로 작성하였다. 아래 문서를 참고바란다.
 * [추적가능한 예외처리](https://github.com/liveforone/howru/blob/master/Documents/TRACEABLE_EXCEPTION.md)
+
+## 문서화
+* 설계, 구현, 유지보수 전 소프트웨어 개발 라이프사이클에서 문서는 지속적으로 만들어지고 관리된다.
+* 이때 소프트웨어가 바뀌면 문서도 바뀌어야하는데, 그렇지 못하는 경우가 있다.
+* 따라서 문서에는 고유한 id를 부여해주고 해당 문서의 내용을 포함하는 코드의 최상단에 주석으로 문서 id를 남긴다.
+* id를 통해 문서를 매칭시킴으로써 문서를 검색/유지보수하기에 더욱 용이한 환경으로 바뀐다.
 
 ## Others
 * 위에서는 간략하게 주요한 부분의 설계와 요구에 대해 설명하였다.

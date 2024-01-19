@@ -42,9 +42,9 @@ OFFSET 0 -- OFFSET 값은 필요에 따라 변경 가능
 LIMIT 5;
 ```
 ### JDSL로 정의
-* PostRepoConstant.NEWEST_LIMIT_PAGE = 100
-* PostRepoConstant.START_OFFSET = 0
-* PostRepoConstant.RECOMMEND_LIMIT_PAGE = 5
+* `PostRepoConstant.NEWEST_LIMIT_PAGE = 100`
+* `PostRepoConstant.START_OFFSET = 0`
+* `PostRepoConstant.RECOMMEND_LIMIT_PAGE = 5`
 ```kotlin
 override fun findRecommendPosts(keyword: String?): List<PostInfo> {
         return queryFactory.listQuery {
