@@ -22,7 +22,7 @@ class PostCommandService @Autowired constructor(
     @CacheEvict(cacheNames = [CacheName.POST], key = PostCache.CREATE_DTO_WRITER_KEY)
     fun createPost(createPost: CreatePost): Long {
         return with(createPost) {
-            Post.create(writer = memberQuery.findOneByUUID(writerUUID!!), content!!)
+            Post.create(writer = memberQuery.findOneById(writerId!!), content!!)
                 .run { postRepository.save(this).id!! }
         }
     }
@@ -30,7 +30,7 @@ class PostCommandService @Autowired constructor(
     @CacheEvict(cacheNames = [CacheName.POST], key = PostCache.ID_KEY)
     fun editContent(id: Long, updatePostContent: UpdatePostContent) {
         with(updatePostContent) {
-            postRepository.findOneByIdAndWriter(id, writerUUID!!)
+            postRepository.findOneByIdAndWriter(id, writerId!!)
                 .also { it.editContent(content!!) }
         }
     }
@@ -38,7 +38,7 @@ class PostCommandService @Autowired constructor(
     @CacheEvict(cacheNames = [CacheName.POST], key = PostCache.ID_KEY)
     fun removePost(id: Long, removePost: RemovePost) {
         with(removePost) {
-            postRepository.findOneByIdAndWriter(id, writerUUID!!)
+            postRepository.findOneByIdAndWriter(id, writerId!!)
                 .also { postRepository.delete(it) }
         }
     }

@@ -35,7 +35,7 @@ class SubscribeCommandServiceTest @Autowired constructor(
         memberCommandService.signupMember(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
-        return memberCommandService.login(loginRequest).uuid
+        return memberCommandService.login(loginRequest).id
     }
 
     private fun createFollower(): UUID {
@@ -46,43 +46,43 @@ class SubscribeCommandServiceTest @Autowired constructor(
         memberCommandService.signupMember(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
-        return memberCommandService.login(loginRequest).uuid
+        return memberCommandService.login(loginRequest).id
     }
 
     @Test
     @Transactional
     fun createSubscribeTest() {
         //given
-        val followeeUUID = createFollowee()
-        val followerUUID = createFollower()
+        val followeeId = createFollowee()
+        val followerId = createFollower()
 
         //when
-        val request = CreateSubscribe(followeeUUID, followerUUID)
+        val request = CreateSubscribe(followeeId, followerId)
         subscribeCommandService.createSubscribe(request)
         flushAndClear()
 
         //then
-        Assertions.assertThat(subscribeQueryService.getSubscribesByFollower(followerUUID, null, null)[0].followeeUUID)
-            .isEqualTo(followeeUUID)
+        Assertions.assertThat(subscribeQueryService.getSubscribesByFollower(followerId, null, null)[0].followeeId)
+            .isEqualTo(followeeId)
     }
 
     @Test
     @Transactional
     fun unsubscribeTest() {
         //given
-        val followeeUUID = createFollowee()
-        val followerUUID = createFollower()
-        val request = CreateSubscribe(followeeUUID, followerUUID)
+        val followeeId = createFollowee()
+        val followerId = createFollower()
+        val request = CreateSubscribe(followeeId, followerId)
         subscribeCommandService.createSubscribe(request)
         flushAndClear()
 
         //when
-        val unsubscribeRequest = UnsubscribeRequest(followeeUUID, followerUUID)
+        val unsubscribeRequest = UnsubscribeRequest(followeeId, followerId)
         subscribeCommandService.unsubscribe(unsubscribeRequest)
         flushAndClear()
 
         //then
-        Assertions.assertThat(subscribeQueryService.getSubscribesByFollower(followerUUID, null, null))
+        Assertions.assertThat(subscribeQueryService.getSubscribesByFollower(followerId, null, null))
             .isEmpty()
     }
 }

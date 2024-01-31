@@ -29,7 +29,8 @@ import java.security.Principal
 import java.util.UUID
 
 @RestController
-class AdvertisementController @Autowired constructor(
+class
+AdvertisementController @Autowired constructor(
     private val advertisementQueryService: AdvertisementQueryService,
     private val advertisementCommandService: AdvertisementCommandService
 ) {

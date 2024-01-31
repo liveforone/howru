@@ -31,20 +31,20 @@ class RepostStateRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findOneByMemberUUID(memberUUID: UUID): ReportState {
+    override fun findOneByMemberId(memberId: UUID): ReportState {
         return try {
             queryFactory.singleQuery {
                 select(entity(ReportState::class))
                 from(ReportState::class)
                 join(ReportState::member)
-                where(col(Member::uuid).equal(memberUUID))
+                where(col(Member::id).equal(memberId))
             }
         } catch (e: NoResultException) {
-            throw ReportStateException(RepostStateExceptionMessage.REPORT_STATE_IS_NULL, memberUUID.toString())
+            throw ReportStateException(RepostStateExceptionMessage.REPORT_STATE_IS_NULL, memberId.toString())
         }
     }
 
-    override fun findOneDtoByMemberUUID(memberUUID: UUID): ReportStateInfo {
+    override fun findOneDtoByMemberId(memberId: UUID): ReportStateInfo {
         return try {
             queryFactory.singleQuery {
                 select(listOf(
@@ -54,10 +54,10 @@ class RepostStateRepositoryImpl @Autowired constructor(
                 ))
                 from(ReportState::class)
                 join(ReportState::member)
-                where(col(Member::uuid).equal(memberUUID))
+                where(col(Member::id).equal(memberId))
             }
         } catch (e: NoResultException) {
-            throw ReportStateException(RepostStateExceptionMessage.REPORT_STATE_IS_NULL, memberUUID.toString())
+            throw ReportStateException(RepostStateExceptionMessage.REPORT_STATE_IS_NULL, memberId.toString())
         }
     }
 }

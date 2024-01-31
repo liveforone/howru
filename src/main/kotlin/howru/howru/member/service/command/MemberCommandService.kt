@@ -15,7 +15,6 @@ import howru.howru.member.dto.request.*
 import howru.howru.member.log.MemberServiceLog
 import howru.howru.member.repository.MemberQuery
 import howru.howru.member.repository.MemberRepository
-import howru.howru.member.service.validator.MemberServiceValidator
 import howru.howru.reportState.service.command.ReportStateCommandService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.annotation.CacheEvict
@@ -34,14 +33,12 @@ class MemberCommandService @Autowired constructor(
     private val reportStateCommandService: ReportStateCommandService,
     private val authenticationManagerBuilder: AuthenticationManagerBuilder,
     private val jwtTokenProvider: JwtTokenProvider,
-    private val memberServiceValidator: MemberServiceValidator,
     private val jwtTokenService: JwtTokenService
 ) {
 
     fun signupMember(signupRequest: SignupRequest) {
         with(signupRequest) {
-            memberServiceValidator.validateDuplicateEmail(email!!)
-            Member.create(email, pw!!, nickName!!).also {
+            Member.create(email!!, pw!!, nickName!!).also {
                 memberRepository.save(it)
                 reportStateCommandService.createRepostState(it)
             }
@@ -54,40 +51,34 @@ class MemberCommandService @Autowired constructor(
             .authenticate(UsernamePasswordAuthenticationToken(loginRequest.email, loginRequest.pw))
 
         return jwtTokenProvider.generateToken(authentication).also {
-            jwtTokenService.createRefreshToken(it.uuid, it.refreshToken)
+            jwtTokenService.createRefreshToken(it.id, it.refreshToken)
         }
     }
 
-    fun reissueJwtToken(uuid: UUID, refreshToken: String): ReissuedTokenInfo {
-        val auth = memberQuery.findAuthByUUID(uuid)
-        return jwtTokenService.reissueToken(uuid, refreshToken, auth)
+    fun reissueJwtToken(id: UUID, refreshToken: String): ReissuedTokenInfo {
+        val auth = memberQuery.findAuthById(id)
+        return jwtTokenService.reissueToken(id, refreshToken, auth)
     }
 
-    @CacheEvict(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)
-    fun updateEmail(updateEmail: UpdateEmail, uuid: UUID) {
-        memberServiceValidator.validateDuplicateEmail(updateEmail.newEmail!!)
-        memberQuery.findOneByUUID(uuid).also { it.updateEmail(updateEmail.newEmail) }
-    }
-
-    fun updatePassword(updatePassword: UpdatePassword, uuid: UUID) {
+    fun updatePassword(updatePassword: UpdatePassword, id: UUID) {
         with(updatePassword) {
-            memberQuery.findOneByUUID(uuid).also { it.updatePw(newPassword!!, oldPassword!!) }
+            memberQuery.findOneById(id).also { it.updatePw(newPassword!!, oldPassword!!) }
         }
     }
 
     @CacheEvict(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)
-    fun memberLockOn(uuid: UUID) {
-        memberQuery.findOneByUUID(uuid).also { it.lockOn() }
+    fun memberLockOn(id: UUID) {
+        memberQuery.findOneById(id).also { it.lockOn() }
     }
 
     @CacheEvict(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)
-    fun memberLockOff(uuid: UUID) {
-        memberQuery.findOneByUUID(uuid).also { it.lockOff() }
+    fun memberLockOff(id: UUID) {
+        memberQuery.findOneById(id).also { it.lockOff() }
     }
 
     @CacheEvict(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)
-    fun logout(uuid: UUID) {
-        jwtTokenService.clearRefreshToken(uuid)
+    fun logout(id: UUID) {
+        jwtTokenService.clearRefreshToken(id)
     }
 
     fun recovery(recoveryRequest: RecoveryRequest) {
@@ -97,16 +88,16 @@ class MemberCommandService @Autowired constructor(
     }
 
     @CacheEvict(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)
-    fun withdraw(withdrawRequest: WithdrawRequest, uuid: UUID) {
-        memberQuery.findOneByUUID(uuid)
+    fun withdraw(withdrawRequest: WithdrawRequest, id: UUID) {
+        memberQuery.findOneById(id)
             .takeIf { isMatchPassword(withdrawRequest.pw!!, it.pw) }
             ?.also {
                 it.withdraw()
-                jwtTokenService.removeRefreshToken(uuid)
+                jwtTokenService.removeRefreshToken(id)
             }
             ?: run {
-                logger().warn(MemberServiceLog.WRONG_PW + uuid)
-                throw MemberException(MemberExceptionMessage.WRONG_PASSWORD, uuid.toString())
+                logger().warn(MemberServiceLog.WRONG_PW + id)
+                throw MemberException(MemberExceptionMessage.WRONG_PASSWORD, id.toString())
             }
     }
 }

@@ -43,7 +43,7 @@
 create table reply (
      id bigint not null auto_increment,
      comment_id bigint,
-     writer_id bigint,
+     writer_id binary(16),
      content VARCHAR(100) not null,
      reply_state varchar(8) not null,
      created_date BIGINT(12) not null,

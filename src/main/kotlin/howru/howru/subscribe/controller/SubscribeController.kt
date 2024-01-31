@@ -31,33 +31,33 @@ class SubscribeController @Autowired constructor(
 ) {
     @GetMapping(SubscribeUrl.GET_FOLLOWING)
     fun getFollowing(
-        @PathVariable(SubscribeParam.FOLLOWER_UUID) followerUUID: UUID,
-        @RequestParam(SubscribeParam.LAST_FOLLOWEE_UUID, required = false) lastFolloweeUUID: UUID?,
-        @RequestParam(SubscribeParam.LAST_FOLLOWER_UUID, required = false) lastFollowerUUID: UUID?
+        @PathVariable(SubscribeParam.FOLLOWER_ID) followerId: UUID,
+        @RequestParam(SubscribeParam.LAST_FOLLOWEE_ID, required = false) lastFolloweeId: UUID?,
+        @RequestParam(SubscribeParam.LAST_FOLLOWER_ID, required = false) lastFollowerId: UUID?
     ): ResponseEntity<List<SubscribeInfo>> {
-        val subscribes = subscribeQueryService.getSubscribesByFollower(followerUUID, lastFolloweeUUID, lastFollowerUUID)
+        val subscribes = subscribeQueryService.getSubscribesByFollower(followerId, lastFolloweeId, lastFollowerId)
         return SubscribeResponse.getFollowingSuccess(subscribes)
     }
 
     @GetMapping(SubscribeUrl.GET_FOLLOWER)
     fun getFollower(
-        @PathVariable(SubscribeParam.FOLLOWEE_UUID) followeeUUID: UUID,
-        @RequestParam(SubscribeParam.LAST_FOLLOWEE_UUID, required = false) lastFolloweeUUID: UUID?,
-        @RequestParam(SubscribeParam.LAST_FOLLOWER_UUID, required = false) lastFollowerUUID: UUID?
+        @PathVariable(SubscribeParam.FOLLOWEE_ID) followeeId: UUID,
+        @RequestParam(SubscribeParam.LAST_FOLLOWEE_ID, required = false) lastFolloweeId: UUID?,
+        @RequestParam(SubscribeParam.LAST_FOLLOWER_ID, required = false) lastFollowerId: UUID?
     ): ResponseEntity<List<SubscribeInfo>> {
-        val subscribes = subscribeQueryService.getSubscribesByFollowee(followeeUUID, lastFolloweeUUID, lastFollowerUUID)
+        val subscribes = subscribeQueryService.getSubscribesByFollowee(followeeId, lastFolloweeId, lastFollowerId)
         return SubscribeResponse.getFollowerSuccess(subscribes)
     }
 
     @GetMapping(SubscribeUrl.COUNT_FOLLOWING)
-    fun countFollowing(@PathVariable(SubscribeParam.FOLLOWER_UUID) followerUUID: UUID): ResponseEntity<Long> {
-        val countOfSubscribes = subscribeQueryService.getCountOfSubscribes(followerUUID)
+    fun countFollowing(@PathVariable(SubscribeParam.FOLLOWER_ID) followerId: UUID): ResponseEntity<Long> {
+        val countOfSubscribes = subscribeQueryService.getCountOfSubscribes(followerId)
         return SubscribeResponse.countFollowingSuccess(countOfSubscribes)
     }
 
     @GetMapping(SubscribeUrl.COUNT_FOLLOWER)
-    fun countFollower(@PathVariable(SubscribeParam.FOLLOWEE_UUID) followeeUUID: UUID): ResponseEntity<Long> {
-        val countOfFollower = subscribeQueryService.getCountOfFollower(followeeUUID)
+    fun countFollower(@PathVariable(SubscribeParam.FOLLOWEE_ID) followeeId: UUID): ResponseEntity<Long> {
+        val countOfFollower = subscribeQueryService.getCountOfFollower(followeeId)
         return SubscribeResponse.countFollowerSuccess(countOfFollower)
     }
 
@@ -69,7 +69,7 @@ class SubscribeController @Autowired constructor(
         validateBinding(bindingResult)
 
         subscribeCommandService.createSubscribe(createSubscribe)
-        logger().info(SubscribeControllerLog.SUBSCRIBE_SUCCESS + createSubscribe.followerUUID + SubscribeControllerLog.FOLLOWEE_INSERT_LOG + createSubscribe.followeeUUID)
+        logger().info(SubscribeControllerLog.SUBSCRIBE_SUCCESS + createSubscribe.followerId + SubscribeControllerLog.FOLLOWEE_INSERT_LOG + createSubscribe.followeeId)
 
         return SubscribeResponse.subscribeSuccess()
     }
@@ -82,7 +82,7 @@ class SubscribeController @Autowired constructor(
         validateBinding(bindingResult)
 
         subscribeCommandService.unsubscribe(unsubscribeRequest)
-        logger().info(SubscribeControllerLog.UNSUBSCRIBE_SUCCESS + unsubscribeRequest.followerUUID + SubscribeControllerLog.FOLLOWEE_INSERT_LOG + unsubscribeRequest.followeeUUID)
+        logger().info(SubscribeControllerLog.UNSUBSCRIBE_SUCCESS + unsubscribeRequest.followerId + SubscribeControllerLog.FOLLOWEE_INSERT_LOG + unsubscribeRequest.followeeId)
 
         return SubscribeResponse.unsubscribeSuccess()
     }

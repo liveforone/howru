@@ -12,6 +12,6 @@ class ReplyQueryService @Autowired constructor(
     private val replyRepository: ReplyRepository
 ) {
     fun getReplyById(id: Long) = replyRepository.findOneDtoById(id)
-    fun getRepliesByWriter(writerUUID: UUID, lastId: Long?) = replyRepository.findRepliesByWriter(writerUUID, lastId)
+    fun getRepliesByWriter(writerId: UUID, lastId: Long?) = replyRepository.findRepliesByWriter(writerId, lastId)
     fun getRepliesByComment(commentId: Long, lastId: Long?) = replyRepository.findRepliesByComment(commentId, lastId)
 }

@@ -21,82 +21,82 @@ class SubscribeRepositoryImpl @Autowired constructor(
     private val queryFactory: SpringDataQueryFactory
 ) : SubscribeCustomRepository {
 
-    override fun findOneByUUID(followeeUUID: UUID, followerUUID: UUID): Subscribe {
+    override fun findOneById(followeeId: UUID, followerId: UUID): Subscribe {
         return try {
             queryFactory.singleQuery {
                 select(entity(Subscribe::class))
                 from(Subscribe::class)
                 where(
-                    col(Subscribe::followeeUUID).equal(followeeUUID)
-                        .and(col(Subscribe::followerUUID).equal(followerUUID))
+                    col(Subscribe::followeeId).equal(followeeId)
+                        .and(col(Subscribe::followerId).equal(followerId))
                 )
             }
         } catch (e: NoResultException) {
-            throw SubscribeException(SubscribeExceptionMessage.SUBSCRIBE_IS_NULL, followerUUID)
+            throw SubscribeException(SubscribeExceptionMessage.SUBSCRIBE_IS_NULL, followerId)
         }
     }
 
-    override fun findSubscribesByFollower(followerUUID: UUID, lastFolloweeUUID: UUID?, lastFollowerUUID: UUID?): List<SubscribeInfo> {
+    override fun findSubscribesByFollower(followerId: UUID, lastFolloweeId: UUID?, lastFollowerId: UUID?): List<SubscribeInfo> {
         return queryFactory.listQuery {
             select(listOf(
-                col(Subscribe::followeeUUID),
-                col(Subscribe::followerUUID)
+                col(Subscribe::followeeId),
+                col(Subscribe::followerId)
             ))
             from(Subscribe::class)
-            where(col(Subscribe::followerUUID).equal(followerUUID))
-            where(ltLastTimestamp(lastFolloweeUUID, lastFollowerUUID))
+            where(col(Subscribe::followerId).equal(followerId))
+            where(ltLastTimestamp(lastFolloweeId, lastFollowerId))
             orderBy(col(Subscribe::timestamp).desc())
             limit(SubscribeRepoConstant.LIMIT_PAGE)
         }
     }
 
-    override fun findSubscribesByFollowee(followeeUUID: UUID, lastFolloweeUUID: UUID?, lastFollowerUUID: UUID?): List<SubscribeInfo> {
+    override fun findSubscribesByFollowee(followeeId: UUID, lastFolloweeId: UUID?, lastFollowerId: UUID?): List<SubscribeInfo> {
         return queryFactory.listQuery {
             select(listOf(
-                col(Subscribe::followeeUUID),
-                col(Subscribe::followerUUID)
+                col(Subscribe::followeeId),
+                col(Subscribe::followerId)
             ))
             from(Subscribe::class)
-            where(col(Subscribe::followeeUUID).equal(followeeUUID))
-            where(ltLastTimestamp(lastFolloweeUUID, lastFollowerUUID))
+            where(col(Subscribe::followeeId).equal(followeeId))
+            where(ltLastTimestamp(lastFolloweeId, lastFollowerId))
             orderBy(col(Subscribe::timestamp).desc())
             limit(SubscribeRepoConstant.LIMIT_PAGE)
         }
     }
 
-    override fun findFollowees(followerUUID: UUID): List<UUID> {
+    override fun findFollowees(followerId: UUID): List<UUID> {
         return queryFactory.listQuery {
-            select(col(Subscribe::followeeUUID))
+            select(col(Subscribe::followeeId))
             from(Subscribe::class)
-            where(col(Subscribe::followerUUID).equal(followerUUID))
+            where(col(Subscribe::followerId).equal(followerId))
             orderBy(col(Subscribe::timestamp).desc())
         }
     }
 
-    override fun countOfSubscribesByFollower(followerUUID: UUID): Long {
+    override fun countOfSubscribesByFollower(followerId: UUID): Long {
         return queryFactory.singleQuery {
             select(count(entity(Subscribe::class)))
             from(Subscribe::class)
-            where(col(Subscribe::followerUUID).equal(followerUUID))
+            where(col(Subscribe::followerId).equal(followerId))
         }
     }
 
-    override fun countOfFollowersByFollowee(followeeUUID: UUID): Long {
+    override fun countOfFollowersByFollowee(followeeId: UUID): Long {
         return queryFactory.singleQuery {
             select(count(entity(Subscribe::class)))
             from(Subscribe::class)
-            where(col(Subscribe::followeeUUID).equal(followeeUUID))
+            where(col(Subscribe::followeeId).equal(followeeId))
         }
     }
 
-    private fun findLastTimestamp(lastFolloweeUUID: UUID, lastFollowerUUID: UUID): Int {
+    private fun findLastTimestamp(lastFolloweeId: UUID, lastFollowerId: UUID): Int {
         return try {
             queryFactory.singleQuery {
                 select(listOf(col(Subscribe::timestamp)))
                 from(Subscribe::class)
                 where(
-                    col(Subscribe::followeeUUID).equal(lastFolloweeUUID)
-                        .and(col(Subscribe::followerUUID).equal(lastFollowerUUID))
+                    col(Subscribe::followeeId).equal(lastFolloweeId)
+                        .and(col(Subscribe::followerId).equal(lastFollowerId))
                 )
             }
         } catch (e: NoResultException) {
@@ -104,9 +104,9 @@ class SubscribeRepositoryImpl @Autowired constructor(
         }
     }
 
-    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastTimestamp(lastFolloweeUUID: UUID?, lastFollowerUUID: UUID?): PredicateSpec? {
-        val findTimestamp = lastFolloweeUUID?.let { followee ->
-            lastFollowerUUID?.let { follower ->
+    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastTimestamp(lastFolloweeId: UUID?, lastFollowerId: UUID?): PredicateSpec? {
+        val findTimestamp = lastFolloweeId?.let { followee ->
+            lastFollowerId?.let { follower ->
                 findLastTimestamp(followee, follower)
             }
         }

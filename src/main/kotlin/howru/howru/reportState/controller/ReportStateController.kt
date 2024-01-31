@@ -27,8 +27,8 @@ class ReportStateController @Autowired constructor(
     private val reportStateCommandService: ReportStateCommandService
 ) {
     @GetMapping(ReportStateUrl.REPORT_STATE_INFO)
-    fun reportStateInfo(@PathVariable(ReportStateParam.MEMBER_UUID) memberUUID: UUID): ResponseEntity<ReportStateInfo> {
-        val reportState = reportStateQueryService.getOneByMemberUUID(memberUUID)
+    fun reportStateInfo(@PathVariable(ReportStateParam.MEMBER_ID) memberId: UUID): ResponseEntity<ReportStateInfo> {
+        val reportState = reportStateQueryService.getOneByMemberId(memberId)
         return ReportStateResponse.infoSuccess(reportState)
     }
 
@@ -40,7 +40,7 @@ class ReportStateController @Autowired constructor(
         validateBinding(bindingResult)
 
         reportStateCommandService.addRepost(reportMember)
-        logger().info(ReportStateControllerLog.REPORT_MEMBER_SUCCESS + reportMember.memberUUID)
+        logger().info(ReportStateControllerLog.REPORT_MEMBER_SUCCESS + reportMember.memberId)
 
         return ReportStateResponse.reportSuccess()
     }

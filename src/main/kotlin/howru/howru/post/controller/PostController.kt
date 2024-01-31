@@ -33,10 +33,10 @@ class PostController @Autowired constructor(
 
     @GetMapping(PostUrl.MY_POST)
     fun myPost(
-        @PathVariable(PostParam.MEMBER_UUID) memberUUID: UUID,
+        @PathVariable(PostParam.MEMBER_ID) memberId: UUID,
         @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<List<PostInfo>> {
-        val myPosts = postQueryService.getMyPosts(memberUUID, lastId)
+        val myPosts = postQueryService.getMyPosts(memberId, lastId)
         return PostResponse.myPostSuccess(myPosts)
     }
 
@@ -48,20 +48,20 @@ class PostController @Autowired constructor(
 
     @GetMapping(PostUrl.POST_OF_WRITER)
     fun postOfWriter(
-        @PathVariable(PostParam.WRITER_UUID) writerUUID: UUID,
-        @RequestParam(PostParam.MEMBER_UUID) memberUUID: UUID,
+        @PathVariable(PostParam.WRITER_ID) writerId: UUID,
+        @RequestParam(PostParam.MEMBER_ID) memberId: UUID,
         @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<List<PostInfo>> {
-        val postsOfWriter = postQueryService.getPostsBySomeone(writerUUID, memberUUID, lastId)
+        val postsOfWriter = postQueryService.getPostsBySomeone(writerId, memberId, lastId)
         return PostResponse.postOfWriterSuccess(postsOfWriter)
     }
 
     @GetMapping(PostUrl.POST_OF_FOLLOWEE)
     fun postOfFollowee(
-        @PathVariable(PostParam.FOLLOWER_UUID) followerUUID: UUID,
+        @PathVariable(PostParam.FOLLOWER_ID) followerId: UUID,
         @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<List<PostInfo>> {
-        val postsOfFollowee = postQueryService.getPostsOfFollowee(followerUUID, lastId)
+        val postsOfFollowee = postQueryService.getPostsOfFollowee(followerId, lastId)
         return PostResponse.postOfFolloweeSuccess(postsOfFollowee)
     }
 
@@ -78,8 +78,8 @@ class PostController @Autowired constructor(
     }
 
     @GetMapping(PostUrl.COUNT_POST_BY_WRITER)
-    fun countPostByWriter(@PathVariable(PostParam.WRITER_UUID) writerUUID: UUID): ResponseEntity<Long> {
-        val countPost = postQueryService.getCountOfPostsByWriter(writerUUID)
+    fun countPostByWriter(@PathVariable(PostParam.WRITER_ID) writerId: UUID): ResponseEntity<Long> {
+        val countPost = postQueryService.getCountOfPostsByWriter(writerId)
         return PostResponse.countPostOfWriterSuccess(countPost)
     }
 
@@ -91,7 +91,7 @@ class PostController @Autowired constructor(
         validateBinding(bindingResult)
 
         postCommandService.createPost(createPost)
-        logger().info(PostControllerLog.CREATE_POST_SUCCESS + createPost.writerUUID)
+        logger().info(PostControllerLog.CREATE_POST_SUCCESS + createPost.writerId)
 
         return PostResponse.createPostSuccess()
     }

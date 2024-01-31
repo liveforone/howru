@@ -40,41 +40,41 @@ class PostCommandServiceTest @Autowired constructor(
         memberCommandService.signupMember(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
-        return memberCommandService.login(loginRequest).uuid
+        return memberCommandService.login(loginRequest).id
     }
 
     @Test
     @Transactional
     fun createPostTest() {
         //given
-        val writerUUID = createWriter()
+        val writerId = createWriter()
         val content = "test_content"
 
         //when
-        val request = CreatePost(writerUUID, content)
+        val request = CreatePost(writerId, content)
         val postId = postCommandService.createPost(request)
         flushAndClear()
 
         //then
         val post = postQueryService.getPostById(postId)
         logger().info("${post.createdDatetime}")
-        Assertions.assertThat(post.writerUUID)
-            .isEqualTo(writerUUID)
+        Assertions.assertThat(post.writerId)
+            .isEqualTo(writerId)
     }
 
     @Test
     @Transactional
     fun editContentTest() {
         //given
-        val writerUUID = createWriter()
+        val writerId = createWriter()
         val content = "test_content"
-        val request = CreatePost(writerUUID, content)
+        val request = CreatePost(writerId, content)
         val postId = postCommandService.createPost(request)
         flushAndClear()
 
         //when
         val updatedContent = "updated_content"
-        val updateRequest = UpdatePostContent(writerUUID, updatedContent)
+        val updateRequest = UpdatePostContent(writerId, updatedContent)
         postCommandService.editContent(postId, updateRequest)
         flushAndClear()
 
@@ -88,14 +88,14 @@ class PostCommandServiceTest @Autowired constructor(
     @Transactional
     fun removePostTest() {
         //given
-        val writerUUID = createWriter()
+        val writerId = createWriter()
         val content = "test_content"
-        val request = CreatePost(writerUUID, content)
+        val request = CreatePost(writerId, content)
         val postId = postCommandService.createPost(request)
         flushAndClear()
 
         //when
-        val deleteRequest = RemovePost(writerUUID)
+        val deleteRequest = RemovePost(writerId)
         postCommandService.removePost(postId, deleteRequest)
         flushAndClear()
 

@@ -25,7 +25,7 @@ class ReportStateCommandService @Autowired constructor(
 
     fun addRepost(reportMember: ReportMember) {
         with(reportMember) {
-            reportStateQuery.findOneByMemberUUID(memberUUID!!).also { it.addReport() }
+            reportStateQuery.findOneByMemberId(memberId!!).also { it.addReport() }
         }
     }
 }

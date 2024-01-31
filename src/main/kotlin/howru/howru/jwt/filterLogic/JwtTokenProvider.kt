@@ -24,8 +24,8 @@ class JwtTokenProvider (@Value(JwtConstant.SECRET_KEY_PATH) private var secretKe
     private val key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secretKey))
 
     fun generateToken(authentication: Authentication): JwtTokenInfo {
-        val uuid = UUID.fromString(authentication.name)
-        return JwtTokenInfo.create(uuid, generateAccessToken(authentication), generateRefreshToken())
+        val id = UUID.fromString(authentication.name)
+        return JwtTokenInfo.create(id, generateAccessToken(authentication), generateRefreshToken())
     }
 
     private fun generateAccessToken(authentication: Authentication): String {
@@ -40,13 +40,13 @@ class JwtTokenProvider (@Value(JwtConstant.SECRET_KEY_PATH) private var secretKe
             .compact()
     }
 
-    fun reissueToken(uuid: UUID, role: Role): ReissuedTokenInfo {
-        return ReissuedTokenInfo.create(generateAccessTokenWhenReissue(uuid, role), generateRefreshToken())
+    fun reissueToken(id: UUID, role: Role): ReissuedTokenInfo {
+        return ReissuedTokenInfo.create(generateAccessTokenWhenReissue(id, role), generateRefreshToken())
     }
 
-    private fun generateAccessTokenWhenReissue(uuid: UUID, role: Role): String {
+    private fun generateAccessTokenWhenReissue(id: UUID, role: Role): String {
         return Jwts.builder()
-            .setSubject(uuid.toString())
+            .setSubject(id.toString())
             .claim(JwtConstant.CLAIM_NAME, role.auth)
             .setExpiration(Date(Date().time + JwtConstant.TWO_HOUR_MS))
             .signWith(key, SignatureAlgorithm.HS256)

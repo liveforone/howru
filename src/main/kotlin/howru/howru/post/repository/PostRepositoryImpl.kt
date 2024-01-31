@@ -34,13 +34,13 @@ class PostRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findOneByIdAndWriter(id: Long, writerUUID: UUID): Post {
+    override fun findOneByIdAndWriter(id: Long, writerId: UUID): Post {
         return try {
             queryFactory.singleQuery {
                 select(entity(Post::class))
                 from(Post::class)
                 join(Post::writer)
-                where(col(Post::id).equal(id).and(col(Member::uuid).equal(writerUUID)))
+                where(col(Post::id).equal(id).and(col(Member::id).equal(writerId)))
             }
         } catch (e: NoResultException) {
             throw PostException(PostExceptionMessage.POST_IS_NULL, id)
@@ -52,7 +52,7 @@ class PostRepositoryImpl @Autowired constructor(
             queryFactory.singleQuery {
                 select(listOf(
                     col(Post::id),
-                    col(Member::uuid),
+                    col(Member::id),
                     col(Post::content),
                     col(Post::postState),
                     col(Post::createdDatetime)
@@ -66,18 +66,18 @@ class PostRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findMyPosts(memberUUID: UUID, lastId: Long?): List<PostInfo> {
+    override fun findMyPosts(memberId: UUID, lastId: Long?): List<PostInfo> {
         return queryFactory.listQuery {
             select(listOf(
                 col(Post::id),
-                col(Member::uuid),
+                col(Member::id),
                 col(Post::content),
                 col(Post::postState),
                 col(Post::createdDatetime)
             ))
             from(Post::class)
             join(Post::writer)
-            where(col(Member::uuid).equal(memberUUID))
+            where(col(Member::id).equal(memberId))
             where(ltLastId(lastId))
             orderBy(col(Post::id).desc())
             limit(PostRepoConstant.LIMIT_PAGE)
@@ -88,7 +88,7 @@ class PostRepositoryImpl @Autowired constructor(
         return queryFactory.listQuery {
             select(listOf(
                 col(Post::id),
-                col(Member::uuid),
+                col(Member::id),
                 col(Post::content),
                 col(Post::postState),
                 col(Post::createdDatetime)
@@ -101,36 +101,36 @@ class PostRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findPostsBySomeone(someoneUUID: UUID, lastId: Long?): List<PostInfo> {
+    override fun findPostsBySomeone(someoneId: UUID, lastId: Long?): List<PostInfo> {
         return queryFactory.listQuery {
             select(listOf(
                 col(Post::id),
-                col(Member::uuid),
+                col(Member::id),
                 col(Post::content),
                 col(Post::postState),
                 col(Post::createdDatetime)
             ))
             from(Post::class)
             join(Post::writer)
-            where(col(Member::uuid).equal(someoneUUID))
+            where(col(Member::id).equal(someoneId))
             where(ltLastId(lastId))
             orderBy(col(Post::id).desc())
             limit(PostRepoConstant.LIMIT_PAGE)
         }
     }
 
-    override fun findPostsByFollowee(followeeUUID: List<UUID>, lastId: Long?): List<PostInfo> {
+    override fun findPostsByFollowee(followeeId: List<UUID>, lastId: Long?): List<PostInfo> {
         return queryFactory.listQuery {
             select(listOf(
                 col(Post::id),
-                col(Member::uuid),
+                col(Member::id),
                 col(Post::content),
                 col(Post::postState),
                 col(Post::createdDatetime)
             ))
             from(Post::class)
             join(Post::writer)
-            where(col(Member::uuid).`in`(followeeUUID))
+            where(col(Member::id).`in`(followeeId))
             where(ltLastId(lastId))
             orderBy(col(Post::id).desc())
             limit(PostRepoConstant.LIMIT_PAGE)
@@ -141,7 +141,7 @@ class PostRepositoryImpl @Autowired constructor(
         return queryFactory.listQuery {
             select(listOf(
                 col(Post::id),
-                col(Member::uuid),
+                col(Member::id),
                 col(Post::content),
                 col(Post::postState),
                 col(Post::createdDatetime)
@@ -156,12 +156,12 @@ class PostRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun countOfPostByWriter(writerUUID: UUID): Long {
+    override fun countOfPostByWriter(writerId: UUID): Long {
         return queryFactory.singleQuery {
             select(count(entity(Post::class)))
             from(Post::class)
             join(Post::writer)
-            where(col(Member::uuid).equal(writerUUID))
+            where(col(Member::id).equal(writerId))
         }
     }
 

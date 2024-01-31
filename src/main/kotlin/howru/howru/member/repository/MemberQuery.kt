@@ -13,13 +13,6 @@ import java.util.*
 class MemberQuery @Autowired constructor(
     private val memberRepository: MemberRepository
 ) {
-    fun findIdByEmailNullableForValidate(email: String): Long? {
-        return memberRepository.findAll {
-            selectNew<Long>(path(Member::id))
-                .from(entity(Member::class))
-                .where(path(Member::email).eq(email))
-        }.firstOrNull()
-    }
 
     fun findOneByEmail(email: String): Member {
         return memberRepository.findAll {
@@ -29,12 +22,12 @@ class MemberQuery @Autowired constructor(
         }.firstOrNull() ?: throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL, email)
     }
 
-    fun findOneByUUID(uuid: UUID): Member {
+    fun findOneById(id: UUID): Member {
         return memberRepository.findAll {
             select(entity(Member::class))
                 .from(entity(Member::class))
-                .where(path(Member::uuid).eq(uuid).and(path(Member::auth).notEqual(Role.WITHDRAW)))
-        }.firstOrNull() ?: throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL, uuid.toString())
+                .where(path(Member::id).eq(id).and(path(Member::auth).notEqual(Role.WITHDRAW)))
+        }.firstOrNull() ?: throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL, id.toString())
     }
 
     fun findOneByEmailAllowWithdraw(email: String): Member {
@@ -45,24 +38,24 @@ class MemberQuery @Autowired constructor(
         }.firstOrNull() ?: throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL, email)
     }
 
-    fun findOneDtoByUUID(uuid: UUID): MemberInfo {
+    fun findOneDtoById(id: UUID): MemberInfo {
         return memberRepository.findAll {
             selectNew<MemberInfo>(
-                path(Member::uuid),
+                path(Member::id),
                 path(Member::auth),
                 path(Member::email),
                 path(Member::nickName),
                 path(Member::memberLock)
             ).from(entity(Member::class))
-                .where(path(Member::uuid).eq(uuid).and(path(Member::auth).notEqual(Role.WITHDRAW)))
-        }.firstOrNull() ?: throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL, uuid.toString())
+                .where(path(Member::id).eq(id).and(path(Member::auth).notEqual(Role.WITHDRAW)))
+        }.firstOrNull() ?: throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL, id.toString())
     }
 
-    fun findAuthByUUID(uuid: UUID): Role {
+    fun findAuthById(id: UUID): Role {
         return memberRepository.findAll {
             select(path(Member::auth))
                 .from(entity(Member::class))
-                .where(path(Member::uuid).eq(uuid).and(path(Member::auth).notEqual(Role.WITHDRAW)))
-        }.firstOrNull() ?: throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL, uuid.toString())
+                .where(path(Member::id).eq(id).and(path(Member::auth).notEqual(Role.WITHDRAW)))
+        }.firstOrNull() ?: throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL, id.toString())
     }
 }

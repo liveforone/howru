@@ -6,12 +6,12 @@ import java.util.UUID
 
 interface PostCustomRepository {
     fun findOneById(id: Long): Post
-    fun findOneByIdAndWriter(id: Long, writerUUID: UUID): Post
+    fun findOneByIdAndWriter(id: Long, writerId: UUID): Post
     fun findOneDtoById(id: Long): PostInfo
-    fun findMyPosts(memberUUID: UUID, lastId: Long?): List<PostInfo>
+    fun findMyPosts(memberId: UUID, lastId: Long?): List<PostInfo>
     fun findAllPosts(lastId: Long?): List<PostInfo>
-    fun findPostsBySomeone(someoneUUID: UUID, lastId: Long?): List<PostInfo>
-    fun findPostsByFollowee(followeeUUID: List<UUID>, lastId: Long?): List<PostInfo>
+    fun findPostsBySomeone(someoneId: UUID, lastId: Long?): List<PostInfo>
+    fun findPostsByFollowee(followeeId: List<UUID>, lastId: Long?): List<PostInfo>
     fun findRecommendPosts(keyword: String?): List<PostInfo>
-    fun countOfPostByWriter(writerUUID: UUID): Long
+    fun countOfPostByWriter(writerId: UUID): Long
 }

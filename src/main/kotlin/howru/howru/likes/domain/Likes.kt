@@ -11,11 +11,11 @@ import java.util.UUID
 @Entity
 @IdClass(LikesPk::class)
 class Likes private constructor(
-    @Id @Column(name = LikesConstant.MEMBER_UUID) val memberUUID: UUID,
+    @Id @Column(name = LikesConstant.MEMBER_ID) val memberId: UUID,
     @Id @Column(name = LikesConstant.POST_ID) val postId: Long,
     @Column(updatable = false) val timestamp: Int = getCurrentTimestamp()
 ) {
     companion object {
-        fun create(memberUUID: UUID, postId: Long) = Likes(memberUUID, postId)
+        fun create(memberId: UUID, postId: Long) = Likes(memberId, postId)
     }
 }

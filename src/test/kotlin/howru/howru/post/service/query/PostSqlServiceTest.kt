@@ -39,7 +39,7 @@ class PostSqlServiceTest @Autowired constructor(
         memberCommandService.signupMember(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
-        return memberCommandService.login(loginRequest).uuid
+        return memberCommandService.login(loginRequest).id
     }
 
     private fun createWriter2(): UUID {
@@ -50,16 +50,16 @@ class PostSqlServiceTest @Autowired constructor(
         memberCommandService.signupMember(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
-        return memberCommandService.login(loginRequest).uuid
+        return memberCommandService.login(loginRequest).id
     }
 
     @Test
     @Transactional
     fun getPostByIdTest() {
         //given
-        val writerUUID = createWriter1()
+        val writerId = createWriter1()
         val content = "test_content"
-        val request = CreatePost(writerUUID, content)
+        val request = CreatePost(writerId, content)
         val postId = postCommandService.createPost(request)
         flushAndClear()
 
@@ -74,18 +74,18 @@ class PostSqlServiceTest @Autowired constructor(
     @Transactional
     fun getMyPostsTest() {
         //given
-        val writerUUID = createWriter1()
+        val writerId = createWriter1()
         val content1 = "test_content1"
-        val request1 = CreatePost(writerUUID, content1)
+        val request1 = CreatePost(writerId, content1)
         postCommandService.createPost(request1)
         flushAndClear()
         val content2 = "test_content2"
-        val request2 = CreatePost(writerUUID, content2)
+        val request2 = CreatePost(writerId, content2)
         postCommandService.createPost(request2)
         flushAndClear()
 
         //when
-        val myPosts = postQueryService.getMyPosts(writerUUID, null)
+        val myPosts = postQueryService.getMyPosts(writerId, null)
 
         //then
         Assertions.assertThat(myPosts.size).isEqualTo(2)
@@ -98,14 +98,14 @@ class PostSqlServiceTest @Autowired constructor(
         * 최신순 정렬 테스트
          */
         //given
-        val writerUUID1 = createWriter1()
+        val writerId1 = createWriter1()
         val content1 = "test_content1"
-        val request1 = CreatePost(writerUUID1, content1)
+        val request1 = CreatePost(writerId1, content1)
         postCommandService.createPost(request1)
         flushAndClear()
-        val writerUUID2 = createWriter2()
+        val writerId2 = createWriter2()
         val content2 = "test_content2"
-        val request2 = CreatePost(writerUUID2, content2)
+        val request2 = CreatePost(writerId2, content2)
         postCommandService.createPost(request2)
         flushAndClear()
 
@@ -124,17 +124,17 @@ class PostSqlServiceTest @Autowired constructor(
     @Transactional
     fun getPostsBySomeoneWhenNoSubscribeTest() {
         //given
-        val followeeUUID = createWriter1()
-        memberCommandService.memberLockOn(followeeUUID)
+        val followeeId = createWriter1()
+        memberCommandService.memberLockOn(followeeId)
         flushAndClear()
         val content1 = "test_content1"
-        val request1 = CreatePost(followeeUUID, content1)
+        val request1 = CreatePost(followeeId, content1)
         postCommandService.createPost(request1)
         flushAndClear()
-        val followerUUID = createWriter2()
+        val followerId = createWriter2()
 
         //then -> error 발생!!
-        Assertions.assertThatThrownBy { postQueryService.getPostsBySomeone(followeeUUID, followerUUID, null) }
+        Assertions.assertThatThrownBy { postQueryService.getPostsBySomeone(followeeId, followerId, null) }
             .isInstanceOf(SubscribeException::class.java)
     }
 
@@ -146,22 +146,22 @@ class PostSqlServiceTest @Autowired constructor(
     @Transactional
     fun getPostsBySomeoneWhenSubscribeTest() {
         //given
-        val followeeUUID = createWriter1()
-        memberCommandService.memberLockOn(followeeUUID)
+        val followeeId = createWriter1()
+        memberCommandService.memberLockOn(followeeId)
         flushAndClear()
         val content1 = "test_content1"
-        val request1 = CreatePost(followeeUUID, content1)
+        val request1 = CreatePost(followeeId, content1)
         postCommandService.createPost(request1)
         flushAndClear()
-        val followerUUID = createWriter2()
+        val followerId = createWriter2()
 
         //when
-        val subscribeRequest = CreateSubscribe(followeeUUID, followerUUID)
+        val subscribeRequest = CreateSubscribe(followeeId, followerId)
         subscribeCommandService.createSubscribe(subscribeRequest)
         flushAndClear()
 
         //then
-        Assertions.assertThat(postQueryService.getPostsBySomeone(followeeUUID, followerUUID, null))
+        Assertions.assertThat(postQueryService.getPostsBySomeone(followeeId, followerId, null))
             .isNotEmpty
     }
 
@@ -169,20 +169,20 @@ class PostSqlServiceTest @Autowired constructor(
     @Transactional
     fun getPostsOfFolloweeTest() {
         //given
-        val followeeUUID = createWriter1()
+        val followeeId = createWriter1()
         val content1 = "test_content1"
-        val request1 = CreatePost(followeeUUID, content1)
+        val request1 = CreatePost(followeeId, content1)
         postCommandService.createPost(request1)
         flushAndClear()
-        val followerUUID = createWriter2()
+        val followerId = createWriter2()
 
         //when
-        val subscribeRequest = CreateSubscribe(followeeUUID, followerUUID)
+        val subscribeRequest = CreateSubscribe(followeeId, followerId)
         subscribeCommandService.createSubscribe(subscribeRequest)
         flushAndClear()
 
         //then
-        Assertions.assertThat(postQueryService.getPostsOfFollowee(followerUUID, null))
+        Assertions.assertThat(postQueryService.getPostsOfFollowee(followerId, null))
             .isNotEmpty
     }
 
@@ -190,22 +190,22 @@ class PostSqlServiceTest @Autowired constructor(
     @Transactional
     fun getRecommendPostsTest() {
         //given
-        val writerUUID1 = createWriter1()
+        val writerId1 = createWriter1()
         val content1 = """
             개발자들을 위한 물건을 무엇이 있을까?
             개발자들을 위한 장소는 어디가 있을까?
             카페가 개발자들을 위한 장소인것 같다.
         """
-        val request1 = CreatePost(writerUUID1, content1)
+        val request1 = CreatePost(writerId1, content1)
         postCommandService.createPost(request1)
         flushAndClear()
-        val writerUUID2 = createWriter2()
+        val writerId2 = createWriter2()
         val content2 = "개발자들을 위한 카페"
-        val request2 = CreatePost(writerUUID2, content2)
+        val request2 = CreatePost(writerId2, content2)
         postCommandService.createPost(request2)
         flushAndClear()
         val content3 = "교사들을 위한 카페"
-        val request3 = CreatePost(writerUUID2, content3)
+        val request3 = CreatePost(writerId2, content3)
         postCommandService.createPost(request3)
         flushAndClear()
         
@@ -221,12 +221,12 @@ class PostSqlServiceTest @Autowired constructor(
     @Transactional
     fun getRandomPostsTest() {
         //given
-        val writerUUID1 = createWriter1()
-        val request1 = CreatePost(writerUUID1, "post1")
+        val writerId1 = createWriter1()
+        val request1 = CreatePost(writerId1, "post1")
         postCommandService.createPost(request1)
         flushAndClear()
-        val writerUUID2 = createWriter2()
-        val request2 = CreatePost(writerUUID2, "post2")
+        val writerId2 = createWriter2()
+        val request2 = CreatePost(writerId2, "post2")
         postCommandService.createPost(request2)
         flushAndClear()
 
@@ -242,17 +242,17 @@ class PostSqlServiceTest @Autowired constructor(
     @Transactional
     fun getCountOfPostsByWriterTest() {
         //given
-        val writerUUID = createWriter1()
+        val writerId = createWriter1()
         val countOfRepeatCreatePost = 10
         repeat(countOfRepeatCreatePost) {
             val content = "test_content"
-            val request = CreatePost(writerUUID, content+(it+1))
+            val request = CreatePost(writerId, content+(it+1))
             postCommandService.createPost(request)
             flushAndClear()
         }
 
         //when
-        val countOfPosts = postQueryService.getCountOfPostsByWriter(writerUUID)
+        val countOfPosts = postQueryService.getCountOfPostsByWriter(writerId)
 
         //then
         Assertions.assertThat(countOfPosts).isEqualTo(countOfRepeatCreatePost.toLong())

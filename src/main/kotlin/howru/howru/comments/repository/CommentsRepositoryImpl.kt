@@ -36,13 +36,13 @@ class CommentsRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findOneByIdAndWriter(id: Long, writerUUID: UUID): Comments {
+    override fun findOneByIdAndWriter(id: Long, writerId: UUID): Comments {
         return try {
             queryFactory.singleQuery {
                 select(entity(Comments::class))
                 from(Comments::class)
                 join(Comments::writer)
-                where(col(Comments::id).equal(id).and(col(Member::uuid).equal(writerUUID)))
+                where(col(Comments::id).equal(id).and(col(Member::id).equal(writerId)))
             }
         } catch (e: NoResultException) {
             throw CommentsException(CommentsExceptionMessage.COMMENTS_IS_NULL, id)
@@ -54,7 +54,7 @@ class CommentsRepositoryImpl @Autowired constructor(
             queryFactory.singleQuery {
                 select(listOf(
                     col(Comments::id),
-                    col(Member::uuid),
+                    col(Member::id),
                     col(Post::id),
                     col(Comments::content),
                     col(Comments::commentsState),
@@ -70,11 +70,11 @@ class CommentsRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findCommentsByWriter(writerUUID: UUID, lastId: Long?): List<CommentsInfo> {
+    override fun findCommentsByWriter(writerId: UUID, lastId: Long?): List<CommentsInfo> {
         return queryFactory.listQuery {
             select(listOf(
                 col(Comments::id),
-                col(Member::uuid),
+                col(Member::id),
                 col(Post::id),
                 col(Comments::content),
                 col(Comments::commentsState),
@@ -83,7 +83,7 @@ class CommentsRepositoryImpl @Autowired constructor(
             from(Comments::class)
             join(Comments::writer)
             join(Comments::post)
-            where(col(Member::uuid).equal(writerUUID))
+            where(col(Member::id).equal(writerId))
             where(ltLastId(lastId))
             orderBy(col(Comments::id).desc())
             limit(CommentsRepoConstant.LIMIT_PAGE)
@@ -94,7 +94,7 @@ class CommentsRepositoryImpl @Autowired constructor(
         return queryFactory.listQuery {
             select(listOf(
                 col(Comments::id),
-                col(Member::uuid),
+                col(Member::id),
                 col(Post::id),
                 col(Comments::content),
                 col(Comments::commentsState),

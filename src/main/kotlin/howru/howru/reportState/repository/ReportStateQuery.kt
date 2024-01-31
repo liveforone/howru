@@ -21,22 +21,22 @@ class ReportStateQuery @Autowired constructor(
         }.firstOrNull() ?: throw ReportStateException(RepostStateExceptionMessage.REPORT_STATE_IS_NULL, email)
     }
 
-    fun findOneByMemberUUID(memberUUID: UUID): ReportState {
+    fun findOneByMemberId(memberId: UUID): ReportState {
         return reportStateRepository.findAll {
             select(entity(ReportState::class))
                 .from(entity(ReportState::class), join(ReportState::member))
-                .where(path(Member::uuid).eq(memberUUID))
-        }.firstOrNull() ?: throw ReportStateException(RepostStateExceptionMessage.REPORT_STATE_IS_NULL, memberUUID.toString())
+                .where(path(Member::id).eq(memberId))
+        }.firstOrNull() ?: throw ReportStateException(RepostStateExceptionMessage.REPORT_STATE_IS_NULL, memberId.toString())
     }
 
-    fun findOneDtoByMemberUUID(memberUUID: UUID): ReportStateInfo {
+    fun findOneDtoByMemberId(memberId: UUID): ReportStateInfo {
         return reportStateRepository.findAll {
             selectNew<ReportStateInfo>(
                 path(ReportState::memberState),
                 path(ReportState::modifiedStateDate),
                 path(ReportState::reportCount)
             ).from(entity(ReportState::class), join(ReportState::member))
-                .where(path(Member::uuid).eq(memberUUID))
-        }.firstOrNull() ?: throw ReportStateException(RepostStateExceptionMessage.REPORT_STATE_IS_NULL, memberUUID.toString())
+                .where(path(Member::id).eq(memberId))
+        }.firstOrNull() ?: throw ReportStateException(RepostStateExceptionMessage.REPORT_STATE_IS_NULL, memberId.toString())
     }
 }

@@ -6,8 +6,8 @@ import howru.howru.likes.dto.response.LikesBelongPostInfo
 import java.util.*
 
 interface LikesCustomRepository {
-    fun findOneById(memberUUID: UUID, postId: Long): Likes
+    fun findOneById(memberId: UUID, postId: Long): Likes
     fun countOfLikesByPost(postId: Long): Long
-    fun findLikesBelongMember(memberUUID: UUID, lastPostId: Long?): List<LikesBelongMemberInfo>
-    fun findLikesBelongPost(postId: Long, lastMemberUUID: UUID?): List<LikesBelongPostInfo>
+    fun findLikesBelongMember(memberId: UUID, lastPostId: Long?): List<LikesBelongMemberInfo>
+    fun findLikesBelongPost(postId: Long, lastMemberId: UUID?): List<LikesBelongPostInfo>
 }

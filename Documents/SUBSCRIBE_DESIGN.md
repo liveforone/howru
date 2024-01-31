@@ -57,9 +57,9 @@
 ```sql
 create table subscribe (
     timestamp integer,
-    followee_uuid binary(16) not null,
-    follower_uuid binary(16) not null,
-    primary key (followee_uuid, follower_uuid)
+    followee_id binary(16) not null,
+    follower_id binary(16) not null,
+    primary key (followee_id, follower_id)
 );
 CREATE INDEX subscribe_timestamp_idx ON Subscribe (timestamp);
 ```

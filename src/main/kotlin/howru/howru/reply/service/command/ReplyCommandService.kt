@@ -21,7 +21,7 @@ class ReplyCommandService @Autowired constructor(
     fun createReply(createReply: CreateReply): Long {
         return with(createReply) {
             Reply.create(
-                writer = memberQuery.findOneByUUID(writerUUID!!),
+                writer = memberQuery.findOneById(writerId!!),
                 comment = commentsRepository.findOneById(commentId!!),
                 content!!
             ).run { replyRepository.save(this).id!! }
@@ -30,14 +30,14 @@ class ReplyCommandService @Autowired constructor(
 
     fun editReply(id: Long, updateReplyContent: UpdateReplyContent) {
         with(updateReplyContent) {
-            replyRepository.findOneByIdAndWriter(id, writerUUID!!)
+            replyRepository.findOneByIdAndWriter(id, writerId!!)
                 .also { it.editContent(content!!) }
         }
     }
 
     fun removeReply(id: Long, removeReply: RemoveReply) {
         with(removeReply) {
-            replyRepository.findOneByIdAndWriter(id, writerUUID!!)
+            replyRepository.findOneByIdAndWriter(id, writerId!!)
                 .also { replyRepository.delete(it) }
         }
     }

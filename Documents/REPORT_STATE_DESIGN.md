@@ -29,7 +29,7 @@
 ```sql
 create table report_state (
      id bigint not null auto_increment,
-     member_id bigint,
+     member_id binary(16),
      modified_state_date INT(8) not null,
      report_count integer not null,
      member_state VARCHAR(17) not null,

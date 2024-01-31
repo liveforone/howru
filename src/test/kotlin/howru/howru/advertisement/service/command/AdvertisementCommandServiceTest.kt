@@ -40,20 +40,20 @@ class AdvertisementCommandServiceTest @Autowired constructor(
         memberCommandService.signupMember(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
-        return memberCommandService.login(loginRequest).uuid
+        return memberCommandService.login(loginRequest).id
     }
 
     @Test @Transactional
     fun createHalfAd() {
         //given
-        val adminUUID = createAdmin()
+        val adminId = createAdmin()
         val company = "test company"
         val title = "test title"
         val content = "create half ad test"
         val request = CreateAdvertisement(company, title, content)
 
         //when
-        val adId = advertisementCommandService.createHalfAd(request, adminUUID)
+        val adId = advertisementCommandService.createHalfAd(request, adminId)
         flushAndClear()
 
         //then
@@ -66,14 +66,14 @@ class AdvertisementCommandServiceTest @Autowired constructor(
     @Test @Transactional
     fun createYearAd() {
         //given
-        val adminUUID = createAdmin()
+        val adminId = createAdmin()
         val company = "test company"
         val title = "test title"
         val content = "create year ad test"
         val request = CreateAdvertisement(company, title, content)
 
         //when
-        val adId = advertisementCommandService.createYearAd(request, adminUUID)
+        val adId = advertisementCommandService.createYearAd(request, adminId)
         flushAndClear()
 
         //then
@@ -86,18 +86,18 @@ class AdvertisementCommandServiceTest @Autowired constructor(
     @Test @Transactional
     fun editTitle() {
         //given
-        val adminUUID = createAdmin()
+        val adminId = createAdmin()
         val company = "test company"
         val title = "test title"
         val content = "edit title ad test"
         val request = CreateAdvertisement(company, title, content)
-        val adId = advertisementCommandService.createYearAd(request, adminUUID)
+        val adId = advertisementCommandService.createYearAd(request, adminId)
         flushAndClear()
 
         //when
         val updatedTitle = "updated title"
         val updateRequest = UpdateAdTitle(updatedTitle)
-        advertisementCommandService.editTitle(adId, updateRequest, adminUUID)
+        advertisementCommandService.editTitle(adId, updateRequest, adminId)
         flushAndClear()
 
         //then
@@ -108,18 +108,18 @@ class AdvertisementCommandServiceTest @Autowired constructor(
     @Test @Transactional
     fun editContent() {
         //given
-        val adminUUID = createAdmin()
+        val adminId = createAdmin()
         val company = "test company"
         val title = "test title"
         val content = "edit content ad test"
         val request = CreateAdvertisement(company, title, content)
-        val adId = advertisementCommandService.createYearAd(request, adminUUID)
+        val adId = advertisementCommandService.createYearAd(request, adminId)
         flushAndClear()
 
         //when
         val updatedContent = "updated content"
         val updateRequest = UpdateAdContent(updatedContent)
-        advertisementCommandService.editContent(adId, updateRequest, adminUUID)
+        advertisementCommandService.editContent(adId, updateRequest, adminId)
         flushAndClear()
 
         //then
@@ -130,16 +130,16 @@ class AdvertisementCommandServiceTest @Autowired constructor(
     @Test @Transactional
     fun removeAdById() {
         //given
-        val adminUUID = createAdmin()
+        val adminId = createAdmin()
         val company = "test company"
         val title = "test title"
         val content = "delete ad test"
         val request = CreateAdvertisement(company, title, content)
-        val adId = advertisementCommandService.createYearAd(request, adminUUID)
+        val adId = advertisementCommandService.createYearAd(request, adminId)
         flushAndClear()
 
         //when
-        advertisementCommandService.removeAdById(adId, adminUUID)
+        advertisementCommandService.removeAdById(adId, adminId)
         flushAndClear()
 
         //then
@@ -150,12 +150,12 @@ class AdvertisementCommandServiceTest @Autowired constructor(
     @Test @Transactional
     fun removeExpiredThreeMonthSchedule() {
         //given
-        val adminUUID = createAdmin()
+        val adminId = createAdmin()
         val company = "test company"
         val title = "test title"
         val content = "delete ad test"
         val request = CreateAdvertisement(company, title, content)
-        val adId = advertisementCommandService.createYearAd(request, adminUUID)
+        val adId = advertisementCommandService.createYearAd(request, adminId)
         flushAndClear()
 
         //when

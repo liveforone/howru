@@ -31,7 +31,7 @@ class MemberController @Autowired constructor(
 
     @GetMapping(MemberUrl.INFO)
     fun memberInfo(principal: Principal): ResponseEntity<MemberInfo> {
-        val member = memberQueryService.getMemberByUUID(uuid = UUID.fromString(principal.name))
+        val member = memberQueryService.getMemberById(id = UUID.fromString(principal.name))
         return MemberResponse.infoSuccess(member)
     }
 
@@ -60,7 +60,7 @@ class MemberController @Autowired constructor(
         response.apply {
             addHeader(MemberControllerConstant.ACCESS_TOKEN, tokenInfo.accessToken)
             addHeader(MemberControllerConstant.REFRESH_TOKEN, tokenInfo.refreshToken)
-            addHeader(MemberControllerConstant.MEMBER_UUID, tokenInfo.uuid.toString())
+            addHeader(MemberControllerConstant.MEMBER_ID, tokenInfo.id.toString())
         }
         logger().info(MemberControllerLog.LOGIN_SUCCESS + loginRequest.email)
 
@@ -69,33 +69,18 @@ class MemberController @Autowired constructor(
 
     @PutMapping(MemberUrl.JWT_TOKEN_REISSUE)
     fun jwtTokenReissue(
-        @RequestHeader(MemberRequestHeaderConstant.UUID) uuid: String?,
+        @RequestHeader(MemberRequestHeaderConstant.ID) id: String?,
         @RequestHeader(MemberRequestHeaderConstant.REFRESH_TOKEN) refreshToken: String?
     ): ResponseEntity<ReissuedTokenInfo> {
-        if (uuid.isNullOrBlank() || refreshToken.isNullOrBlank()) {
+        if (id.isNullOrBlank() || refreshToken.isNullOrBlank()) {
             throw MemberException(MemberExceptionMessage.TOKEN_REISSUE_HEADER_IS_NULL, "UNRELIABLE-MEMBER")
         }
 
-        val memberUUID = UUID.fromString(uuid)
-        val reissueJwtToken = memberCommandService.reissueJwtToken(memberUUID, refreshToken)
-        logger().info(MemberControllerLog.JWT_TOKEN_REISSUE_SUCCESS + memberUUID)
+        val memberId = UUID.fromString(id)
+        val reissueJwtToken = memberCommandService.reissueJwtToken(memberId, refreshToken)
+        logger().info(MemberControllerLog.JWT_TOKEN_REISSUE_SUCCESS + memberId)
 
         return ResponseEntity.ok(reissueJwtToken)
-    }
-
-    @PatchMapping(MemberUrl.UPDATE_EMAIL)
-    fun updateEmail(
-        @RequestBody @Valid updateEmail: UpdateEmail,
-        bindingResult: BindingResult,
-        principal: Principal
-    ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
-        val memberUUID = UUID.fromString(principal.name)
-        memberCommandService.updateEmail(updateEmail, memberUUID)
-        logger().info(MemberControllerLog.UPDATE_EMAIL_SUCCESS + memberUUID)
-
-        return MemberResponse.updateEmailSuccess()
     }
 
     @PatchMapping(MemberUrl.UPDATE_PASSWORD)
@@ -106,36 +91,36 @@ class MemberController @Autowired constructor(
     ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
-        val memberUUID = UUID.fromString(principal.name)
-        memberCommandService.updatePassword(updatePassword, memberUUID)
-        logger().info(MemberControllerLog.UPDATE_PW_SUCCESS + memberUUID)
+        val memberId = UUID.fromString(principal.name)
+        memberCommandService.updatePassword(updatePassword, memberId)
+        logger().info(MemberControllerLog.UPDATE_PW_SUCCESS + memberId)
 
         return MemberResponse.updatePwSuccess()
     }
 
     @PatchMapping(MemberUrl.LOCK_ON)
     fun lockOn(principal: Principal): ResponseEntity<String> {
-        val memberUUID = UUID.fromString(principal.name)
-        memberCommandService.memberLockOn(memberUUID)
-        logger().info(MemberControllerLog.LOCK_ON_SUCCESS + memberUUID)
+        val memberId = UUID.fromString(principal.name)
+        memberCommandService.memberLockOn(memberId)
+        logger().info(MemberControllerLog.LOCK_ON_SUCCESS + memberId)
 
         return MemberResponse.lockOnSuccess()
     }
 
     @PatchMapping(MemberUrl.LOCK_OFF)
     fun lockOff(principal: Principal): ResponseEntity<String> {
-        val memberUUID = UUID.fromString(principal.name)
-        memberCommandService.memberLockOff(memberUUID)
-        logger().info(MemberControllerLog.LOCK_OFF_SUCCESS + memberUUID)
+        val memberId = UUID.fromString(principal.name)
+        memberCommandService.memberLockOff(memberId)
+        logger().info(MemberControllerLog.LOCK_OFF_SUCCESS + memberId)
 
         return MemberResponse.lockOffSuccess()
     }
 
     @PostMapping(MemberUrl.LOGOUT)
     fun logout(principal: Principal): ResponseEntity<String> {
-        val memberUUID = UUID.fromString(principal.name)
-        memberCommandService.logout(memberUUID)
-        logger().info(MemberControllerLog.LOGOUT_SUCCESS + memberUUID)
+        val memberId = UUID.fromString(principal.name)
+        memberCommandService.logout(memberId)
+        logger().info(MemberControllerLog.LOGOUT_SUCCESS + memberId)
 
         return MemberResponse.logOutSuccess()
     }
@@ -161,9 +146,9 @@ class MemberController @Autowired constructor(
     ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
-        val memberUUID = UUID.fromString(principal.name)
-        memberCommandService.withdraw(withdrawRequest, memberUUID)
-        logger().info(MemberControllerLog.WITHDRAW_SUCCESS + memberUUID)
+        val memberId = UUID.fromString(principal.name)
+        memberCommandService.withdraw(withdrawRequest, memberId)
+        logger().info(MemberControllerLog.WITHDRAW_SUCCESS + memberId)
 
         return MemberResponse.withdrawSuccess()
     }

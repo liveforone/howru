@@ -6,10 +6,10 @@ import java.util.*
 import kotlin.collections.List
 
 interface SubscribeCustomRepository {
-    fun findOneByUUID(followeeUUID: UUID, followerUUID: UUID): Subscribe
-    fun findSubscribesByFollower(followerUUID: UUID, lastFolloweeUUID: UUID?, lastFollowerUUID: UUID?): List<SubscribeInfo>
-    fun findSubscribesByFollowee(followeeUUID: UUID, lastFolloweeUUID: UUID?, lastFollowerUUID: UUID?): List<SubscribeInfo>
-    fun findFollowees(followerUUID: UUID): List<UUID>
-    fun countOfSubscribesByFollower(followerUUID: UUID): Long
-    fun countOfFollowersByFollowee(followeeUUID: UUID): Long
+    fun findOneById(followeeId: UUID, followerId: UUID): Subscribe
+    fun findSubscribesByFollower(followerId: UUID, lastFolloweeId: UUID?, lastFollowerId: UUID?): List<SubscribeInfo>
+    fun findSubscribesByFollowee(followeeId: UUID, lastFolloweeId: UUID?, lastFollowerId: UUID?): List<SubscribeInfo>
+    fun findFollowees(followerId: UUID): List<UUID>
+    fun countOfSubscribesByFollower(followerId: UUID): Long
+    fun countOfFollowersByFollowee(followeeId: UUID): Long
 }

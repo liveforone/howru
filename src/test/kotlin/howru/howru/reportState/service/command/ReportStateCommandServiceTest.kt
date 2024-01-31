@@ -43,8 +43,8 @@ class ReportStateCommandServiceTest @Autowired constructor(
 
         //then
         val loginRequest = LoginRequest(email, pw)
-        val memberUUID = memberCommandService.login(loginRequest).uuid
-        Assertions.assertThat(reportStateQueryService.getOneByMemberUUID(memberUUID).memberState)
+        val memberId = memberCommandService.login(loginRequest).id
+        Assertions.assertThat(reportStateQueryService.getOneByMemberId(memberId).memberState)
             .isEqualTo(MemberState.NORMAL)
     }
 
@@ -58,11 +58,11 @@ class ReportStateCommandServiceTest @Autowired constructor(
         val request = SignupRequest(email, pw, nickName)
         memberCommandService.signupMember(request)
         flushAndClear()
-        val memberUUID = memberCommandService.login(LoginRequest(email, pw)).uuid
+        val memberId = memberCommandService.login(LoginRequest(email, pw)).id
 
         //when
         repeat(3) {
-            val dtoRequest = ReportMember(memberUUID)
+            val dtoRequest = ReportMember(memberId)
             reportStateCommandService.addRepost(dtoRequest)
             flushAndClear()
         }
@@ -83,17 +83,17 @@ class ReportStateCommandServiceTest @Autowired constructor(
         val request = SignupRequest(email, pw, nickName)
         memberCommandService.signupMember(request)
         flushAndClear()
-        val memberUUID = memberCommandService.login(LoginRequest(email, pw)).uuid
+        val memberId = memberCommandService.login(LoginRequest(email, pw)).id
 
         //when
         repeat(3) {
-            val dtoRequest = ReportMember(memberUUID)
+            val dtoRequest = ReportMember(memberId)
             reportStateCommandService.addRepost(dtoRequest)
             flushAndClear()
         }
 
         //then
-        Assertions.assertThat(reportStateQueryService.getOneByMemberUUID(memberUUID).memberState)
+        Assertions.assertThat(reportStateQueryService.getOneByMemberId(memberId).memberState)
             .isEqualTo(MemberState.SUSPEND_MONTH)
     }
 }

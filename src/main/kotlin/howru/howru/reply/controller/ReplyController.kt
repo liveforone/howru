@@ -33,10 +33,10 @@ class ReplyController @Autowired constructor(
 
     @GetMapping(ReplyUrl.BELONG_WRITER)
     fun belongWriter(
-        @PathVariable(ReplyParam.WRITER_UUID) writerUUID: UUID,
+        @PathVariable(ReplyParam.WRITER_ID) writerId: UUID,
         @RequestParam(ReplyParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<List<ReplyInfo>> {
-        val replies = replyQueryService.getRepliesByWriter(writerUUID, lastId)
+        val replies = replyQueryService.getRepliesByWriter(writerId, lastId)
         return ReplyResponse.belongWriterSuccess(replies)
     }
 
@@ -57,7 +57,7 @@ class ReplyController @Autowired constructor(
         validateBinding(bindingResult)
 
         replyCommandService.createReply(createReply)
-        logger().info(ReplyControllerLog.CREATE_SUCCESS + createReply.writerUUID)
+        logger().info(ReplyControllerLog.CREATE_SUCCESS + createReply.writerId)
 
         return ReplyResponse.createReplySuccess()
     }

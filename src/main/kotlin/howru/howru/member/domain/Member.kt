@@ -17,13 +17,12 @@ import java.util.*
 
 @Entity
 class Member private constructor(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long? = null,
-    @Column(columnDefinition = UUID_TYPE, unique = true, nullable = false) val uuid: UUID = createUUID(),
+    @Id @Column(columnDefinition = UUID_TYPE) val id: UUID = createUUID(),
     @Convert(converter = RoleConverter::class) @Column(
         nullable = false,
         columnDefinition = MemberConstant.ROLE_TYPE
     ) var auth: Role,
-    @Column(nullable = false) var email: String,
+    @Column(nullable = false, unique = true) val email: String,
     @Column(nullable = false, columnDefinition = MemberConstant.PW_TYPE) var pw: String,
     @Column(nullable = false, unique = true, columnDefinition = MemberConstant.NICKNAME_TYPE) val nickName: String,
     @Convert(converter = MemberLockConverter::class) @Column(
@@ -46,12 +45,8 @@ class Member private constructor(
 
     fun isAdmin() = auth == Role.ADMIN
 
-    fun updateEmail(newEmail: String) {
-        email = newEmail
-    }
-
     fun updatePw(newPassword: String, oldPassword: String) {
-        require (isMatchPassword(oldPassword, pw)) { throw MemberException(MemberExceptionMessage.WRONG_PASSWORD, uuid.toString()) }
+        require (isMatchPassword(oldPassword, pw)) { throw MemberException(MemberExceptionMessage.WRONG_PASSWORD, id.toString()) }
         pw = encodePassword(newPassword)
     }
 
@@ -68,14 +63,14 @@ class Member private constructor(
     }
 
     fun recovery(inputPw: String) {
-        require (isMatchPassword(inputPw, pw)) { throw MemberException(MemberExceptionMessage.WRONG_PASSWORD, uuid.toString()) }
+        require (isMatchPassword(inputPw, pw)) { throw MemberException(MemberExceptionMessage.WRONG_PASSWORD, id.toString()) }
         this.auth = Role.MEMBER
     }
 
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
         arrayListOf<GrantedAuthority>(SimpleGrantedAuthority(auth.auth))
-    override fun getUsername() = uuid.toString()
+    override fun getUsername() = id.toString()
     override fun getPassword() = pw
     override fun isAccountNonExpired() = true
     override fun isAccountNonLocked() = true

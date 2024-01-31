@@ -23,13 +23,13 @@ import java.util.*
 class ReplyRepositoryImpl @Autowired constructor(
     private val queryFactory: SpringDataQueryFactory
 ) : ReplyCustomRepository {
-    override fun findOneByIdAndWriter(id: Long, writerUUID: UUID): Reply {
+    override fun findOneByIdAndWriter(id: Long, writerId: UUID): Reply {
         return try {
             queryFactory.singleQuery {
                 select(entity(Reply::class))
                 from(Reply::class)
                 join(Reply::writer)
-                where(col(Reply::id).equal(id).and(col(Member::uuid).equal(writerUUID)))
+                where(col(Reply::id).equal(id).and(col(Member::id).equal(writerId)))
             }
         } catch (e: NoResultException) {
             throw ReplyException(ReplyExceptionMessage.REPLY_IS_NULL, id)
@@ -41,7 +41,7 @@ class ReplyRepositoryImpl @Autowired constructor(
             queryFactory.singleQuery {
                 select(listOf(
                     col(Reply::id),
-                    col(Member::uuid),
+                    col(Member::id),
                     col(Comments::id),
                     col(Reply::content),
                     col(Reply::replyState),
@@ -57,11 +57,11 @@ class ReplyRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findRepliesByWriter(writerUUID: UUID, lastId: Long?): List<ReplyInfo> {
+    override fun findRepliesByWriter(writerId: UUID, lastId: Long?): List<ReplyInfo> {
         return queryFactory.listQuery {
             select(listOf(
                 col(Reply::id),
-                col(Member::uuid),
+                col(Member::id),
                 col(Comments::id),
                 col(Reply::content),
                 col(Reply::replyState),
@@ -70,7 +70,7 @@ class ReplyRepositoryImpl @Autowired constructor(
             from(Reply::class)
             join(Reply::writer)
             join(Reply::comment)
-            where(col(Member::uuid).equal(writerUUID))
+            where(col(Member::id).equal(writerId))
             where(ltLastId(lastId))
             orderBy(col(Reply::id).desc())
             limit(ReplyRepoConstant.LIMIT_PAGE)
@@ -81,7 +81,7 @@ class ReplyRepositoryImpl @Autowired constructor(
         return queryFactory.listQuery {
             select(listOf(
                 col(Reply::id),
-                col(Member::uuid),
+                col(Member::id),
                 col(Comments::id),
                 col(Reply::content),
                 col(Reply::replyState),

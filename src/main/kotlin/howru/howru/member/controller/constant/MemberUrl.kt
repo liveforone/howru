@@ -5,7 +5,6 @@ object MemberUrl {
     const val LOGIN = "/member/login"
     const val INFO = "/member/info"
     const val JWT_TOKEN_REISSUE = "/auth/reissue"
-    const val UPDATE_EMAIL = "/member/update/email"
     const val UPDATE_PASSWORD = "/member/update/password"
     const val LOCK_ON = "/member/lock-on"
     const val LOCK_OFF = "/member/lock-off"

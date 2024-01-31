@@ -8,11 +8,11 @@ import java.util.UUID
 
 @Entity
 class RefreshToken private constructor(
-    @Id @Column(columnDefinition = UUID_TYPE) val uuid: UUID,
+    @Id @Column(columnDefinition = UUID_TYPE) val id: UUID,
     var refreshToken: String? = null
 ) {
     companion object {
-        fun create(uuid: UUID, refreshToken: String) = RefreshToken(uuid, refreshToken)
+        fun create(id: UUID, refreshToken: String) = RefreshToken(id, refreshToken)
     }
 
     fun reissueRefreshToken(reissuedRefreshToken: String) {

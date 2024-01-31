@@ -36,7 +36,7 @@ class CustomUserDetailsService @Autowired constructor(
 
     private fun createAdmin(member: Member): UserDetails {
         return User.builder()
-            .username(member.uuid.toString())
+            .username(member.id.toString())
             .password(member.password)
             .roles(Role.ADMIN.name)
             .build()
@@ -44,7 +44,7 @@ class CustomUserDetailsService @Autowired constructor(
 
     private fun createMember(member: Member): UserDetails {
         return User.builder()
-            .username(member.uuid.toString())
+            .username(member.id.toString())
             .password(member.password)
             .roles(Role.MEMBER.name)
             .build()

@@ -11,11 +11,11 @@ import java.util.UUID
 class SubscribeQueryService @Autowired constructor(
     private val subscribeRepository: SubscribeRepository
 ) {
-    fun getSubscribesByFollower(followerUUID: UUID, lastFolloweeUUID: UUID?, lastFollowerUUID: UUID?) = subscribeRepository.findSubscribesByFollower(followerUUID, lastFolloweeUUID, lastFollowerUUID)
-    fun getSubscribesByFollowee(followeeUUID: UUID, lastFolloweeUUID: UUID?, lastFollowerUUID: UUID?) = subscribeRepository.findSubscribesByFollowee(followeeUUID, lastFolloweeUUID, lastFollowerUUID)
-    fun getCountOfFollower(followeeUUID: UUID) = subscribeRepository.countOfFollowersByFollowee(followeeUUID)
-    fun getCountOfSubscribes(followerUUID: UUID) = subscribeRepository.countOfSubscribesByFollower(followerUUID)
-    fun getFollowees(followerUUID: UUID) = subscribeRepository.findFollowees(followerUUID)
-    fun isFollowee(followeeUUID: UUID, followerUUID: UUID) = subscribeRepository.isFollowee(followeeUUID, followerUUID)
-    fun isFollowEach(followeeUUID: UUID, followerUUID: UUID) = subscribeRepository.isFollowEach(followeeUUID, followerUUID)
+    fun getSubscribesByFollower(followerId: UUID, lastFolloweeId: UUID?, lastFollowerId: UUID?) = subscribeRepository.findSubscribesByFollower(followerId, lastFolloweeId, lastFollowerId)
+    fun getSubscribesByFollowee(followeeId: UUID, lastFolloweeId: UUID?, lastFollowerId: UUID?) = subscribeRepository.findSubscribesByFollowee(followeeId, lastFolloweeId, lastFollowerId)
+    fun getCountOfFollower(followeeId: UUID) = subscribeRepository.countOfFollowersByFollowee(followeeId)
+    fun getCountOfSubscribes(followerId: UUID) = subscribeRepository.countOfSubscribesByFollower(followerId)
+    fun getFollowees(followerId: UUID) = subscribeRepository.findFollowees(followerId)
+    fun isFollowee(followeeId: UUID, followerUUID: UUID) = subscribeRepository.isFollowee(followeeId, followerUUID)
+    fun isFollowEach(followeeId: UUID, followerUUID: UUID) = subscribeRepository.isFollowEach(followeeId, followerUUID)
 }

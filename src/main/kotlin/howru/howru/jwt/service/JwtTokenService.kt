@@ -21,36 +21,36 @@ class JwtTokenService @Autowired constructor(
     private val jwtTokenProvider: JwtTokenProvider
 ) {
     @Transactional(readOnly = true)
-    fun getRefreshToken(uuid: UUID): RefreshToken {
-        return refreshTokenRepository.findById(uuid).orElseThrow { logger().warn(JwtServiceLog.NOT_EXIST_REFRESH_TOKEN + uuid); throw JwtCustomException(JwtExceptionMessage.NOT_EXIST_REFRESH_TOKEN) }
+    fun getRefreshToken(id: UUID): RefreshToken {
+        return refreshTokenRepository.findById(id).orElseThrow { logger().warn(JwtServiceLog.NOT_EXIST_REFRESH_TOKEN + id); throw JwtCustomException(JwtExceptionMessage.NOT_EXIST_REFRESH_TOKEN) }
     }
 
-    fun createRefreshToken(uuid: UUID, refreshToken: String) {
-        refreshTokenRepository.save(RefreshToken.create(uuid, refreshToken))
+    fun createRefreshToken(id: UUID, refreshToken: String) {
+        refreshTokenRepository.save(RefreshToken.create(id, refreshToken))
     }
 
-    fun reissueToken(uuid: UUID, refreshToken: String, role: Role): ReissuedTokenInfo {
+    fun reissueToken(id: UUID, refreshToken: String, role: Role): ReissuedTokenInfo {
         jwtTokenProvider.validateToken(refreshToken)
-        refreshTokenRepository.findById(uuid)
-            .orElseThrow { logger().warn(JwtServiceLog.NOT_EXIST_REFRESH_TOKEN + uuid); throw JwtCustomException(JwtExceptionMessage.NOT_EXIST_REFRESH_TOKEN) }
+        refreshTokenRepository.findById(id)
+            .orElseThrow { logger().warn(JwtServiceLog.NOT_EXIST_REFRESH_TOKEN + id); throw JwtCustomException(JwtExceptionMessage.NOT_EXIST_REFRESH_TOKEN) }
             .let {
-                check(it.refreshToken.equals(refreshToken)) { logger().warn(JwtServiceLog.UN_MATCH_REFRESH_TOKEN + uuid); throw JwtCustomException(JwtExceptionMessage.UN_MATCH_REFRESH_TOKEN) }
+                check(it.refreshToken.equals(refreshToken)) { logger().warn(JwtServiceLog.UN_MATCH_REFRESH_TOKEN + id); throw JwtCustomException(JwtExceptionMessage.UN_MATCH_REFRESH_TOKEN) }
 
-                val reissueToken = jwtTokenProvider.reissueToken(uuid, role)
+                val reissueToken = jwtTokenProvider.reissueToken(id, role)
                 it.reissueRefreshToken(reissueToken.refreshToken)
                 return reissueToken
             }
     }
 
-    fun clearRefreshToken(uuid: UUID) {
-        refreshTokenRepository.findById(uuid)
-            .orElseThrow { logger().warn(JwtServiceLog.NOT_EXIST_REFRESH_TOKEN + uuid); throw JwtCustomException(JwtExceptionMessage.NOT_EXIST_REFRESH_TOKEN) }
+    fun clearRefreshToken(id: UUID) {
+        refreshTokenRepository.findById(id)
+            .orElseThrow { logger().warn(JwtServiceLog.NOT_EXIST_REFRESH_TOKEN + id); throw JwtCustomException(JwtExceptionMessage.NOT_EXIST_REFRESH_TOKEN) }
             .also { it.clearToken() }
     }
 
-    fun removeRefreshToken(uuid: UUID) {
-        refreshTokenRepository.findById(uuid)
-            .orElseThrow{ logger().warn(JwtServiceLog.NOT_EXIST_REFRESH_TOKEN + uuid); throw JwtCustomException(JwtExceptionMessage.NOT_EXIST_REFRESH_TOKEN) }
+    fun removeRefreshToken(id: UUID) {
+        refreshTokenRepository.findById(id)
+            .orElseThrow{ logger().warn(JwtServiceLog.NOT_EXIST_REFRESH_TOKEN + id); throw JwtCustomException(JwtExceptionMessage.NOT_EXIST_REFRESH_TOKEN) }
             .also { refreshTokenRepository.delete(it) }
     }
 }

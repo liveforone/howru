@@ -58,7 +58,7 @@
 ```sql
 create table post (
     id bigint not null auto_increment,
-    writer_id bigint,
+    writer_id binary(16),
     content VARCHAR(800) not null,
     post_state varchar(8) not null,
     createdDate BIGINT(12) not null,

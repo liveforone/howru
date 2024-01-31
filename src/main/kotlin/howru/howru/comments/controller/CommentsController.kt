@@ -33,10 +33,10 @@ class CommentsController @Autowired constructor(
 
     @GetMapping(CommentsUrl.COMMENTS_BY_WRITER)
     fun commentsByWriter(
-        @PathVariable(CommentsParam.WRITER_UUID) writerUUID: UUID,
+        @PathVariable(CommentsParam.WRITER_ID) writerId: UUID,
         @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<List<CommentsInfo>> {
-        val comments = commentsQueryService.getCommentsByWriter(writerUUID, lastId)
+        val comments = commentsQueryService.getCommentsByWriter(writerId, lastId)
         return CommentsResponse.commentsByWriterSuccess(comments)
     }
 
@@ -51,11 +51,11 @@ class CommentsController @Autowired constructor(
 
     @GetMapping(CommentsUrl.COMMENTS_BY_SOMEONE)
     fun commentsBySomeone(
-        @PathVariable(CommentsParam.WRITER_UUID) writerUUID: UUID,
-        @RequestParam(CommentsParam.MEMBER_UUID) memberUUID: UUID,
+        @PathVariable(CommentsParam.WRITER_ID) writerId: UUID,
+        @RequestParam(CommentsParam.MEMBER_ID) memberId: UUID,
         @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<List<CommentsInfo>> {
-        val comments = commentsQueryService.getCommentsBySomeone(writerUUID, memberUUID, lastId)
+        val comments = commentsQueryService.getCommentsBySomeone(writerId, memberId, lastId)
         return CommentsResponse.commentsBySomeoneSuccess(comments)
     }
 
@@ -67,7 +67,7 @@ class CommentsController @Autowired constructor(
         validateBinding(bindingResult)
 
         commentsCommandService.createComments(createComments)
-        logger().info(CommentsControllerLog.CREATE_COMMENTS_SUCCESS + createComments.writerUUID)
+        logger().info(CommentsControllerLog.CREATE_COMMENTS_SUCCESS + createComments.writerId)
 
         return CommentsResponse.createCommentsSuccess()
     }

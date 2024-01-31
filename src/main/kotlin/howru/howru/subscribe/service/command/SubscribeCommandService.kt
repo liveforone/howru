@@ -15,14 +15,14 @@ class SubscribeCommandService @Autowired constructor(
 ) {
     fun createSubscribe(createSubscribe: CreateSubscribe) {
         with(createSubscribe) {
-            Subscribe.create(followeeUUID!!, followerUUID!!)
+            Subscribe.create(followeeId!!, followerId!!)
                 .also { subscribeRepository.save(it) }
         }
     }
 
     fun unsubscribe(unsubscribeRequest: UnsubscribeRequest) {
         with(unsubscribeRequest) {
-            subscribeRepository.findOneByUUID(followeeUUID!!, followerUUID!!)
+            subscribeRepository.findOneById(followeeId!!, followerId!!)
                 .also { subscribeRepository.delete(it) }
         }
     }

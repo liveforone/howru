@@ -7,6 +7,6 @@ import java.util.*
 interface MemberCustomRepository {
     fun findIdByEmailNullableForValidate(email: String): Long?
     fun findOneByEmail(email: String): Member
-    fun findOneByUUID(uuid: UUID): Member
-    fun findOneDtoByUUID(uuid: UUID): MemberInfo
+    fun findOneById(id: UUID): Member
+    fun findOneDtoById(id: UUID): MemberInfo
 }

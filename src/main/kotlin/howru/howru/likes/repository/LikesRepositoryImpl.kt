@@ -21,12 +21,12 @@ import java.util.*
 class LikesRepositoryImpl @Autowired constructor(
     private val queryFactory: SpringDataQueryFactory
 ) : LikesCustomRepository {
-    override fun findOneById(memberUUID: UUID, postId: Long): Likes {
+    override fun findOneById(memberId: UUID, postId: Long): Likes {
         return try {
             queryFactory.singleQuery {
                 select(entity(Likes::class))
                 from(Likes::class)
-                where(col(Likes::memberUUID).equal(memberUUID).and(col(Likes::postId).equal(postId)))
+                where(col(Likes::memberId).equal(memberId).and(col(Likes::postId).equal(postId)))
             }
         } catch (e: NoResultException) {
             throw LikesException(LikesExceptionMessage.LIKES_IS_NULL, postId)
@@ -41,59 +41,59 @@ class LikesRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findLikesBelongMember(memberUUID: UUID, lastPostId: Long?): List<LikesBelongMemberInfo> {
+    override fun findLikesBelongMember(memberId: UUID, lastPostId: Long?): List<LikesBelongMemberInfo> {
         return queryFactory.listQuery {
             select(listOf(col(Likes::postId)))
             from(Likes::class)
-            where(col(Likes::memberUUID).equal(memberUUID))
-            where(ltLastTimestampBelongMember(memberUUID, lastPostId))
+            where(col(Likes::memberId).equal(memberId))
+            where(ltLastTimestampBelongMember(memberId, lastPostId))
             orderBy(col(Likes::timestamp).desc())
             limit(LikesRepoConstant.LIMIT_PAGE)
         }
     }
 
-    override fun findLikesBelongPost(postId: Long, lastMemberUUID: UUID?): List<LikesBelongPostInfo> {
+    override fun findLikesBelongPost(postId: Long, lastMemberId: UUID?): List<LikesBelongPostInfo> {
         return queryFactory.listQuery {
-            select(listOf(col(Likes::memberUUID)))
+            select(listOf(col(Likes::memberId)))
             from(Likes::class)
             where(col(Likes::postId).equal(postId))
-            where(ltLastTimestampBelongPost(postId, lastMemberUUID))
+            where(ltLastTimestampBelongPost(postId, lastMemberId))
             orderBy(col(Likes::timestamp).desc())
             limit(LikesRepoConstant.LIMIT_PAGE)
         }
     }
 
-    private fun findLastTimestampBelongMember(memberUUID: UUID, postId: Long): Int {
+    private fun findLastTimestampBelongMember(memberId: UUID, postId: Long): Int {
         return try {
             queryFactory.singleQuery {
                 select(col(Likes::timestamp))
                 from(Likes::class)
-                where(col(Likes::memberUUID).equal(memberUUID).and(col(Likes::postId).equal(postId)))
+                where(col(Likes::memberId).equal(memberId).and(col(Likes::postId).equal(postId)))
             }
         } catch (e: NoResultException) {
             LikesRepoConstant.END_OF_TIMESTAMP
         }
     }
 
-    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastTimestampBelongMember(memberUUID: UUID, postId: Long?): PredicateSpec? {
-        val findTimestamp = postId?.let { findLastTimestampBelongMember(memberUUID, postId) }
+    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastTimestampBelongMember(memberId: UUID, postId: Long?): PredicateSpec? {
+        val findTimestamp = postId?.let { findLastTimestampBelongMember(memberId, postId) }
         return findTimestamp?.let { and(col(Likes::timestamp).lessThan(it)) }
     }
 
-    private fun findLastTimestampBelongPost(postId: Long, memberUUID: UUID): Int {
+    private fun findLastTimestampBelongPost(postId: Long, memberId: UUID): Int {
         return try {
             queryFactory.singleQuery {
                 select(col(Likes::timestamp))
                 from(Likes::class)
-                where(col(Likes::memberUUID).equal(memberUUID).and(col(Likes::postId).equal(postId)))
+                where(col(Likes::memberId).equal(memberId).and(col(Likes::postId).equal(postId)))
             }
         } catch (e: NoResultException) {
             LikesRepoConstant.END_OF_TIMESTAMP
         }
     }
 
-    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastTimestampBelongPost(postId: Long, memberUUID: UUID?): PredicateSpec? {
-        val findTimestamp = memberUUID?.let { findLastTimestampBelongPost(postId, memberUUID) }
+    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastTimestampBelongPost(postId: Long, memberId: UUID?): PredicateSpec? {
+        val findTimestamp = memberId?.let { findLastTimestampBelongPost(postId, memberId) }
         return findTimestamp?.let { and(col(Likes::timestamp).lessThan(it)) }
     }
 }

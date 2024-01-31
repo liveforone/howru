@@ -26,26 +26,26 @@ class PostQueryService @Autowired constructor(
 ) {
     @Cacheable(cacheNames = [CacheName.POST], key = PostCache.ID_KEY)
     fun getPostById(id: Long) = postRepository.findOneDtoById(id)
-    fun getMyPosts(memberUUID: UUID, lastId: Long?) = postRepository.findMyPosts(memberUUID, lastId)
+    fun getMyPosts(memberId: UUID, lastId: Long?) = postRepository.findMyPosts(memberId, lastId)
     fun getAllPosts(lastId: Long?) = postRepository.findAllPosts(lastId)
-    fun getPostsBySomeone(writerUUID: UUID, memberUUID: UUID, lastId: Long?): List<PostInfo> {
-        val writer = memberQueryService.getMemberByUUID(writerUUID)
+    fun getPostsBySomeone(writerId: UUID, memberId: UUID, lastId: Long?): List<PostInfo> {
+        val writer = memberQueryService.getMemberById(writerId)
         return if (writer.isUnlock()) {
-            postRepository.findPostsBySomeone(writerUUID, lastId)
+            postRepository.findPostsBySomeone(writerId, lastId)
         } else {
-            takeIf { subscribeQueryService.isFollowee(writerUUID, memberUUID) }
-                ?.run { postRepository.findPostsBySomeone(writerUUID, lastId) }
-                ?: run { logger().warn(PostServiceLog.NOT_FOLLOWER + writerUUID); throw SubscribeException(SubscribeExceptionMessage.NOT_FOLLOWER, memberUUID) }
+            takeIf { subscribeQueryService.isFollowee(writerId, memberId) }
+                ?.run { postRepository.findPostsBySomeone(writerId, lastId) }
+                ?: run { logger().warn(PostServiceLog.NOT_FOLLOWER + writerId); throw SubscribeException(SubscribeExceptionMessage.NOT_FOLLOWER, memberId) }
         }
     }
-    fun getPostsOfFollowee(followerUUID: UUID, lastId: Long?): List<PostInfo> {
-        val followeeUUID = subscribeQueryService.getFollowees(followerUUID)
-        return postRepository.findPostsByFollowee(followeeUUID, lastId)
+    fun getPostsOfFollowee(followerId: UUID, lastId: Long?): List<PostInfo> {
+        val followeeId = subscribeQueryService.getFollowees(followerId)
+        return postRepository.findPostsByFollowee(followeeId, lastId)
     }
     fun getRecommendPosts(content: String): List<PostInfo> {
         return postRepository.findRecommendPosts(extractKeywords(content))
     }
     fun getRandomPosts() = postRepository.findRandomPosts()
     @Cacheable(cacheNames = [CacheName.POST], key = PostCache.WRITER_KEY)
-    fun getCountOfPostsByWriter(writerUUID: UUID) = postRepository.countOfPostByWriter(writerUUID)
+    fun getCountOfPostsByWriter(writerId: UUID) = postRepository.countOfPostByWriter(writerId)
 }

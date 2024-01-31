@@ -11,8 +11,8 @@ import java.util.UUID
 interface SubscribeRepository : JpaRepository<Subscribe, SubscribePk>, SubscribeCustomRepository {
 
     @Query(SubscribeSql.IS_FOLLOWEE)
-    fun isFollowee(@Param(SubscribeSql.FOLLOWEE_UUID) followeeUUID: UUID, @Param(SubscribeSql.FOLLOWER_UUID) followerUUID: UUID): Boolean
+    fun isFollowee(@Param(SubscribeSql.FOLLOWEE_ID) followeeId: UUID, @Param(SubscribeSql.FOLLOWER_ID) followerId: UUID): Boolean
 
     @Query(SubscribeSql.IS_FOLLOW_EACH)
-    fun isFollowEach(@Param(SubscribeSql.FOLLOWEE_UUID) followeeUUID: UUID, @Param(SubscribeSql.FOLLOWER_UUID) followerUUID: UUID): Boolean
+    fun isFollowEach(@Param(SubscribeSql.FOLLOWEE_ID) followeeId: UUID, @Param(SubscribeSql.FOLLOWER_ID) followerId: UUID): Boolean
 }

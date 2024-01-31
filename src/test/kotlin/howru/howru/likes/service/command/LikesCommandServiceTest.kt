@@ -38,7 +38,7 @@ class LikesCommandServiceTest @Autowired constructor(
         memberCommandService.signupMember(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
-        return memberCommandService.login(loginRequest).uuid
+        return memberCommandService.login(loginRequest).id
     }
 
     private fun createMember(): UUID {
@@ -49,13 +49,13 @@ class LikesCommandServiceTest @Autowired constructor(
         memberCommandService.signupMember(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
-        return memberCommandService.login(loginRequest).uuid
+        return memberCommandService.login(loginRequest).id
     }
 
     private fun createPost(): Long {
-        val writerUUID = createWriter()
+        val writerId = createWriter()
         val content = "test_content"
-        val request = CreatePost(writerUUID, content)
+        val request = CreatePost(writerId, content)
         val postId = postCommandService.createPost(request)
         flushAndClear()
         return postId
@@ -65,11 +65,11 @@ class LikesCommandServiceTest @Autowired constructor(
     @Transactional
     fun createLikesTest() {
         //given
-        val memberUUID = createMember()
+        val memberId = createMember()
         val postId = createPost()
 
         //when
-        val request = CreateLikes(memberUUID, postId)
+        val request = CreateLikes(memberId, postId)
         likesCommandService.createLikes(request)
         flushAndClear()
 
@@ -82,19 +82,19 @@ class LikesCommandServiceTest @Autowired constructor(
     @Transactional
     fun deleteLikesTest() {
         //given
-        val memberUUID = createMember()
+        val memberId = createMember()
         val postId = createPost()
-        val request = CreateLikes(memberUUID, postId)
+        val request = CreateLikes(memberId, postId)
         likesCommandService.createLikes(request)
         flushAndClear()
 
         //when
-        val deleteRequest = RemoveLikes(memberUUID, postId)
+        val deleteRequest = RemoveLikes(memberId, postId)
         likesCommandService.removeLikes(deleteRequest)
         flushAndClear()
 
         //then
-        Assertions.assertThat(likesQueryService.getLikesBelongMember(memberUUID, null))
+        Assertions.assertThat(likesQueryService.getLikesBelongMember(memberId, null))
             .isEmpty()
     }
 }

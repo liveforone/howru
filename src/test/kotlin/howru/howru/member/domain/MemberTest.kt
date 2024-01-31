@@ -21,22 +21,6 @@ class MemberTest {
     }
 
     @Test
-    fun updateEmailTest() {
-        //given
-        val email = "email_test@gmail.com"
-        val pw = "1234"
-        val nickName = "nickName"
-        val member = Member.create(email, pw, nickName)
-
-        //when
-        val updatedEmail = "updated_email@gmail.com"
-        member.updateEmail(updatedEmail)
-
-        //then
-        Assertions.assertThat(member.email).isEqualTo(updatedEmail)
-    }
-
-    @Test
     fun updatePwTest() {
         //given
         val email = "pw_test@gmail.com"

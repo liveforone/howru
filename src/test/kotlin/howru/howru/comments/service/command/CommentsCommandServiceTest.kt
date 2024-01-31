@@ -41,7 +41,7 @@ class CommentsCommandServiceTest @Autowired constructor(
         memberCommandService.signupMember(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
-        return memberCommandService.login(loginRequest).uuid
+        return memberCommandService.login(loginRequest).id
     }
 
     private fun createMember(): UUID {
@@ -52,13 +52,13 @@ class CommentsCommandServiceTest @Autowired constructor(
         memberCommandService.signupMember(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
-        return memberCommandService.login(loginRequest).uuid
+        return memberCommandService.login(loginRequest).id
     }
 
     private fun createPost(): Long {
-        val writerUUID = createWriter()
+        val writerId = createWriter()
         val content = "test_content"
-        val request = CreatePost(writerUUID, content)
+        val request = CreatePost(writerId, content)
         val postId = postCommandService.createPost(request)
         flushAndClear()
         return postId
@@ -67,12 +67,12 @@ class CommentsCommandServiceTest @Autowired constructor(
     @Test @Transactional
     fun createCommentTest() {
         //given
-        val memberUUID = createMember()
+        val memberId = createMember()
         val postId = createPost()
         val content = "test_comments"
 
         //when
-        val request = CreateComments(memberUUID, postId, content)
+        val request = CreateComments(memberId, postId, content)
         val commentId = commentsCommandService.createComments(request)
         flushAndClear()
 
@@ -84,15 +84,15 @@ class CommentsCommandServiceTest @Autowired constructor(
     @Test @Transactional
     fun editCommentTest() {
         //given
-        val memberUUID = createMember()
+        val memberId = createMember()
         val postId = createPost()
-        val request = CreateComments(memberUUID, postId, "test_comments")
+        val request = CreateComments(memberId, postId, "test_comments")
         val commentId = commentsCommandService.createComments(request)
         flushAndClear()
 
         //when
         val updateContent = "updated_comment"
-        val updateRequest = UpdateComments(memberUUID, updateContent)
+        val updateRequest = UpdateComments(memberId, updateContent)
         commentsCommandService.editComment(commentId, updateRequest)
         flushAndClear()
 
@@ -105,14 +105,14 @@ class CommentsCommandServiceTest @Autowired constructor(
     @Test @Transactional
     fun removeCommentTest() {
         //given
-        val memberUUID = createMember()
+        val memberId = createMember()
         val postId = createPost()
-        val request = CreateComments(memberUUID, postId, "test_comments")
+        val request = CreateComments(memberId, postId, "test_comments")
         val commentId = commentsCommandService.createComments(request)
         flushAndClear()
 
         //when
-        val deleteRequest = RemoveComments(memberUUID)
+        val deleteRequest = RemoveComments(memberId)
         commentsCommandService.removeComment(commentId, deleteRequest)
         flushAndClear()
 

@@ -44,17 +44,17 @@
 ```sql
 create table likes (
      timestamp integer,
-     member_uuid binary(16) not null,
-     post_id binary(16) not null,
-     primary key (member_uuid, post_id)
+     member_id binary(16) not null,
+     post_id bigint not null,
+     primary key (member_id, post_id)
 );
 CREATE INDEX likes_post_id_idx ON Likes (post_id);
 CREATE INDEX likes_timestamp_idx ON Likes (timestamp);
 ```
 
 ## 인덱스 설계 주의 사항
-* 좋아요의 경우 member_uuid를 where에 사용할 경우 인덱스가 동작한다.
+* 좋아요의 경우 member_id를 where에 사용할 경우 인덱스가 동작한다.
 * 그러나 post_id만 where 절에 사용할 경우 인덱스가 동작하지 않는다. 
-* 복합키의 pk 인덱스는 순서에 따라 `(member_uuid, post_id)` 로 구성되어 있기 때문이다.
+* 복합키의 pk 인덱스는 순서에 따라 `(member_id, post_id)` 로 구성되어 있기 때문이다.
 * 따라서 post_id로 조회하는 상황이 있기에 post_id에 대한 인덱스를 만들어 주었다. 
 * 복합키를 사용할때 인덱스는 순서에 민감하므로 추가적인 인덱스 구성이 필요한지 살펴보아야한다.

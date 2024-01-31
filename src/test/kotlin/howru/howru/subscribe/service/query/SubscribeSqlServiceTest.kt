@@ -34,7 +34,7 @@ class SubscribeSqlServiceTest @Autowired constructor(
         memberCommandService.signupMember(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
-        return memberCommandService.login(loginRequest).uuid
+        return memberCommandService.login(loginRequest).id
     }
 
     private fun createFollower(): UUID {
@@ -45,38 +45,38 @@ class SubscribeSqlServiceTest @Autowired constructor(
         memberCommandService.signupMember(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
-        return memberCommandService.login(loginRequest).uuid
+        return memberCommandService.login(loginRequest).id
     }
 
     @Test
     @Transactional
     fun getSubscribesByFollowerTest() {
         //given
-        val followeeUUID = createFollowee()
-        val followerUUID = createFollower()
-        val request = CreateSubscribe(followeeUUID, followerUUID)
+        val followeeId = createFollowee()
+        val followerId = createFollower()
+        val request = CreateSubscribe(followeeId, followerId)
         subscribeCommandService.createSubscribe(request)
         flushAndClear()
 
         //when
-        val subscribes = subscribeQueryService.getSubscribesByFollower(followerUUID, null, null)
+        val subscribes = subscribeQueryService.getSubscribesByFollower(followerId, null, null)
 
         //then
-        Assertions.assertThat(subscribes[0].followeeUUID).isEqualTo(followeeUUID)
+        Assertions.assertThat(subscribes[0].followeeId).isEqualTo(followeeId)
     }
 
     @Test
     @Transactional
     fun getSubscribesByFollowerPagingTest() {
         //given
-        val followeeUUID = createFollowee()
-        val followerUUID = createFollower()
-        val request = CreateSubscribe(followeeUUID, followerUUID)
+        val followeeId = createFollowee()
+        val followerId = createFollower()
+        val request = CreateSubscribe(followeeId, followerId)
         subscribeCommandService.createSubscribe(request)
         flushAndClear()
 
         //when
-        val subscribes = subscribeQueryService.getSubscribesByFollower(followerUUID, followeeUUID, followerUUID)
+        val subscribes = subscribeQueryService.getSubscribesByFollower(followerId, followeeId, followerId)
 
         //then
         Assertions.assertThat(subscribes).isEmpty()
@@ -86,14 +86,14 @@ class SubscribeSqlServiceTest @Autowired constructor(
     @Transactional
     fun getCountFollowerTest() {
         //given
-        val followeeUUID = createFollowee()
-        val followerUUID = createFollower()
-        val request = CreateSubscribe(followeeUUID, followerUUID)
+        val followeeId = createFollowee()
+        val followerId = createFollower()
+        val request = CreateSubscribe(followeeId, followerId)
         subscribeCommandService.createSubscribe(request)
         flushAndClear()
 
         //when
-        val countFollower = subscribeQueryService.getCountOfFollower(followeeUUID)
+        val countFollower = subscribeQueryService.getCountOfFollower(followeeId)
 
         //then
         Assertions.assertThat(countFollower).isEqualTo(1)
@@ -109,14 +109,14 @@ class SubscribeSqlServiceTest @Autowired constructor(
          */
 
         //given
-        val followeeUUID = createFollowee()
-        val followerUUID = createFollower()
-        val request = CreateSubscribe(followeeUUID, followerUUID)
+        val followeeId = createFollowee()
+        val followerId = createFollower()
+        val request = CreateSubscribe(followeeId, followerId)
         subscribeCommandService.createSubscribe(request)
         flushAndClear()
 
         //when
-        val countFollower = subscribeQueryService.getCountOfFollower(followeeUUID)
+        val countFollower = subscribeQueryService.getCountOfFollower(followeeId)
 
         //then
         Assertions.assertThat(countFollower).isEqualTo(1)
@@ -126,14 +126,14 @@ class SubscribeSqlServiceTest @Autowired constructor(
     @Transactional
     fun isFolloweeTest() {
         //given
-        val followeeUUID = createFollowee()
-        val followerUUID = createFollower()
-        val request = CreateSubscribe(followeeUUID, followerUUID)
+        val followeeId = createFollowee()
+        val followerId = createFollower()
+        val request = CreateSubscribe(followeeId, followerId)
         subscribeCommandService.createSubscribe(request)
         flushAndClear()
 
         //when
-        val result = subscribeQueryService.isFollowee(followeeUUID, followerUUID)
+        val result = subscribeQueryService.isFollowee(followeeId, followerId)
 
         //then
         Assertions.assertThat(result).isTrue()
@@ -143,14 +143,14 @@ class SubscribeSqlServiceTest @Autowired constructor(
     @Transactional
     fun isFollowEachTest() {
         //given
-        val followeeUUID = createFollowee()
-        val followerUUID = createFollower()
-        val request = CreateSubscribe(followeeUUID, followerUUID)
+        val followeeId = createFollowee()
+        val followerId = createFollower()
+        val request = CreateSubscribe(followeeId, followerId)
         subscribeCommandService.createSubscribe(request)
         flushAndClear()
 
         //when
-        val result = subscribeQueryService.isFollowEach(followeeUUID, followerUUID)
+        val result = subscribeQueryService.isFollowEach(followeeId, followerId)
 
         //then
         Assertions.assertThat(result).isFalse()

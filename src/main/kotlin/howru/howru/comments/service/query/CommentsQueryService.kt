@@ -19,13 +19,13 @@ class CommentsQueryService @Autowired constructor(
     private val subscribeQueryService: SubscribeQueryService
 ) {
     fun getCommentById(id: Long) = commentsRepository.findOneDtoById(id)
-    fun getCommentsByWriter(writerUUID: UUID, lastId: Long?) = commentsRepository.findCommentsByWriter(writerUUID, lastId)
+    fun getCommentsByWriter(writerId: UUID, lastId: Long?) = commentsRepository.findCommentsByWriter(writerId, lastId)
     fun getCommentsByPost(postId: Long, lastId: Long?) = commentsRepository.findCommentsByPost(postId, lastId)
-    fun getCommentsBySomeone(someoneUUID: UUID, memberUUID: UUID, lastId: Long?): List<CommentsInfo> {
-        require(subscribeQueryService.isFollowEach(someoneUUID, memberUUID)) {
-            logger().info(CommentsServiceLog.VIEW_SOMEONE_COMMENTS_WHO_NOT_FOLLOWING + memberUUID)
-            throw SubscribeException(SubscribeExceptionMessage.IS_NOT_FOLLOW_EACH, memberUUID)
+    fun getCommentsBySomeone(someoneId: UUID, memberId: UUID, lastId: Long?): List<CommentsInfo> {
+        require(subscribeQueryService.isFollowEach(someoneId, memberId)) {
+            logger().info(CommentsServiceLog.VIEW_SOMEONE_COMMENTS_WHO_NOT_FOLLOWING + memberId)
+            throw SubscribeException(SubscribeExceptionMessage.IS_NOT_FOLLOW_EACH, memberId)
         }
-        return commentsRepository.findCommentsByWriter(someoneUUID, lastId)
+        return commentsRepository.findCommentsByWriter(someoneId, lastId)
     }
 }

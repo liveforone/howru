@@ -43,7 +43,7 @@ class MemberCommandServiceTest @Autowired constructor(
         //then
         val loginRequest = LoginRequest(email, pw)
         val jwtTokenInfo = memberCommandService.login(loginRequest)
-        Assertions.assertThat(memberQueryService.getMemberByUUID(jwtTokenInfo.uuid).auth)
+        Assertions.assertThat(memberQueryService.getMemberById(jwtTokenInfo.id).auth)
             .isEqualTo(Role.MEMBER)
     }
 
@@ -61,36 +61,12 @@ class MemberCommandServiceTest @Autowired constructor(
         val jwtTokenInfo = memberCommandService.login(loginRequest)
 
         //when
-        val reissueJwtToken = memberCommandService.reissueJwtToken(jwtTokenInfo.uuid, jwtTokenInfo.refreshToken)
+        val reissueJwtToken = memberCommandService.reissueJwtToken(jwtTokenInfo.id, jwtTokenInfo.refreshToken)
         flushAndClear()
 
         //then
         val jwtTokenInfo2 = memberCommandService.login(loginRequest)
         Assertions.assertThat(reissueJwtToken.refreshToken).isEqualTo(jwtTokenInfo2.refreshToken)
-    }
-
-    @Test
-    @Transactional
-    fun updateEmailTest() {
-        //given
-        val email = "email_test@gmail.com"
-        val pw = "1234"
-        val nickName = "nickName"
-        val request = SignupRequest(email, pw, nickName)
-        memberCommandService.signupMember(request)
-        flushAndClear()
-        val loginRequest = LoginRequest(email, pw)
-        val uuid = memberCommandService.login(loginRequest).uuid
-
-        //when
-        val newEmail = "updated_email@gmail.com"
-        val updateRequest = UpdateEmail(newEmail)
-        memberCommandService.updateEmail(updateRequest, uuid)
-        flushAndClear()
-
-        //then
-        Assertions.assertThat(memberQueryService.getMemberByUUID(uuid).email)
-            .isEqualTo(newEmail)
     }
 
     @Test
@@ -104,14 +80,14 @@ class MemberCommandServiceTest @Autowired constructor(
         memberCommandService.signupMember(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
-        val uuid = memberCommandService.login(loginRequest).uuid
+        val id = memberCommandService.login(loginRequest).id
 
         //when
-        memberCommandService.memberLockOn(uuid)
+        memberCommandService.memberLockOn(id)
         flushAndClear()
 
         //then
-        Assertions.assertThat(memberQueryService.getMemberByUUID(uuid).memberLock)
+        Assertions.assertThat(memberQueryService.getMemberById(id).memberLock)
             .isEqualTo(MemberLock.ON)
     }
 
@@ -126,16 +102,16 @@ class MemberCommandServiceTest @Autowired constructor(
         memberCommandService.signupMember(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
-        val uuid = memberCommandService.login(loginRequest).uuid
-        memberCommandService.memberLockOn(uuid)
+        val id = memberCommandService.login(loginRequest).id
+        memberCommandService.memberLockOn(id)
         flushAndClear()
 
         //when
-        memberCommandService.memberLockOff(uuid)
+        memberCommandService.memberLockOff(id)
         flushAndClear()
 
         //then
-        Assertions.assertThat(memberQueryService.getMemberByUUID(uuid).memberLock)
+        Assertions.assertThat(memberQueryService.getMemberById(id).memberLock)
             .isEqualTo(MemberLock.OFF)
     }
 
@@ -150,9 +126,9 @@ class MemberCommandServiceTest @Autowired constructor(
         memberCommandService.signupMember(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
-        val uuid = memberCommandService.login(loginRequest).uuid
+        val id = memberCommandService.login(loginRequest).id
         val withdrawRequest = WithdrawRequest(pw)
-        memberCommandService.withdraw(withdrawRequest, uuid)
+        memberCommandService.withdraw(withdrawRequest, id)
         flushAndClear()
 
         //when
@@ -160,7 +136,7 @@ class MemberCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //then
-        Assertions.assertThat(memberQueryService.getMemberByUUID(uuid)).isNotNull
+        Assertions.assertThat(memberQueryService.getMemberById(id)).isNotNull
     }
 
     /*
@@ -177,17 +153,17 @@ class MemberCommandServiceTest @Autowired constructor(
         memberCommandService.signupMember(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
-        val uuid = memberCommandService.login(loginRequest).uuid
+        val id = memberCommandService.login(loginRequest).id
 
         //when
         val withdrawRequest = WithdrawRequest(pw)
-        memberCommandService.withdraw(withdrawRequest, uuid)
+        memberCommandService.withdraw(withdrawRequest, id)
         flushAndClear()
 
         //then
-        Assertions.assertThatThrownBy { jwtTokenService.getRefreshToken(uuid) }
+        Assertions.assertThatThrownBy { jwtTokenService.getRefreshToken(id) }
             .isInstanceOf(JwtCustomException::class.java)
-        Assertions.assertThatThrownBy { (memberQueryService.getMemberByUUID(uuid)) }
+        Assertions.assertThatThrownBy { (memberQueryService.getMemberById(id)) }
             .isInstanceOf(MemberException::class.java)
     }
 }

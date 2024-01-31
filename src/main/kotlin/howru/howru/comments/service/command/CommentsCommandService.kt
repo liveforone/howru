@@ -21,7 +21,7 @@ class CommentsCommandService @Autowired constructor(
     fun createComments(createComments: CreateComments): Long {
         return with(createComments) {
             Comments.create(
-                writer = memberQuery.findOneByUUID(writerUUID!!),
+                writer = memberQuery.findOneById(writerId!!),
                 post = postRepository.findOneById(postId!!),
                 content!!
             ).run { commentsRepository.save(this).id!! }
@@ -30,14 +30,14 @@ class CommentsCommandService @Autowired constructor(
 
     fun editComment(id: Long, updateComments: UpdateComments) {
         with(updateComments) {
-            commentsRepository.findOneByIdAndWriter(id, writerUUID!!)
+            commentsRepository.findOneByIdAndWriter(id, writerId!!)
                 .also { it.editContentAndState(content!!) }
         }
     }
 
     fun removeComment(id: Long, removeComments: RemoveComments) {
         with(removeComments) {
-            commentsRepository.findOneByIdAndWriter(id, writerUUID!!)
+            commentsRepository.findOneByIdAndWriter(id, writerId!!)
                 .also { commentsRepository.delete(it) }
         }
     }

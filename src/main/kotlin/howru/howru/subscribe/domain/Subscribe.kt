@@ -8,11 +8,11 @@ import java.util.*
 @Entity
 @IdClass(SubscribePk::class)
 class Subscribe private constructor(
-    @Id @Column(name = SubscribeConstant.FOLLOWEE_UUID) val followeeUUID: UUID,
-    @Id @Column(name = SubscribeConstant.FOLLOWER_UUID) val followerUUID: UUID,
+    @Id @Column(name = SubscribeConstant.FOLLOWEE_ID) val followeeId: UUID,
+    @Id @Column(name = SubscribeConstant.FOLLOWER_ID) val followerId: UUID,
     @Column(updatable = false) val timestamp: Int = getCurrentTimestamp()
 ) {
     companion object {
-        fun create(followeeUUID: UUID, followerUUID: UUID) = Subscribe(followeeUUID, followerUUID)
+        fun create(followeeId: UUID, followerId: UUID) = Subscribe(followeeId, followerId)
     }
 }

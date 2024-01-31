@@ -11,5 +11,5 @@ import java.util.UUID
 class ReportStateQueryService @Autowired constructor(
     private val reportStateQuery: ReportStateQuery
 ) {
-    fun getOneByMemberUUID(memberUUID: UUID) = reportStateQuery.findOneDtoByMemberUUID(memberUUID)
+    fun getOneByMemberId(memberId: UUID) = reportStateQuery.findOneDtoByMemberId(memberId)
 }

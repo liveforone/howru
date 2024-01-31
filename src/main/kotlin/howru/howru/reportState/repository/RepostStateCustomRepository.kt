@@ -6,6 +6,6 @@ import java.util.UUID
 
 interface RepostStateCustomRepository {
     fun findOneByMemberEmail(email: String): ReportState
-    fun findOneByMemberUUID(memberUUID: UUID): ReportState
-    fun findOneDtoByMemberUUID(memberUUID: UUID): ReportStateInfo
+    fun findOneByMemberId(memberId: UUID): ReportState
+    fun findOneDtoByMemberId(memberId: UUID): ReportStateInfo
 }

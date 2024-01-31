@@ -34,18 +34,18 @@ class AdvertisementSqlServiceTest @Autowired constructor(
         memberCommandService.signupMember(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
-        return memberCommandService.login(loginRequest).uuid
+        return memberCommandService.login(loginRequest).id
     }
 
     @Test @Transactional
     fun getOneById() {
         //given
-        val adminUUID = createAdmin()
+        val adminId = createAdmin()
         val company = "test company"
         val title = "test title"
         val content = "test content"
         val request = CreateAdvertisement(company, title, content)
-        val adId = advertisementCommandService.createHalfAd(request, adminUUID)
+        val adId = advertisementCommandService.createHalfAd(request, adminId)
         flushAndClear()
 
         //when
@@ -58,13 +58,13 @@ class AdvertisementSqlServiceTest @Autowired constructor(
     @Test @Transactional
     fun getAllAdvertisement() {
         //given
-        val adminUUID = createAdmin()
+        val adminId = createAdmin()
         val company = "test company"
         val title = "test title"
         val content = "test content"
         repeat(4) {
             val request = CreateAdvertisement(company + (it + 1), title + (it + 1), content + (it + 1))
-            advertisementCommandService.createHalfAd(request, adminUUID)
+            advertisementCommandService.createHalfAd(request, adminId)
             flushAndClear()
         }
 
@@ -79,13 +79,13 @@ class AdvertisementSqlServiceTest @Autowired constructor(
     @Test @Transactional
     fun searchAdByCompany() {
         //given
-        val adminUUID = createAdmin()
+        val adminId = createAdmin()
         val company = "test company"
         val title = "test title"
         val content = "test content"
         repeat(4) {
             val request = CreateAdvertisement(company + (it + 1), title + (it + 1), content + (it + 1))
-            advertisementCommandService.createHalfAd(request, adminUUID)
+            advertisementCommandService.createHalfAd(request, adminId)
             flushAndClear()
         }
 
@@ -99,13 +99,13 @@ class AdvertisementSqlServiceTest @Autowired constructor(
     @Test @Transactional
     fun getExpiredAd() {
         //given
-        val adminUUID = createAdmin()
+        val adminId = createAdmin()
         val company = "test company"
         val title = "test title"
         val content = "test content"
         repeat(4) {
             val request = CreateAdvertisement(company + (it + 1), title + (it + 1), content + (it + 1))
-            advertisementCommandService.createHalfAd(request, adminUUID)
+            advertisementCommandService.createHalfAd(request, adminId)
             flushAndClear()
         }
 
@@ -119,13 +119,13 @@ class AdvertisementSqlServiceTest @Autowired constructor(
     @Test @Transactional
     fun getRandomAd() {
         //given
-        val adminUUID = createAdmin()
+        val adminId = createAdmin()
         val company = "test company"
         val title = "test title"
         val content = "test content"
         repeat(4) {
             val request = CreateAdvertisement(company + (it + 1), title + (it + 1), content + (it + 1))
-            advertisementCommandService.createHalfAd(request, adminUUID)
+            advertisementCommandService.createHalfAd(request, adminId)
             flushAndClear()
         }
 

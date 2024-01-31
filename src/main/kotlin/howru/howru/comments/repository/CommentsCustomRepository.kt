@@ -6,8 +6,8 @@ import java.util.UUID
 
 interface CommentsCustomRepository {
     fun findOneById(id: Long): Comments
-    fun findOneByIdAndWriter(id: Long, writerUUID: UUID): Comments
+    fun findOneByIdAndWriter(id: Long, writerId: UUID): Comments
     fun findOneDtoById(id: Long): CommentsInfo
-    fun findCommentsByWriter(writerUUID: UUID, lastId: Long?): List<CommentsInfo>
+    fun findCommentsByWriter(writerId: UUID, lastId: Long?): List<CommentsInfo>
     fun findCommentsByPost(postId: Long, lastId: Long?): List<CommentsInfo>
 }

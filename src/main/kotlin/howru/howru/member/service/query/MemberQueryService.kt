@@ -15,5 +15,5 @@ class MemberQueryService @Autowired constructor(
     private val memberQuery: MemberQuery
 ) {
     @Cacheable(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)
-    fun getMemberByUUID(uuid: UUID) = memberQuery.findOneDtoByUUID(uuid)
+    fun getMemberById(id: UUID) = memberQuery.findOneDtoById(id)
 }

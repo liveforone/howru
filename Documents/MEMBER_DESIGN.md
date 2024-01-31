@@ -10,7 +10,7 @@
 * 이는 회원의 pk를 외부에 노출하지 않기 위함입니다.
 * 회원은 member, admin, 두 종류가 있습니다.
 * 비밀번호는 모두 bcrypt로 암호화 합니다.
-* 회원의 이메일과 비밀번호는 변경 가능합니다.
+* 회원의 비밀번호는 변경 가능합니다.
 * 로그인은 스프링 시큐리티에 위임합니다
 * 정지된 계정인지는 로그인시에 판별합니다.
 * 회원은 잠금이 가능하며, 잠금 회원의 경우 맞팔로우한 회원만 해당 회원의 게시글이나 프로필에 접근 가능합니다.
@@ -54,7 +54,6 @@ function 복구(이메일, 비밀번호) {
 [POST] /member/signup
 [POST] /member/login
 [GET] /member/info
-[PATCH] /member/update/email
 [PATCH] /member/update/password
 [PATCH] /member/lock-on
 [PATCH] /member/lock-off
@@ -79,11 +78,6 @@ function 복구(이메일, 비밀번호) {
   "pw": "1234"
 }
 
-[UpdateEmail]
-{
-  "newEmail": "new_email@gmail.com"
-}
-
 [UpdatePassword]
 {
   "password": "1111",
@@ -106,25 +100,23 @@ function 복구(이메일, 비밀번호) {
 ### member
 ```sql
 create table member (
-    id bigint not null auto_increment,
-    uuid BINARY(16) not null UNIQUE,
-    email varchar(255) not null,
+    id BINARY(16) not null,
+    email varchar(255) UNIQUE not null,
     password varchar(100) not null,
     auth varchar(7) not null,
     nick_name VARCHAR(10) not null UNIQUE,
     member_lock varchar(3) not null,
     primary key (id)
 );
-CREATE INDEX uuid_idx ON member (uuid);
-CREATE INDEX uuid_auth_idx ON member (uuid, auth);
+CREATE INDEX id_auth_idx ON member (id, auth);
 CREATE INDEX email_idx ON member (email);
 CREATE INDEX email_auth_idx ON member (email, auth);
 ```
 ### refresh_token
 ```sql
 create table refresh_token (
-    uuid BINARY(16) not null UNIQUE,
+    id BINARY(16) not null,
     refresh_token varchar(255),
-    primary key (uuid)
+    primary key (id)
 );
 ```

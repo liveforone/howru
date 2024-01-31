@@ -7,8 +7,7 @@
 ### 회원 -> Member
 ```sql
 create table member (
-    id bigint not null auto_increment,
-    uuid BINARY(16) not null UNIQUE,
+    id BINARY(16) not null,
     email varchar(255) not null,
     password varchar(100) not null,
     auth varchar(7) not null,
@@ -16,8 +15,7 @@ create table member (
     member_lock varchar(3) not null,
     primary key (id)
 );
-CREATE INDEX uuid_idx ON member (uuid);
-CREATE INDEX uuid_auth_idx ON member (uuid, auth);
+CREATE INDEX id_auth_idx ON member (id, auth);
 CREATE INDEX email_idx ON member (email);
 CREATE INDEX email_auth_idx ON member (email, auth);
 ```
@@ -26,9 +24,9 @@ CREATE INDEX email_auth_idx ON member (email, auth);
 * 단순한 구조이면서 1:1관계이므로 fk(uuid)를 pk로 매핑한다.
 ```sql
 create table refresh_token (
-    uuid BINARY(16) not null UNIQUE,
+    id BINARY(16) not null,
     refresh_token varchar(255),
-    primary key (uuid)
+    primary key (id)
 );
 ```
 ### 신고상태 -> ReportState
@@ -36,7 +34,7 @@ create table refresh_token (
 ```sql
 create table report_state (
      id bigint not null auto_increment,
-     member_id bigint,
+     member_id binary(16),
      modified_state_date INT(8) not null,
      report_count integer not null,
      member_state VARCHAR(17) not null,
@@ -50,9 +48,9 @@ create table report_state (
 ```sql
 create table subscribe (
     timestamp integer,
-    followee_uuid binary(16) not null,
-    follower_uuid binary(16) not null,
-    primary key (followee_uuid, follower_uuid)
+    followee_id binary(16) not null,
+    follower_id binary(16) not null,
+    primary key (followee_id, follower_id)
 );
 CREATE INDEX subscribe_timestamp_idx ON Subscribe (timestamp);
 ```
@@ -61,7 +59,7 @@ CREATE INDEX subscribe_timestamp_idx ON Subscribe (timestamp);
 ```sql
 create table post (
     id bigint not null auto_increment,
-    writer_id bigint,
+    writer_id binary(16),
     content VARCHAR(800) not null,
     post_state varchar(8) not null,
     createdDate BIGINT(12) not null,
@@ -78,9 +76,9 @@ CREATE INDEX post_content_idx ON Post (content);
 ```sql
 create table likes (
      timestamp integer,
-     member_uuid binary(16) not null,
-     post_id binary(16) not null,
-     primary key (member_uuid, post_id)
+     member_id binary(16) not null,
+     post_id bigint not null,
+     primary key (member_id, post_id)
 );
 CREATE INDEX likes_post_id_idx ON Likes (post_id);
 CREATE INDEX likes_timestamp_idx ON Likes (timestamp);
@@ -92,7 +90,7 @@ CREATE INDEX likes_timestamp_idx ON Likes (timestamp);
 create table comments (
      id bigint not null auto_increment,
      post_id bigint,
-     writer_id bigint,
+     writer_id binary(16),
      content VARCHAR(100) not null,
      comments_state varchar(8) not null,
      created_date BIGINT(12) not null,
@@ -108,7 +106,7 @@ create table comments (
 create table reply (
      id bigint not null auto_increment,
      comment_id bigint,
-     writer_id bigint,
+     writer_id binary(16),
      content VARCHAR(100) not null,
      reply_state varchar(8) not null,
      created_date BIGINT(12) not null,
