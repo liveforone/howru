@@ -60,3 +60,6 @@
 * [적절한 로그를 기록하는 법](https://github.com/liveforone/howru/blob/master/Documents/HOW_TO_RECORD_PROPER_LOG.md)
 ## 비즈니스적 고민
 * [클린한 커뮤니티 만들기](https://github.com/liveforone/howru/blob/master/Documents/CLEAN_COMMUNITY.md)
+
+# 4. 버전 업그레이드
+* [자바 및 gradle 버전 변경 가이드](https://github.com/liveforone/howru/blob/master/Documents/UPGRADE_JAVA_GRADLE.md)
