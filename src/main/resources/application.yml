@@ -14,6 +14,12 @@ spring:
     #    url: jdbc:mysql://howru_db:3306/howru?serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=UTF-8
     username: root
     password: 159624
+    hikari:
+      # SHOW GLOBAL VARIABLES LIKE 'max_connections'; 이 명령어로 max-pool size 조회 가능
+      maximum-pool-size: 100 #최대 pool 크기, 본인의 경우 151
+      minimum-idle: 15 #최소 pool 크기
+      idle-timeout: 600000 #연결위한 최대 유후 시간 -> 10분
+      max-lifetime: 1800000 #반납된 커넥션의 최대 수명 -> 30분
   jpa:
     hibernate:
       ddl-auto: create
