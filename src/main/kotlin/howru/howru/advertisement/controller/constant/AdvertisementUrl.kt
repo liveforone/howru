@@ -3,7 +3,7 @@ package howru.howru.advertisement.controller.constant
 object AdvertisementUrl {
     const val DETAIL = "/advertisement/{id}"
     const val ALL_AD = "/advertisement"
-    const val SEARCH_COMPANY_AD = "/advertisement/search-company"
+    const val SEARCH_COMPANY = "/advertisement/search-company"
     const val EXPIRED_AD = "/advertisement/expired"
     const val RANDOM_AD = "/advertisement/random"
     const val CREATE_HALF_AD = "/advertisement/create/half"

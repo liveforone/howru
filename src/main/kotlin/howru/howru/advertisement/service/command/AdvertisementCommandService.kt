@@ -52,7 +52,7 @@ class AdvertisementCommandService @Autowired constructor(
     }
 
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
-    fun editTitle(id: Long, updateAdTitle: UpdateAdTitle, memberId: UUID) {
+    fun editAdTitle(id: Long, updateAdTitle: UpdateAdTitle, memberId: UUID) {
         require(memberQuery.findOneById(memberId).isAdmin()) {
             logger().warn(AdServiceLog.ACCESS_NON_ADMIN_USER + memberId)
             throw MemberException(MemberExceptionMessage.AUTH_IS_NOT_ADMIN, memberId.toString())
@@ -63,7 +63,7 @@ class AdvertisementCommandService @Autowired constructor(
     }
 
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
-    fun editContent(id: Long, updateAdContent: UpdateAdContent, memberId: UUID) {
+    fun editAdContent(id: Long, updateAdContent: UpdateAdContent, memberId: UUID) {
         require(memberQuery.findOneById(memberId).isAdmin()) {
             logger().warn(AdServiceLog.ACCESS_NON_ADMIN_USER + memberId)
             throw MemberException(MemberExceptionMessage.AUTH_IS_NOT_ADMIN, memberId.toString())
@@ -74,7 +74,7 @@ class AdvertisementCommandService @Autowired constructor(
     }
 
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
-    fun removeAdById(id: Long, memberId: UUID) {
+    fun removeAd(id: Long, memberId: UUID) {
         advertisementQuery.findOneById(id)
             .takeIf { memberQuery.findOneById(memberId).isAdmin() }
             ?.also { advertisementRepository.delete(it) }
@@ -83,7 +83,7 @@ class AdvertisementCommandService @Autowired constructor(
 
     @Scheduled(cron = AdScheduleConstant.DELETE_EXPIRED_POLICY)
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
-    fun removeExpiredAdImSchedule() {
+    fun removeExpiredAd() {
         advertisementRepository.deleteExpiredAd()
     }
 }

@@ -35,7 +35,7 @@ AdvertisementController @Autowired constructor(
     private val advertisementCommandService: AdvertisementCommandService
 ) {
     @GetMapping(AdvertisementUrl.DETAIL)
-    fun detail(@PathVariable(AdvertisementParam.ID) @Positive id: Long): ResponseEntity<AdvertisementInfo> {
+    fun adDetail(@PathVariable(AdvertisementParam.ID) @Positive id: Long): ResponseEntity<AdvertisementInfo> {
         val ad = advertisementQueryService.getOneById(id)
         return AdvertisementResponse.detailSuccess(ad)
     }
@@ -46,8 +46,8 @@ AdvertisementController @Autowired constructor(
         return AdvertisementResponse.allAdSuccess(ads)
     }
 
-    @GetMapping(AdvertisementUrl.SEARCH_COMPANY_AD)
-    fun searchCompanyAd(@RequestParam(AdvertisementParam.COMPANY) company: String): ResponseEntity<List<AdvertisementInfo?>> {
+    @GetMapping(AdvertisementUrl.SEARCH_COMPANY)
+    fun searchCompany(@RequestParam(AdvertisementParam.COMPANY) company: String): ResponseEntity<List<AdvertisementInfo?>> {
         val ads = advertisementQueryService.searchAdByCompany(company)
         return AdvertisementResponse.searchAdByCompanySuccess(ads)
     }
@@ -79,7 +79,7 @@ AdvertisementController @Autowired constructor(
     }
 
     @PostMapping(AdvertisementUrl.CREATE_YEAR_AD)
-    fun createYear(
+    fun createYearAd(
         @RequestBody @Valid createAdvertisement: CreateAdvertisement,
         bindingResult: BindingResult,
         principal: Principal
@@ -93,7 +93,7 @@ AdvertisementController @Autowired constructor(
     }
 
     @PatchMapping(AdvertisementUrl.EDIT_TITLE)
-    fun editTitle(
+    fun editAdTitle(
         @PathVariable(AdvertisementParam.ID) @Positive id: Long,
         @RequestBody @Valid updateAdTitle: UpdateAdTitle,
         bindingResult: BindingResult,
@@ -101,14 +101,14 @@ AdvertisementController @Autowired constructor(
     ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
-        advertisementCommandService.editTitle(id, updateAdTitle, UUID.fromString(principal.name))
+        advertisementCommandService.editAdTitle(id, updateAdTitle, UUID.fromString(principal.name))
         logger().info(AdControllerLog.EDIT_TITLE_SUCCESS + id)
 
         return AdvertisementResponse.editTitleSuccess()
     }
 
     @PatchMapping(AdvertisementUrl.EDIT_CONTENT)
-    fun editContent(
+    fun editAdContent(
         @PathVariable(AdvertisementParam.ID) @Positive id: Long,
         @RequestBody @Valid updateAdContent: UpdateAdContent,
         bindingResult: BindingResult,
@@ -116,7 +116,7 @@ AdvertisementController @Autowired constructor(
     ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
-        advertisementCommandService.editContent(id, updateAdContent, UUID.fromString(principal.name))
+        advertisementCommandService.editAdContent(id, updateAdContent, UUID.fromString(principal.name))
         logger().info(AdControllerLog.EDIT_CONTENT_SUCCESS + id)
 
         return AdvertisementResponse.editContentSuccess()
@@ -127,7 +127,7 @@ AdvertisementController @Autowired constructor(
         @PathVariable(AdvertisementParam.ID) @Positive id: Long,
         principal: Principal
     ): ResponseEntity<String> {
-        advertisementCommandService.removeAdById(id, UUID.fromString(principal.name))
+        advertisementCommandService.removeAd(id, UUID.fromString(principal.name))
         logger().info(AdControllerLog.REMOVE_SUCCESS + id)
 
         return AdvertisementResponse.removeAdSuccess()

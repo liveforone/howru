@@ -97,7 +97,7 @@ class AdvertisementCommandServiceTest @Autowired constructor(
         //when
         val updatedTitle = "updated title"
         val updateRequest = UpdateAdTitle(updatedTitle)
-        advertisementCommandService.editTitle(adId, updateRequest, adminId)
+        advertisementCommandService.editAdTitle(adId, updateRequest, adminId)
         flushAndClear()
 
         //then
@@ -119,7 +119,7 @@ class AdvertisementCommandServiceTest @Autowired constructor(
         //when
         val updatedContent = "updated content"
         val updateRequest = UpdateAdContent(updatedContent)
-        advertisementCommandService.editContent(adId, updateRequest, adminId)
+        advertisementCommandService.editAdContent(adId, updateRequest, adminId)
         flushAndClear()
 
         //then
@@ -139,7 +139,7 @@ class AdvertisementCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        advertisementCommandService.removeAdById(adId, adminId)
+        advertisementCommandService.removeAd(adId, adminId)
         flushAndClear()
 
         //then
@@ -159,7 +159,7 @@ class AdvertisementCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        advertisementCommandService.removeExpiredAdImSchedule()
+        advertisementCommandService.removeExpiredAd()
         flushAndClear()
 
         //when
