@@ -26,13 +26,13 @@ class ReplyController @Autowired constructor(
     private val replyCommandService: ReplyCommandService
 ) {
     @GetMapping(ReplyUrl.DETAIL)
-    fun detail(@PathVariable(ReplyParam.ID) @Positive id: Long): ResponseEntity<ReplyInfo> {
+    fun getReplyDetailInfo(@PathVariable(ReplyParam.ID) @Positive id: Long): ResponseEntity<ReplyInfo> {
         val reply = replyQueryService.getReplyById(id)
         return ReplyResponse.detailSuccess(reply)
     }
 
     @GetMapping(ReplyUrl.BELONG_WRITER)
-    fun belongWriter(
+    fun getRepliesBelongWriterPage(
         @PathVariable(ReplyParam.WRITER_ID) writerId: UUID,
         @RequestParam(ReplyParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<List<ReplyInfo>> {
@@ -41,7 +41,7 @@ class ReplyController @Autowired constructor(
     }
 
     @GetMapping(ReplyUrl.BELONG_COMMENT)
-    fun belongComment(
+    fun getRepliesBelongCommentPage(
         @PathVariable(ReplyParam.COMMENT_ID) commentId: Long,
         @RequestParam(ReplyParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<List<ReplyInfo>> {
@@ -50,7 +50,7 @@ class ReplyController @Autowired constructor(
     }
 
     @PostMapping(ReplyUrl.CREATE)
-    fun create(
+    fun createReply(
         @RequestBody @Valid createReply: CreateReply,
         bindingResult: BindingResult
     ): ResponseEntity<String> {
@@ -63,7 +63,7 @@ class ReplyController @Autowired constructor(
     }
 
     @PatchMapping(ReplyUrl.EDIT)
-    fun edit(
+    fun editReply(
         @PathVariable(ReplyParam.ID) @Positive id: Long,
         @RequestBody @Valid updateReplyContent: UpdateReplyContent,
         bindingResult: BindingResult
@@ -77,7 +77,7 @@ class ReplyController @Autowired constructor(
     }
 
     @DeleteMapping(ReplyUrl.REMOVE)
-    fun remove(
+    fun removeReply(
         @PathVariable(ReplyParam.ID) @Positive id: Long,
         @RequestBody @Valid removeReply: RemoveReply,
         bindingResult: BindingResult
