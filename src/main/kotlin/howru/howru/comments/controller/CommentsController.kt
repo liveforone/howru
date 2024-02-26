@@ -26,13 +26,13 @@ class CommentsController @Autowired constructor(
     private val commentsCommandService: CommentsCommandService
 ) {
     @GetMapping(CommentsUrl.DETAIL)
-    fun commentDetail(@PathVariable(CommentsParam.ID) @Positive id: Long): ResponseEntity<CommentsInfo> {
+    fun getCommentDetailInfo(@PathVariable(CommentsParam.ID) @Positive id: Long): ResponseEntity<CommentsInfo> {
         val comment = commentsQueryService.getCommentById(id)
         return CommentsResponse.detailSuccess(comment)
     }
 
     @GetMapping(CommentsUrl.COMMENTS_BY_WRITER)
-    fun commentsByWriter(
+    fun getCommentsByWriterPage(
         @PathVariable(CommentsParam.WRITER_ID) writerId: UUID,
         @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<List<CommentsInfo>> {
@@ -41,7 +41,7 @@ class CommentsController @Autowired constructor(
     }
 
     @GetMapping(CommentsUrl.COMMENTS_BY_POST)
-    fun commentsByPost(
+    fun getCommentsByPostPage(
         @PathVariable(CommentsParam.POST_ID) postId: Long,
         @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<List<CommentsInfo>> {
@@ -50,7 +50,7 @@ class CommentsController @Autowired constructor(
     }
 
     @GetMapping(CommentsUrl.COMMENTS_BY_SOMEONE)
-    fun commentsBySomeone(
+    fun getCommentsBySomeonePage(
         @PathVariable(CommentsParam.WRITER_ID) writerId: UUID,
         @RequestParam(CommentsParam.MEMBER_ID) memberId: UUID,
         @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
