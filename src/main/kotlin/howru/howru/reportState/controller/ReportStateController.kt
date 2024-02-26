@@ -27,7 +27,7 @@ class ReportStateController @Autowired constructor(
     private val reportStateCommandService: ReportStateCommandService
 ) {
     @GetMapping(ReportStateUrl.REPORT_STATE_INFO)
-    fun reportStateInfo(@PathVariable(ReportStateParam.MEMBER_ID) memberId: UUID): ResponseEntity<ReportStateInfo> {
+    fun getReportStateInfo(@PathVariable(ReportStateParam.MEMBER_ID) memberId: UUID): ResponseEntity<ReportStateInfo> {
         val reportState = reportStateQueryService.getOneByMemberId(memberId)
         return ReportStateResponse.infoSuccess(reportState)
     }
