@@ -28,7 +28,7 @@ class PostCommandService @Autowired constructor(
     }
 
     @CacheEvict(cacheNames = [CacheName.POST], key = PostCache.ID_KEY)
-    fun editContent(id: Long, updatePostContent: UpdatePostContent) {
+    fun editPostContent(id: Long, updatePostContent: UpdatePostContent) {
         with(updatePostContent) {
             postRepository.findOneByIdAndWriter(id, writerId!!)
                 .also { it.editContent(content!!) }

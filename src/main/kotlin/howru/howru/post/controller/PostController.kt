@@ -26,13 +26,13 @@ class PostController @Autowired constructor(
     private val postCommandService: PostCommandService
 ) {
     @GetMapping(PostUrl.DETAIL)
-    fun detail(@PathVariable(PostParam.ID) @Positive id: Long): ResponseEntity<PostInfo> {
+    fun getDetailInfo(@PathVariable(PostParam.ID) @Positive id: Long): ResponseEntity<PostInfo> {
         val postDetail = postQueryService.getPostById(id)
         return PostResponse.postDetailSuccess(postDetail)
     }
 
     @GetMapping(PostUrl.MY_POST)
-    fun myPost(
+    fun getMyPostPage(
         @PathVariable(PostParam.MEMBER_ID) memberId: UUID,
         @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<List<PostInfo>> {
@@ -41,13 +41,13 @@ class PostController @Autowired constructor(
     }
 
     @GetMapping(PostUrl.ALL_POST)
-    fun allPost(@RequestParam(PostParam.LAST_ID, required = false) lastId: Long?): ResponseEntity<List<PostInfo>> {
+    fun getAllPostPage(@RequestParam(PostParam.LAST_ID, required = false) lastId: Long?): ResponseEntity<List<PostInfo>> {
         val allPosts = postQueryService.getAllPosts(lastId)
         return PostResponse.allPostSuccess(allPosts)
     }
 
     @GetMapping(PostUrl.POST_OF_WRITER)
-    fun postOfWriter(
+    fun getPostOfWriterPage(
         @PathVariable(PostParam.WRITER_ID) writerId: UUID,
         @RequestParam(PostParam.MEMBER_ID) memberId: UUID,
         @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
@@ -57,7 +57,7 @@ class PostController @Autowired constructor(
     }
 
     @GetMapping(PostUrl.POST_OF_FOLLOWEE)
-    fun postOfFollowee(
+    fun getPostOfFolloweePage(
         @PathVariable(PostParam.FOLLOWER_ID) followerId: UUID,
         @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<List<PostInfo>> {
@@ -66,19 +66,19 @@ class PostController @Autowired constructor(
     }
 
     @GetMapping(PostUrl.RECOMMEND)
-    fun recommendPost(@RequestParam(PostParam.CONTENT) content: String): ResponseEntity<List<PostInfo>> {
+    fun getRecommendPostPage(@RequestParam(PostParam.CONTENT) content: String): ResponseEntity<List<PostInfo>> {
         val recommendPosts = postQueryService.getRecommendPosts(content)
         return PostResponse.recommendPostSuccess(recommendPosts)
     }
 
     @GetMapping(PostUrl.RANDOM)
-    fun randomPost(): ResponseEntity<List<PostInfo>> {
+    fun getRandomPostPage(): ResponseEntity<List<PostInfo>> {
         val randomPosts = postQueryService.getRandomPosts()
         return PostResponse.randomPostSuccess(randomPosts)
     }
 
     @GetMapping(PostUrl.COUNT_POST_BY_WRITER)
-    fun countPostByWriter(@PathVariable(PostParam.WRITER_ID) writerId: UUID): ResponseEntity<Long> {
+    fun getCountPostByWriterInfo(@PathVariable(PostParam.WRITER_ID) writerId: UUID): ResponseEntity<Long> {
         val countPost = postQueryService.getCountOfPostsByWriter(writerId)
         return PostResponse.countPostOfWriterSuccess(countPost)
     }
@@ -97,14 +97,14 @@ class PostController @Autowired constructor(
     }
 
     @PatchMapping(PostUrl.EDIT_CONTENT)
-    fun editContent(
+    fun editPostContent(
         @PathVariable(PostParam.ID) @Positive id: Long,
         @RequestBody @Valid updatePostContent: UpdatePostContent,
         bindingResult: BindingResult
     ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
-        postCommandService.editContent(id, updatePostContent)
+        postCommandService.editPostContent(id, updatePostContent)
         logger().info(PostControllerLog.EDIT_CONTENT_SUCCESS + id)
 
         return PostResponse.editPostSuccess()

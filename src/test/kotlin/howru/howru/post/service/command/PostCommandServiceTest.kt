@@ -75,7 +75,7 @@ class PostCommandServiceTest @Autowired constructor(
         //when
         val updatedContent = "updated_content"
         val updateRequest = UpdatePostContent(writerId, updatedContent)
-        postCommandService.editContent(postId, updateRequest)
+        postCommandService.editPostContent(postId, updateRequest)
         flushAndClear()
 
         //then
