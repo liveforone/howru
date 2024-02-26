@@ -26,7 +26,7 @@ class CommentsController @Autowired constructor(
     private val commentsCommandService: CommentsCommandService
 ) {
     @GetMapping(CommentsUrl.DETAIL)
-    fun detail(@PathVariable(CommentsParam.ID) @Positive id: Long): ResponseEntity<CommentsInfo> {
+    fun commentDetail(@PathVariable(CommentsParam.ID) @Positive id: Long): ResponseEntity<CommentsInfo> {
         val comment = commentsQueryService.getCommentById(id)
         return CommentsResponse.detailSuccess(comment)
     }
