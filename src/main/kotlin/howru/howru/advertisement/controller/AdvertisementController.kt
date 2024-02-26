@@ -35,31 +35,31 @@ AdvertisementController @Autowired constructor(
     private val advertisementCommandService: AdvertisementCommandService
 ) {
     @GetMapping(AdvertisementUrl.DETAIL)
-    fun adDetail(@PathVariable(AdvertisementParam.ID) @Positive id: Long): ResponseEntity<AdvertisementInfo> {
+    fun getAdDetailInfo(@PathVariable(AdvertisementParam.ID) @Positive id: Long): ResponseEntity<AdvertisementInfo> {
         val ad = advertisementQueryService.getOneById(id)
         return AdvertisementResponse.detailSuccess(ad)
     }
 
     @GetMapping(AdvertisementUrl.ALL_AD)
-    fun allAd(): ResponseEntity<List<AdvertisementInfo?>> {
+    fun getAllAdPage(): ResponseEntity<List<AdvertisementInfo?>> {
         val ads = advertisementQueryService.getAllAdvertisements()
         return AdvertisementResponse.allAdSuccess(ads)
     }
 
     @GetMapping(AdvertisementUrl.SEARCH_COMPANY)
-    fun searchCompany(@RequestParam(AdvertisementParam.COMPANY) company: String): ResponseEntity<List<AdvertisementInfo?>> {
+    fun getSearchCompanyPage(@RequestParam(AdvertisementParam.COMPANY) company: String): ResponseEntity<List<AdvertisementInfo?>> {
         val ads = advertisementQueryService.searchAdByCompany(company)
         return AdvertisementResponse.searchAdByCompanySuccess(ads)
     }
 
     @GetMapping(AdvertisementUrl.EXPIRED_AD)
-    fun expiredAd(): ResponseEntity<List<AdvertisementInfo?>> {
+    fun getExpiredAdPage(): ResponseEntity<List<AdvertisementInfo?>> {
         val ads = advertisementQueryService.getExpiredAds()
         return AdvertisementResponse.expiredAdSuccess(ads)
     }
 
     @GetMapping(AdvertisementUrl.RANDOM_AD)
-    fun randomAd(): ResponseEntity<AdvertisementInfo> {
+    fun getRandomAdInfo(): ResponseEntity<AdvertisementInfo> {
         val ad = advertisementQueryService.getRandomAd()
         return AdvertisementResponse.randomAdSuccess(ad)
     }
