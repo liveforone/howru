@@ -35,7 +35,7 @@ class LikesCommandServiceTest @Autowired constructor(
         val pw = "1122"
         val nickName = "writer"
         val request = SignupRequest(email, pw, nickName)
-        memberCommandService.signupMember(request)
+        memberCommandService.signup(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
         return memberCommandService.login(loginRequest).id
@@ -46,7 +46,7 @@ class LikesCommandServiceTest @Autowired constructor(
         val pw = "3344"
         val nickName = "member"
         val request = SignupRequest(email, pw, nickName)
-        memberCommandService.signupMember(request)
+        memberCommandService.signup(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
         return memberCommandService.login(loginRequest).id

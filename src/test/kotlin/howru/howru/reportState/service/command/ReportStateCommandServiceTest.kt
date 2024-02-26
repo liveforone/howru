@@ -38,7 +38,7 @@ class ReportStateCommandServiceTest @Autowired constructor(
         val request = SignupRequest(email, pw, nickName)
 
         //when
-        memberCommandService.signupMember(request)
+        memberCommandService.signup(request)
         flushAndClear()
 
         //then
@@ -56,7 +56,7 @@ class ReportStateCommandServiceTest @Autowired constructor(
         val pw = "1234"
         val nickName = "member"
         val request = SignupRequest(email, pw, nickName)
-        memberCommandService.signupMember(request)
+        memberCommandService.signup(request)
         flushAndClear()
         val memberId = memberCommandService.login(LoginRequest(email, pw)).id
 
@@ -81,7 +81,7 @@ class ReportStateCommandServiceTest @Autowired constructor(
         val pw = "1234"
         val nickName = "member"
         val request = SignupRequest(email, pw, nickName)
-        memberCommandService.signupMember(request)
+        memberCommandService.signup(request)
         flushAndClear()
         val memberId = memberCommandService.login(LoginRequest(email, pw)).id
 

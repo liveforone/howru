@@ -29,10 +29,10 @@ class SecurityConfig @Autowired constructor(
         http.sessionManagement { session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
         http.authorizeHttpRequests { path ->
             path.requestMatchers(
-                MemberUrl.SIGNUP_MEMBER,
+                MemberUrl.SIGNUP,
                 MemberUrl.LOGIN,
                 MemberUrl.JWT_TOKEN_REISSUE,
-                MemberUrl.RECOVERY
+                MemberUrl.RECOVERY_MEMBER
             ).permitAll().anyRequest().authenticated()
         }
         http.addFilterBefore(

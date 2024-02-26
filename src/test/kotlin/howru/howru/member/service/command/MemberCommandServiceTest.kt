@@ -29,7 +29,7 @@ class MemberCommandServiceTest @Autowired constructor(
 
     @Test
     @Transactional
-    fun signupMemberTest() {
+    fun signupTest() {
         //given
         val email = "signup_test@gmail.com"
         val pw = "1234"
@@ -37,7 +37,7 @@ class MemberCommandServiceTest @Autowired constructor(
         val request = SignupRequest(email, pw, nickName)
 
         //when
-        memberCommandService.signupMember(request)
+        memberCommandService.signup(request)
         flushAndClear()
 
         //then
@@ -55,7 +55,7 @@ class MemberCommandServiceTest @Autowired constructor(
         val pw = "1234"
         val nickName = "nickName"
         val request = SignupRequest(email, pw, nickName)
-        memberCommandService.signupMember(request)
+        memberCommandService.signup(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
         val jwtTokenInfo = memberCommandService.login(loginRequest)
@@ -77,7 +77,7 @@ class MemberCommandServiceTest @Autowired constructor(
         val pw = "1234"
         val nickName = "nickName"
         val request = SignupRequest(email, pw, nickName)
-        memberCommandService.signupMember(request)
+        memberCommandService.signup(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
         val id = memberCommandService.login(loginRequest).id
@@ -99,7 +99,7 @@ class MemberCommandServiceTest @Autowired constructor(
         val pw = "1234"
         val nickName = "nickName"
         val request = SignupRequest(email, pw, nickName)
-        memberCommandService.signupMember(request)
+        memberCommandService.signup(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
         val id = memberCommandService.login(loginRequest).id
@@ -123,7 +123,7 @@ class MemberCommandServiceTest @Autowired constructor(
         val pw = "1234"
         val nickName = "nickName"
         val request = SignupRequest(email, pw, nickName)
-        memberCommandService.signupMember(request)
+        memberCommandService.signup(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
         val id = memberCommandService.login(loginRequest).id
@@ -132,7 +132,7 @@ class MemberCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        memberCommandService.recovery(RecoveryRequest(email, pw))
+        memberCommandService.recoveryMember(RecoveryRequest(email, pw))
         flushAndClear()
 
         //then
@@ -150,7 +150,7 @@ class MemberCommandServiceTest @Autowired constructor(
         val pw = "1234"
         val nickName = "nickName"
         val request = SignupRequest(email, pw, nickName)
-        memberCommandService.signupMember(request)
+        memberCommandService.signup(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
         val id = memberCommandService.login(loginRequest).id

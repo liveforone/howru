@@ -37,7 +37,7 @@ class AdvertisementCommandServiceTest @Autowired constructor(
         val pw = "1122"
         val nickName = "testName"
         val request = SignupRequest(email, pw, nickName)
-        memberCommandService.signupMember(request)
+        memberCommandService.signup(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
         return memberCommandService.login(loginRequest).id

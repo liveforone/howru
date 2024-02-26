@@ -36,7 +36,7 @@ class MemberCommandService @Autowired constructor(
     private val jwtTokenService: JwtTokenService
 ) {
 
-    fun signupMember(signupRequest: SignupRequest) {
+    fun signup(signupRequest: SignupRequest) {
         with(signupRequest) {
             Member.create(email!!, pw!!, nickName!!).also {
                 memberRepository.save(it)
@@ -81,7 +81,7 @@ class MemberCommandService @Autowired constructor(
         jwtTokenService.clearRefreshToken(id)
     }
 
-    fun recovery(recoveryRequest: RecoveryRequest) {
+    fun recoveryMember(recoveryRequest: RecoveryRequest) {
         with(recoveryRequest) {
             memberQuery.findOneByEmailAllowWithdraw(email!!).also { it.recovery(pw!!) }
         }

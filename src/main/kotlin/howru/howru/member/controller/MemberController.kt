@@ -30,19 +30,19 @@ class MemberController @Autowired constructor(
 ) {
 
     @GetMapping(MemberUrl.INFO)
-    fun memberInfo(principal: Principal): ResponseEntity<MemberInfo> {
+    fun getMemberInfo(principal: Principal): ResponseEntity<MemberInfo> {
         val member = memberQueryService.getMemberById(id = UUID.fromString(principal.name))
         return MemberResponse.infoSuccess(member)
     }
 
-    @PostMapping(MemberUrl.SIGNUP_MEMBER)
-    fun signupMember(
+    @PostMapping(MemberUrl.SIGNUP)
+    fun signup(
         @RequestBody @Valid signupRequest: SignupRequest,
         bindingResult: BindingResult
     ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
-        memberCommandService.signupMember(signupRequest)
+        memberCommandService.signup(signupRequest)
         logger().info(MemberControllerLog.SIGNUP_SUCCESS + signupRequest.email)
 
         return MemberResponse.signupSuccess()
@@ -125,14 +125,14 @@ class MemberController @Autowired constructor(
         return MemberResponse.logOutSuccess()
     }
 
-    @PostMapping(MemberUrl.RECOVERY)
-    fun recovery(
+    @PostMapping(MemberUrl.RECOVERY_MEMBER)
+    fun recoveryMember(
         @RequestBody @Valid recoveryRequest: RecoveryRequest,
         bindingResult: BindingResult
     ): ResponseEntity<String> {
         validateBinding(bindingResult)
 
-        memberCommandService.recovery(recoveryRequest)
+        memberCommandService.recoveryMember(recoveryRequest)
         logger().info(MemberControllerLog.RECOVERY_SUCCESS + recoveryRequest.email)
 
         return MemberResponse.recoverySuccess()

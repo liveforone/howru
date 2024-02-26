@@ -36,7 +36,7 @@ class PostSqlServiceTest @Autowired constructor(
         val pw = "1111"
         val nickName = "writer1"
         val request = SignupRequest(email, pw, nickName)
-        memberCommandService.signupMember(request)
+        memberCommandService.signup(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
         return memberCommandService.login(loginRequest).id
@@ -47,7 +47,7 @@ class PostSqlServiceTest @Autowired constructor(
         val pw = "2222"
         val nickName = "writer2"
         val request = SignupRequest(email, pw, nickName)
-        memberCommandService.signupMember(request)
+        memberCommandService.signup(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
         return memberCommandService.login(loginRequest).id

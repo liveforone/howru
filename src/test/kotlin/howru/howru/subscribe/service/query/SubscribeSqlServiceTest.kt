@@ -31,7 +31,7 @@ class SubscribeSqlServiceTest @Autowired constructor(
         val pw = "1122"
         val nickName = "followee"
         val request = SignupRequest(email, pw, nickName)
-        memberCommandService.signupMember(request)
+        memberCommandService.signup(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
         return memberCommandService.login(loginRequest).id
@@ -42,7 +42,7 @@ class SubscribeSqlServiceTest @Autowired constructor(
         val pw = "3344"
         val nickName = "follower"
         val request = SignupRequest(email, pw, nickName)
-        memberCommandService.signupMember(request)
+        memberCommandService.signup(request)
         flushAndClear()
         val loginRequest = LoginRequest(email, pw)
         return memberCommandService.login(loginRequest).id
