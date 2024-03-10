@@ -9,6 +9,7 @@ import howru.howru.member.service.query.MemberQueryService
 import howru.howru.post.cache.PostCache
 import howru.howru.post.dto.response.PostInfo
 import howru.howru.post.log.PostServiceLog
+import howru.howru.post.repository.PostQuery
 import howru.howru.post.repository.PostRepository
 import howru.howru.subscribe.service.query.SubscribeQueryService
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,29 +22,30 @@ import java.util.UUID
 @Transactional(readOnly = true)
 class PostQueryService @Autowired constructor(
     private val postRepository: PostRepository,
+    private val postQuery: PostQuery,
     private val memberQueryService: MemberQueryService,
     private val subscribeQueryService: SubscribeQueryService
 ) {
     @Cacheable(cacheNames = [CacheName.POST], key = PostCache.ID_KEY)
-    fun getPostById(id: Long) = postRepository.findOneDtoById(id)
-    fun getMyPosts(memberId: UUID, lastId: Long?) = postRepository.findMyPosts(memberId, lastId)
-    fun getAllPosts(lastId: Long?) = postRepository.findAllPosts(lastId)
-    fun getPostsBySomeone(writerId: UUID, memberId: UUID, lastId: Long?): List<PostInfo> {
+    fun getPostById(id: Long) = postQuery.findOneDtoById(id)
+    fun getMyPosts(memberId: UUID, page: Int) = postQuery.findMyPosts(memberId, page)
+    fun getAllPosts(page: Int) = postQuery.findAllPosts(page)
+    fun getPostsBySomeone(writerId: UUID, memberId: UUID, page: Int): List<PostInfo> {
         val writer = memberQueryService.getMemberById(writerId)
         return if (writer.isUnlock()) {
-            postRepository.findPostsBySomeone(writerId, lastId)
+            postQuery.findPostsBySomeone(writerId, page)
         } else {
             takeIf { subscribeQueryService.isFollowee(writerId, memberId) }
-                ?.run { postRepository.findPostsBySomeone(writerId, lastId) }
+                ?.run { postQuery.findPostsBySomeone(writerId, page) }
                 ?: run { logger().warn(PostServiceLog.NOT_FOLLOWER + writerId); throw SubscribeException(SubscribeExceptionMessage.NOT_FOLLOWER, memberId) }
         }
     }
-    fun getPostsOfFollowee(followerId: UUID, lastId: Long?): List<PostInfo> {
+    fun getPostsOfFollowee(followerId: UUID, page: Int): List<PostInfo> {
         val followeeId = subscribeQueryService.getFollowees(followerId)
-        return postRepository.findPostsByFollowee(followeeId, lastId)
+        return postQuery.findPostsByFollowee(followeeId, page)
     }
-    fun getRecommendPosts(content: String): List<PostInfo> {
-        return postRepository.findRecommendPosts(extractKeywords(content))
+    fun getRecommendPosts(content: String, page: Int): List<PostInfo> {
+        return postQuery.findRecommendPosts(extractKeywords(content), page)
     }
     fun getRandomPosts() = postRepository.findRandomPosts()
     @Cacheable(cacheNames = [CacheName.POST], key = PostCache.WRITER_KEY)

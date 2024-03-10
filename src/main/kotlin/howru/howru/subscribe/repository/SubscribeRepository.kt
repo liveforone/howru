@@ -1,5 +1,6 @@
 package howru.howru.subscribe.repository
 
+import com.linecorp.kotlinjdsl.support.spring.data.jpa.repository.KotlinJdslJpqlExecutor
 import howru.howru.subscribe.domain.Subscribe
 import howru.howru.subscribe.domain.SubscribePk
 import howru.howru.subscribe.repository.sql.SubscribeSql
@@ -8,11 +9,17 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import java.util.UUID
 
-interface SubscribeRepository : JpaRepository<Subscribe, SubscribePk>, SubscribeCustomRepository {
+interface SubscribeRepository : JpaRepository<Subscribe, SubscribePk>, KotlinJdslJpqlExecutor {
 
     @Query(SubscribeSql.IS_FOLLOWEE)
     fun isFollowee(@Param(SubscribeSql.FOLLOWEE_ID) followeeId: UUID, @Param(SubscribeSql.FOLLOWER_ID) followerId: UUID): Boolean
 
     @Query(SubscribeSql.IS_FOLLOW_EACH)
     fun isFollowEach(@Param(SubscribeSql.FOLLOWEE_ID) followeeId: UUID, @Param(SubscribeSql.FOLLOWER_ID) followerId: UUID): Boolean
+
+    @Query("select count(*) from Subscribe s where s.followerId = :followerId")
+    fun countOfSubscribesByFollower(@Param("followerId") followerId: UUID): Long
+
+    @Query("select count(*) from Subscribe s where s.followeeId = :followeeId")
+    fun countOfFollowersByFollowee(@Param("followeeId") followeeId: UUID): Long
 }

@@ -1,5 +1,7 @@
 package howru.howru.subscribe.controller
 
+import howru.howru.globalUtil.DEFAULT_PAGE
+import howru.howru.globalUtil.PAGE
 import howru.howru.globalUtil.validateBinding
 import howru.howru.logger
 import howru.howru.subscribe.log.SubscribeControllerLog
@@ -32,21 +34,19 @@ class SubscribeController @Autowired constructor(
     @GetMapping(SubscribeUrl.GET_FOLLOWING)
     fun getFollowing(
         @PathVariable(SubscribeParam.FOLLOWER_ID) followerId: UUID,
-        @RequestParam(SubscribeParam.LAST_FOLLOWEE_ID, required = false) lastFolloweeId: UUID?,
-        @RequestParam(SubscribeParam.LAST_FOLLOWER_ID, required = false) lastFollowerId: UUID?
-    ): ResponseEntity<List<SubscribeInfo>> {
-        val subscribes = subscribeQueryService.getSubscribesByFollower(followerId, lastFolloweeId, lastFollowerId)
-        return SubscribeResponse.getFollowingSuccess(subscribes)
+        @RequestParam(PAGE, required = false) page: Int = DEFAULT_PAGE
+    ): ResponseEntity<*> {
+        val subscribes = subscribeQueryService.getSubscribesByFollower(followerId, page)
+        return ResponseEntity.ok(subscribes)
     }
 
     @GetMapping(SubscribeUrl.GET_FOLLOWER)
     fun getFollower(
         @PathVariable(SubscribeParam.FOLLOWEE_ID) followeeId: UUID,
-        @RequestParam(SubscribeParam.LAST_FOLLOWEE_ID, required = false) lastFolloweeId: UUID?,
-        @RequestParam(SubscribeParam.LAST_FOLLOWER_ID, required = false) lastFollowerId: UUID?
-    ): ResponseEntity<List<SubscribeInfo>> {
-        val subscribes = subscribeQueryService.getSubscribesByFollowee(followeeId, lastFolloweeId, lastFollowerId)
-        return SubscribeResponse.getFollowerSuccess(subscribes)
+        @RequestParam(PAGE, required = false) page: Int = DEFAULT_PAGE
+    ): ResponseEntity<*> {
+        val subscribes = subscribeQueryService.getSubscribesByFollowee(followeeId, page)
+        return ResponseEntity.ok(subscribes)
     }
 
     @GetMapping(SubscribeUrl.COUNT_FOLLOWING)

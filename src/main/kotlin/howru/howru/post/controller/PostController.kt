@@ -1,5 +1,7 @@
 package howru.howru.post.controller
 
+import howru.howru.globalUtil.DEFAULT_PAGE
+import howru.howru.globalUtil.PAGE
 import howru.howru.globalUtil.validateBinding
 import howru.howru.logger
 import howru.howru.post.log.PostControllerLog
@@ -34,41 +36,44 @@ class PostController @Autowired constructor(
     @GetMapping(PostUrl.MY_POST)
     fun getMyPostPage(
         @PathVariable(PostParam.MEMBER_ID) memberId: UUID,
-        @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
+        @RequestParam(PAGE, required = false) page: Int = DEFAULT_PAGE
     ): ResponseEntity<List<PostInfo>> {
-        val myPosts = postQueryService.getMyPosts(memberId, lastId)
-        return PostResponse.myPostSuccess(myPosts)
+        val myPosts = postQueryService.getMyPosts(memberId, page)
+        return ResponseEntity.ok(myPosts)
     }
 
     @GetMapping(PostUrl.ALL_POST)
-    fun getAllPostPage(@RequestParam(PostParam.LAST_ID, required = false) lastId: Long?): ResponseEntity<List<PostInfo>> {
-        val allPosts = postQueryService.getAllPosts(lastId)
-        return PostResponse.allPostSuccess(allPosts)
+    fun getAllPostPage(@RequestParam(PAGE, required = false) page: Int = DEFAULT_PAGE): ResponseEntity<List<PostInfo>> {
+        val allPosts = postQueryService.getAllPosts(page)
+        return ResponseEntity.ok(allPosts)
     }
 
     @GetMapping(PostUrl.POST_OF_WRITER)
     fun getPostOfWriterPage(
         @PathVariable(PostParam.WRITER_ID) writerId: UUID,
         @RequestParam(PostParam.MEMBER_ID) memberId: UUID,
-        @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
+        @RequestParam(PAGE, required = false) page: Int = DEFAULT_PAGE
     ): ResponseEntity<List<PostInfo>> {
-        val postsOfWriter = postQueryService.getPostsBySomeone(writerId, memberId, lastId)
-        return PostResponse.postOfWriterSuccess(postsOfWriter)
+        val postsOfWriter = postQueryService.getPostsBySomeone(writerId, memberId, page)
+        return ResponseEntity.ok(postsOfWriter)
     }
 
     @GetMapping(PostUrl.POST_OF_FOLLOWEE)
     fun getPostOfFolloweePage(
         @PathVariable(PostParam.FOLLOWER_ID) followerId: UUID,
-        @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
+        @RequestParam(PAGE, required = false) page: Int = DEFAULT_PAGE
     ): ResponseEntity<List<PostInfo>> {
-        val postsOfFollowee = postQueryService.getPostsOfFollowee(followerId, lastId)
-        return PostResponse.postOfFolloweeSuccess(postsOfFollowee)
+        val postsOfFollowee = postQueryService.getPostsOfFollowee(followerId, page)
+        return ResponseEntity.ok(postsOfFollowee)
     }
 
     @GetMapping(PostUrl.RECOMMEND)
-    fun getRecommendPostPage(@RequestParam(PostParam.CONTENT) content: String): ResponseEntity<List<PostInfo>> {
-        val recommendPosts = postQueryService.getRecommendPosts(content)
-        return PostResponse.recommendPostSuccess(recommendPosts)
+    fun getRecommendPostPage(
+        @RequestParam(PostParam.CONTENT) content: String,
+        @RequestParam(PAGE, required = false) page: Int = DEFAULT_PAGE
+    ): ResponseEntity<List<PostInfo>> {
+        val recommendPosts = postQueryService.getRecommendPosts(content, page)
+        return ResponseEntity.ok(recommendPosts)
     }
 
     @GetMapping(PostUrl.RANDOM)

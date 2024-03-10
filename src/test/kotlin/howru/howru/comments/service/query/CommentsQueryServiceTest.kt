@@ -112,7 +112,7 @@ class CommentsQueryServiceTest @Autowired constructor(
         }
 
         //when
-        val comments = commentsQueryService.getCommentsByWriter(memberId, null)
+        val comments = commentsQueryService.getCommentsByWriter(memberId, 0)
 
         //then
         Assertions.assertThat(comments.size).isEqualTo(2)
@@ -129,14 +129,14 @@ class CommentsQueryServiceTest @Autowired constructor(
         commentsCommandService.createComments(request1)
         flushAndClear()
         val request2 = CreateComments(memberId, postId, content)
-        val commentId2 = commentsCommandService.createComments(request2)
+        commentsCommandService.createComments(request2)
         flushAndClear()
 
         //when
-        val comments = commentsQueryService.getCommentsByWriter(memberId, commentId2)
+        val comments = commentsQueryService.getCommentsByWriter(memberId, 0)
 
         //then
-        Assertions.assertThat(comments.size).isEqualTo(1)
+        Assertions.assertThat(comments.size).isEqualTo(2)
     }
 
     @Test
@@ -153,7 +153,7 @@ class CommentsQueryServiceTest @Autowired constructor(
         }
 
         //when
-        val comments = commentsQueryService.getCommentsByPost(postId, null)
+        val comments = commentsQueryService.getCommentsByPost(postId, 0)
 
         //then
         Assertions.assertThat(comments.size).isEqualTo(2)
@@ -170,14 +170,14 @@ class CommentsQueryServiceTest @Autowired constructor(
         commentsCommandService.createComments(request1)
         flushAndClear()
         val request2 = CreateComments(memberId, postId, content)
-        val commentId2 = commentsCommandService.createComments(request2)
+        commentsCommandService.createComments(request2)
         flushAndClear()
 
         //when
-        val comments = commentsQueryService.getCommentsByPost(postId, commentId2)
+        val comments = commentsQueryService.getCommentsByPost(postId, 0)
 
         //then
-        Assertions.assertThat(comments.size).isEqualTo(1)
+        Assertions.assertThat(comments.size).isEqualTo(2)
     }
 
     @Test
@@ -195,7 +195,7 @@ class CommentsQueryServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val comments = commentsQueryService.getCommentsBySomeone(memberId, member2Id, null)
+        val comments = commentsQueryService.getCommentsBySomeone(memberId, member2Id, 0)
 
         //then
         Assertions.assertThat(comments).isNotEmpty
@@ -212,13 +212,13 @@ class CommentsQueryServiceTest @Autowired constructor(
         val postId = createPost()
         val content = "test_comments"
         val request1 = CreateComments(memberId, postId, content)
-        val commentId = commentsCommandService.createComments(request1)
+        commentsCommandService.createComments(request1)
         flushAndClear()
 
         //when
-        val comments = commentsQueryService.getCommentsBySomeone(memberId, member2Id, commentId)
+        val comments = commentsQueryService.getCommentsBySomeone(memberId, member2Id, 0)
 
         //then
-        Assertions.assertThat(comments).isEmpty()
+        Assertions.assertThat(comments).isNotEmpty()
     }
 }

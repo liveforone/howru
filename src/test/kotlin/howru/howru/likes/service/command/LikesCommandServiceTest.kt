@@ -74,8 +74,7 @@ class LikesCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //then
-        Assertions.assertThat(likesQueryService.getLikesBelongPost(postId, null))
-            .isNotEmpty
+        Assertions.assertThat(likesQueryService.getCountOfLikesByPost(postId)).isEqualTo(1L)
     }
 
     @Test
@@ -94,7 +93,6 @@ class LikesCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //then
-        Assertions.assertThat(likesQueryService.getLikesBelongMember(memberId, null))
-            .isEmpty()
+        Assertions.assertThat(likesQueryService.getCountOfLikesByPost(postId)).isEqualTo(0)
     }
 }

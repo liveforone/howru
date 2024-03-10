@@ -116,7 +116,7 @@ class ReplyQueryServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val replies = replyQueryService.getRepliesByWriter(memberId, null)
+        val replies = replyQueryService.getRepliesByWriter(memberId, 0)
 
         //then
         Assertions.assertThat(replies).isNotEmpty
@@ -133,11 +133,11 @@ class ReplyQueryServiceTest @Autowired constructor(
         flushAndClear()
         val content2 = "test_reply2"
         val request2 = CreateReply(memberId, commentId, content2)
-        val replyId2 = replyCommandService.createReply(request2)
+        replyCommandService.createReply(request2)
         flushAndClear()
 
         //when
-        val replies = replyQueryService.getRepliesByWriter(memberId, replyId2)
+        val replies = replyQueryService.getRepliesByWriter(memberId, 0)
 
         //then
         Assertions.assertThat(replies).isNotEmpty
@@ -158,7 +158,7 @@ class ReplyQueryServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val replies = replyQueryService.getRepliesByComment(commentId, null)
+        val replies = replyQueryService.getRepliesByComment(commentId, 0)
 
         //then
         Assertions.assertThat(replies).isNotEmpty
@@ -175,11 +175,11 @@ class ReplyQueryServiceTest @Autowired constructor(
         flushAndClear()
         val content2 = "test_reply2"
         val request2 = CreateReply(memberId, commentId, content2)
-        val replyId2 = replyCommandService.createReply(request2)
+        replyCommandService.createReply(request2)
         flushAndClear()
 
         //when
-        val replies = replyQueryService.getRepliesByComment(commentId, replyId2)
+        val replies = replyQueryService.getRepliesByComment(commentId, 0)
 
         //then
         Assertions.assertThat(replies).isNotEmpty

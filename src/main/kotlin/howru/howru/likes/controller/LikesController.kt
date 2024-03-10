@@ -7,8 +7,6 @@ import howru.howru.likes.controller.constant.LikesUrl
 import howru.howru.likes.controller.response.LikesResponse
 import howru.howru.likes.dto.request.CreateLikes
 import howru.howru.likes.dto.request.RemoveLikes
-import howru.howru.likes.dto.response.LikesBelongMemberInfo
-import howru.howru.likes.dto.response.LikesBelongPostInfo
 import howru.howru.likes.service.command.LikesCommandService
 import howru.howru.likes.service.query.LikesQueryService
 import howru.howru.logger
@@ -34,24 +32,6 @@ class LikesController @Autowired constructor(
     fun getCountOfLikesByPostInfo(@PathVariable(LikesParam.POST_ID) postId: Long): ResponseEntity<Long> {
         val countOfLikes = likesQueryService.getCountOfLikesByPost(postId)
         return LikesResponse.countOfLikesInPostSuccess(countOfLikes)
-    }
-
-    @GetMapping(LikesUrl.LIKES_BELONG_MEMBER)
-    fun getLikesBelongMemberPage(
-        @PathVariable(LikesParam.MEMBER_ID) memberId: UUID,
-        @RequestParam(LikesParam.LAST_POST_ID, required = false) lastPostId: Long?
-    ): ResponseEntity<List<LikesBelongMemberInfo>> {
-        val likes = likesQueryService.getLikesBelongMember(memberId, lastPostId)
-        return LikesResponse.likesBelongMemberSuccess(likes)
-    }
-
-    @GetMapping(LikesUrl.LIKES_BELONG_POST)
-    fun getLikesBelongPostPage(
-        @PathVariable(LikesParam.POST_ID) postId: Long,
-        @RequestParam(LikesParam.LAST_MEMBER_ID, required = false) lastMemberId: UUID?
-    ): ResponseEntity<List<LikesBelongPostInfo>> {
-        val likes = likesQueryService.getLikesBelongPost(postId, lastMemberId)
-        return LikesResponse.likesBelongPostSuccess(likes)
     }
 
     @PostMapping(LikesUrl.LIKE)

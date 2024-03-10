@@ -62,7 +62,7 @@ class SubscribeCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //then
-        Assertions.assertThat(subscribeQueryService.getSubscribesByFollower(followerId, null, null)[0].followeeId)
+        Assertions.assertThat(subscribeQueryService.getSubscribesByFollower(followerId, 0)[0]?.followeeId ?: UUID.randomUUID())
             .isEqualTo(followeeId)
     }
 
@@ -82,7 +82,7 @@ class SubscribeCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //then
-        Assertions.assertThat(subscribeQueryService.getSubscribesByFollower(followerId, null, null))
+        Assertions.assertThat(subscribeQueryService.getSubscribesByFollower(followerId, 0))
             .isEmpty()
     }
 }

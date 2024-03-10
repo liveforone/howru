@@ -10,6 +10,8 @@ import howru.howru.comments.dto.request.UpdateComments
 import howru.howru.comments.dto.response.CommentsInfo
 import howru.howru.comments.service.command.CommentsCommandService
 import howru.howru.comments.service.query.CommentsQueryService
+import howru.howru.globalUtil.DEFAULT_PAGE
+import howru.howru.globalUtil.PAGE
 import howru.howru.globalUtil.validateBinding
 import howru.howru.logger
 import jakarta.validation.Valid
@@ -28,35 +30,35 @@ class CommentsController @Autowired constructor(
     @GetMapping(CommentsUrl.DETAIL)
     fun getCommentDetailInfo(@PathVariable(CommentsParam.ID) @Positive id: Long): ResponseEntity<CommentsInfo> {
         val comment = commentsQueryService.getCommentById(id)
-        return CommentsResponse.detailSuccess(comment)
+        return ResponseEntity.ok(comment)
     }
 
     @GetMapping(CommentsUrl.COMMENTS_BY_WRITER)
     fun getCommentsByWriterPage(
         @PathVariable(CommentsParam.WRITER_ID) writerId: UUID,
-        @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
+        @RequestParam(PAGE, required = false) page: Int = DEFAULT_PAGE
     ): ResponseEntity<List<CommentsInfo>> {
-        val comments = commentsQueryService.getCommentsByWriter(writerId, lastId)
-        return CommentsResponse.commentsByWriterSuccess(comments)
+        val comments = commentsQueryService.getCommentsByWriter(writerId, page)
+        return ResponseEntity.ok(comments)
     }
 
     @GetMapping(CommentsUrl.COMMENTS_BY_POST)
     fun getCommentsByPostPage(
         @PathVariable(CommentsParam.POST_ID) postId: Long,
-        @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
+        @RequestParam(PAGE, required = false) page: Int = DEFAULT_PAGE
     ): ResponseEntity<List<CommentsInfo>> {
-        val comments = commentsQueryService.getCommentsByPost(postId, lastId)
-        return CommentsResponse.commentsByPostSuccess(comments)
+        val comments = commentsQueryService.getCommentsByPost(postId, page)
+        return ResponseEntity.ok(comments)
     }
 
     @GetMapping(CommentsUrl.COMMENTS_BY_SOMEONE)
     fun getCommentsBySomeonePage(
         @PathVariable(CommentsParam.WRITER_ID) writerId: UUID,
         @RequestParam(CommentsParam.MEMBER_ID) memberId: UUID,
-        @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
+        @RequestParam(PAGE, required = false) page: Int = DEFAULT_PAGE
     ): ResponseEntity<List<CommentsInfo>> {
-        val comments = commentsQueryService.getCommentsBySomeone(writerId, memberId, lastId)
-        return CommentsResponse.commentsBySomeoneSuccess(comments)
+        val comments = commentsQueryService.getCommentsBySomeone(writerId, memberId, page)
+        return ResponseEntity.ok(comments)
     }
 
     @PostMapping(CommentsUrl.CREATE_COMMENTS)

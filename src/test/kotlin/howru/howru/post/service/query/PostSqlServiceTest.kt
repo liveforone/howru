@@ -85,7 +85,7 @@ class PostSqlServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val myPosts = postQueryService.getMyPosts(writerId, null)
+        val myPosts = postQueryService.getMyPosts(writerId, 0)
 
         //then
         Assertions.assertThat(myPosts.size).isEqualTo(2)
@@ -110,10 +110,10 @@ class PostSqlServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val allPosts = postQueryService.getAllPosts(null)
+        val allPosts = postQueryService.getAllPosts(0)
 
         //then
-        Assertions.assertThat(allPosts[0].content).isEqualTo(content2)
+        Assertions.assertThat(allPosts[0]?.content ?: "").isEqualTo(content2)
     }
 
     /*
@@ -134,7 +134,7 @@ class PostSqlServiceTest @Autowired constructor(
         val followerId = createWriter2()
 
         //then -> error 발생!!
-        Assertions.assertThatThrownBy { postQueryService.getPostsBySomeone(followeeId, followerId, null) }
+        Assertions.assertThatThrownBy { postQueryService.getPostsBySomeone(followeeId, followerId, 0) }
             .isInstanceOf(SubscribeException::class.java)
     }
 
@@ -161,7 +161,7 @@ class PostSqlServiceTest @Autowired constructor(
         flushAndClear()
 
         //then
-        Assertions.assertThat(postQueryService.getPostsBySomeone(followeeId, followerId, null))
+        Assertions.assertThat(postQueryService.getPostsBySomeone(followeeId, followerId, 0))
             .isNotEmpty
     }
 
@@ -182,7 +182,7 @@ class PostSqlServiceTest @Autowired constructor(
         flushAndClear()
 
         //then
-        Assertions.assertThat(postQueryService.getPostsOfFollowee(followerId, null))
+        Assertions.assertThat(postQueryService.getPostsOfFollowee(followerId, 0))
             .isNotEmpty
     }
 
@@ -210,10 +210,10 @@ class PostSqlServiceTest @Autowired constructor(
         flushAndClear()
         
         //when
-        val posts = postQueryService.getRecommendPosts(content1)
+        val posts = postQueryService.getRecommendPosts(content1, 0)
 
         //then
-        repeat(posts.size) { logger().info(posts[it].content) }
+        repeat(posts.size) { logger().info(posts[it]?.content ?: "") }
         Assertions.assertThat(posts).isNotEmpty
     }
 

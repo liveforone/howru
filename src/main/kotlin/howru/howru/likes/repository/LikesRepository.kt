@@ -1,7 +1,14 @@
 package howru.howru.likes.repository
 
+import com.linecorp.kotlinjdsl.support.spring.data.jpa.repository.KotlinJdslJpqlExecutor
 import howru.howru.likes.domain.Likes
 import howru.howru.likes.domain.LikesPk
+import howru.howru.likes.repository.sql.LikesSql
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
 
-interface LikesRepository : JpaRepository<Likes, LikesPk>, LikesCustomRepository
+interface LikesRepository : JpaRepository<Likes, LikesPk>, KotlinJdslJpqlExecutor {
+    @Query(LikesSql.COUNT_OF_LIKES_BY_POST_QUERY)
+    fun countOfLikesByPost(@Param(LikesSql.POST_ID) postId: Long): Long
+}
