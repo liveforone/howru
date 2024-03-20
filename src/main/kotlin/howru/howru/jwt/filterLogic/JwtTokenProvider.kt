@@ -8,8 +8,6 @@ import howru.howru.jwt.dto.JwtTokenInfo
 import howru.howru.jwt.dto.ReissuedTokenInfo
 import howru.howru.member.domain.Role
 import io.jsonwebtoken.*
-import io.jsonwebtoken.security.Keys
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
@@ -20,8 +18,8 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class JwtTokenProvider (@Value(JwtConstant.SECRET_KEY_PATH) private var secretKey: String) {
-    private val key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secretKey))
+class JwtTokenProvider {
+    private val key = Jwts.SIG.HS256.key().build()
 
     fun generateToken(authentication: Authentication): JwtTokenInfo {
         val id = UUID.fromString(authentication.name)
@@ -30,13 +28,10 @@ class JwtTokenProvider (@Value(JwtConstant.SECRET_KEY_PATH) private var secretKe
 
     private fun generateAccessToken(authentication: Authentication): String {
         return Jwts.builder()
-            .setSubject(authentication.name)
-            .claim(
-                JwtConstant.CLAIM_NAME,
-                authentication.authorities.iterator().next().authority
-            )
-            .setExpiration(Date(Date().time + JwtConstant.TWO_HOUR_MS))
-            .signWith(key, SignatureAlgorithm.HS256)
+            .subject(authentication.name)
+            .claim(JwtConstant.CLAIM_NAME, authentication.authorities.iterator().next().authority)
+            .expiration(Date(Date().time + JwtConstant.TWO_HOUR_MS))
+            .signWith(key)
             .compact()
     }
 
@@ -46,17 +41,17 @@ class JwtTokenProvider (@Value(JwtConstant.SECRET_KEY_PATH) private var secretKe
 
     private fun generateAccessTokenWhenReissue(id: UUID, role: Role): String {
         return Jwts.builder()
-            .setSubject(id.toString())
+            .subject(id.toString())
             .claim(JwtConstant.CLAIM_NAME, role.auth)
-            .setExpiration(Date(Date().time + JwtConstant.TWO_HOUR_MS))
-            .signWith(key, SignatureAlgorithm.HS256)
+            .expiration(Date(Date().time + JwtConstant.TWO_HOUR_MS))
+            .signWith(key)
             .compact()
     }
 
     private fun generateRefreshToken(): String {
         return Jwts.builder()
-            .setExpiration(Date(Date().time + JwtConstant.THIRTY_DAY_MS))
-            .signWith(key, SignatureAlgorithm.HS256)
+            .expiration(Date(Date().time + JwtConstant.THIRTY_DAY_MS))
+            .signWith(key)
             .compact()
     }
 
@@ -72,11 +67,10 @@ class JwtTokenProvider (@Value(JwtConstant.SECRET_KEY_PATH) private var secretKe
 
     private fun parseClaims(accessToken: String): Claims {
         return try {
-            Jwts.parserBuilder()
-                .setSigningKey(key)
+            Jwts.parser()
+                .verifyWith(key)
                 .build()
-                .parseClaimsJws(accessToken)
-                .body
+                .parseSignedClaims(accessToken).payload
         } catch (e: ExpiredJwtException) {
             e.claims
         }
@@ -87,7 +81,7 @@ class JwtTokenProvider (@Value(JwtConstant.SECRET_KEY_PATH) private var secretKe
             throw JwtCustomException(JwtExceptionMessage.TOKEN_IS_NULL)
         }
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token)
+            Jwts.parser().verifyWith(key).build().parseSignedClaims(token)
         } catch (e: MalformedJwtException) {
             logger().info(JwtExceptionMessage.INVALID_TOKEN.message)
             throw JwtCustomException(JwtExceptionMessage.EMPTY_CLAIMS)
