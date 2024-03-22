@@ -10,8 +10,6 @@ import howru.howru.comments.dto.request.UpdateComments
 import howru.howru.comments.dto.response.CommentsInfo
 import howru.howru.comments.service.command.CommentsCommandService
 import howru.howru.comments.service.query.CommentsQueryService
-import howru.howru.globalUtil.DEFAULT_PAGE
-import howru.howru.globalUtil.PAGE
 import howru.howru.globalUtil.validateBinding
 import howru.howru.logger
 import jakarta.validation.Valid
@@ -36,18 +34,18 @@ class CommentsController @Autowired constructor(
     @GetMapping(CommentsUrl.COMMENTS_BY_WRITER)
     fun getCommentsByWriterPage(
         @PathVariable(CommentsParam.WRITER_ID) writerId: UUID,
-        @RequestParam(PAGE, required = false) page: Int = DEFAULT_PAGE
+        @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<List<CommentsInfo>> {
-        val comments = commentsQueryService.getCommentsByWriter(writerId, page)
+        val comments = commentsQueryService.getCommentsByWriter(writerId, lastId)
         return ResponseEntity.ok(comments)
     }
 
     @GetMapping(CommentsUrl.COMMENTS_BY_POST)
     fun getCommentsByPostPage(
         @PathVariable(CommentsParam.POST_ID) postId: Long,
-        @RequestParam(PAGE, required = false) page: Int = DEFAULT_PAGE
+        @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<List<CommentsInfo>> {
-        val comments = commentsQueryService.getCommentsByPost(postId, page)
+        val comments = commentsQueryService.getCommentsByPost(postId, lastId)
         return ResponseEntity.ok(comments)
     }
 
@@ -55,9 +53,9 @@ class CommentsController @Autowired constructor(
     fun getCommentsBySomeonePage(
         @PathVariable(CommentsParam.WRITER_ID) writerId: UUID,
         @RequestParam(CommentsParam.MEMBER_ID) memberId: UUID,
-        @RequestParam(PAGE, required = false) page: Int = DEFAULT_PAGE
+        @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<List<CommentsInfo>> {
-        val comments = commentsQueryService.getCommentsBySomeone(writerId, memberId, page)
+        val comments = commentsQueryService.getCommentsBySomeone(writerId, memberId, lastId)
         return ResponseEntity.ok(comments)
     }
 

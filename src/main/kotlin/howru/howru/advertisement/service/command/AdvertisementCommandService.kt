@@ -5,14 +5,13 @@ import howru.howru.advertisement.dto.request.CreateAdvertisement
 import howru.howru.advertisement.dto.request.UpdateAdContent
 import howru.howru.advertisement.dto.request.UpdateAdTitle
 import howru.howru.advertisement.log.AdServiceLog
-import howru.howru.advertisement.repository.AdvertisementQuery
 import howru.howru.advertisement.repository.AdvertisementRepository
 import howru.howru.advertisement.service.command.constant.AdScheduleConstant
 import howru.howru.exception.exception.MemberException
 import howru.howru.exception.message.MemberExceptionMessage
 import howru.howru.globalConfig.cache.constant.CacheName
 import howru.howru.logger
-import howru.howru.member.repository.MemberQuery
+import howru.howru.member.repository.MemberCustomRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.scheduling.annotation.Scheduled
@@ -24,12 +23,11 @@ import java.util.UUID
 @Transactional
 class AdvertisementCommandService @Autowired constructor(
     private val advertisementRepository: AdvertisementRepository,
-    private val advertisementQuery: AdvertisementQuery,
-    private val memberQuery: MemberQuery
+    private val memberRepository: MemberCustomRepository
 ) {
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
     fun createHalfAd(createAdvertisement: CreateAdvertisement, memberId: UUID): Long {
-        require(memberQuery.findOneById(memberId).isAdmin()) {
+        require(memberRepository.findMemberById(memberId).isAdmin()) {
             logger().warn(AdServiceLog.ACCESS_NON_ADMIN_USER + memberId)
             throw MemberException(MemberExceptionMessage.AUTH_IS_NOT_ADMIN, memberId.toString())
         }
@@ -41,7 +39,7 @@ class AdvertisementCommandService @Autowired constructor(
 
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
     fun createYearAd(createAdvertisement: CreateAdvertisement, memberId: UUID): Long {
-        require(memberQuery.findOneById(memberId).isAdmin()) {
+        require(memberRepository.findMemberById(memberId).isAdmin()) {
             logger().warn(AdServiceLog.ACCESS_NON_ADMIN_USER + memberId)
             throw MemberException(MemberExceptionMessage.AUTH_IS_NOT_ADMIN, memberId.toString())
         }
@@ -53,30 +51,30 @@ class AdvertisementCommandService @Autowired constructor(
 
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
     fun editAdTitle(id: Long, updateAdTitle: UpdateAdTitle, memberId: UUID) {
-        require(memberQuery.findOneById(memberId).isAdmin()) {
+        require(memberRepository.findMemberById(memberId).isAdmin()) {
             logger().warn(AdServiceLog.ACCESS_NON_ADMIN_USER + memberId)
             throw MemberException(MemberExceptionMessage.AUTH_IS_NOT_ADMIN, memberId.toString())
         }
         with(updateAdTitle) {
-            advertisementQuery.findOneById(id).also { it.editTitle(title!!) }
+            advertisementRepository.findAdvertisementById(id).also { it.editTitle(title!!) }
         }
     }
 
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
     fun editAdContent(id: Long, updateAdContent: UpdateAdContent, memberId: UUID) {
-        require(memberQuery.findOneById(memberId).isAdmin()) {
+        require(memberRepository.findMemberById(memberId).isAdmin()) {
             logger().warn(AdServiceLog.ACCESS_NON_ADMIN_USER + memberId)
             throw MemberException(MemberExceptionMessage.AUTH_IS_NOT_ADMIN, memberId.toString())
         }
         with(updateAdContent) {
-            advertisementQuery.findOneById(id).also { it.editContent(content!!) }
+            advertisementRepository.findAdvertisementById(id).also { it.editContent(content!!) }
         }
     }
 
     @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
     fun removeAd(id: Long, memberId: UUID) {
-        advertisementQuery.findOneById(id)
-            .takeIf { memberQuery.findOneById(memberId).isAdmin() }
+        advertisementRepository.findAdvertisementById(id)
+            .takeIf { memberRepository.findMemberById(memberId).isAdmin() }
             ?.also { advertisementRepository.delete(it) }
             ?: run { logger().warn(AdServiceLog.ACCESS_NON_ADMIN_USER + memberId); throw MemberException(MemberExceptionMessage.AUTH_IS_NOT_ADMIN, memberId.toString()) }
     }

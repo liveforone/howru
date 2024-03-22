@@ -1,6 +1,5 @@
 package howru.howru.advertisement.repository
 
-import com.linecorp.kotlinjdsl.support.spring.data.jpa.repository.KotlinJdslJpqlExecutor
 import howru.howru.advertisement.domain.Advertisement
 import howru.howru.advertisement.dto.response.AdvertisementInfo
 import howru.howru.advertisement.repository.sql.AdvertisementSql
@@ -11,7 +10,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import java.time.LocalDate
 
-interface AdvertisementRepository : JpaRepository<Advertisement, Long>, KotlinJdslJpqlExecutor {
+interface AdvertisementRepository : JpaRepository<Advertisement, Long>, AdvertisementCustomRepository {
 
     @Query(AdvertisementSql.RANDOM_AD_QUERY)
     fun findRandomAd(): AdvertisementInfo

@@ -1,12 +1,11 @@
 package howru.howru.reply.service.command
 
-import howru.howru.comments.repository.CommentsQuery
-import howru.howru.member.repository.MemberQuery
+import howru.howru.comments.repository.CommentsRepository
+import howru.howru.member.repository.MemberCustomRepository
 import howru.howru.reply.domain.Reply
 import howru.howru.reply.dto.request.CreateReply
 import howru.howru.reply.dto.request.RemoveReply
 import howru.howru.reply.dto.request.UpdateReplyContent
-import howru.howru.reply.repository.ReplyQuery
 import howru.howru.reply.repository.ReplyRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -16,15 +15,14 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class ReplyCommandService @Autowired constructor(
     private val replyRepository: ReplyRepository,
-    private val replyQuery: ReplyQuery,
-    private val memberQuery: MemberQuery,
-    private val commentsQuery: CommentsQuery
+    private val memberRepository: MemberCustomRepository,
+    private val commentsRepository: CommentsRepository
 ) {
     fun createReply(createReply: CreateReply): Long {
         return with(createReply) {
             Reply.create(
-                writer = memberQuery.findOneById(writerId!!),
-                comment = commentsQuery.findOneById(commentId!!),
+                writer = memberRepository.findMemberById(writerId!!),
+                comment = commentsRepository.findCommentById(commentId!!),
                 content!!
             ).run { replyRepository.save(this).id!! }
         }
@@ -32,14 +30,14 @@ class ReplyCommandService @Autowired constructor(
 
     fun editReply(id: Long, updateReplyContent: UpdateReplyContent) {
         with(updateReplyContent) {
-            replyQuery.findOneByIdAndWriter(id, writerId!!)
+            replyRepository.findReplyByIdAndWriter(id, writerId!!)
                 .also { it.editContent(content!!) }
         }
     }
 
     fun removeReply(id: Long, removeReply: RemoveReply) {
         with(removeReply) {
-            replyQuery.findOneByIdAndWriter(id, writerId!!)
+            replyRepository.findReplyByIdAndWriter(id, writerId!!)
                 .also { replyRepository.delete(it) }
         }
     }

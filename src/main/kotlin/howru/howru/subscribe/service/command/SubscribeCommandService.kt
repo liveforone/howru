@@ -3,7 +3,6 @@ package howru.howru.subscribe.service.command
 import howru.howru.subscribe.domain.Subscribe
 import howru.howru.subscribe.dto.request.CreateSubscribe
 import howru.howru.subscribe.dto.request.UnsubscribeRequest
-import howru.howru.subscribe.repository.SubscribeQuery
 import howru.howru.subscribe.repository.SubscribeRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -12,8 +11,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class SubscribeCommandService @Autowired constructor(
-    private val subscribeRepository: SubscribeRepository,
-    private val subscribeQuery: SubscribeQuery
+    private val subscribeRepository: SubscribeRepository
 ) {
     fun createSubscribe(createSubscribe: CreateSubscribe) {
         with(createSubscribe) {
@@ -24,7 +22,7 @@ class SubscribeCommandService @Autowired constructor(
 
     fun unsubscribe(unsubscribeRequest: UnsubscribeRequest) {
         with(unsubscribeRequest) {
-            subscribeQuery.findOneById(followeeId!!, followerId!!)
+            subscribeRepository.findSubscribeById(followeeId!!, followerId!!)
                 .also { subscribeRepository.delete(it) }
         }
     }

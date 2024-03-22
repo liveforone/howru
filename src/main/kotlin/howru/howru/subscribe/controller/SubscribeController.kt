@@ -1,30 +1,21 @@
 package howru.howru.subscribe.controller
 
-import howru.howru.globalUtil.DEFAULT_PAGE
-import howru.howru.globalUtil.PAGE
 import howru.howru.globalUtil.validateBinding
 import howru.howru.logger
-import howru.howru.subscribe.log.SubscribeControllerLog
 import howru.howru.subscribe.controller.constant.SubscribeParam
 import howru.howru.subscribe.controller.constant.SubscribeUrl
 import howru.howru.subscribe.controller.response.SubscribeResponse
 import howru.howru.subscribe.dto.request.CreateSubscribe
 import howru.howru.subscribe.dto.request.UnsubscribeRequest
-import howru.howru.subscribe.dto.response.SubscribeInfo
+import howru.howru.subscribe.log.SubscribeControllerLog
 import howru.howru.subscribe.service.command.SubscribeCommandService
 import howru.howru.subscribe.service.query.SubscribeQueryService
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
+import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 class SubscribeController @Autowired constructor(
@@ -34,18 +25,18 @@ class SubscribeController @Autowired constructor(
     @GetMapping(SubscribeUrl.GET_FOLLOWING)
     fun getFollowing(
         @PathVariable(SubscribeParam.FOLLOWER_ID) followerId: UUID,
-        @RequestParam(PAGE, required = false) page: Int = DEFAULT_PAGE
+        @RequestParam(SubscribeParam.LAST_TIMESTAMP, required = false) lastTimestamp: Int?
     ): ResponseEntity<*> {
-        val subscribes = subscribeQueryService.getSubscribesByFollower(followerId, page)
+        val subscribes = subscribeQueryService.getSubscribesByFollower(followerId, lastTimestamp)
         return ResponseEntity.ok(subscribes)
     }
 
     @GetMapping(SubscribeUrl.GET_FOLLOWER)
     fun getFollower(
         @PathVariable(SubscribeParam.FOLLOWEE_ID) followeeId: UUID,
-        @RequestParam(PAGE, required = false) page: Int = DEFAULT_PAGE
+        @RequestParam(SubscribeParam.LAST_TIMESTAMP, required = false) lastTimestamp: Int?
     ): ResponseEntity<*> {
-        val subscribes = subscribeQueryService.getSubscribesByFollowee(followeeId, page)
+        val subscribes = subscribeQueryService.getSubscribesByFollowee(followeeId, lastTimestamp)
         return ResponseEntity.ok(subscribes)
     }
 

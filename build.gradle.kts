@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "3.2.3"
+	id("org.springframework.boot") version "3.2.4"
 	id("io.spring.dependency-management") version "1.1.4"
 	kotlin("jvm") version "1.9.22"
 	kotlin("plugin.spring") version "1.9.22"
@@ -22,7 +22,7 @@ noArg {
 }
 
 group = "howru"
-version = "2.2.0"
+version = "2.3.0"
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_21
@@ -51,12 +51,6 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-api:0.12.5")
 	implementation("io.jsonwebtoken:jjwt-impl:0.12.5")
 	implementation("io.jsonwebtoken:jjwt-jackson:0.12.5")
-	//jdsl version 2.X.X config
-	implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-starter-jakarta:2.2.1.RELEASE")
-	//jdsl version 3.X.X config
-	implementation("com.linecorp.kotlin-jdsl:jpql-dsl:3.3.2")
-	implementation("com.linecorp.kotlin-jdsl:jpql-render:3.3.2")
-	implementation("com.linecorp.kotlin-jdsl:spring-data-jpa-support:3.3.2")
 	//query-dsl config
 	implementation("com.querydsl:querydsl-jpa:5.1.0:jakarta")
 	kapt("com.querydsl:querydsl-apt:5.1.0:jakarta")

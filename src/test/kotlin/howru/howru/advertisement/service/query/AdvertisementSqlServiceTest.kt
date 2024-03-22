@@ -73,7 +73,7 @@ class AdvertisementSqlServiceTest @Autowired constructor(
 
         //then
         //id desc 로 조회하기 때문에 앞쪽 값일 수록 최근값이라 뒤에 붙는 숫자가 늘어난다.
-        Assertions.assertThat(allAd[0]!!.content).isEqualTo(content + 4)
+        Assertions.assertThat(allAd[0].content).isEqualTo(content + 4)
     }
 
     @Test @Transactional

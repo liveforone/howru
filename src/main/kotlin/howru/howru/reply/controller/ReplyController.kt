@@ -1,7 +1,5 @@
 package howru.howru.reply.controller
 
-import howru.howru.globalUtil.DEFAULT_PAGE
-import howru.howru.globalUtil.PAGE
 import howru.howru.globalUtil.validateBinding
 import howru.howru.logger
 import howru.howru.reply.log.ReplyControllerLog
@@ -30,24 +28,24 @@ class ReplyController @Autowired constructor(
     @GetMapping(ReplyUrl.DETAIL)
     fun getReplyDetailInfo(@PathVariable(ReplyParam.ID) @Positive id: Long): ResponseEntity<ReplyInfo> {
         val reply = replyQueryService.getReplyById(id)
-        return ReplyResponse.detailSuccess(reply)
+        return ResponseEntity.ok(reply)
     }
 
     @GetMapping(ReplyUrl.BELONG_WRITER)
     fun getRepliesBelongWriterPage(
         @PathVariable(ReplyParam.WRITER_ID) writerId: UUID,
-        @RequestParam(PAGE, required = false) page: Int = DEFAULT_PAGE
+        @RequestParam(ReplyParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<*> {
-        val replies = replyQueryService.getRepliesByWriter(writerId, page)
+        val replies = replyQueryService.getRepliesByWriter(writerId, lastId)
         return ResponseEntity.ok(replies)
     }
 
     @GetMapping(ReplyUrl.BELONG_COMMENT)
     fun getRepliesBelongCommentPage(
         @PathVariable(ReplyParam.COMMENT_ID) commentId: Long,
-        @RequestParam(PAGE, required = false) page: Int = DEFAULT_PAGE
+        @RequestParam(ReplyParam.LAST_ID, required = false) lastId: Long?
     ): ResponseEntity<*> {
-        val replies = replyQueryService.getRepliesByComment(commentId, page)
+        val replies = replyQueryService.getRepliesByComment(commentId, lastId)
         return ResponseEntity.ok(replies)
     }
 

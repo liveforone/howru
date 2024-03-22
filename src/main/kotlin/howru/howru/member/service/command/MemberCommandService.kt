@@ -13,7 +13,6 @@ import howru.howru.member.cache.MemberCache
 import howru.howru.member.domain.Member
 import howru.howru.member.dto.request.*
 import howru.howru.member.log.MemberServiceLog
-import howru.howru.member.repository.MemberQuery
 import howru.howru.member.repository.MemberRepository
 import howru.howru.reportState.service.command.ReportStateCommandService
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,7 +28,6 @@ import java.util.*
 @Transactional
 class MemberCommandService @Autowired constructor(
     private val memberRepository: MemberRepository,
-    private val memberQuery: MemberQuery,
     private val reportStateCommandService: ReportStateCommandService,
     private val authenticationManagerBuilder: AuthenticationManagerBuilder,
     private val jwtTokenProvider: JwtTokenProvider,
@@ -56,24 +54,24 @@ class MemberCommandService @Autowired constructor(
     }
 
     fun reissueJwtToken(id: UUID, refreshToken: String): ReissuedTokenInfo {
-        val auth = memberQuery.findAuthById(id)
+        val auth = memberRepository.findAuthById(id)
         return jwtTokenService.reissueToken(id, refreshToken, auth)
     }
 
     fun updatePassword(updatePassword: UpdatePassword, id: UUID) {
         with(updatePassword) {
-            memberQuery.findOneById(id).also { it.updatePw(newPassword!!, oldPassword!!) }
+            memberRepository.findMemberById(id).also { it.updatePw(newPassword!!, oldPassword!!) }
         }
     }
 
     @CacheEvict(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)
     fun memberLockOn(id: UUID) {
-        memberQuery.findOneById(id).also { it.lockOn() }
+        memberRepository.findMemberById(id).also { it.lockOn() }
     }
 
     @CacheEvict(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)
     fun memberLockOff(id: UUID) {
-        memberQuery.findOneById(id).also { it.lockOff() }
+        memberRepository.findMemberById(id).also { it.lockOff() }
     }
 
     @CacheEvict(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)
@@ -83,13 +81,13 @@ class MemberCommandService @Autowired constructor(
 
     fun recoveryMember(recoveryRequest: RecoveryRequest) {
         with(recoveryRequest) {
-            memberQuery.findOneByEmailAllowWithdraw(email!!).also { it.recovery(pw!!) }
+            memberRepository.findMemberByEmailIncludeWithdraw(email!!).also { it.recovery(pw!!) }
         }
     }
 
     @CacheEvict(cacheNames = [CacheName.MEMBER], key = MemberCache.KEY)
     fun withdraw(withdrawRequest: WithdrawRequest, id: UUID) {
-        memberQuery.findOneById(id)
+        memberRepository.findMemberById(id)
             .takeIf { isMatchPassword(withdrawRequest.pw!!, it.pw) }
             ?.also {
                 it.withdraw()

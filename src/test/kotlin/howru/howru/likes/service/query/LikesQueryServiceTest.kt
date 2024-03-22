@@ -75,4 +75,36 @@ class LikesQueryServiceTest @Autowired constructor(
         //then
         Assertions.assertThat(countOfLikes).isEqualTo(1L)
     }
+
+    @Test @Transactional
+    fun getLikesBelongMemberTest() {
+        //given
+        val memberId = createMember()
+        val postId = createPost()
+        val request = CreateLikes(memberId, postId)
+        likesCommandService.createLikes(request)
+        flushAndClear()
+
+        //when
+        val likes = likesQueryService.getLikesBelongMember(memberId, null)
+
+        //then
+        Assertions.assertThat(likes[0].postId).isEqualTo(postId)
+    }
+
+    @Test @Transactional
+    fun getLikesBelongPostTest() {
+        //given
+        val memberId = createMember()
+        val postId = createPost()
+        val request = CreateLikes(memberId, postId)
+        likesCommandService.createLikes(request)
+        flushAndClear()
+
+        //when
+        val likes = likesQueryService.getLikesBelongPost(postId, null)
+
+        //then
+        Assertions.assertThat(likes[0].memberId).isEqualTo(memberId)
+    }
 }

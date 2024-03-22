@@ -112,7 +112,7 @@ class CommentsQueryServiceTest @Autowired constructor(
         }
 
         //when
-        val comments = commentsQueryService.getCommentsByWriter(memberId, 0)
+        val comments = commentsQueryService.getCommentsByWriter(memberId, null)
 
         //then
         Assertions.assertThat(comments.size).isEqualTo(2)
@@ -133,7 +133,7 @@ class CommentsQueryServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val comments = commentsQueryService.getCommentsByWriter(memberId, 0)
+        val comments = commentsQueryService.getCommentsByWriter(memberId, null)
 
         //then
         Assertions.assertThat(comments.size).isEqualTo(2)
@@ -153,7 +153,7 @@ class CommentsQueryServiceTest @Autowired constructor(
         }
 
         //when
-        val comments = commentsQueryService.getCommentsByPost(postId, 0)
+        val comments = commentsQueryService.getCommentsByPost(postId, null)
 
         //then
         Assertions.assertThat(comments.size).isEqualTo(2)
@@ -174,7 +174,7 @@ class CommentsQueryServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val comments = commentsQueryService.getCommentsByPost(postId, 0)
+        val comments = commentsQueryService.getCommentsByPost(postId, null)
 
         //then
         Assertions.assertThat(comments.size).isEqualTo(2)
@@ -195,7 +195,7 @@ class CommentsQueryServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val comments = commentsQueryService.getCommentsBySomeone(memberId, member2Id, 0)
+        val comments = commentsQueryService.getCommentsBySomeone(memberId, member2Id, null)
 
         //then
         Assertions.assertThat(comments).isNotEmpty
@@ -216,7 +216,7 @@ class CommentsQueryServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val comments = commentsQueryService.getCommentsBySomeone(memberId, member2Id, 0)
+        val comments = commentsQueryService.getCommentsBySomeone(memberId, member2Id, null)
 
         //then
         Assertions.assertThat(comments).isNotEmpty()
