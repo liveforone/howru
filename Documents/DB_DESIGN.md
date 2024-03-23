@@ -53,6 +53,8 @@ create table subscribe (
     primary key (followee_id, follower_id)
 );
 CREATE INDEX subscribe_timestamp_idx ON Subscribe (timestamp);
+CREATE INDEX followee_id_timestamp_idx ON Subscribe (followee_id, timestamp);
+CREATE INDEX follower_id_timestamp_idx ON Subscribe (follower_id, timestamp);
 ```
 ### 게시글 -> Post
 * post는 member와 N:1관계를 맺는다.
