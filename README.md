@@ -17,10 +17,10 @@
 * 다양한 쿼리 방법들을 시도해보며 성능이 좋은 쿼리를 찾기 위해 분석하였고, 이를 적용한 코드를 확인하실 수 있습니다.
 * 특히나 구독(Subscribe) 도메인과 게시글(Post) 도메인에서 확인하실 수 있습니다.
 ## 기술 스택
-* Framework : Spring Boot 3.2.2
-* Lang : Kotlin 1.9.22, Jvm17 
-* Data : Spring Data Jpa | Kotlin-JDSL-2.2.1.RELEASE & 3.3.2 | MySql 8.X 
-* Security : Spring Security | Jwt(jjwt) 0.11.5 
+* Framework : Spring Boot 3.2.4
+* Lang : Kotlin 1.9.22, Jvm21
+* Data : Spring Data Jpa | Kotlin-JDSL-2.2.1.RELEASE & 3.3.2 -> QueryDsl 5.1.0 | MySql 8.X 
+* Security : Spring Security | Jwt(jjwt) 0.12.5 
 * Cache : Caffeine 3.1.8
 * Test : Junit5
 
@@ -43,9 +43,9 @@
 ## 기술적 고민
 * [내부 식별자와 외부 식별자 구분](./Documents/INTERNAL_EXTERNAL_PK.md)
 * [단방향 관계에서 delete cascade 사용하기](./Documents/ONE_WAY_CASCADE.md)
+* [No Offset 페이징으로 페이징 성능 향상](./Documents/NO_OFFSET.md)
 * [JPA에서 복합키로 조회 쿼리 최적화](./Documents/COMPOSITE_KEY_IN_JPA.md)
 * [복합키를 사용하는 테이블에서 timestamp 기반 no-offset 페이징](./Documents/NO_OFFSET_IN_COMPOSITE_KEY_TABLE.md)
-* [timestamp를 활용한 복합키 테이블 정렬](./Documents/TIMESTAMP_SORT_IN_COMPOSITE.md)
 * [단일 쿼리로 맞팔로우 확인 방법](./Documents/FOLLOW_EACH_CHECK_BY_QUERY.md)
 * [존재여부 확인(case-exist/count) 쿼리 성능 향상](./Documents/EXIST_VS_COUNT_QUERY.md)
 * [날짜형 타입의 성능 향상](./Documents/DATETIME_PERFORMANCE.md)
@@ -59,6 +59,7 @@
 * [controller advice와 똑같은 예외처리 in 필터](./Documents/FILTER_ERR_HANDLING.md)
 * [refresh token을 이용한 jwt 토큰 재발급 매커니즘](./Documents/JWT_TOKEN_REISSUE.md)
 * [적절한 로그를 기록하는 법](./Documents/HOW_TO_RECORD_PROPER_LOG.md)
+* [jjwt 변경사항에 따른 로직 변화](./Documents/JJWT_CHANGE_LOGIC.md)
 ## 비즈니스적 고민
 * [클린한 커뮤니티 만들기](./Documents/CLEAN_COMMUNITY.md)
 
