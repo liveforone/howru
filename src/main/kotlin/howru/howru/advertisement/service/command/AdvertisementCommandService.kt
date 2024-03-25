@@ -9,11 +9,9 @@ import howru.howru.advertisement.repository.AdvertisementRepository
 import howru.howru.advertisement.service.command.constant.AdScheduleConstant
 import howru.howru.exception.exception.MemberException
 import howru.howru.exception.message.MemberExceptionMessage
-import howru.howru.globalConfig.cache.constant.CacheName
 import howru.howru.logger
 import howru.howru.member.repository.MemberCustomRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.cache.annotation.CacheEvict
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -25,7 +23,6 @@ class AdvertisementCommandService @Autowired constructor(
     private val advertisementRepository: AdvertisementRepository,
     private val memberRepository: MemberCustomRepository
 ) {
-    @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
     fun createHalfAd(createAdvertisement: CreateAdvertisement, memberId: UUID): Long {
         require(memberRepository.findMemberById(memberId).isAdmin()) {
             logger().warn(AdServiceLog.ACCESS_NON_ADMIN_USER + memberId)
@@ -37,7 +34,6 @@ class AdvertisementCommandService @Autowired constructor(
         }
     }
 
-    @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
     fun createYearAd(createAdvertisement: CreateAdvertisement, memberId: UUID): Long {
         require(memberRepository.findMemberById(memberId).isAdmin()) {
             logger().warn(AdServiceLog.ACCESS_NON_ADMIN_USER + memberId)
@@ -49,7 +45,6 @@ class AdvertisementCommandService @Autowired constructor(
         }
     }
 
-    @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
     fun editAdTitle(id: Long, updateAdTitle: UpdateAdTitle, memberId: UUID) {
         require(memberRepository.findMemberById(memberId).isAdmin()) {
             logger().warn(AdServiceLog.ACCESS_NON_ADMIN_USER + memberId)
@@ -60,7 +55,6 @@ class AdvertisementCommandService @Autowired constructor(
         }
     }
 
-    @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
     fun editAdContent(id: Long, updateAdContent: UpdateAdContent, memberId: UUID) {
         require(memberRepository.findMemberById(memberId).isAdmin()) {
             logger().warn(AdServiceLog.ACCESS_NON_ADMIN_USER + memberId)
@@ -71,7 +65,6 @@ class AdvertisementCommandService @Autowired constructor(
         }
     }
 
-    @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
     fun removeAd(id: Long, memberId: UUID) {
         advertisementRepository.findAdvertisementById(id)
             .takeIf { memberRepository.findMemberById(memberId).isAdmin() }
@@ -80,7 +73,6 @@ class AdvertisementCommandService @Autowired constructor(
     }
 
     @Scheduled(cron = AdScheduleConstant.DELETE_EXPIRED_POLICY)
-    @CacheEvict(cacheNames = [CacheName.ADVERTISEMENT])
     fun removeExpiredAd() {
         advertisementRepository.deleteExpiredAd()
     }
