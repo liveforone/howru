@@ -5,7 +5,6 @@ import howru.howru.exception.message.JwtExceptionMessage
 import howru.howru.jwt.constant.JwtConstant
 import howru.howru.logger
 import howru.howru.jwt.dto.JwtTokenInfo
-import howru.howru.jwt.dto.ReissuedTokenInfo
 import howru.howru.member.domain.Role
 import io.jsonwebtoken.*
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -35,8 +34,8 @@ class JwtTokenProvider {
             .compact()
     }
 
-    fun reissueToken(id: UUID, role: Role): ReissuedTokenInfo {
-        return ReissuedTokenInfo.create(generateAccessTokenWhenReissue(id, role), generateRefreshToken())
+    fun reissueToken(id: UUID, role: Role): JwtTokenInfo {
+        return JwtTokenInfo.create(id, generateAccessTokenWhenReissue(id, role), generateRefreshToken())
     }
 
     private fun generateAccessTokenWhenReissue(id: UUID, role: Role): String {

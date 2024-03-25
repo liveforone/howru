@@ -3,7 +3,7 @@ package howru.howru.member.controller
 import howru.howru.exception.exception.MemberException
 import howru.howru.exception.message.MemberExceptionMessage
 import howru.howru.globalUtil.validateBinding
-import howru.howru.jwt.dto.ReissuedTokenInfo
+import howru.howru.jwt.dto.JwtTokenInfo
 import howru.howru.logger
 import howru.howru.member.controller.constant.MemberControllerConstant
 import howru.howru.member.log.MemberControllerLog
@@ -71,7 +71,7 @@ class MemberController @Autowired constructor(
     fun jwtTokenReissue(
         @RequestHeader(MemberRequestHeaderConstant.ID) id: String?,
         @RequestHeader(MemberRequestHeaderConstant.REFRESH_TOKEN) refreshToken: String?
-    ): ResponseEntity<ReissuedTokenInfo> {
+    ): ResponseEntity<JwtTokenInfo> {
         if (id.isNullOrBlank() || refreshToken.isNullOrBlank()) {
             throw MemberException(MemberExceptionMessage.TOKEN_REISSUE_HEADER_IS_NULL, "UNRELIABLE-MEMBER")
         }

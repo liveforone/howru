@@ -1,6 +1,5 @@
 package howru.howru.post.service.command
 
-import howru.howru.globalConfig.cache.constant.CacheName
 import howru.howru.member.repository.MemberCustomRepository
 import howru.howru.post.cache.PostCache
 import howru.howru.post.domain.Post
@@ -19,7 +18,6 @@ class PostCommandService @Autowired constructor(
     private val postRepository: PostRepository,
     private val memberRepository: MemberCustomRepository
 ) {
-    @CacheEvict(cacheNames = [CacheName.POST], key = PostCache.CREATE_DTO_WRITER_KEY)
     fun createPost(createPost: CreatePost): Long {
         return with(createPost) {
             Post.create(writer = memberRepository.findMemberById(writerId!!), content!!)
@@ -27,7 +25,7 @@ class PostCommandService @Autowired constructor(
         }
     }
 
-    @CacheEvict(cacheNames = [CacheName.POST], key = PostCache.ID_KEY)
+    @CacheEvict(cacheNames = [PostCache.POST_DETAIL_NAME], key = PostCache.POST_DETAIL_KEY)
     fun editPostContent(id: Long, updatePostContent: UpdatePostContent) {
         with(updatePostContent) {
             postRepository.findPostByIdAndWriter(id, writerId!!)
@@ -35,7 +33,7 @@ class PostCommandService @Autowired constructor(
         }
     }
 
-    @CacheEvict(cacheNames = [CacheName.POST], key = PostCache.ID_KEY)
+    @CacheEvict(cacheNames = [PostCache.POST_DETAIL_NAME], key = PostCache.POST_DETAIL_KEY)
     fun removePost(id: Long, removePost: RemovePost) {
         with(removePost) {
             postRepository.findPostByIdAndWriter(id, writerId!!)

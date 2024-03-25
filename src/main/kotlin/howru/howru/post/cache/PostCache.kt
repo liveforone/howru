@@ -1,7 +1,6 @@
 package howru.howru.post.cache
 
 object PostCache {
-    const val ID_KEY = "#id"
-    const val WRITER_KEY = "#writerId"
-    const val CREATE_DTO_WRITER_KEY = "#createPost.writerId"
+    const val POST_DETAIL_NAME = "/post/detail"
+    const val POST_DETAIL_KEY = "#id"
 }

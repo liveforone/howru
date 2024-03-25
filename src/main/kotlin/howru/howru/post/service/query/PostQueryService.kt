@@ -2,7 +2,6 @@ package howru.howru.post.service.query
 
 import howru.howru.exception.exception.SubscribeException
 import howru.howru.exception.message.SubscribeExceptionMessage
-import howru.howru.globalConfig.cache.constant.CacheName
 import howru.howru.globalUtil.extractKeywords
 import howru.howru.logger
 import howru.howru.member.service.query.MemberQueryService
@@ -24,7 +23,7 @@ class PostQueryService @Autowired constructor(
     private val memberQueryService: MemberQueryService,
     private val subscribeQueryService: SubscribeQueryService
 ) {
-    @Cacheable(cacheNames = [CacheName.POST], key = PostCache.ID_KEY)
+    @Cacheable(cacheNames = [PostCache.POST_DETAIL_NAME], key = PostCache.POST_DETAIL_KEY)
     fun getPostById(id: Long) = postRepository.findPostInfoById(id)
     fun getMyPosts(memberId: UUID, lastId: Long?) = postRepository.findPostsByWriter(memberId, lastId)
     fun getAllPosts(lastId: Long?) = postRepository.findAllPosts(lastId)
@@ -46,6 +45,5 @@ class PostQueryService @Autowired constructor(
         return postRepository.findRecommendPosts(extractKeywords(content), lastId)
     }
     fun getRandomPosts() = postRepository.findRandomPosts()
-    @Cacheable(cacheNames = [CacheName.POST], key = PostCache.WRITER_KEY)
     fun getCountOfPostsByWriter(writerId: UUID) = postRepository.countOfPostByWriter(writerId)
 }
