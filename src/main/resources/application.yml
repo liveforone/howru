@@ -30,6 +30,8 @@ spring:
         format_sql: true
         default_batch_fetch_size: 100
     open-in-view: false
+  redis:
+    url: redis://default:159624@127.0.0.1:6379
 
 logging:
   level:
