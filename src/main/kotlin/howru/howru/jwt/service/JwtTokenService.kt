@@ -2,6 +2,7 @@ package howru.howru.jwt.service
 
 import howru.howru.exception.exception.JwtCustomException
 import howru.howru.exception.message.JwtExceptionMessage
+import howru.howru.globalConfig.redis.RedisKeyValueTimeOut
 import howru.howru.globalConfig.redis.RedisRepository
 import howru.howru.jwt.cache.JwtCache
 import howru.howru.jwt.filterLogic.JwtTokenProvider
@@ -13,6 +14,7 @@ import howru.howru.member.domain.Role
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.UUID
+import java.util.concurrent.TimeUnit
 
 @Service
 class JwtTokenService @Autowired constructor(
@@ -26,7 +28,7 @@ class JwtTokenService @Autowired constructor(
             }
 
     fun createRefreshToken(id: UUID, refreshToken: String) {
-        redisRepository.save(JwtCache.REFRESH_TOKEN_NAME + id, RefreshToken.create(id, refreshToken))
+        redisRepository.save(JwtCache.REFRESH_TOKEN_NAME + id, RefreshToken.create(id, refreshToken), RedisKeyValueTimeOut(15, TimeUnit.DAYS))
     }
 
     fun reissueToken(id: UUID, refreshToken: String, role: Role): JwtTokenInfo {
@@ -38,7 +40,6 @@ class JwtTokenService @Autowired constructor(
                     logger().warn(JwtServiceLog.UN_MATCH_REFRESH_TOKEN + id)
                     throw JwtCustomException(JwtExceptionMessage.UN_MATCH_REFRESH_TOKEN)
                 }
-                redisRepository.delete(key)
                 val reissueToken = jwtTokenProvider.reissueToken(id, role)
                 it.reissueRefreshToken(reissueToken.refreshToken)
                 redisRepository.save(key, it)
