@@ -16,8 +16,6 @@
 * 회원은 잠금이 가능하며, 잠금 회원의 경우 맞팔로우한 회원만 해당 회원의 게시글이나 프로필에 접근 가능합니다.
 * 잠금 상태는 회원가입시 기본적으로 off로 처리됩니다. 자유롭게 on/off 변경 가능합니다.
 * 정규화를 하여 회원의 상태와 신고 로직은 ReportState 테이블로 이관하였습니다.
-* refresh-token 또한 정규화를 통해 테이블을 생성하였지만, 회원문서에서 설명합니다.
-* refresh-token을 이용한 jwt 토큰 재발급 매커니즘은 [refresh token을 이용한 jwt 토큰 재발급 매커니즘](https://github.com/liveforone/howru/blob/master/Documents/JWT_TOKEN_REISSUE.md)을 참조하시면 됩니다.
 
 ## 회원 탈퇴 매커니즘
 * 회원이 탈퇴되면 바로 계정이 삭제되지 않습니다. 
@@ -111,12 +109,4 @@ create table member (
 CREATE INDEX id_auth_idx ON member (id, auth);
 CREATE INDEX email_idx ON member (email);
 CREATE INDEX email_auth_idx ON member (email, auth);
-```
-### refresh_token
-```sql
-create table refresh_token (
-    id BINARY(16) not null,
-    refresh_token varchar(255),
-    primary key (id)
-);
 ```
