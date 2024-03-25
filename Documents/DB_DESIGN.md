@@ -19,16 +19,6 @@ CREATE INDEX id_auth_idx ON member (id, auth);
 CREATE INDEX email_idx ON member (email);
 CREATE INDEX email_auth_idx ON member (email, auth);
 ```
-### refresh-token
-* refresh-token은 member와 1:1관계이다.
-* 단순한 구조이면서 1:1관계이므로 fk(uuid)를 pk로 매핑한다.
-```sql
-create table refresh_token (
-    id BINARY(16) not null,
-    refresh_token varchar(255),
-    primary key (id)
-);
-```
 ### 신고상태 -> ReportState
 * report_state와 member는 1:1 관계이다.
 ```sql
