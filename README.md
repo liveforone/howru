@@ -53,7 +53,7 @@
 * [대용량 IN 쿼리 성능 향상 및 주의점](./Documents/BULK_IN_QUERY_PERFORMANCE.md)
 * [코드만으로 키워드 추출](./Documents/KEYWORD_EXTRACT_RECOMMEND.md)
 * [DB 데이터 사이즈 맞추기](./Documents/DB_DATA_STURCTURE_SIZE.md)
-* [어플리케이션 캐시를 활용해 성능향상하기](./Documents/CACHE_FOR_PERFORMANCE.md)
+* [캐시를 활용해 api 성능향상하기](./Documents/CACHE_FOR_PERFORMANCE.md)
 * [정지 기간이 있는 계정 정지 방법](./Documents/HOW_TO_SUSPEND_USER.md)
 * [추적가능한 예외처리](./Documents/TRACEABLE_EXCEPTION.md)
 * [controller advice와 똑같은 예외처리 in 필터](./Documents/FILTER_ERR_HANDLING.md)
