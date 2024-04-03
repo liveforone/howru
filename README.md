@@ -19,8 +19,8 @@
 ## 기술 스택
 * Framework : Spring Boot 3.2.4
 * Lang : Kotlin 1.9.22, Jvm21
-* Data : Spring Data Jpa | Kotlin-JDSL-2.2.1.RELEASE & 3.3.2 -> QueryDsl 5.1.0 | MySql 8.X 
-* Security : Spring Security | Jwt(jjwt) 0.12.5 
+* Data : Spring Data Jpa | Kotlin-JDSL-2.2.1.RELEASE & 3.3.2 -> QueryDsl 5.1.0 | MySql 8.X
+* Security : Spring Security | Jwt(jjwt) 0.12.5
 * Cache : Caffeine 3.1.8
 * Test : Junit5
 
@@ -60,6 +60,7 @@
 * [refresh token을 이용한 jwt 토큰 재발급 매커니즘](./Documents/JWT_TOKEN_REISSUE.md)
 * [적절한 로그를 기록하는 법](./Documents/HOW_TO_RECORD_PROPER_LOG.md)
 * [jjwt 변경사항에 따른 로직 변화](./Documents/JJWT_CHANGE_LOGIC.md)
+* [KTLint 적용](./Documents/KTLINT_APPLY.md)
 ## 비즈니스적 고민
 * [클린한 커뮤니티 만들기](./Documents/CLEAN_COMMUNITY.md)
 
