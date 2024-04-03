@@ -2,6 +2,7 @@ package howru.howru.comments.repository
 
 import howru.howru.comments.domain.Comments
 import howru.howru.comments.dto.response.CommentsInfo
+import howru.howru.comments.dto.response.CommentsPage
 import java.util.*
 
 interface CommentsCustomRepository {
@@ -17,10 +18,10 @@ interface CommentsCustomRepository {
     fun findCommentsByWriter(
         writerId: UUID,
         lastId: Long?
-    ): List<CommentsInfo>
+    ): CommentsPage
 
     fun findCommentsByPost(
         postId: Long,
         lastId: Long?
-    ): List<CommentsInfo>
+    ): CommentsPage
 }

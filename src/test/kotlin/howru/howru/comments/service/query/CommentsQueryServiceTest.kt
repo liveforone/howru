@@ -116,10 +116,10 @@ class CommentsQueryServiceTest
             }
 
             // when
-            val comments = commentsQueryService.getCommentsByWriter(memberId, null)
+            val commentsPage = commentsQueryService.getCommentsByWriter(memberId, null)
 
             // then
-            Assertions.assertThat(comments.size).isEqualTo(2)
+            Assertions.assertThat(commentsPage.commentsInfoList.size).isEqualTo(2)
         }
 
         @Test
@@ -137,10 +137,10 @@ class CommentsQueryServiceTest
             flushAndClear()
 
             // when
-            val comments = commentsQueryService.getCommentsByWriter(memberId, null)
+            val commentsPage = commentsQueryService.getCommentsByWriter(memberId, null)
 
             // then
-            Assertions.assertThat(comments.size).isEqualTo(2)
+            Assertions.assertThat(commentsPage.commentsInfoList.size).isEqualTo(2)
         }
 
         @Test
@@ -157,10 +157,10 @@ class CommentsQueryServiceTest
             }
 
             // when
-            val comments = commentsQueryService.getCommentsByPost(postId, null)
+            val commentsPage = commentsQueryService.getCommentsByPost(postId, null)
 
             // then
-            Assertions.assertThat(comments.size).isEqualTo(2)
+            Assertions.assertThat(commentsPage.commentsInfoList.size).isEqualTo(2)
         }
 
         @Test
@@ -178,10 +178,10 @@ class CommentsQueryServiceTest
             flushAndClear()
 
             // when
-            val comments = commentsQueryService.getCommentsByPost(postId, null)
+            val commentsPage = commentsQueryService.getCommentsByPost(postId, null)
 
             // then
-            Assertions.assertThat(comments.size).isEqualTo(2)
+            Assertions.assertThat(commentsPage.commentsInfoList.size).isEqualTo(2)
         }
 
         @Test
@@ -199,10 +199,10 @@ class CommentsQueryServiceTest
             flushAndClear()
 
             // when
-            val comments = commentsQueryService.getCommentsBySomeone(memberId, member2Id, null)
+            val commentsPage = commentsQueryService.getCommentsBySomeone(memberId, member2Id, null)
 
             // then
-            Assertions.assertThat(comments).isNotEmpty
+            Assertions.assertThat(commentsPage.commentsInfoList).isNotEmpty
         }
 
         @Test
@@ -220,9 +220,9 @@ class CommentsQueryServiceTest
             flushAndClear()
 
             // when
-            val comments = commentsQueryService.getCommentsBySomeone(memberId, member2Id, null)
+            val commentsPage = commentsQueryService.getCommentsBySomeone(memberId, member2Id, null)
 
             // then
-            Assertions.assertThat(comments).isNotEmpty()
+            Assertions.assertThat(commentsPage.commentsInfoList).isNotEmpty()
         }
     }

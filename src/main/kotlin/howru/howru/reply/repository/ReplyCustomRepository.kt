@@ -2,6 +2,7 @@ package howru.howru.reply.repository
 
 import howru.howru.reply.domain.Reply
 import howru.howru.reply.dto.response.ReplyInfo
+import howru.howru.reply.dto.response.ReplyPage
 import java.util.*
 
 interface ReplyCustomRepository {
@@ -15,10 +16,10 @@ interface ReplyCustomRepository {
     fun findRepliesByWriter(
         writerId: UUID,
         lastId: Long?
-    ): List<ReplyInfo>
+    ): ReplyPage
 
     fun findRepliesByComment(
         commentId: Long,
         lastId: Long?
-    ): List<ReplyInfo>
+    ): ReplyPage
 }

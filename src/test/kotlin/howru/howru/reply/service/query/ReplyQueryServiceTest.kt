@@ -117,10 +117,10 @@ class ReplyQueryServiceTest
             flushAndClear()
 
             // when
-            val replies = replyQueryService.getRepliesByWriter(memberId, null)
+            val replyPage = replyQueryService.getRepliesByWriter(memberId, null)
 
             // then
-            Assertions.assertThat(replies).isNotEmpty
+            Assertions.assertThat(replyPage.replyInfoList).isNotEmpty
         }
 
         @Test @Transactional
@@ -138,10 +138,10 @@ class ReplyQueryServiceTest
             flushAndClear()
 
             // when
-            val replies = replyQueryService.getRepliesByWriter(memberId, null)
+            val replyPage = replyQueryService.getRepliesByWriter(memberId, null)
 
             // then
-            Assertions.assertThat(replies).isNotEmpty
+            Assertions.assertThat(replyPage.replyInfoList).isNotEmpty
         }
 
         @Test @Transactional
@@ -159,10 +159,10 @@ class ReplyQueryServiceTest
             flushAndClear()
 
             // when
-            val replies = replyQueryService.getRepliesByComment(commentId, null)
+            val replyPage = replyQueryService.getRepliesByComment(commentId, null)
 
             // then
-            Assertions.assertThat(replies).isNotEmpty
+            Assertions.assertThat(replyPage.replyInfoList).isNotEmpty
         }
 
         @Test @Transactional
@@ -180,9 +180,9 @@ class ReplyQueryServiceTest
             flushAndClear()
 
             // when
-            val replies = replyQueryService.getRepliesByComment(commentId, null)
+            val replyPage = replyQueryService.getRepliesByComment(commentId, null)
 
             // then
-            Assertions.assertThat(replies).isNotEmpty
+            Assertions.assertThat(replyPage.replyInfoList).isNotEmpty
         }
     }

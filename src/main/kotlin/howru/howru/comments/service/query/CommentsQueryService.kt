@@ -1,6 +1,6 @@
 package howru.howru.comments.service.query
 
-import howru.howru.comments.dto.response.CommentsInfo
+import howru.howru.comments.dto.response.CommentsPage
 import howru.howru.comments.log.CommentsServiceLog
 import howru.howru.comments.repository.CommentsRepository
 import howru.howru.exception.exception.SubscribeException
@@ -36,7 +36,7 @@ class CommentsQueryService
             someoneId: UUID,
             memberId: UUID,
             lastId: Long?
-        ): List<CommentsInfo> {
+        ): CommentsPage {
             require(subscribeQueryService.isFollowEach(someoneId, memberId)) {
                 logger().info(CommentsServiceLog.VIEW_SOMEONE_COMMENTS_WHO_NOT_FOLLOWING + memberId)
                 throw SubscribeException(SubscribeExceptionMessage.IS_NOT_FOLLOW_EACH, memberId)

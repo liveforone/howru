@@ -8,6 +8,7 @@ import howru.howru.post.dto.request.CreatePost
 import howru.howru.post.dto.request.RemovePost
 import howru.howru.post.dto.request.UpdatePostContent
 import howru.howru.post.dto.response.PostInfo
+import howru.howru.post.dto.response.PostPage
 import howru.howru.post.log.PostControllerLog
 import howru.howru.post.service.command.PostCommandService
 import howru.howru.post.service.query.PostQueryService
@@ -37,7 +38,7 @@ class PostController
         fun getMyPostPage(
             @PathVariable(PostParam.MEMBER_ID) memberId: UUID,
             @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
-        ): ResponseEntity<List<PostInfo>> {
+        ): ResponseEntity<PostPage> {
             val myPosts = postQueryService.getMyPosts(memberId, lastId)
             return ResponseEntity.ok(myPosts)
         }
@@ -45,7 +46,7 @@ class PostController
         @GetMapping(PostUrl.ALL_POST)
         fun getAllPostPage(
             @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
-        ): ResponseEntity<List<PostInfo>> {
+        ): ResponseEntity<PostPage> {
             val allPosts = postQueryService.getAllPosts(lastId)
             return ResponseEntity.ok(allPosts)
         }
@@ -55,7 +56,7 @@ class PostController
             @PathVariable(PostParam.WRITER_ID) writerId: UUID,
             @RequestParam(PostParam.MEMBER_ID) memberId: UUID,
             @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
-        ): ResponseEntity<List<PostInfo>> {
+        ): ResponseEntity<PostPage> {
             val postsOfWriter = postQueryService.getPostsBySomeone(writerId, memberId, lastId)
             return ResponseEntity.ok(postsOfWriter)
         }
@@ -64,7 +65,7 @@ class PostController
         fun getPostOfFolloweePage(
             @PathVariable(PostParam.FOLLOWER_ID) followerId: UUID,
             @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
-        ): ResponseEntity<List<PostInfo>> {
+        ): ResponseEntity<PostPage> {
             val postsOfFollowee = postQueryService.getPostsOfFollowee(followerId, lastId)
             return ResponseEntity.ok(postsOfFollowee)
         }
@@ -73,7 +74,7 @@ class PostController
         fun getRecommendPostPage(
             @RequestParam(PostParam.CONTENT) content: String,
             @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
-        ): ResponseEntity<List<PostInfo>> {
+        ): ResponseEntity<PostPage> {
             val recommendPosts = postQueryService.getRecommendPosts(content, lastId)
             return ResponseEntity.ok(recommendPosts)
         }

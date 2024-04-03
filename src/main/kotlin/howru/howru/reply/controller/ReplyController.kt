@@ -8,6 +8,7 @@ import howru.howru.reply.dto.request.CreateReply
 import howru.howru.reply.dto.request.RemoveReply
 import howru.howru.reply.dto.request.UpdateReplyContent
 import howru.howru.reply.dto.response.ReplyInfo
+import howru.howru.reply.dto.response.ReplyPage
 import howru.howru.reply.log.ReplyControllerLog
 import howru.howru.reply.service.command.ReplyCommandService
 import howru.howru.reply.service.query.ReplyQueryService

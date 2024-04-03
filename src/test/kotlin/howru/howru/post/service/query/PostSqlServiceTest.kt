@@ -86,10 +86,10 @@ class PostSqlServiceTest
             flushAndClear()
 
             // when
-            val myPosts = postQueryService.getMyPosts(writerId, null)
+            val postPage = postQueryService.getMyPosts(writerId, null)
 
             // then
-            Assertions.assertThat(myPosts.size).isEqualTo(2)
+            Assertions.assertThat(postPage.postInfoList.size).isEqualTo(2)
         }
 
         @Test
@@ -108,10 +108,10 @@ class PostSqlServiceTest
             flushAndClear()
 
             // when
-            val allPosts = postQueryService.getAllPosts(null)
+            val postPage = postQueryService.getAllPosts(null)
 
             // then
-            Assertions.assertThat(allPosts[0].content).isEqualTo(content2)
+            Assertions.assertThat(postPage.postInfoList[0].content).isEqualTo(content2)
         }
 
     /*
@@ -159,7 +159,7 @@ class PostSqlServiceTest
             flushAndClear()
 
             // then
-            Assertions.assertThat(postQueryService.getPostsBySomeone(followeeId, followerId, null))
+            Assertions.assertThat(postQueryService.getPostsBySomeone(followeeId, followerId, null).postInfoList)
                 .isNotEmpty
         }
 
@@ -180,7 +180,7 @@ class PostSqlServiceTest
             flushAndClear()
 
             // then
-            Assertions.assertThat(postQueryService.getPostsOfFollowee(followerId, null))
+            Assertions.assertThat(postQueryService.getPostsOfFollowee(followerId, null).postInfoList)
                 .isNotEmpty
         }
 
@@ -208,11 +208,11 @@ class PostSqlServiceTest
             flushAndClear()
 
             // when
-            val posts = postQueryService.getRecommendPosts(content1, null)
+            val postPage = postQueryService.getRecommendPosts(content1, null)
 
             // then
-            repeat(posts.size) { logger().info(posts[it].content) }
-            Assertions.assertThat(posts).isNotEmpty
+            repeat(postPage.postInfoList.size) { logger().info(postPage.postInfoList[it].content) }
+            Assertions.assertThat(postPage.postInfoList).isNotEmpty
         }
 
         @Test

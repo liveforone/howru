@@ -6,7 +6,7 @@ import howru.howru.globalUtil.extractKeywords
 import howru.howru.logger
 import howru.howru.member.service.query.MemberQueryService
 import howru.howru.post.cache.PostCache
-import howru.howru.post.dto.response.PostInfo
+import howru.howru.post.dto.response.PostPage
 import howru.howru.post.log.PostServiceLog
 import howru.howru.post.repository.PostRepository
 import howru.howru.subscribe.service.query.SubscribeQueryService
@@ -39,7 +39,7 @@ class PostQueryService
             writerId: UUID,
             memberId: UUID,
             lastId: Long?
-        ): List<PostInfo> {
+        ): PostPage {
             val writer = memberQueryService.getMemberById(writerId)
             return if (writer.isUnlock()) {
                 postRepository.findPostsBySomeone(writerId, lastId)
@@ -56,7 +56,7 @@ class PostQueryService
         fun getPostsOfFollowee(
             followerId: UUID,
             lastId: Long?
-        ): List<PostInfo> {
+        ): PostPage {
             val followeeId = subscribeQueryService.getFollowees(followerId)
             return postRepository.findPostsByFollowee(followeeId, lastId)
         }
@@ -64,7 +64,7 @@ class PostQueryService
         fun getRecommendPosts(
             content: String,
             lastId: Long?
-        ): List<PostInfo> {
+        ): PostPage {
             return postRepository.findRecommendPosts(extractKeywords(content), lastId)
         }
 

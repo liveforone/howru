@@ -2,6 +2,7 @@ package howru.howru.post.repository
 
 import howru.howru.post.domain.Post
 import howru.howru.post.dto.response.PostInfo
+import howru.howru.post.dto.response.PostPage
 import java.util.*
 
 interface PostCustomRepository {
@@ -17,22 +18,22 @@ interface PostCustomRepository {
     fun findPostsByWriter(
         memberId: UUID,
         lastId: Long?
-    ): List<PostInfo>
+    ): PostPage
 
-    fun findAllPosts(lastId: Long?): List<PostInfo>
+    fun findAllPosts(lastId: Long?): PostPage
 
     fun findPostsBySomeone(
         someoneId: UUID,
         lastId: Long?
-    ): List<PostInfo>
+    ): PostPage
 
     fun findPostsByFollowee(
         followeeId: List<UUID>,
         lastId: Long?
-    ): List<PostInfo>
+    ): PostPage
 
     fun findRecommendPosts(
         keyword: String?,
         lastId: Long?
-    ): List<PostInfo>
+    ): PostPage
 }

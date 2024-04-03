@@ -7,6 +7,7 @@ import howru.howru.comments.dto.request.CreateComments
 import howru.howru.comments.dto.request.RemoveComments
 import howru.howru.comments.dto.request.UpdateComments
 import howru.howru.comments.dto.response.CommentsInfo
+import howru.howru.comments.dto.response.CommentsPage
 import howru.howru.comments.log.CommentsControllerLog
 import howru.howru.comments.service.command.CommentsCommandService
 import howru.howru.comments.service.query.CommentsQueryService
@@ -37,7 +38,7 @@ class CommentsController
         fun getCommentsByWriterPage(
             @PathVariable(CommentsParam.WRITER_ID) writerId: UUID,
             @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
-        ): ResponseEntity<List<CommentsInfo>> {
+        ): ResponseEntity<CommentsPage> {
             val comments = commentsQueryService.getCommentsByWriter(writerId, lastId)
             return ResponseEntity.ok(comments)
         }
@@ -46,7 +47,7 @@ class CommentsController
         fun getCommentsByPostPage(
             @PathVariable(CommentsParam.POST_ID) postId: Long,
             @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
-        ): ResponseEntity<List<CommentsInfo>> {
+        ): ResponseEntity<CommentsPage> {
             val comments = commentsQueryService.getCommentsByPost(postId, lastId)
             return ResponseEntity.ok(comments)
         }
@@ -56,7 +57,7 @@ class CommentsController
             @PathVariable(CommentsParam.WRITER_ID) writerId: UUID,
             @RequestParam(CommentsParam.MEMBER_ID) memberId: UUID,
             @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
-        ): ResponseEntity<List<CommentsInfo>> {
+        ): ResponseEntity<CommentsPage> {
             val comments = commentsQueryService.getCommentsBySomeone(writerId, memberId, lastId)
             return ResponseEntity.ok(comments)
         }

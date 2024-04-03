@@ -1,13 +1,15 @@
 package howru.howru.reply.repository
 
 import com.querydsl.core.types.Projections
-import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
 import howru.howru.exception.exception.ReplyException
 import howru.howru.exception.message.ReplyExceptionMessage
+import howru.howru.globalUtil.findLastIdOrDefault
+import howru.howru.globalUtil.ltLastId
 import howru.howru.reply.domain.QReply
 import howru.howru.reply.domain.Reply
 import howru.howru.reply.dto.response.ReplyInfo
+import howru.howru.reply.dto.response.ReplyPage
 import howru.howru.reply.repository.constant.ReplyRepoConstant
 import java.util.*
 
@@ -44,8 +46,8 @@ class ReplyCustomRepositoryImpl(
     override fun findRepliesByWriter(
         writerId: UUID,
         lastId: Long?
-    ): List<ReplyInfo> {
-        return jpaQueryFactory.select(
+    ): ReplyPage {
+        val replyInfoList = jpaQueryFactory.select(
             Projections.constructor(
                 ReplyInfo::class.java,
                 reply.id,
@@ -57,17 +59,19 @@ class ReplyCustomRepositoryImpl(
             )
         )
             .from(reply)
-            .where(reply.writer.id.eq(writerId).and(ltLastId(lastId)))
+            .where(reply.writer.id.eq(writerId).and(ltLastId(lastId, reply) { it.id }))
             .orderBy(reply.id.desc())
             .limit(ReplyRepoConstant.LIMIT_PAGE)
             .fetch()
+
+        return ReplyPage(replyInfoList, findLastIdOrDefault(replyInfoList) { it.id })
     }
 
     override fun findRepliesByComment(
         commentId: Long,
         lastId: Long?
-    ): List<ReplyInfo> {
-        return jpaQueryFactory.select(
+    ): ReplyPage {
+        val replyInfoList = jpaQueryFactory.select(
             Projections.constructor(
                 ReplyInfo::class.java,
                 reply.id,
@@ -79,11 +83,11 @@ class ReplyCustomRepositoryImpl(
             )
         )
             .from(reply)
-            .where(reply.comment.id.eq(commentId).and(ltLastId(lastId)))
+            .where(reply.comment.id.eq(commentId).and(ltLastId(lastId, reply) { it.id }))
             .orderBy(reply.id.desc())
             .limit(ReplyRepoConstant.LIMIT_PAGE)
             .fetch()
-    }
 
-    private fun ltLastId(lastId: Long?): BooleanExpression? = lastId?.takeIf { it > 0 }?.let { reply.id.lt(it) }
+        return ReplyPage(replyInfoList, findLastIdOrDefault(replyInfoList) { it.id })
+    }
 }

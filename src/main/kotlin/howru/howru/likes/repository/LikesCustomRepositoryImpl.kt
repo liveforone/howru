@@ -1,10 +1,10 @@
 package howru.howru.likes.repository
 
 import com.querydsl.core.types.Projections
-import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
 import howru.howru.exception.exception.LikesException
 import howru.howru.exception.message.LikesExceptionMessage
+import howru.howru.globalUtil.ltLastTimestamp
 import howru.howru.likes.domain.Likes
 import howru.howru.likes.domain.QLikes
 import howru.howru.likes.dto.response.LikesBelongMemberInfo
@@ -37,7 +37,7 @@ class LikesCustomRepositoryImpl(
             )
         )
             .from(likes)
-            .where(likes.memberId.eq(memberId).and(ltLastTimestamp(lastTimestamp)))
+            .where(likes.memberId.eq(memberId).and(ltLastTimestamp(lastTimestamp, likes) { it.timestamp }))
             .orderBy(likes.timestamp.desc())
             .limit(LikesRepoConstant.LIMIT_PAGE)
             .fetch()
@@ -55,14 +55,9 @@ class LikesCustomRepositoryImpl(
             )
         )
             .from(likes)
-            .where(likes.postId.eq(postId).and(ltLastTimestamp(lastTimestamp)))
+            .where(likes.postId.eq(postId).and(ltLastTimestamp(lastTimestamp, likes) { it.timestamp }))
             .orderBy(likes.timestamp.desc())
             .limit(LikesRepoConstant.LIMIT_PAGE)
             .fetch()
     }
-
-    private fun ltLastTimestamp(lastTimestamp: Int?): BooleanExpression? =
-        lastTimestamp?.takeIf {
-            it > 0
-        }?.let { likes.timestamp.lt(it) }
 }
