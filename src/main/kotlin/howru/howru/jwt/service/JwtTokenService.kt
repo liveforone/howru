@@ -28,14 +28,18 @@ class JwtTokenService @Autowired constructor(
             }
 
     fun createRefreshToken(id: UUID, refreshToken: String) {
-        redisRepository.save(JwtCache.REFRESH_TOKEN_NAME + id, RefreshToken.create(id, refreshToken), RedisKeyValueTimeOut(15, TimeUnit.DAYS))
+        redisRepository.save(
+            JwtCache.REFRESH_TOKEN_NAME + id,
+            RefreshToken.create(id, refreshToken),
+            RedisKeyValueTimeOut(15, TimeUnit.DAYS)
+        )
     }
 
     fun reissueToken(id: UUID, refreshToken: String, role: Role): JwtTokenInfo {
         jwtTokenProvider.validateToken(refreshToken)
         val key = JwtCache.REFRESH_TOKEN_NAME + id
         redisRepository.getByKey(key, RefreshToken::class.java)
-            ?. let {
+            ?.let {
                 check(it.refreshToken.equals(refreshToken)) {
                     logger().warn(JwtServiceLog.UN_MATCH_REFRESH_TOKEN + id)
                     throw JwtCustomException(JwtExceptionMessage.UN_MATCH_REFRESH_TOKEN)
