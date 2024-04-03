@@ -12,7 +12,6 @@ import java.util.*
 
 @RestControllerAdvice
 class GlobalControllerAdvice {
-
     @ExceptionHandler(DataIntegrityViolationException::class)
     fun handleDuplicateEntityValueException(): ResponseEntity<String> {
         return ResponseEntity
@@ -23,14 +22,15 @@ class GlobalControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleValidationExceptions(exception: MethodArgumentNotValidException): ResponseEntity<String> {
         val bindingResult = exception.bindingResult
-        val errorMessage = Objects
-            .requireNonNull(bindingResult.fieldError)
-            ?.defaultMessage
+        val errorMessage =
+            Objects
+                .requireNonNull(bindingResult.fieldError)
+                ?.defaultMessage
         return ResponseEntity.badRequest().body(errorMessage)
     }
 
     @ExceptionHandler(ConstraintViolationException::class)
-    fun handleConstraintViolationException(ex: ConstraintViolationException): ResponseEntity<*>  {
+    fun handleConstraintViolationException(ex: ConstraintViolationException): ResponseEntity<*> {
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .body(ex.message)

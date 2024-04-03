@@ -12,7 +12,9 @@ import java.time.LocalDateTime
 @Entity
 class Post private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long? = null,
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(updatable = false) @OnDelete(action = OnDeleteAction.CASCADE) val writer: Member,
+    @ManyToOne(
+        fetch = FetchType.LAZY
+    ) @JoinColumn(updatable = false) @OnDelete(action = OnDeleteAction.CASCADE) val writer: Member,
     @Column(nullable = false, columnDefinition = PostConstant.CONTENT_TYPE) var content: String,
     @Convert(converter = PostStateConverter::class) @Column(
         nullable = false,
@@ -25,7 +27,10 @@ class Post private constructor(
     ) val createdDatetime: Long = getDatetimeDigit(LocalDateTime.now())
 ) {
     companion object {
-        fun create(writer: Member, content: String) = Post(writer = writer, content = content)
+        fun create(
+            writer: Member,
+            content: String
+        ) = Post(writer = writer, content = content)
     }
 
     fun editContent(updatedContent: String) {

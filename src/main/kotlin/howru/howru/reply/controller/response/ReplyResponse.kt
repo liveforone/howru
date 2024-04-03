@@ -8,6 +8,8 @@ object ReplyResponse {
     private const val REMOVE_SUCCESS = "대댓글을 성공적으로 삭제하였습니다."
 
     fun createReplySuccess() = ResponseEntity.ok(CREATE_SUCCESS)
+
     fun editReplySuccess() = ResponseEntity.ok(EDIT_SUCCESS)
+
     fun removeReplySuccess() = ResponseEntity.ok(REMOVE_SUCCESS)
 }

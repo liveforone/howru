@@ -10,9 +10,14 @@ object PostResponse {
     private const val REMOVE_SUCCESS = "게시글을 성공적으로 삭제하였습니다."
 
     fun postDetailSuccess(postDetail: PostInfo) = ResponseEntity.ok(postDetail)
+
     fun randomPostSuccess(randomPosts: List<PostInfo>) = ResponseEntity.ok(randomPosts)
+
     fun countPostOfWriterSuccess(countPost: Long) = ResponseEntity.ok(countPost)
+
     fun createPostSuccess() = ResponseEntity.status(HttpStatus.CREATED).body(CREATE_SUCCESS)
+
     fun editPostSuccess() = ResponseEntity.ok(EDIT_CONTENT_SUCCESS)
+
     fun removePostSuccess() = ResponseEntity.ok(REMOVE_SUCCESS)
 }

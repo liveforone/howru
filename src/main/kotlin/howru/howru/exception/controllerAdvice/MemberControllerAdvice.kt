@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class MemberControllerAdvice {
-
     @ExceptionHandler(BadCredentialsException::class)
     fun handleLoginFail(): ResponseEntity<String> {
         return ResponseEntity

@@ -7,21 +7,20 @@ import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 
 class ReplyTest {
-
     @Test
     fun editContentTest() {
-        //given
+        // given
         val writer = Member.create("test_reply@gmail.com", "1111", "writer")
         val post = Post.create(writer, "test_post")
         val comments = Comments.create(writer, post, "test_comments_content")
         val content = "test reply content"
         val reply = Reply.create(writer, comments, content)
 
-        //when
+        // when
         val updatedContent = "updated content"
         reply.editContent(updatedContent)
 
-        //then
+        // then
         Assertions.assertThat(reply.content).isEqualTo(updatedContent)
     }
 }

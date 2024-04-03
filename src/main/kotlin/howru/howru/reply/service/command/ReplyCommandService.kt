@@ -13,32 +13,40 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class ReplyCommandService @Autowired constructor(
-    private val replyRepository: ReplyRepository,
-    private val memberRepository: MemberCustomRepository,
-    private val commentsRepository: CommentsRepository
-) {
-    fun createReply(createReply: CreateReply): Long {
-        return with(createReply) {
-            Reply.create(
-                writer = memberRepository.findMemberById(writerId!!),
-                comment = commentsRepository.findCommentById(commentId!!),
-                content!!
-            ).run { replyRepository.save(this).id!! }
+class ReplyCommandService
+    @Autowired
+    constructor(
+        private val replyRepository: ReplyRepository,
+        private val memberRepository: MemberCustomRepository,
+        private val commentsRepository: CommentsRepository
+    ) {
+        fun createReply(createReply: CreateReply): Long {
+            return with(createReply) {
+                Reply.create(
+                    writer = memberRepository.findMemberById(writerId!!),
+                    comment = commentsRepository.findCommentById(commentId!!),
+                    content!!
+                ).run { replyRepository.save(this).id!! }
+            }
         }
-    }
 
-    fun editReply(id: Long, updateReplyContent: UpdateReplyContent) {
-        with(updateReplyContent) {
-            replyRepository.findReplyByIdAndWriter(id, writerId!!)
-                .also { it.editContent(content!!) }
+        fun editReply(
+            id: Long,
+            updateReplyContent: UpdateReplyContent
+        ) {
+            with(updateReplyContent) {
+                replyRepository.findReplyByIdAndWriter(id, writerId!!)
+                    .also { it.editContent(content!!) }
+            }
         }
-    }
 
-    fun removeReply(id: Long, removeReply: RemoveReply) {
-        with(removeReply) {
-            replyRepository.findReplyByIdAndWriter(id, writerId!!)
-                .also { replyRepository.delete(it) }
+        fun removeReply(
+            id: Long,
+            removeReply: RemoveReply
+        ) {
+            with(removeReply) {
+                replyRepository.findReplyByIdAndWriter(id, writerId!!)
+                    .also { replyRepository.delete(it) }
+            }
         }
     }
-}

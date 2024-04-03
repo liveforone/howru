@@ -15,7 +15,10 @@ class ReplyCustomRepositoryImpl(
     private val jpaQueryFactory: JPAQueryFactory,
     private val reply: QReply = QReply.reply
 ) : ReplyCustomRepository {
-    override fun findReplyByIdAndWriter(id: Long, writerId: UUID): Reply {
+    override fun findReplyByIdAndWriter(
+        id: Long,
+        writerId: UUID
+    ): Reply {
         return jpaQueryFactory.selectFrom(reply)
             .where(reply.id.eq(id).and(reply.writer.id.eq(writerId)))
             .fetchOne() ?: throw ReplyException(ReplyExceptionMessage.REPLY_IS_NULL, id)
@@ -38,7 +41,10 @@ class ReplyCustomRepositoryImpl(
             .fetchOne() ?: throw ReplyException(ReplyExceptionMessage.REPLY_IS_NULL, id)
     }
 
-    override fun findRepliesByWriter(writerId: UUID, lastId: Long?): List<ReplyInfo> {
+    override fun findRepliesByWriter(
+        writerId: UUID,
+        lastId: Long?
+    ): List<ReplyInfo> {
         return jpaQueryFactory.select(
             Projections.constructor(
                 ReplyInfo::class.java,
@@ -57,7 +63,10 @@ class ReplyCustomRepositoryImpl(
             .fetch()
     }
 
-    override fun findRepliesByComment(commentId: Long, lastId: Long?): List<ReplyInfo> {
+    override fun findRepliesByComment(
+        commentId: Long,
+        lastId: Long?
+    ): List<ReplyInfo> {
         return jpaQueryFactory.select(
             Projections.constructor(
                 ReplyInfo::class.java,
@@ -76,6 +85,5 @@ class ReplyCustomRepositoryImpl(
             .fetch()
     }
 
-    private fun ltLastId(lastId: Long?): BooleanExpression? =
-        lastId?.takeIf { it > 0 }?.let { reply.id.lt(it) }
+    private fun ltLastId(lastId: Long?): BooleanExpression? = lastId?.takeIf { it > 0 }?.let { reply.id.lt(it) }
 }

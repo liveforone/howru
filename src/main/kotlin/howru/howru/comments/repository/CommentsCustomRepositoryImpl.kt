@@ -21,7 +21,10 @@ class CommentsCustomRepositoryImpl(
             .fetchOne() ?: throw CommentsException(CommentsExceptionMessage.COMMENTS_IS_NULL, id)
     }
 
-    override fun findCommentByIdAndWriter(id: Long, writerId: UUID): Comments {
+    override fun findCommentByIdAndWriter(
+        id: Long,
+        writerId: UUID
+    ): Comments {
         return jpaQueryFactory.selectFrom(comments)
             .where(comments.id.eq(id).and(comments.writer.id.eq(writerId)))
             .fetchOne() ?: throw CommentsException(CommentsExceptionMessage.COMMENTS_IS_NULL, id)
@@ -44,7 +47,10 @@ class CommentsCustomRepositoryImpl(
             .fetchOne() ?: throw CommentsException(CommentsExceptionMessage.COMMENTS_IS_NULL, id)
     }
 
-    override fun findCommentsByWriter(writerId: UUID, lastId: Long?): List<CommentsInfo> {
+    override fun findCommentsByWriter(
+        writerId: UUID,
+        lastId: Long?
+    ): List<CommentsInfo> {
         return jpaQueryFactory.select(
             Projections.constructor(
                 CommentsInfo::class.java,
@@ -63,7 +69,10 @@ class CommentsCustomRepositoryImpl(
             .fetch()
     }
 
-    override fun findCommentsByPost(postId: Long, lastId: Long?): List<CommentsInfo> {
+    override fun findCommentsByPost(
+        postId: Long,
+        lastId: Long?
+    ): List<CommentsInfo> {
         return jpaQueryFactory.select(
             Projections.constructor(
                 CommentsInfo::class.java,
@@ -82,6 +91,5 @@ class CommentsCustomRepositoryImpl(
             .fetch()
     }
 
-    private fun ltLastId(lastId: Long?): BooleanExpression? =
-        lastId?.takeIf { it > 0 }?.let { comments.id.lt(it) }
+    private fun ltLastId(lastId: Long?): BooleanExpression? = lastId?.takeIf { it > 0 }?.let { comments.id.lt(it) }
 }

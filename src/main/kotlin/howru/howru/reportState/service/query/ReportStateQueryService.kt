@@ -8,8 +8,10 @@ import java.util.UUID
 
 @Service
 @Transactional(readOnly = true)
-class ReportStateQueryService @Autowired constructor(
-    private val reportStateRepository: ReportStateRepository
-) {
-    fun getOneByMemberId(memberId: UUID) = reportStateRepository.findReportStateInfoByMemberId(memberId)
-}
+class ReportStateQueryService
+    @Autowired
+    constructor(
+        private val reportStateRepository: ReportStateRepository
+    ) {
+        fun getOneByMemberId(memberId: UUID) = reportStateRepository.findReportStateInfoByMemberId(memberId)
+    }

@@ -15,12 +15,20 @@ object MemberResponse {
     private const val WITHDRAW_SUCCESS = "회원탈퇴를 성공적으로 마쳤습니다.\n안녕히가세요."
 
     fun infoSuccess(member: MemberInfo) = ResponseEntity.ok(member)
+
     fun signupSuccess() = ResponseEntity.status(HttpStatus.CREATED).body(SIGNUP_SUCCESS)
+
     fun loginSuccess() = ResponseEntity.ok(LOGIN_SUCCESS)
+
     fun updatePwSuccess() = ResponseEntity.ok(UPDATE_PW_SUCCESS)
+
     fun lockOnSuccess() = ResponseEntity.ok(LOCK_ON_SUCCESS)
+
     fun lockOffSuccess() = ResponseEntity.ok(LOCK_OFF_SUCCESS)
+
     fun logOutSuccess() = ResponseEntity.ok(LOGOUT_SUCCESS)
+
     fun recoverySuccess() = ResponseEntity.ok(RECOVERY_SUCCESS)
+
     fun withdrawSuccess() = ResponseEntity.ok(WITHDRAW_SUCCESS)
 }

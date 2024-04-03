@@ -18,51 +18,55 @@ import org.springframework.web.bind.annotation.*
 import java.util.UUID
 
 @RestController
-class LikesController @Autowired constructor(
-    private val likesQueryService: LikesQueryService,
-    private val likesCommandService: LikesCommandService
-) {
-    @GetMapping(LikesUrl.COUNT_OF_LIKES_IN_POST)
-    fun getCountOfLikesByPostInfo(@PathVariable(LikesParam.POST_ID) postId: Long): ResponseEntity<Long> {
-        val countOfLikes = likesQueryService.getCountOfLikesByPost(postId)
-        return ResponseEntity.ok(countOfLikes)
+class LikesController
+    @Autowired
+    constructor(
+        private val likesQueryService: LikesQueryService,
+        private val likesCommandService: LikesCommandService
+    ) {
+        @GetMapping(LikesUrl.COUNT_OF_LIKES_IN_POST)
+        fun getCountOfLikesByPostInfo(
+            @PathVariable(LikesParam.POST_ID) postId: Long
+        ): ResponseEntity<Long> {
+            val countOfLikes = likesQueryService.getCountOfLikesByPost(postId)
+            return ResponseEntity.ok(countOfLikes)
+        }
+
+        @GetMapping(LikesUrl.LIKES_BELONG_MEMBER)
+        fun likesBelongMember(
+            @PathVariable(LikesParam.MEMBER_ID) memberId: UUID,
+            @RequestParam(LikesParam.LAST_TIMESTAMP, required = false) lastTimestamp: Int?
+        ): ResponseEntity<List<LikesBelongMemberInfo>> {
+            val likes = likesQueryService.getLikesBelongMember(memberId, lastTimestamp)
+            return ResponseEntity.ok(likes)
+        }
+
+        @GetMapping(LikesUrl.LIKES_BELONG_POST)
+        fun likesBelongPost(
+            @PathVariable(LikesParam.POST_ID) postId: Long,
+            @RequestParam(LikesParam.LAST_TIMESTAMP, required = false) lastTimestamp: Int?
+        ): ResponseEntity<List<LikesBelongPostInfo>> {
+            val likes = likesQueryService.getLikesBelongPost(postId, lastTimestamp)
+            return ResponseEntity.ok(likes)
+        }
+
+        @PostMapping(LikesUrl.LIKE)
+        fun like(
+            @RequestBody @Valid createLikes: CreateLikes
+        ): ResponseEntity<String> {
+            likesCommandService.createLikes(createLikes)
+            logger().info(LikesControllerLog.CREATE_LIKE_SUCCESS + createLikes.postId)
+
+            return LikesResponse.likeSuccess()
+        }
+
+        @DeleteMapping(LikesUrl.DISLIKE)
+        fun dislike(
+            @RequestBody @Valid removeLikes: RemoveLikes
+        ): ResponseEntity<String> {
+            likesCommandService.removeLikes(removeLikes)
+            logger().info(LikesControllerLog.DELETE_LIKE_SUCCESS + removeLikes.postId)
+
+            return LikesResponse.dislikeSuccess()
+        }
     }
-
-    @GetMapping(LikesUrl.LIKES_BELONG_MEMBER)
-    fun likesBelongMember(
-        @PathVariable(LikesParam.MEMBER_ID) memberId: UUID,
-        @RequestParam(LikesParam.LAST_TIMESTAMP, required = false) lastTimestamp: Int?
-    ): ResponseEntity<List<LikesBelongMemberInfo>> {
-        val likes = likesQueryService.getLikesBelongMember(memberId, lastTimestamp)
-        return ResponseEntity.ok(likes)
-    }
-
-    @GetMapping(LikesUrl.LIKES_BELONG_POST)
-    fun likesBelongPost(
-        @PathVariable(LikesParam.POST_ID) postId: Long,
-        @RequestParam(LikesParam.LAST_TIMESTAMP, required = false) lastTimestamp: Int?
-    ): ResponseEntity<List<LikesBelongPostInfo>> {
-        val likes = likesQueryService.getLikesBelongPost(postId, lastTimestamp)
-        return ResponseEntity.ok(likes)
-    }
-
-    @PostMapping(LikesUrl.LIKE)
-    fun like(
-        @RequestBody @Valid createLikes: CreateLikes
-    ): ResponseEntity<String> {
-        likesCommandService.createLikes(createLikes)
-        logger().info(LikesControllerLog.CREATE_LIKE_SUCCESS + createLikes.postId)
-
-        return LikesResponse.likeSuccess()
-    }
-
-    @DeleteMapping(LikesUrl.DISLIKE)
-    fun dislike(
-        @RequestBody @Valid removeLikes: RemoveLikes
-    ): ResponseEntity<String> {
-        likesCommandService.removeLikes(removeLikes)
-        logger().info(LikesControllerLog.DELETE_LIKE_SUCCESS + removeLikes.postId)
-
-        return LikesResponse.dislikeSuccess()
-    }
-}

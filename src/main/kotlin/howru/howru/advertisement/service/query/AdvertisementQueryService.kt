@@ -7,12 +7,18 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional(readOnly = true)
-class AdvertisementQueryService @Autowired constructor(
-    private val advertisementRepository: AdvertisementRepository
-) {
-    fun getOneById(id: Long) = advertisementRepository.findAdvertisementInfoById(id)
-    fun getAllAdvertisements() = advertisementRepository.findAllAdvertisements()
-    fun searchAdByCompany(company: String) = advertisementRepository.searchAdByCompany(company)
-    fun getExpiredAds() = advertisementRepository.findExpiredAds()
-    fun getRandomAd() = advertisementRepository.findRandomAd()
-}
+class AdvertisementQueryService
+    @Autowired
+    constructor(
+        private val advertisementRepository: AdvertisementRepository
+    ) {
+        fun getOneById(id: Long) = advertisementRepository.findAdvertisementInfoById(id)
+
+        fun getAllAdvertisements() = advertisementRepository.findAllAdvertisements()
+
+        fun searchAdByCompany(company: String) = advertisementRepository.searchAdByCompany(company)
+
+        fun getExpiredAds() = advertisementRepository.findExpiredAds()
+
+        fun getRandomAd() = advertisementRepository.findRandomAd()
+    }

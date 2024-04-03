@@ -12,11 +12,16 @@ class Advertisement private constructor(
     @Column(nullable = false) val company: String,
     @Column(nullable = false) var title: String,
     @Column(nullable = false, columnDefinition = AdvertisementConstant.CONTENT_TYPE) var content: String,
-    @Column(nullable = false, updatable = false, columnDefinition = DATE_TYPE) val createdDate: Int = getDateDigit(LocalDate.now()),
+    @Column(nullable = false, updatable = false, columnDefinition = DATE_TYPE) val createdDate: Int =
+        getDateDigit(LocalDate.now()),
     @Column(nullable = false, updatable = false, columnDefinition = DATE_TYPE) val endDate: Int
 ) {
     companion object {
-        fun createHalfAd(company: String, title: String, content: String): Advertisement {
+        fun createHalfAd(
+            company: String,
+            title: String,
+            content: String
+        ): Advertisement {
             return Advertisement(
                 company = company,
                 title = title,
@@ -25,7 +30,11 @@ class Advertisement private constructor(
             )
         }
 
-        fun createYearAd(company: String, title: String, content: String): Advertisement {
+        fun createYearAd(
+            company: String,
+            title: String,
+            content: String
+        ): Advertisement {
             return Advertisement(
                 company = company,
                 title = title,

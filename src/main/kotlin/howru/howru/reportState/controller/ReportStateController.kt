@@ -20,23 +20,27 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
 @RestController
-class ReportStateController @Autowired constructor(
-    private val reportStateQueryService: ReportStateQueryService,
-    private val reportStateCommandService: ReportStateCommandService
-) {
-    @GetMapping(ReportStateUrl.REPORT_STATE_INFO)
-    fun getReportStateInfo(@PathVariable(ReportStateParam.MEMBER_ID) memberId: UUID): ResponseEntity<ReportStateInfo> {
-        val reportState = reportStateQueryService.getOneByMemberId(memberId)
-        return ReportStateResponse.infoSuccess(reportState)
-    }
+class ReportStateController
+    @Autowired
+    constructor(
+        private val reportStateQueryService: ReportStateQueryService,
+        private val reportStateCommandService: ReportStateCommandService
+    ) {
+        @GetMapping(ReportStateUrl.REPORT_STATE_INFO)
+        fun getReportStateInfo(
+            @PathVariable(ReportStateParam.MEMBER_ID) memberId: UUID
+        ): ResponseEntity<ReportStateInfo> {
+            val reportState = reportStateQueryService.getOneByMemberId(memberId)
+            return ReportStateResponse.infoSuccess(reportState)
+        }
 
-    @PostMapping(ReportStateUrl.REPORT)
-    fun reportMember(
-        @RequestBody @Valid reportMember: ReportMember
-    ): ResponseEntity<String> {
-        reportStateCommandService.addRepost(reportMember)
-        logger().info(ReportStateControllerLog.REPORT_MEMBER_SUCCESS + reportMember.memberId)
+        @PostMapping(ReportStateUrl.REPORT)
+        fun reportMember(
+            @RequestBody @Valid reportMember: ReportMember
+        ): ResponseEntity<String> {
+            reportStateCommandService.addRepost(reportMember)
+            logger().info(ReportStateControllerLog.REPORT_MEMBER_SUCCESS + reportMember.memberId)
 
-        return ReportStateResponse.reportSuccess()
+            return ReportStateResponse.reportSuccess()
+        }
     }
-}

@@ -9,5 +9,7 @@ import org.springframework.data.repository.query.Param
 
 interface LikesRepository : JpaRepository<Likes, LikesPk>, LikesCustomRepository {
     @Query(LikesSql.COUNT_OF_LIKES_BY_POST_QUERY)
-    fun countOfLikesByPost(@Param(LikesSql.POST_ID) postId: Long): Long
+    fun countOfLikesByPost(
+        @Param(LikesSql.POST_ID) postId: Long
+    ): Long
 }

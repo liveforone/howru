@@ -1,2 +1,0 @@
-package howru.howru.globalUtil
-

@@ -12,13 +12,22 @@ object AdvertisementResponse {
     private const val REMOVE_AD_SUCCESS = "광고를 성공적으로 삭제하였습니다."
 
     fun detailSuccess(ad: AdvertisementInfo) = ResponseEntity.ok(ad)
+
     fun allAdSuccess(ads: List<AdvertisementInfo?>) = ResponseEntity.ok(ads)
+
     fun searchAdByCompanySuccess(ads: List<AdvertisementInfo?>) = ResponseEntity.ok(ads)
+
     fun expiredAdSuccess(ads: List<AdvertisementInfo?>) = ResponseEntity.ok(ads)
+
     fun randomAdSuccess(ad: AdvertisementInfo) = ResponseEntity.ok(ad)
+
     fun createHalfAdSuccess() = ResponseEntity.status(HttpStatus.CREATED).body(CREATE_HALF_AD_SUCCESS)
+
     fun createYearAdSuccess() = ResponseEntity.status(HttpStatus.CREATED).body(CREATE_YEAR_AD_SUCCESS)
+
     fun editTitleSuccess() = ResponseEntity.ok(EDIT_TITLE_SUCCESS)
+
     fun editContentSuccess() = ResponseEntity.ok(EDIT_CONTENT_SUCCESS)
+
     fun removeAdSuccess() = ResponseEntity.ok(REMOVE_AD_SUCCESS)
 }

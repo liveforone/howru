@@ -6,64 +6,63 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 class AdvertisementTest {
-
     @Test
     fun createHalfAdTest() {
-        //given
+        // given
         val company = "test company"
         val title = "test half ad"
         val content = "half ad test"
 
-        //when
+        // when
         val ad = Advertisement.createHalfAd(company, title, content)
 
-        //then
+        // then
         Assertions.assertThat(ad.endDate).isEqualTo(getDateDigit(LocalDate.now().plusMonths(6)))
     }
 
     @Test
     fun createYearAdTest() {
-        //given
+        // given
         val company = "test company"
         val title = "test year ad"
         val content = "year ad test"
 
-        //when
+        // when
         val ad = Advertisement.createYearAd(company, title, content)
 
-        //then
+        // then
         Assertions.assertThat(ad.endDate).isEqualTo(getDateDigit(LocalDate.now().plusYears(1)))
     }
 
     @Test
     fun editTitleTest() {
-        //given
+        // given
         val company = "test company"
         val title = "test title edit"
         val content = "edit title"
         val ad = Advertisement.createYearAd(company, title, content)
 
-        //when
+        // when
         val updatedTitle = "updated ad title"
         ad.editTitle(updatedTitle)
 
-        //then
+        // then
         Assertions.assertThat(ad.title).isEqualTo(updatedTitle)
     }
 
     @Test
     fun editContentTest() {
-        //given
+        // given
         val company = "test company"
         val title = "test content edit"
         val content = "edit content"
         val ad = Advertisement.createYearAd(company, title, content)
 
-        //when
+        // when
         val updatedContent = "updated ad content"
         ad.editContent(updatedContent)
 
-        //then
+        // then
         Assertions.assertThat(ad.content).isEqualTo(updatedContent)
     }
 }

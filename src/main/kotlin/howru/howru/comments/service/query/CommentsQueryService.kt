@@ -14,18 +14,33 @@ import java.util.UUID
 
 @Service
 @Transactional(readOnly = true)
-class CommentsQueryService @Autowired constructor(
-    private val commentsRepository: CommentsRepository,
-    private val subscribeQueryService: SubscribeQueryService
-) {
-    fun getCommentById(id: Long) = commentsRepository.findCommentsInfoById(id)
-    fun getCommentsByWriter(writerId: UUID, lastId: Long?) = commentsRepository.findCommentsByWriter(writerId, lastId)
-    fun getCommentsByPost(postId: Long, lastId: Long?) = commentsRepository.findCommentsByPost(postId, lastId)
-    fun getCommentsBySomeone(someoneId: UUID, memberId: UUID, lastId: Long?): List<CommentsInfo> {
-        require(subscribeQueryService.isFollowEach(someoneId, memberId)) {
-            logger().info(CommentsServiceLog.VIEW_SOMEONE_COMMENTS_WHO_NOT_FOLLOWING + memberId)
-            throw SubscribeException(SubscribeExceptionMessage.IS_NOT_FOLLOW_EACH, memberId)
+class CommentsQueryService
+    @Autowired
+    constructor(
+        private val commentsRepository: CommentsRepository,
+        private val subscribeQueryService: SubscribeQueryService
+    ) {
+        fun getCommentById(id: Long) = commentsRepository.findCommentsInfoById(id)
+
+        fun getCommentsByWriter(
+            writerId: UUID,
+            lastId: Long?
+        ) = commentsRepository.findCommentsByWriter(writerId, lastId)
+
+        fun getCommentsByPost(
+            postId: Long,
+            lastId: Long?
+        ) = commentsRepository.findCommentsByPost(postId, lastId)
+
+        fun getCommentsBySomeone(
+            someoneId: UUID,
+            memberId: UUID,
+            lastId: Long?
+        ): List<CommentsInfo> {
+            require(subscribeQueryService.isFollowEach(someoneId, memberId)) {
+                logger().info(CommentsServiceLog.VIEW_SOMEONE_COMMENTS_WHO_NOT_FOLLOWING + memberId)
+                throw SubscribeException(SubscribeExceptionMessage.IS_NOT_FOLLOW_EACH, memberId)
+            }
+            return commentsRepository.findCommentsByWriter(someoneId, lastId)
         }
-        return commentsRepository.findCommentsByWriter(someoneId, lastId)
     }
-}

@@ -9,16 +9,25 @@ import org.springframework.data.repository.query.Param
 import java.util.UUID
 
 interface SubscribeRepository : JpaRepository<Subscribe, SubscribePk>, SubscribeCustomRepository {
-
     @Query(SubscribeSql.IS_FOLLOWEE)
-    fun isFollowee(@Param(SubscribeSql.FOLLOWEE_ID) followeeId: UUID, @Param(SubscribeSql.FOLLOWER_ID) followerId: UUID): Boolean
+    fun isFollowee(
+        @Param(SubscribeSql.FOLLOWEE_ID) followeeId: UUID,
+        @Param(SubscribeSql.FOLLOWER_ID) followerId: UUID
+    ): Boolean
 
     @Query(SubscribeSql.IS_FOLLOW_EACH)
-    fun isFollowEach(@Param(SubscribeSql.FOLLOWEE_ID) followeeId: UUID, @Param(SubscribeSql.FOLLOWER_ID) followerId: UUID): Boolean
+    fun isFollowEach(
+        @Param(SubscribeSql.FOLLOWEE_ID) followeeId: UUID,
+        @Param(SubscribeSql.FOLLOWER_ID) followerId: UUID
+    ): Boolean
 
     @Query("select count(*) from Subscribe s where s.followerId = :followerId")
-    fun countOfSubscribesByFollower(@Param("followerId") followerId: UUID): Long
+    fun countOfSubscribesByFollower(
+        @Param("followerId") followerId: UUID
+    ): Long
 
     @Query("select count(*) from Subscribe s where s.followeeId = :followeeId")
-    fun countOfFollowersByFollowee(@Param("followeeId") followeeId: UUID): Long
+    fun countOfFollowersByFollowee(
+        @Param("followeeId") followeeId: UUID
+    ): Long
 }

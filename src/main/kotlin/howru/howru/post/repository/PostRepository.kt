@@ -13,5 +13,7 @@ interface PostRepository : JpaRepository<Post, Long>, PostCustomRepository {
     fun findRandomPosts(): List<PostInfo>
 
     @Query(PostSql.COUNT_OF_POST_BY_WRITER_QUERY)
-    fun countOfPostByWriter(@Param(PostSql.WRITER_ID) writerId: UUID): Long
+    fun countOfPostByWriter(
+        @Param(PostSql.WRITER_ID) writerId: UUID
+    ): Long
 }

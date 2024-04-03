@@ -10,18 +10,20 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class LikesCommandService @Autowired constructor(
-    private val likesRepository: LikesRepository
-) {
-    fun createLikes(createLikes: CreateLikes) {
-        with(createLikes) {
-            Likes.create(memberId!!, postId!!).also { likesRepository.save(it) }
+class LikesCommandService
+    @Autowired
+    constructor(
+        private val likesRepository: LikesRepository
+    ) {
+        fun createLikes(createLikes: CreateLikes) {
+            with(createLikes) {
+                Likes.create(memberId!!, postId!!).also { likesRepository.save(it) }
+            }
         }
-    }
 
-    fun removeLikes(removeLikes: RemoveLikes) {
-        with(removeLikes) {
-            likesRepository.findLikesById(memberId!!, postId!!).also { likesRepository.delete(it) }
+        fun removeLikes(removeLikes: RemoveLikes) {
+            with(removeLikes) {
+                likesRepository.findLikesById(memberId!!, postId!!).also { likesRepository.delete(it) }
+            }
         }
     }
-}

@@ -9,6 +9,8 @@ object CommentsResponse {
     private const val REMOVE_COMMENTS_SUCCESS = "댓글을 성공적으로 삭제하였습니다."
 
     fun createCommentsSuccess() = ResponseEntity.status(HttpStatus.CREATED).body(CREATE_COMMENTS_SUCCESS)
+
     fun editCommentsSuccess() = ResponseEntity.ok(EDIT_COMMENTS_SUCCESS)
+
     fun removeCommentsSuccess() = ResponseEntity.ok(REMOVE_COMMENTS_SUCCESS)
 }

@@ -36,30 +36,34 @@ class RedisConfig(
 
     @Bean
     fun cacheManager(): CacheManager {
-        val objectMapper = ObjectMapper()
-            .registerModules(
-                JavaTimeModule(),
-                KotlinModule.Builder()
-                    .withReflectionCacheSize(RedisConstant.REFLECTION_CACHE_SIZE)
-                    .configure(KotlinFeature.NullToEmptyCollection, false)
-                    .configure(KotlinFeature.NullToEmptyMap, false)
-                    .configure(KotlinFeature.NullIsSameAsDefault, false)
-                    .configure(KotlinFeature.SingletonSupport, false)
-                    .configure(KotlinFeature.StrictNullChecks, false)
-                    .build()
-            )
-            .activateDefaultTyping(
-                BasicPolymorphicTypeValidator.builder()
-                    .allowIfBaseType(Any::class.java).build(), ObjectMapper.DefaultTyping.EVERYTHING
-            )
-        val configuration = RedisCacheConfiguration.defaultCacheConfig()
-            .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(StringRedisSerializer()))
-            .serializeValuesWith(
-                RedisSerializationContext.SerializationPair.fromSerializer(
-                    GenericJackson2JsonRedisSerializer(objectMapper)
-                ))
-            .entryTtl(Duration.ofMinutes(RedisConstant.TTL))
-            .disableCachingNullValues()
+        val objectMapper =
+            ObjectMapper()
+                .registerModules(
+                    JavaTimeModule(),
+                    KotlinModule.Builder()
+                        .withReflectionCacheSize(RedisConstant.REFLECTION_CACHE_SIZE)
+                        .configure(KotlinFeature.NullToEmptyCollection, false)
+                        .configure(KotlinFeature.NullToEmptyMap, false)
+                        .configure(KotlinFeature.NullIsSameAsDefault, false)
+                        .configure(KotlinFeature.SingletonSupport, false)
+                        .configure(KotlinFeature.StrictNullChecks, false)
+                        .build()
+                )
+                .activateDefaultTyping(
+                    BasicPolymorphicTypeValidator.builder()
+                        .allowIfBaseType(Any::class.java).build(),
+                    ObjectMapper.DefaultTyping.EVERYTHING
+                )
+        val configuration =
+            RedisCacheConfiguration.defaultCacheConfig()
+                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(StringRedisSerializer()))
+                .serializeValuesWith(
+                    RedisSerializationContext.SerializationPair.fromSerializer(
+                        GenericJackson2JsonRedisSerializer(objectMapper)
+                    )
+                )
+                .entryTtl(Duration.ofMinutes(RedisConstant.TTL))
+                .disableCachingNullValues()
         return RedisCacheManager.RedisCacheManagerBuilder
             .fromConnectionFactory(lettuceConnectionFactory())
             .cacheDefaults(configuration)

@@ -26,7 +26,10 @@ class ReportStateCustomRepositoryImpl(
         return jpaQueryFactory.selectFrom(reportState)
             .join(reportState.member, member)
             .where(member.id.eq(memberId))
-            .fetchOne() ?: throw ReportStateException(RepostStateExceptionMessage.REPORT_STATE_IS_NULL, memberId.toString())
+            .fetchOne() ?: throw ReportStateException(
+            RepostStateExceptionMessage.REPORT_STATE_IS_NULL,
+            memberId.toString()
+        )
     }
 
     override fun findReportStateInfoByMemberId(memberId: UUID): ReportStateInfo {

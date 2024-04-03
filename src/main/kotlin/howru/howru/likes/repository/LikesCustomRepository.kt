@@ -6,7 +6,18 @@ import howru.howru.likes.dto.response.LikesBelongPostInfo
 import java.util.*
 
 interface LikesCustomRepository {
-    fun findLikesById(memberId: UUID, postId: Long): Likes
-    fun findLikesBelongMember(memberId: UUID, lastTimestamp: Int?): List<LikesBelongMemberInfo>
-    fun findLikesBelongPost(postId: Long, lastTimestamp: Int?): List<LikesBelongPostInfo>
+    fun findLikesById(
+        memberId: UUID,
+        postId: Long
+    ): Likes
+
+    fun findLikesBelongMember(
+        memberId: UUID,
+        lastTimestamp: Int?
+    ): List<LikesBelongMemberInfo>
+
+    fun findLikesBelongPost(
+        postId: Long,
+        lastTimestamp: Int?
+    ): List<LikesBelongPostInfo>
 }

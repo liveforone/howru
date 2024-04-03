@@ -7,7 +7,10 @@ class RefreshToken private constructor(
     var refreshToken: String
 ) {
     companion object {
-        fun create(id: UUID, refreshToken: String) = RefreshToken(id, refreshToken)
+        fun create(
+            id: UUID,
+            refreshToken: String
+        ) = RefreshToken(id, refreshToken)
     }
 
     fun reissueRefreshToken(reissuedRefreshToken: String) {

@@ -13,6 +13,9 @@ class Subscribe private constructor(
     @Column(updatable = false) val timestamp: Int = getCurrentTimestamp()
 ) {
     companion object {
-        fun create(followeeId: UUID, followerId: UUID) = Subscribe(followeeId, followerId)
+        fun create(
+            followeeId: UUID,
+            followerId: UUID
+        ) = Subscribe(followeeId, followerId)
     }
 }

@@ -14,7 +14,9 @@ import java.time.LocalDate
 @Entity
 class ReportState private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long? = null,
-    @OneToOne(fetch = FetchType.LAZY) @JoinColumn(updatable = false) @OnDelete(action = OnDeleteAction.CASCADE) val member: Member,
+    @OneToOne(
+        fetch = FetchType.LAZY
+    ) @JoinColumn(updatable = false) @OnDelete(action = OnDeleteAction.CASCADE) val member: Member,
     @Convert(converter = MemberStateConverter::class) @Column(
         nullable = false,
         columnDefinition = ReportStateConstant.MEMBER_STATE_TYPE
@@ -62,8 +64,14 @@ class ReportState private constructor(
         }
 
         when {
-            reportCount >= ReportStateConstant.SUSPEND_FOREVER_CNT -> updateModifiedStateDate(MemberState.SUSPEND_FOREVER)
-            reportCount >= ReportStateConstant.SUSPEND_SIX_MONTH_CNT -> updateModifiedStateDate(MemberState.SUSPEND_SIX_MONTH)
+            reportCount >= ReportStateConstant.SUSPEND_FOREVER_CNT ->
+                updateModifiedStateDate(
+                    MemberState.SUSPEND_FOREVER
+                )
+            reportCount >= ReportStateConstant.SUSPEND_SIX_MONTH_CNT ->
+                updateModifiedStateDate(
+                    MemberState.SUSPEND_SIX_MONTH
+                )
             reportCount >= ReportStateConstant.SUSPEND_MONTH_CNT -> updateModifiedStateDate(MemberState.SUSPEND_MONTH)
         }
     }

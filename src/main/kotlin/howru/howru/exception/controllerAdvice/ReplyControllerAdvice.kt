@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class ReplyControllerAdvice {
-
     @ExceptionHandler(ReplyException::class)
     fun handleReplyException(replyException: ReplyException): ResponseEntity<String> {
         return ResponseEntity

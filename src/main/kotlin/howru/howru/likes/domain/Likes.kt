@@ -16,6 +16,9 @@ class Likes private constructor(
     @Column(updatable = false) val timestamp: Int = getCurrentTimestamp()
 ) {
     companion object {
-        fun create(memberId: UUID, postId: Long) = Likes(memberId, postId)
+        fun create(
+            memberId: UUID,
+            postId: Long
+        ) = Likes(memberId, postId)
     }
 }

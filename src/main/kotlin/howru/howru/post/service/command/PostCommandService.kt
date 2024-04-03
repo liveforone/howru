@@ -14,30 +14,38 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class PostCommandService @Autowired constructor(
-    private val postRepository: PostRepository,
-    private val memberRepository: MemberCustomRepository
-) {
-    fun createPost(createPost: CreatePost): Long {
-        return with(createPost) {
-            Post.create(writer = memberRepository.findMemberById(writerId!!), content!!)
-                .run { postRepository.save(this).id!! }
+class PostCommandService
+    @Autowired
+    constructor(
+        private val postRepository: PostRepository,
+        private val memberRepository: MemberCustomRepository
+    ) {
+        fun createPost(createPost: CreatePost): Long {
+            return with(createPost) {
+                Post.create(writer = memberRepository.findMemberById(writerId!!), content!!)
+                    .run { postRepository.save(this).id!! }
+            }
         }
-    }
 
-    @CacheEvict(cacheNames = [PostCache.POST_DETAIL_NAME], key = PostCache.POST_DETAIL_KEY)
-    fun editPostContent(id: Long, updatePostContent: UpdatePostContent) {
-        with(updatePostContent) {
-            postRepository.findPostByIdAndWriter(id, writerId!!)
-                .also { it.editContent(content!!) }
+        @CacheEvict(cacheNames = [PostCache.POST_DETAIL_NAME], key = PostCache.POST_DETAIL_KEY)
+        fun editPostContent(
+            id: Long,
+            updatePostContent: UpdatePostContent
+        ) {
+            with(updatePostContent) {
+                postRepository.findPostByIdAndWriter(id, writerId!!)
+                    .also { it.editContent(content!!) }
+            }
         }
-    }
 
-    @CacheEvict(cacheNames = [PostCache.POST_DETAIL_NAME], key = PostCache.POST_DETAIL_KEY)
-    fun removePost(id: Long, removePost: RemovePost) {
-        with(removePost) {
-            postRepository.findPostByIdAndWriter(id, writerId!!)
-                .also { postRepository.delete(it) }
+        @CacheEvict(cacheNames = [PostCache.POST_DETAIL_NAME], key = PostCache.POST_DETAIL_KEY)
+        fun removePost(
+            id: Long,
+            removePost: RemovePost
+        ) {
+            with(removePost) {
+                postRepository.findPostByIdAndWriter(id, writerId!!)
+                    .also { postRepository.delete(it) }
+            }
         }
     }
-}

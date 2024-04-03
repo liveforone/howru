@@ -15,13 +15,19 @@ class SubscribeCustomRepositoryImpl(
     private val jpaQueryFactory: JPAQueryFactory,
     private val subscribe: QSubscribe = QSubscribe.subscribe
 ) : SubscribeCustomRepository {
-    override fun findSubscribeById(followeeId: UUID, followerId: UUID): Subscribe {
+    override fun findSubscribeById(
+        followeeId: UUID,
+        followerId: UUID
+    ): Subscribe {
         return jpaQueryFactory.selectFrom(subscribe)
             .where(subscribe.followeeId.eq(followeeId).and(subscribe.followerId.eq(followerId)))
             .fetchOne() ?: throw SubscribeException(SubscribeExceptionMessage.SUBSCRIBE_IS_NULL, followerId)
     }
 
-    override fun findSubscribesByFollower(followerId: UUID, lastTimestamp: Int?): List<SubscribeInfo> {
+    override fun findSubscribesByFollower(
+        followerId: UUID,
+        lastTimestamp: Int?
+    ): List<SubscribeInfo> {
         return jpaQueryFactory.select(
             Projections.constructor(
                 SubscribeInfo::class.java,
@@ -36,7 +42,10 @@ class SubscribeCustomRepositoryImpl(
             .fetch()
     }
 
-    override fun findSubscribesByFollowee(followeeId: UUID, lastTimestamp: Int?): List<SubscribeInfo> {
+    override fun findSubscribesByFollowee(
+        followeeId: UUID,
+        lastTimestamp: Int?
+    ): List<SubscribeInfo> {
         return jpaQueryFactory.select(
             Projections.constructor(
                 SubscribeInfo::class.java,
@@ -60,5 +69,7 @@ class SubscribeCustomRepositoryImpl(
     }
 
     private fun ltTimestamp(lastTimestamp: Int?): BooleanExpression? =
-        lastTimestamp?.takeIf { it > 0 }?.let { subscribe.timestamp.lt(it) }
+        lastTimestamp?.takeIf {
+            it > 0
+        }?.let { subscribe.timestamp.lt(it) }
 }

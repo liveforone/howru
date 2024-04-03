@@ -11,15 +11,15 @@ import org.springframework.data.repository.query.Param
 import java.time.LocalDate
 
 interface AdvertisementRepository : JpaRepository<Advertisement, Long>, AdvertisementCustomRepository {
-
     @Query(AdvertisementSql.RANDOM_AD_QUERY)
     fun findRandomAd(): AdvertisementInfo
 
     @Modifying(clearAutomatically = true)
     @Query(AdvertisementSql.DELETE_EXPIRED_QUERY)
     fun deleteExpiredAd(
-        @Param(AdvertisementSql.DELETE_EXPIRED_PARAM) nowDate: Int = getDateDigit(
-            LocalDate.now().minusMonths(AdvertisementSql.THREE_MONTH)
-        )
+        @Param(AdvertisementSql.DELETE_EXPIRED_PARAM) nowDate: Int =
+            getDateDigit(
+                LocalDate.now().minusMonths(AdvertisementSql.THREE_MONTH)
+            )
     )
 }

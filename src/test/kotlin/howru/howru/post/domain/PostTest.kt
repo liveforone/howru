@@ -5,10 +5,9 @@ import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 
 class PostTest {
-
     @Test
     fun editContentTest() {
-        //given
+        // given
         val email = "post_edit_test@gmail.com"
         val pw = "1234"
         val nickName = "writer"
@@ -16,11 +15,11 @@ class PostTest {
         val content = "test_content"
         val post = Post.create(writer, content)
 
-        //when
+        // when
         val updatedContent = "updated_content"
         post.editContent(updatedContent)
 
-        //then
+        // then
         Assertions.assertThat(post.content).isEqualTo(updatedContent)
     }
 }

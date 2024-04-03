@@ -5,65 +5,64 @@ import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 
 class MemberTest {
-
     @Test
     fun createAdminTest() {
-        //given
+        // given
         val email = "admin_howru@gmail.com"
         val pw = "1234"
         val nickName = "nickName"
 
-        //when
+        // when
         val member = Member.create(email, pw, nickName)
 
-        //then
+        // then
         Assertions.assertThat(member.auth).isEqualTo(Role.ADMIN)
     }
 
     @Test
     fun updatePwTest() {
-        //given
+        // given
         val email = "pw_test@gmail.com"
         val pw = "1234"
         val nickName = "nickName"
         val member = Member.create(email, pw, nickName)
 
-        //when
+        // when
         val updatedPw = "1111"
         member.updatePw(updatedPw, pw)
 
-        //then
+        // then
         Assertions.assertThat(isMatchPassword(updatedPw, member.pw)).isTrue()
     }
 
     @Test
     fun lockOnTest() {
-        //given
+        // given
         val email = "lock_on_test@gmail.com"
         val pw = "1234"
         val nickName = "nickName"
         val member = Member.create(email, pw, nickName)
 
-        //when
+        // when
         member.lockOn()
 
-        //then
+        // then
         Assertions.assertThat(member.memberLock).isEqualTo(MemberLock.ON)
     }
 
     @Test
     fun lockOffTest() {
-        //given
+        // given
         val email = "lock_off_test@gmail.com"
         val pw = "1234"
         val nickName = "nickName"
         val member = Member.create(email, pw, nickName)
         member.lockOn()
 
-        //when
+        // when
         member.lockOff()
 
-        //then
+        // then
         Assertions.assertThat(member.memberLock).isEqualTo(MemberLock.OFF)
     }
 }

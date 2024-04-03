@@ -8,8 +8,10 @@ import java.util.*
 
 @Service
 @Transactional(readOnly = true)
-class MemberQueryService @Autowired constructor(
-    private val memberRepository: MemberCustomRepository
-) {
-    fun getMemberById(id: UUID) = memberRepository.findMemberInfoById(id)
-}
+class MemberQueryService
+    @Autowired
+    constructor(
+        private val memberRepository: MemberCustomRepository
+    ) {
+        fun getMemberById(id: UUID) = memberRepository.findMemberInfoById(id)
+    }

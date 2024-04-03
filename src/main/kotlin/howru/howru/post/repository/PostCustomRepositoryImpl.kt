@@ -21,7 +21,10 @@ class PostCustomRepositoryImpl(
             .fetchOne() ?: throw PostException(PostExceptionMessage.POST_IS_NULL, id)
     }
 
-    override fun findPostByIdAndWriter(id: Long, writerId: UUID): Post {
+    override fun findPostByIdAndWriter(
+        id: Long,
+        writerId: UUID
+    ): Post {
         return jpaQueryFactory.selectFrom(post)
             .where(post.id.eq(id).and(post.writer.id.eq(writerId)))
             .fetchOne() ?: throw PostException(PostExceptionMessage.POST_IS_NULL, id)
@@ -36,14 +39,17 @@ class PostCustomRepositoryImpl(
                 post.content,
                 post.postState,
                 post.createdDatetime
-            ),
+            )
         )
             .from(post)
             .where(post.id.eq(id))
             .fetchOne() ?: throw PostException(PostExceptionMessage.POST_IS_NULL, id)
     }
 
-    override fun findPostsByWriter(memberId: UUID, lastId: Long?): List<PostInfo> {
+    override fun findPostsByWriter(
+        memberId: UUID,
+        lastId: Long?
+    ): List<PostInfo> {
         return jpaQueryFactory.select(
             Projections.constructor(
                 PostInfo::class.java,
@@ -52,7 +58,7 @@ class PostCustomRepositoryImpl(
                 post.content,
                 post.postState,
                 post.createdDatetime
-            ),
+            )
         )
             .from(post)
             .where(post.writer.id.eq(memberId).and(ltLastId(lastId)))
@@ -70,7 +76,7 @@ class PostCustomRepositoryImpl(
                 post.content,
                 post.postState,
                 post.createdDatetime
-            ),
+            )
         )
             .from(post)
             .where(ltLastId(lastId))
@@ -79,7 +85,10 @@ class PostCustomRepositoryImpl(
             .fetch()
     }
 
-    override fun findPostsBySomeone(someoneId: UUID, lastId: Long?): List<PostInfo> {
+    override fun findPostsBySomeone(
+        someoneId: UUID,
+        lastId: Long?
+    ): List<PostInfo> {
         return jpaQueryFactory.select(
             Projections.constructor(
                 PostInfo::class.java,
@@ -88,7 +97,7 @@ class PostCustomRepositoryImpl(
                 post.content,
                 post.postState,
                 post.createdDatetime
-            ),
+            )
         )
             .from(post)
             .where(post.writer.id.eq(someoneId).and(ltLastId(lastId)))
@@ -97,7 +106,10 @@ class PostCustomRepositoryImpl(
             .fetch()
     }
 
-    override fun findPostsByFollowee(followeeId: List<UUID>, lastId: Long?): List<PostInfo> {
+    override fun findPostsByFollowee(
+        followeeId: List<UUID>,
+        lastId: Long?
+    ): List<PostInfo> {
         return jpaQueryFactory.select(
             Projections.constructor(
                 PostInfo::class.java,
@@ -106,7 +118,7 @@ class PostCustomRepositoryImpl(
                 post.content,
                 post.postState,
                 post.createdDatetime
-            ),
+            )
         )
             .from(post)
             .where(post.writer.id.`in`(followeeId).and(ltLastId(lastId)))
@@ -115,7 +127,10 @@ class PostCustomRepositoryImpl(
             .fetch()
     }
 
-    override fun findRecommendPosts(keyword: String?, lastId: Long?): List<PostInfo> {
+    override fun findRecommendPosts(
+        keyword: String?,
+        lastId: Long?
+    ): List<PostInfo> {
         return jpaQueryFactory.select(
             Projections.constructor(
                 PostInfo::class.java,
@@ -124,7 +139,7 @@ class PostCustomRepositoryImpl(
                 post.content,
                 post.postState,
                 post.createdDatetime
-            ),
+            )
         )
             .from(post)
             .where(post.content.startsWith(keyword).and(ltLastId(lastId)))
@@ -133,6 +148,5 @@ class PostCustomRepositoryImpl(
             .fetch()
     }
 
-    private fun ltLastId(lastId: Long?): BooleanExpression? =
-        lastId?.takeIf { it > 0 }?.let { post.id.lt(it) }
+    private fun ltLastId(lastId: Long?): BooleanExpression? = lastId?.takeIf { it > 0 }?.let { post.id.lt(it) }
 }

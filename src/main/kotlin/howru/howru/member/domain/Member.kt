@@ -33,7 +33,11 @@ class Member private constructor(
     companion object {
         private fun findFitAuth(email: String) = if (email == MemberConstant.ADMIN_EMAIL) Role.ADMIN else Role.MEMBER
 
-        fun create(email: String, pw: String, nickName: String): Member {
+        fun create(
+            email: String,
+            pw: String,
+            nickName: String
+        ): Member {
             return Member(
                 auth = findFitAuth(email),
                 email = email,
@@ -45,8 +49,13 @@ class Member private constructor(
 
     fun isAdmin() = auth == Role.ADMIN
 
-    fun updatePw(newPassword: String, oldPassword: String) {
-        require (isMatchPassword(oldPassword, pw)) { throw MemberException(MemberExceptionMessage.WRONG_PASSWORD, id.toString()) }
+    fun updatePw(
+        newPassword: String,
+        oldPassword: String
+    ) {
+        require(isMatchPassword(oldPassword, pw)) {
+            throw MemberException(MemberExceptionMessage.WRONG_PASSWORD, id.toString())
+        }
         pw = encodePassword(newPassword)
     }
 
@@ -63,17 +72,24 @@ class Member private constructor(
     }
 
     fun recovery(inputPw: String) {
-        require (isMatchPassword(inputPw, pw)) { throw MemberException(MemberExceptionMessage.WRONG_PASSWORD, id.toString()) }
+        require(
+            isMatchPassword(inputPw, pw)
+        ) { throw MemberException(MemberExceptionMessage.WRONG_PASSWORD, id.toString()) }
         this.auth = Role.MEMBER
     }
 
-
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
         arrayListOf<GrantedAuthority>(SimpleGrantedAuthority(auth.auth))
+
     override fun getUsername() = id.toString()
+
     override fun getPassword() = pw
+
     override fun isAccountNonExpired() = true
+
     override fun isAccountNonLocked() = true
+
     override fun isCredentialsNonExpired() = true
+
     override fun isEnabled() = true
 }

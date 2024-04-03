@@ -10,5 +10,5 @@ inline fun <reified T> T.logger() = LoggerFactory.getLogger(T::class.java)!!
 class HowruApplication
 
 fun main(args: Array<String>) {
-	runApplication<HowruApplication>(*args)
+    runApplication<HowruApplication>(*args)
 }

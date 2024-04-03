@@ -40,7 +40,7 @@ fun convertDateToLocalDate(date: Int): LocalDate {
 
 private fun checkSingleDigit(digit: Int): String {
     return if (digit in 0..9) {
-        "0${digit}"
+        "0$digit"
     } else {
         digit.toString()
     }

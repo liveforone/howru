@@ -2,9 +2,9 @@ package howru.howru.member.service.command
 
 import howru.howru.exception.exception.MemberException
 import howru.howru.exception.message.MemberExceptionMessage
-import howru.howru.jwt.filterLogic.JwtTokenProvider
 import howru.howru.globalUtil.isMatchPassword
 import howru.howru.jwt.dto.JwtTokenInfo
+import howru.howru.jwt.filterLogic.JwtTokenProvider
 import howru.howru.jwt.service.JwtTokenService
 import howru.howru.logger
 import howru.howru.member.domain.Member
@@ -22,72 +22,83 @@ import java.util.*
 
 @Service
 @Transactional
-class MemberCommandService @Autowired constructor(
-    private val memberRepository: MemberRepository,
-    private val reportStateCommandService: ReportStateCommandService,
-    private val authenticationManagerBuilder: AuthenticationManagerBuilder,
-    private val jwtTokenProvider: JwtTokenProvider,
-    private val jwtTokenService: JwtTokenService
-) {
-
-    fun signup(signupRequest: SignupRequest) {
-        with(signupRequest) {
-            Member.create(email!!, pw!!, nickName!!).also {
-                memberRepository.save(it)
-                reportStateCommandService.createRepostState(it)
+class MemberCommandService
+    @Autowired
+    constructor(
+        private val memberRepository: MemberRepository,
+        private val reportStateCommandService: ReportStateCommandService,
+        private val authenticationManagerBuilder: AuthenticationManagerBuilder,
+        private val jwtTokenProvider: JwtTokenProvider,
+        private val jwtTokenService: JwtTokenService
+    ) {
+        fun signup(signupRequest: SignupRequest) {
+            with(signupRequest) {
+                Member.create(email!!, pw!!, nickName!!).also {
+                    memberRepository.save(it)
+                    reportStateCommandService.createRepostState(it)
+                }
             }
         }
-    }
 
-    fun login(loginRequest: LoginRequest): JwtTokenInfo {
-        val authentication: Authentication = authenticationManagerBuilder
-            .`object`
-            .authenticate(UsernamePasswordAuthenticationToken(loginRequest.email, loginRequest.pw))
+        fun login(loginRequest: LoginRequest): JwtTokenInfo {
+            val authentication: Authentication =
+                authenticationManagerBuilder
+                    .`object`
+                    .authenticate(UsernamePasswordAuthenticationToken(loginRequest.email, loginRequest.pw))
 
-        return jwtTokenProvider.generateToken(authentication).also {
-            jwtTokenService.createRefreshToken(it.id, it.refreshToken)
-        }
-    }
-
-    fun reissueJwtToken(id: UUID, refreshToken: String): JwtTokenInfo {
-        val auth = memberRepository.findAuthById(id)
-        return jwtTokenService.reissueToken(id, refreshToken, auth)
-    }
-
-    fun updatePassword(updatePassword: UpdatePassword, id: UUID) {
-        with(updatePassword) {
-            memberRepository.findMemberById(id).also { it.updatePw(newPassword!!, oldPassword!!) }
-        }
-    }
-
-    fun memberLockOn(id: UUID) {
-        memberRepository.findMemberById(id).also { it.lockOn() }
-    }
-
-    fun memberLockOff(id: UUID) {
-        memberRepository.findMemberById(id).also { it.lockOff() }
-    }
-
-    fun logout(id: UUID) {
-        jwtTokenService.removeRefreshToken(id)
-    }
-
-    fun recoveryMember(recoveryRequest: RecoveryRequest) {
-        with(recoveryRequest) {
-            memberRepository.findMemberByEmailIncludeWithdraw(email!!).also { it.recovery(pw!!) }
-        }
-    }
-
-    fun withdraw(withdrawRequest: WithdrawRequest, id: UUID) {
-        memberRepository.findMemberById(id)
-            .takeIf { isMatchPassword(withdrawRequest.pw!!, it.pw) }
-            ?.also {
-                it.withdraw()
-                jwtTokenService.removeRefreshToken(id)
+            return jwtTokenProvider.generateToken(authentication).also {
+                jwtTokenService.createRefreshToken(it.id, it.refreshToken)
             }
-            ?: run {
-                logger().warn(MemberServiceLog.WRONG_PW + id)
-                throw MemberException(MemberExceptionMessage.WRONG_PASSWORD, id.toString())
+        }
+
+        fun reissueJwtToken(
+            id: UUID,
+            refreshToken: String
+        ): JwtTokenInfo {
+            val auth = memberRepository.findAuthById(id)
+            return jwtTokenService.reissueToken(id, refreshToken, auth)
+        }
+
+        fun updatePassword(
+            updatePassword: UpdatePassword,
+            id: UUID
+        ) {
+            with(updatePassword) {
+                memberRepository.findMemberById(id).also { it.updatePw(newPassword!!, oldPassword!!) }
             }
+        }
+
+        fun memberLockOn(id: UUID) {
+            memberRepository.findMemberById(id).also { it.lockOn() }
+        }
+
+        fun memberLockOff(id: UUID) {
+            memberRepository.findMemberById(id).also { it.lockOff() }
+        }
+
+        fun logout(id: UUID) {
+            jwtTokenService.removeRefreshToken(id)
+        }
+
+        fun recoveryMember(recoveryRequest: RecoveryRequest) {
+            with(recoveryRequest) {
+                memberRepository.findMemberByEmailIncludeWithdraw(email!!).also { it.recovery(pw!!) }
+            }
+        }
+
+        fun withdraw(
+            withdrawRequest: WithdrawRequest,
+            id: UUID
+        ) {
+            memberRepository.findMemberById(id)
+                .takeIf { isMatchPassword(withdrawRequest.pw!!, it.pw) }
+                ?.also {
+                    it.withdraw()
+                    jwtTokenService.removeRefreshToken(id)
+                }
+                ?: run {
+                    logger().warn(MemberServiceLog.WRONG_PW + id)
+                    throw MemberException(MemberExceptionMessage.WRONG_PASSWORD, id.toString())
+                }
+        }
     }
-}

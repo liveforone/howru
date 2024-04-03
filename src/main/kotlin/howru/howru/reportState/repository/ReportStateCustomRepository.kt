@@ -6,6 +6,8 @@ import java.util.*
 
 interface ReportStateCustomRepository {
     fun findReportStateByMemberEmail(email: String): ReportState
+
     fun findReportStateByMemberId(memberId: UUID): ReportState
+
     fun findReportStateInfoByMemberId(memberId: UUID): ReportStateInfo
 }

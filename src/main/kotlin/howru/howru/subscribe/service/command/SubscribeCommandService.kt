@@ -10,20 +10,22 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class SubscribeCommandService @Autowired constructor(
-    private val subscribeRepository: SubscribeRepository
-) {
-    fun createSubscribe(createSubscribe: CreateSubscribe) {
-        with(createSubscribe) {
-            Subscribe.create(followeeId!!, followerId!!)
-                .also { subscribeRepository.save(it) }
+class SubscribeCommandService
+    @Autowired
+    constructor(
+        private val subscribeRepository: SubscribeRepository
+    ) {
+        fun createSubscribe(createSubscribe: CreateSubscribe) {
+            with(createSubscribe) {
+                Subscribe.create(followeeId!!, followerId!!)
+                    .also { subscribeRepository.save(it) }
+            }
         }
-    }
 
-    fun unsubscribe(unsubscribeRequest: UnsubscribeRequest) {
-        with(unsubscribeRequest) {
-            subscribeRepository.findSubscribeById(followeeId!!, followerId!!)
-                .also { subscribeRepository.delete(it) }
+        fun unsubscribe(unsubscribeRequest: UnsubscribeRequest) {
+            with(unsubscribeRequest) {
+                subscribeRepository.findSubscribeById(followeeId!!, followerId!!)
+                    .also { subscribeRepository.delete(it) }
+            }
         }
     }
-}

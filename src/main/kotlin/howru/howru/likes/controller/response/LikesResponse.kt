@@ -8,5 +8,6 @@ object LikesResponse {
     private const val DISLIKE_SUCCESS = "좋아요 취소에 성공하였습니다."
 
     fun likeSuccess() = ResponseEntity.status(HttpStatus.CREATED).body(LIKE_SUCCESS)
+
     fun dislikeSuccess() = ResponseEntity.ok(DISLIKE_SUCCESS)
 }

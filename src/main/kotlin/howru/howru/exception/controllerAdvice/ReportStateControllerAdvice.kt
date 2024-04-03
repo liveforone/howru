@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class ReportStateControllerAdvice {
-
     @ExceptionHandler(ReportStateException::class)
     fun handleReportStateException(reportStateException: ReportStateException): ResponseEntity<String> {
         return ResponseEntity

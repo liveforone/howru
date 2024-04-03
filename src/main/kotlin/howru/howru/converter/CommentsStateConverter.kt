@@ -7,5 +7,6 @@ import jakarta.persistence.Converter
 @Converter
 class CommentsStateConverter : AttributeConverter<CommentsState, String> {
     override fun convertToDatabaseColumn(attribute: CommentsState) = attribute.name
+
     override fun convertToEntityAttribute(dbData: String) = CommentsState.valueOf(dbData)
 }

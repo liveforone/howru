@@ -5,50 +5,49 @@ import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 
 class ReportStateTest {
-
     @Test
     fun releaseSuspendTest() {
-        //given
+        // given
         val email = "test_member@gmail.com"
         val pw = "1234"
         val nickName = "test_nickName"
         val member = Member.create(email, pw, nickName)
         val reportState = ReportState.create(member)
 
-        //when
+        // when
         repeat(3) { reportState.addReport() }
         reportState.releaseSuspend()
 
-        //then
+        // then
         Assertions.assertThat(reportState.memberState).isEqualTo(MemberState.SUSPEND_MONTH)
     }
 
     @Test
     fun isSuspendTest() {
-        //given
+        // given
         val email = "test_member@gmail.com"
         val pw = "1234"
         val nickName = "test_nickName"
         val member = Member.create(email, pw, nickName)
         val reportState = ReportState.create(member)
 
-        //then
+        // then
         Assertions.assertThat(reportState.isNotSuspend()).isTrue()
     }
 
     @Test
     fun addReportTest() {
-        //given
+        // given
         val email = "test_member@gmail.com"
         val pw = "1234"
         val nickName = "test_nickName"
         val member = Member.create(email, pw, nickName)
         val reportState = ReportState.create(member)
 
-        //when
+        // when
         repeat(3) { reportState.addReport() }
 
-        //then
+        // then
         Assertions.assertThat(reportState.isNotSuspend()).isFalse()
     }
 }

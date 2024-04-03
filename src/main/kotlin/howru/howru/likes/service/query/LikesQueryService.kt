@@ -8,10 +8,20 @@ import java.util.UUID
 
 @Service
 @Transactional(readOnly = true)
-class LikesQueryService @Autowired constructor(
-    private val likesRepository: LikesRepository
-) {
-    fun getCountOfLikesByPost(postId: Long) = likesRepository.countOfLikesByPost(postId)
-    fun getLikesBelongMember(memberId: UUID, lastTimestamp: Int?) = likesRepository.findLikesBelongMember(memberId, lastTimestamp)
-    fun getLikesBelongPost(postId: Long, lastTimestamp: Int?) = likesRepository.findLikesBelongPost(postId, lastTimestamp)
-}
+class LikesQueryService
+    @Autowired
+    constructor(
+        private val likesRepository: LikesRepository
+    ) {
+        fun getCountOfLikesByPost(postId: Long) = likesRepository.countOfLikesByPost(postId)
+
+        fun getLikesBelongMember(
+            memberId: UUID,
+            lastTimestamp: Int?
+        ) = likesRepository.findLikesBelongMember(memberId, lastTimestamp)
+
+        fun getLikesBelongPost(
+            postId: Long,
+            lastTimestamp: Int?
+        ) = likesRepository.findLikesBelongPost(postId, lastTimestamp)
+    }
