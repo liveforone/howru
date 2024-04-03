@@ -52,41 +52,43 @@ class PostCustomRepositoryImpl(
         memberId: UUID,
         lastId: Long?
     ): PostPage {
-        val postInfoList = jpaQueryFactory.select(
-            Projections.constructor(
-                PostInfo::class.java,
-                post.id,
-                post.writer.id,
-                post.content,
-                post.postState,
-                post.createdDatetime
+        val postInfoList =
+            jpaQueryFactory.select(
+                Projections.constructor(
+                    PostInfo::class.java,
+                    post.id,
+                    post.writer.id,
+                    post.content,
+                    post.postState,
+                    post.createdDatetime
+                )
             )
-        )
-            .from(post)
-            .where(post.writer.id.eq(memberId).and(ltLastId(lastId, post) { it.id }))
-            .orderBy(post.id.desc())
-            .limit(PostRepoConstant.LIMIT_PAGE)
-            .fetch()
+                .from(post)
+                .where(post.writer.id.eq(memberId).and(ltLastId(lastId, post) { it.id }))
+                .orderBy(post.id.desc())
+                .limit(PostRepoConstant.LIMIT_PAGE)
+                .fetch()
 
         return PostPage(postInfoList, findLastIdOrDefault(postInfoList) { it.id })
     }
 
     override fun findAllPosts(lastId: Long?): PostPage {
-        val postInfoList = jpaQueryFactory.select(
-            Projections.constructor(
-                PostInfo::class.java,
-                post.id,
-                post.writer.id,
-                post.content,
-                post.postState,
-                post.createdDatetime
+        val postInfoList =
+            jpaQueryFactory.select(
+                Projections.constructor(
+                    PostInfo::class.java,
+                    post.id,
+                    post.writer.id,
+                    post.content,
+                    post.postState,
+                    post.createdDatetime
+                )
             )
-        )
-            .from(post)
-            .where(ltLastId(lastId, post) { it.id })
-            .orderBy(post.id.desc())
-            .limit(PostRepoConstant.LIMIT_PAGE)
-            .fetch()
+                .from(post)
+                .where(ltLastId(lastId, post) { it.id })
+                .orderBy(post.id.desc())
+                .limit(PostRepoConstant.LIMIT_PAGE)
+                .fetch()
 
         return PostPage(postInfoList, findLastIdOrDefault(postInfoList) { it.id })
     }
@@ -95,21 +97,22 @@ class PostCustomRepositoryImpl(
         someoneId: UUID,
         lastId: Long?
     ): PostPage {
-        val postInfoList = jpaQueryFactory.select(
-            Projections.constructor(
-                PostInfo::class.java,
-                post.id,
-                post.writer.id,
-                post.content,
-                post.postState,
-                post.createdDatetime
+        val postInfoList =
+            jpaQueryFactory.select(
+                Projections.constructor(
+                    PostInfo::class.java,
+                    post.id,
+                    post.writer.id,
+                    post.content,
+                    post.postState,
+                    post.createdDatetime
+                )
             )
-        )
-            .from(post)
-            .where(post.writer.id.eq(someoneId).and(ltLastId(lastId, post) { it.id }))
-            .orderBy(post.id.desc())
-            .limit(PostRepoConstant.LIMIT_PAGE)
-            .fetch()
+                .from(post)
+                .where(post.writer.id.eq(someoneId).and(ltLastId(lastId, post) { it.id }))
+                .orderBy(post.id.desc())
+                .limit(PostRepoConstant.LIMIT_PAGE)
+                .fetch()
 
         return PostPage(postInfoList, findLastIdOrDefault(postInfoList) { it.id })
     }
@@ -118,21 +121,22 @@ class PostCustomRepositoryImpl(
         followeeId: List<UUID>,
         lastId: Long?
     ): PostPage {
-        val postInfoList = jpaQueryFactory.select(
-            Projections.constructor(
-                PostInfo::class.java,
-                post.id,
-                post.writer.id,
-                post.content,
-                post.postState,
-                post.createdDatetime
+        val postInfoList =
+            jpaQueryFactory.select(
+                Projections.constructor(
+                    PostInfo::class.java,
+                    post.id,
+                    post.writer.id,
+                    post.content,
+                    post.postState,
+                    post.createdDatetime
+                )
             )
-        )
-            .from(post)
-            .where(post.writer.id.`in`(followeeId).and(ltLastId(lastId, post) { it.id }))
-            .orderBy(post.id.desc())
-            .limit(PostRepoConstant.LIMIT_PAGE)
-            .fetch()
+                .from(post)
+                .where(post.writer.id.`in`(followeeId).and(ltLastId(lastId, post) { it.id }))
+                .orderBy(post.id.desc())
+                .limit(PostRepoConstant.LIMIT_PAGE)
+                .fetch()
 
         return PostPage(postInfoList, findLastIdOrDefault(postInfoList) { it.id })
     }
@@ -141,21 +145,22 @@ class PostCustomRepositoryImpl(
         keyword: String?,
         lastId: Long?
     ): PostPage {
-        val postInfoList = jpaQueryFactory.select(
-            Projections.constructor(
-                PostInfo::class.java,
-                post.id,
-                post.writer.id,
-                post.content,
-                post.postState,
-                post.createdDatetime
+        val postInfoList =
+            jpaQueryFactory.select(
+                Projections.constructor(
+                    PostInfo::class.java,
+                    post.id,
+                    post.writer.id,
+                    post.content,
+                    post.postState,
+                    post.createdDatetime
+                )
             )
-        )
-            .from(post)
-            .where(post.content.startsWith(keyword).and(ltLastId(lastId, post) { it.id }))
-            .orderBy(post.id.desc())
-            .limit(PostRepoConstant.RECOMMEND_LIMIT_PAGE)
-            .fetch()
+                .from(post)
+                .where(post.content.startsWith(keyword).and(ltLastId(lastId, post) { it.id }))
+                .orderBy(post.id.desc())
+                .limit(PostRepoConstant.RECOMMEND_LIMIT_PAGE)
+                .fetch()
 
         return PostPage(postInfoList, findLastIdOrDefault(postInfoList) { it.id })
     }

@@ -47,22 +47,23 @@ class ReplyCustomRepositoryImpl(
         writerId: UUID,
         lastId: Long?
     ): ReplyPage {
-        val replyInfoList = jpaQueryFactory.select(
-            Projections.constructor(
-                ReplyInfo::class.java,
-                reply.id,
-                reply.writer.id,
-                reply.comment.id,
-                reply.content,
-                reply.replyState,
-                reply.createdDatetime
+        val replyInfoList =
+            jpaQueryFactory.select(
+                Projections.constructor(
+                    ReplyInfo::class.java,
+                    reply.id,
+                    reply.writer.id,
+                    reply.comment.id,
+                    reply.content,
+                    reply.replyState,
+                    reply.createdDatetime
+                )
             )
-        )
-            .from(reply)
-            .where(reply.writer.id.eq(writerId).and(ltLastId(lastId, reply) { it.id }))
-            .orderBy(reply.id.desc())
-            .limit(ReplyRepoConstant.LIMIT_PAGE)
-            .fetch()
+                .from(reply)
+                .where(reply.writer.id.eq(writerId).and(ltLastId(lastId, reply) { it.id }))
+                .orderBy(reply.id.desc())
+                .limit(ReplyRepoConstant.LIMIT_PAGE)
+                .fetch()
 
         return ReplyPage(replyInfoList, findLastIdOrDefault(replyInfoList) { it.id })
     }
@@ -71,22 +72,23 @@ class ReplyCustomRepositoryImpl(
         commentId: Long,
         lastId: Long?
     ): ReplyPage {
-        val replyInfoList = jpaQueryFactory.select(
-            Projections.constructor(
-                ReplyInfo::class.java,
-                reply.id,
-                reply.writer.id,
-                reply.comment.id,
-                reply.content,
-                reply.replyState,
-                reply.createdDatetime
+        val replyInfoList =
+            jpaQueryFactory.select(
+                Projections.constructor(
+                    ReplyInfo::class.java,
+                    reply.id,
+                    reply.writer.id,
+                    reply.comment.id,
+                    reply.content,
+                    reply.replyState,
+                    reply.createdDatetime
+                )
             )
-        )
-            .from(reply)
-            .where(reply.comment.id.eq(commentId).and(ltLastId(lastId, reply) { it.id }))
-            .orderBy(reply.id.desc())
-            .limit(ReplyRepoConstant.LIMIT_PAGE)
-            .fetch()
+                .from(reply)
+                .where(reply.comment.id.eq(commentId).and(ltLastId(lastId, reply) { it.id }))
+                .orderBy(reply.id.desc())
+                .limit(ReplyRepoConstant.LIMIT_PAGE)
+                .fetch()
 
         return ReplyPage(replyInfoList, findLastIdOrDefault(replyInfoList) { it.id })
     }

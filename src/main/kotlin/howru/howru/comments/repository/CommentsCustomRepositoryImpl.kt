@@ -53,22 +53,23 @@ class CommentsCustomRepositoryImpl(
         writerId: UUID,
         lastId: Long?
     ): CommentsPage {
-        val commentsInfoList = jpaQueryFactory.select(
-            Projections.constructor(
-                CommentsInfo::class.java,
-                comments.id,
-                comments.writer.id,
-                comments.post.id,
-                comments.content,
-                comments.commentsState,
-                comments.createdDatetime
+        val commentsInfoList =
+            jpaQueryFactory.select(
+                Projections.constructor(
+                    CommentsInfo::class.java,
+                    comments.id,
+                    comments.writer.id,
+                    comments.post.id,
+                    comments.content,
+                    comments.commentsState,
+                    comments.createdDatetime
+                )
             )
-        )
-            .from(comments)
-            .where(comments.writer.id.eq(writerId).and(ltLastId(lastId, comments) { it.id }))
-            .orderBy(comments.id.desc())
-            .limit(CommentsRepoConstant.LIMIT_PAGE)
-            .fetch()
+                .from(comments)
+                .where(comments.writer.id.eq(writerId).and(ltLastId(lastId, comments) { it.id }))
+                .orderBy(comments.id.desc())
+                .limit(CommentsRepoConstant.LIMIT_PAGE)
+                .fetch()
 
         return CommentsPage(commentsInfoList, findLastIdOrDefault(commentsInfoList) { it.id })
     }
@@ -77,22 +78,23 @@ class CommentsCustomRepositoryImpl(
         postId: Long,
         lastId: Long?
     ): CommentsPage {
-        val commentsInfoList = jpaQueryFactory.select(
-            Projections.constructor(
-                CommentsInfo::class.java,
-                comments.id,
-                comments.writer.id,
-                comments.post.id,
-                comments.content,
-                comments.commentsState,
-                comments.createdDatetime
+        val commentsInfoList =
+            jpaQueryFactory.select(
+                Projections.constructor(
+                    CommentsInfo::class.java,
+                    comments.id,
+                    comments.writer.id,
+                    comments.post.id,
+                    comments.content,
+                    comments.commentsState,
+                    comments.createdDatetime
+                )
             )
-        )
-            .from(comments)
-            .where(comments.post.id.eq(postId).and(ltLastId(lastId, comments) { it.id }))
-            .orderBy(comments.id.desc())
-            .limit(CommentsRepoConstant.LIMIT_PAGE)
-            .fetch()
+                .from(comments)
+                .where(comments.post.id.eq(postId).and(ltLastId(lastId, comments) { it.id }))
+                .orderBy(comments.id.desc())
+                .limit(CommentsRepoConstant.LIMIT_PAGE)
+                .fetch()
 
         return CommentsPage(commentsInfoList, findLastIdOrDefault(commentsInfoList) { it.id })
     }
