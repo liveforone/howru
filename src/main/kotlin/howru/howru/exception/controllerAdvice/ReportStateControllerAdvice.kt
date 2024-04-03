@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class ReportStateControllerAdvice {
+
     @ExceptionHandler(ReportStateException::class)
-    fun reportStateExceptionHandle(reportStateException: ReportStateException): ResponseEntity<String> {
+    fun handleReportStateException(reportStateException: ReportStateException): ResponseEntity<String> {
         return ResponseEntity
             .status(reportStateException.repostStateExceptionMessage.status)
             .body(reportStateException.message + reportStateException.memberIdentifier)

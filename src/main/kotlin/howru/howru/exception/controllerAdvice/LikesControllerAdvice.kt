@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 @RestControllerAdvice
 class LikesControllerAdvice {
     @ExceptionHandler(LikesException::class)
-    fun likesExceptionHandle(likesException: LikesException): ResponseEntity<String> {
+    fun handleLikesException(likesException: LikesException): ResponseEntity<String> {
         return ResponseEntity
             .status(likesException.likesExceptionMessage.status)
             .body(likesException.message + likesException.postId)

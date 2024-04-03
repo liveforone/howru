@@ -13,21 +13,21 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 class MemberControllerAdvice {
 
     @ExceptionHandler(BadCredentialsException::class)
-    fun loginFailHandle(): ResponseEntity<String> {
+    fun handleLoginFail(): ResponseEntity<String> {
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .body(MemberAdviceConstant.LOGIN_FAIL)
     }
 
     @ExceptionHandler(MemberException::class)
-    fun memberExceptionHandle(memberException: MemberException): ResponseEntity<String> {
+    fun handleMemberException(memberException: MemberException): ResponseEntity<String> {
         return ResponseEntity
             .status(memberException.memberExceptionMessage.status)
             .body(memberException.message + memberException.memberIdentifier)
     }
 
     @ExceptionHandler(JwtCustomException::class)
-    fun jwtCustomExceptionHandle(jwtCustomException: JwtCustomException): ResponseEntity<String> {
+    fun handleJwtCustomException(jwtCustomException: JwtCustomException): ResponseEntity<String> {
         return ResponseEntity
             .status(jwtCustomException.jwtExceptionMessage.status)
             .body(jwtCustomException.message)
