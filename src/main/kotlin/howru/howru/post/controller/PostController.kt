@@ -1,6 +1,5 @@
 package howru.howru.post.controller
 
-import howru.howru.globalUtil.validateBinding
 import howru.howru.logger
 import howru.howru.post.log.PostControllerLog
 import howru.howru.post.controller.constant.PostParam
@@ -88,11 +87,8 @@ class PostController @Autowired constructor(
 
     @PostMapping(PostUrl.CREATE)
     fun createPost(
-        @RequestBody @Valid createPost: CreatePost,
-        bindingResult: BindingResult
+        @RequestBody @Valid createPost: CreatePost
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         postCommandService.createPost(createPost)
         logger().info(PostControllerLog.CREATE_POST_SUCCESS + createPost.writerId)
 
@@ -102,11 +98,8 @@ class PostController @Autowired constructor(
     @PatchMapping(PostUrl.EDIT_CONTENT)
     fun editPostContent(
         @PathVariable(PostParam.ID) @Positive id: Long,
-        @RequestBody @Valid updatePostContent: UpdatePostContent,
-        bindingResult: BindingResult
+        @RequestBody @Valid updatePostContent: UpdatePostContent
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         postCommandService.editPostContent(id, updatePostContent)
         logger().info(PostControllerLog.EDIT_CONTENT_SUCCESS + id)
 
@@ -117,10 +110,7 @@ class PostController @Autowired constructor(
     fun removePost(
         @PathVariable(PostParam.ID) @Positive id: Long,
         @RequestBody @Valid removePost: RemovePost,
-        bindingResult: BindingResult
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         postCommandService.removePost(id, removePost)
         logger().info(PostControllerLog.DELETE_POST_SUCCESS + id)
 

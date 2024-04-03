@@ -2,7 +2,6 @@ package howru.howru.member.controller
 
 import howru.howru.exception.exception.MemberException
 import howru.howru.exception.message.MemberExceptionMessage
-import howru.howru.globalUtil.validateBinding
 import howru.howru.jwt.dto.JwtTokenInfo
 import howru.howru.logger
 import howru.howru.member.controller.constant.MemberControllerConstant
@@ -18,7 +17,6 @@ import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 import java.util.*
@@ -37,11 +35,8 @@ class MemberController @Autowired constructor(
 
     @PostMapping(MemberUrl.SIGNUP)
     fun signup(
-        @RequestBody @Valid signupRequest: SignupRequest,
-        bindingResult: BindingResult
+        @RequestBody @Valid signupRequest: SignupRequest
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         memberCommandService.signup(signupRequest)
         logger().info(MemberControllerLog.SIGNUP_SUCCESS + signupRequest.email)
 
@@ -51,11 +46,8 @@ class MemberController @Autowired constructor(
     @PostMapping(MemberUrl.LOGIN)
     fun login(
         @RequestBody @Valid loginRequest: LoginRequest,
-        bindingResult: BindingResult,
         response: HttpServletResponse
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         val tokenInfo = memberCommandService.login(loginRequest)
         response.apply {
             addHeader(MemberControllerConstant.ACCESS_TOKEN, tokenInfo.accessToken)
@@ -86,11 +78,8 @@ class MemberController @Autowired constructor(
     @PatchMapping(MemberUrl.UPDATE_PASSWORD)
     fun updatePassword(
         @RequestBody @Valid updatePassword: UpdatePassword,
-        bindingResult: BindingResult,
         principal: Principal
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         val memberId = UUID.fromString(principal.name)
         memberCommandService.updatePassword(updatePassword, memberId)
         logger().info(MemberControllerLog.UPDATE_PW_SUCCESS + memberId)
@@ -127,11 +116,8 @@ class MemberController @Autowired constructor(
 
     @PostMapping(MemberUrl.RECOVERY_MEMBER)
     fun recoveryMember(
-        @RequestBody @Valid recoveryRequest: RecoveryRequest,
-        bindingResult: BindingResult
+        @RequestBody @Valid recoveryRequest: RecoveryRequest
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         memberCommandService.recoveryMember(recoveryRequest)
         logger().info(MemberControllerLog.RECOVERY_SUCCESS + recoveryRequest.email)
 
@@ -141,11 +127,8 @@ class MemberController @Autowired constructor(
     @DeleteMapping(MemberUrl.WITHDRAW)
     fun withdraw(
         @RequestBody @Valid withdrawRequest: WithdrawRequest,
-        bindingResult: BindingResult,
         principal: Principal
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         val memberId = UUID.fromString(principal.name)
         memberCommandService.withdraw(withdrawRequest, memberId)
         logger().info(MemberControllerLog.WITHDRAW_SUCCESS + memberId)

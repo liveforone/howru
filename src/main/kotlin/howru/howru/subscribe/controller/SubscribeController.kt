@@ -1,6 +1,5 @@
 package howru.howru.subscribe.controller
 
-import howru.howru.globalUtil.validateBinding
 import howru.howru.logger
 import howru.howru.subscribe.controller.constant.SubscribeParam
 import howru.howru.subscribe.controller.constant.SubscribeUrl
@@ -13,7 +12,6 @@ import howru.howru.subscribe.service.query.SubscribeQueryService
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -54,11 +52,8 @@ class SubscribeController @Autowired constructor(
 
     @PostMapping(SubscribeUrl.SUBSCRIBE)
     fun subscribe(
-        @RequestBody @Valid createSubscribe: CreateSubscribe,
-        bindingResult: BindingResult
+        @RequestBody @Valid createSubscribe: CreateSubscribe
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         subscribeCommandService.createSubscribe(createSubscribe)
         logger().info(SubscribeControllerLog.SUBSCRIBE_SUCCESS + createSubscribe.followerId + SubscribeControllerLog.FOLLOWEE_INSERT_LOG + createSubscribe.followeeId)
 
@@ -68,10 +63,7 @@ class SubscribeController @Autowired constructor(
     @DeleteMapping(SubscribeUrl.UNSUBSCRIBE)
     fun unsubscribe(
         @RequestBody @Valid unsubscribeRequest: UnsubscribeRequest,
-        bindingResult: BindingResult
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         subscribeCommandService.unsubscribe(unsubscribeRequest)
         logger().info(SubscribeControllerLog.UNSUBSCRIBE_SUCCESS + unsubscribeRequest.followerId + SubscribeControllerLog.FOLLOWEE_INSERT_LOG + unsubscribeRequest.followeeId)
 

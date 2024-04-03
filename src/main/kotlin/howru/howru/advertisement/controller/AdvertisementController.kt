@@ -10,13 +10,11 @@ import howru.howru.advertisement.dto.request.UpdateAdTitle
 import howru.howru.advertisement.dto.response.AdvertisementInfo
 import howru.howru.advertisement.service.command.AdvertisementCommandService
 import howru.howru.advertisement.service.query.AdvertisementQueryService
-import howru.howru.globalUtil.validateBinding
 import howru.howru.logger
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Positive
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -67,11 +65,8 @@ AdvertisementController @Autowired constructor(
     @PostMapping(AdvertisementUrl.CREATE_HALF_AD)
     fun createHalfAd(
         @RequestBody @Valid createAdvertisement: CreateAdvertisement,
-        bindingResult: BindingResult,
         principal: Principal
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         advertisementCommandService.createHalfAd(createAdvertisement, UUID.fromString(principal.name))
         logger().info(AdControllerLog.CREATE_SUCCESS + createAdvertisement.company)
 
@@ -81,11 +76,8 @@ AdvertisementController @Autowired constructor(
     @PostMapping(AdvertisementUrl.CREATE_YEAR_AD)
     fun createYearAd(
         @RequestBody @Valid createAdvertisement: CreateAdvertisement,
-        bindingResult: BindingResult,
         principal: Principal
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         advertisementCommandService.createYearAd(createAdvertisement, UUID.fromString(principal.name))
         logger().info(AdControllerLog.CREATE_SUCCESS + createAdvertisement.company)
 
@@ -96,11 +88,8 @@ AdvertisementController @Autowired constructor(
     fun editAdTitle(
         @PathVariable(AdvertisementParam.ID) @Positive id: Long,
         @RequestBody @Valid updateAdTitle: UpdateAdTitle,
-        bindingResult: BindingResult,
         principal: Principal
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         advertisementCommandService.editAdTitle(id, updateAdTitle, UUID.fromString(principal.name))
         logger().info(AdControllerLog.EDIT_TITLE_SUCCESS + id)
 
@@ -111,11 +100,8 @@ AdvertisementController @Autowired constructor(
     fun editAdContent(
         @PathVariable(AdvertisementParam.ID) @Positive id: Long,
         @RequestBody @Valid updateAdContent: UpdateAdContent,
-        bindingResult: BindingResult,
         principal: Principal
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         advertisementCommandService.editAdContent(id, updateAdContent, UUID.fromString(principal.name))
         logger().info(AdControllerLog.EDIT_CONTENT_SUCCESS + id)
 

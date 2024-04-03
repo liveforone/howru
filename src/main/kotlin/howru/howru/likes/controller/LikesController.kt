@@ -1,6 +1,5 @@
 package howru.howru.likes.controller
 
-import howru.howru.globalUtil.validateBinding
 import howru.howru.likes.controller.constant.LikesParam
 import howru.howru.likes.controller.constant.LikesUrl
 import howru.howru.likes.controller.response.LikesResponse
@@ -15,7 +14,6 @@ import howru.howru.logger
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import java.util.UUID
 
@@ -50,11 +48,8 @@ class LikesController @Autowired constructor(
 
     @PostMapping(LikesUrl.LIKE)
     fun like(
-        @RequestBody @Valid createLikes: CreateLikes,
-        bindingResult: BindingResult
+        @RequestBody @Valid createLikes: CreateLikes
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         likesCommandService.createLikes(createLikes)
         logger().info(LikesControllerLog.CREATE_LIKE_SUCCESS + createLikes.postId)
 
@@ -63,11 +58,8 @@ class LikesController @Autowired constructor(
 
     @DeleteMapping(LikesUrl.DISLIKE)
     fun dislike(
-        @RequestBody @Valid removeLikes: RemoveLikes,
-        bindingResult: BindingResult
+        @RequestBody @Valid removeLikes: RemoveLikes
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         likesCommandService.removeLikes(removeLikes)
         logger().info(LikesControllerLog.DELETE_LIKE_SUCCESS + removeLikes.postId)
 

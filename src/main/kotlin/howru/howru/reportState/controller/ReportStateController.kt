@@ -1,6 +1,5 @@
 package howru.howru.reportState.controller
 
-import howru.howru.globalUtil.validateBinding
 import howru.howru.logger
 import howru.howru.reportState.controller.constant.ReportStateParam
 import howru.howru.reportState.controller.constant.ReportStateUrl
@@ -13,7 +12,6 @@ import howru.howru.reportState.service.query.ReportStateQueryService
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -34,11 +32,8 @@ class ReportStateController @Autowired constructor(
 
     @PostMapping(ReportStateUrl.REPORT)
     fun reportMember(
-        @RequestBody @Valid reportMember: ReportMember,
-        bindingResult: BindingResult
+        @RequestBody @Valid reportMember: ReportMember
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         reportStateCommandService.addRepost(reportMember)
         logger().info(ReportStateControllerLog.REPORT_MEMBER_SUCCESS + reportMember.memberId)
 

@@ -10,13 +10,11 @@ import howru.howru.comments.dto.request.UpdateComments
 import howru.howru.comments.dto.response.CommentsInfo
 import howru.howru.comments.service.command.CommentsCommandService
 import howru.howru.comments.service.query.CommentsQueryService
-import howru.howru.globalUtil.validateBinding
 import howru.howru.logger
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Positive
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import java.util.UUID
 
@@ -61,11 +59,8 @@ class CommentsController @Autowired constructor(
 
     @PostMapping(CommentsUrl.CREATE_COMMENTS)
     fun createComments(
-        @RequestBody @Valid createComments: CreateComments,
-        bindingResult: BindingResult
+        @RequestBody @Valid createComments: CreateComments
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         commentsCommandService.createComments(createComments)
         logger().info(CommentsControllerLog.CREATE_COMMENTS_SUCCESS + createComments.writerId)
 
@@ -75,11 +70,8 @@ class CommentsController @Autowired constructor(
     @PatchMapping(CommentsUrl.EDIT_COMMENTS)
     fun editComments(
         @PathVariable(CommentsParam.ID) @Positive id: Long,
-        @RequestBody @Valid updateComments: UpdateComments,
-        bindingResult: BindingResult
+        @RequestBody @Valid updateComments: UpdateComments
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         commentsCommandService.editComment(id, updateComments)
         logger().info(CommentsControllerLog.EDIT_COMMENTS_SUCCESS + id)
 
@@ -89,11 +81,8 @@ class CommentsController @Autowired constructor(
     @DeleteMapping(CommentsUrl.REMOVE_COMMENTS)
     fun removeComments(
         @PathVariable(CommentsParam.ID) @Positive id: Long,
-        @RequestBody @Valid removeComments: RemoveComments,
-        bindingResult: BindingResult
+        @RequestBody @Valid removeComments: RemoveComments
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         commentsCommandService.removeComment(id, removeComments)
         logger().info(CommentsControllerLog.DELETE_COMMENTS_SUCCESS + id)
 

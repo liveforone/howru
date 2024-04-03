@@ -1,6 +1,5 @@
 package howru.howru.reply.controller
 
-import howru.howru.globalUtil.validateBinding
 import howru.howru.logger
 import howru.howru.reply.log.ReplyControllerLog
 import howru.howru.reply.controller.constant.ReplyParam
@@ -16,7 +15,6 @@ import jakarta.validation.Valid
 import jakarta.validation.constraints.Positive
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import java.util.UUID
 
@@ -52,10 +50,7 @@ class ReplyController @Autowired constructor(
     @PostMapping(ReplyUrl.CREATE)
     fun createReply(
         @RequestBody @Valid createReply: CreateReply,
-        bindingResult: BindingResult
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         replyCommandService.createReply(createReply)
         logger().info(ReplyControllerLog.CREATE_SUCCESS + createReply.writerId)
 
@@ -66,10 +61,7 @@ class ReplyController @Autowired constructor(
     fun editReply(
         @PathVariable(ReplyParam.ID) @Positive id: Long,
         @RequestBody @Valid updateReplyContent: UpdateReplyContent,
-        bindingResult: BindingResult
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         replyCommandService.editReply(id, updateReplyContent)
         logger().info(ReplyControllerLog.EDIT_SUCCESS + id)
 
@@ -80,10 +72,7 @@ class ReplyController @Autowired constructor(
     fun removeReply(
         @PathVariable(ReplyParam.ID) @Positive id: Long,
         @RequestBody @Valid removeReply: RemoveReply,
-        bindingResult: BindingResult
     ): ResponseEntity<String> {
-        validateBinding(bindingResult)
-
         replyCommandService.removeReply(id, removeReply)
         logger().info(ReplyControllerLog.DELETE_SUCCESS + id)
 
