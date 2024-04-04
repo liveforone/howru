@@ -8,33 +8,37 @@
 ## 병목 처리 팁
 * 성능 문제는 일반적으로 단건 조회보다는 컬렉션 조회에서 많이 발생합니다.
 * 특히 컬렉션 조회, 그 중에서 페이징 같은 경우에는 캐싱을 하기 어렵습니다.
-* 자주 바뀌는 특성을 지녔기 때문에, 캐시를 사용하 것이 어렵습니다. 
+* 자주 바뀌는 특성을 지녔기 때문에, 캐시를 사용하는 것이 어렵습니다.
 * 데이터가 자주 바뀌지 않아야한다는 기본적인 캐시 사용 조건을 충족하지 않기 때문입니다.
-* 따라서 페이징처럼 컬렉션 조회에 초점을 맞추는 것이 좋습니다. 가장 문제를 일으키는 일반적인 원인이기 때문입니다.
+* 따라서 성능을 개선하고 병목을 처리할때에는 페이징처럼 컬렉션 조회에 초점을 맞추는 것이 좋습니다. 가장 문제를 일으키는 일반적인 원인이기 때문입니다.
 
 ## 일반적인 페이징
-* 일반적인 페이징은 `offset`을 사용합니다.
+* 일반적인 페이징은 `offset`을 사용합니다. `offset`에는 페이지 번호가 들어갑니다.
+* 더 정확히 설명하자면 페이지 번호를 가지고 다음과 같은 방식으로 `offset`을 구합니다.
+* `(page-1) * limit_size`
 * 이런 식의 페이징은 `offset`크기 + `limit`크기 만큼의 데이터를 조회해야합니다.
 * 그리고 앞의 `offset`크기만큼의 데이터를 버립니다.
 * `limit`크기만큼의 데이터만 필요하기 때문입니다.
 * 일례로 `offset`이 1000이고, `limit`이 10이라면 1000 + 10 개만큼의 데이터를 조회하고
-* 1000개를 버립니다. 그리고 10개만 사용합니다.
-* 즉 이런 식의 쿼리는 항상 이전의 모든 데이터를 읽고 버리고 `limit`개만 반환하겠구나라고 예상할 수 있습니다.
+* 1000개를 버립니다. 그리고 10개만 사용합니다. 왜냐하면 1000부터 10개를 읽어야하기 때문입니다.
+* 즉 이런 식의 쿼리는 항상 이전의 모든 데이터를 읽고 버린 후 `limit`개만 반환하겠구나라고 예상할 수 있습니다.
 * 이러한 특성 때문에 페이지 뒤로가면 갈수록 페이징 성능이 떨어집니다.
 * 또한 필요한 데이터만큼 조회하지 않기 때문에 상당히 비효율적입니다.
 
 ## No Offset 페이징
 * No Offset 페이징은 이런 일반적인 페이징과 다르게 동작합니다.
 * `offset`이 존재하지 않고, 이전에 조회한 데이터중 가장 마지막 데이터의 식별자(ex : `id`)를 기준으로 다음에 올 데이터들을 찾아서 가져옵니다.
-* 즉 데이터 조회의 시작 조건을 `offset`이 아닌 다른 방식으로 처리하여 성능을 향상합니다.
-* 쉽게 말해서 데이터 정렬기준이 `desc`이고, auth increment pk를 사용하고 있다고 가정하겠습니다.
+* 즉 데이터 조회의 시작 조건을 `offset`이 아닌 pk등을 사용하여 인덱스를 통해 빠르게 찾는 방식입니다.
+* 데이터 조회 시작 조건을 빠르게 찾는 것이 핵심입니다. 이러한 이유로 No offset 페이징은 좋은 성능을 뽑아낼 수 있습니다.
+* 이 때문에 No offset 페이징을 커서 기반의 페이징이라고 부르기도 합니다.(cursor based pagination)
+* 쉽게 말해서 데이터 정렬기준이 `desc`이고, auto increment pk를 사용하고 있다고 가정하겠습니다.
 * 그리고 이전에 조회한 데이터의 가장 마지막 pk는 5라고 한다면, 5보다 작은(less than) pk를 가진 데이터를 조회하여 `limit`사이즈에 맞춰서 가져옵니다.
 * 마치 첫번째 페이지를 읽듯이 인덱스를 태워서 빠르게 컬렉션을 조회합니다.
 * 이러한 특징 때문에 페이지가 뒤로 가면 갈수록 성능이 떨어지는 것이 아닌, 시작 위치가 어디가 됬던 첫번째 페이지를 조회하는 것과 같은 속도로 데이터를 조회할 수 있습니다.
 * 쿼리로 보면 이해가 쉬워집니다. 쿼리는 아래와 같습니다
 ```sql
 #lastId는 이전에 조회한 데이터 중 가장 마지막 데이터의 id입니다.
-SELECT * FROM data WHERE 조건 AND id < lastId ORDER BY id DESC LIMIT 리밋사이즈 
+SELECT * FROM data WHERE 조건 AND id < lastId ORDER BY id DESC LIMIT 리밋사이즈
 ```
 * 만약 asc 정렬을 사용한다면 다음과 같이 할 수 있습니다.
 ```sql
@@ -104,8 +108,48 @@ private fun ltLastId(lastId: Long?): BooleanExpression? =
         lastId?.takeIf { it > 0 }?.let { post.id.lt(it) }
 ```
 
+## 글로벌 유틸 제네릭 함수로 선언
+* 글로벌 유틸 제네릭 함수로 선언하여 사용할 수도 있습니다.
+* 똑같은 함수의 매개변수만 다르게 하여 모든 repository에서 선언하는 방식보다 효율적입니다.
+```kotlin
+fun <T, Q : EntityPathBase<T>> ltLastId(
+    lastId: Long?,
+    qEntity: Q,
+    idPathExtractor: (Q) -> NumberPath<Long>
+): BooleanExpression? {
+    return lastId?.takeIf { it > 0 }?.let { idPathExtractor(qEntity).lt(it) }
+}
+```
+* 아래 예제는 제네릭 함수를 사용하는 방법입니다.
+* `ltLastId(lastId, post) { it.id }` 여기서 `post`는 미리 선언된 Qclass를 의미합니다.
+```kotlin
+override fun findPostsByWriter(
+        memberId: UUID,
+        lastId: Long?
+    ): PostPage {
+        val postInfoList =
+            jpaQueryFactory.select(
+                Projections.constructor(
+                    PostInfo::class.java,
+                    post.id,
+                    post.writer.id,
+                    post.content,
+                    post.postState,
+                    post.createdDatetime
+                )
+            )
+                .from(post)
+                .where(post.writer.id.eq(memberId).and(ltLastId(lastId, post) { it.id }))
+                .orderBy(post.id.desc())
+                .limit(PostRepoConstant.LIMIT_PAGE)
+                .fetch()
+
+        return PostPage(postInfoList, findLastIdOrDefault(postInfoList) { it.id })
+    }
+```
+
+
 ## 결론
-* 무조건 페이징을 할때 No offset 페이징을 사용할 필요가 없다.
-* 무한 스크롤방식을 이용하거나, 기존 페이징 보다 최적화를 원한다면 사용하면된다.
-* 또한 여러 조건을 사용하는 경우 인덱스 병합이 잘 작동하는지 확인하고, 작동하지 않는다면
-* 복합 인덱스를 새로 구성해야한다.
+* 무조건 페이징을 할때 No offset 페이징을 사용할 필요가 없습니다.
+* 무한 스크롤방식을 이용하거나, 기존 페이징 보다 최적화를 원할 때 사용하면 됩니다.
+* 또한 여러 조건을 사용하는 경우 인덱스 병합이 잘 작동하는지 확인하고, 작동하지 않는다면 복합 인덱스를 새로 구성해야합니다.
