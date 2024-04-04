@@ -11,7 +11,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://host.docker.internal:3306/howru?serverTimezone=Asia/Seoul
-#    url: jdbc:mysql://localhost:3306/howru?serverTimezone=Asia/Seoul - 개발용
+#    url: jdbc:mysql://localhost:3306/howru?serverTimezone=Asia/Seoul
     username: root
     password: 159624
     hikari:
@@ -32,8 +32,13 @@ spring:
     open-in-view: false
   redis:
     url: redis://default:159624@host.docker.internal:6379
-#    url: redis://default:159624@127.0.0.1:6379 - 개발용
+#    url: redis://default:159624@127.0.0.1:6379
 
+# 프러덕션환경에서는 아래 p6spy 로깅을 false로 두고 배포한다.
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
 
 logging:
   level:
