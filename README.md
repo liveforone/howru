@@ -19,9 +19,10 @@
 ## 기술 스택
 * Framework : Spring Boot 3.2.4
 * Lang : Kotlin 1.9.22, Jvm21
-* Data : Spring Data Jpa | Kotlin-JDSL-2.2.1.RELEASE & 3.3.2 -> QueryDsl 5.1.0 | MySql 8.X
+* Data : Spring Data Jpa | MySql 8.X
+* Data Lib : Kotlin-JDSL-2.2.1.RELEASE & 3.3.2 -> QueryDsl 5.1.0
 * Security : Spring Security | Jwt(jjwt) 0.12.5
-* Cache : Caffeine 3.1.8
+* Cache : Caffeine 3.1.8 -> redis
 * Test : Junit5
 
 # 2. 프로젝트 설계
