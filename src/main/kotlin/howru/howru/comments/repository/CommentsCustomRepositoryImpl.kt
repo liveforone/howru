@@ -32,18 +32,18 @@ class CommentsCustomRepositoryImpl(
             .fetchOne() ?: throw CommentsException(CommentsExceptionMessage.COMMENTS_IS_NULL, id)
     }
 
+    private val commentsInfoField = Projections.constructor(
+        CommentsInfo::class.java,
+        comments.id,
+        comments.writer.id,
+        comments.post.id,
+        comments.content,
+        comments.commentsState,
+        comments.createdDatetime
+    )
+
     override fun findCommentsInfoById(id: Long): CommentsInfo {
-        return jpaQueryFactory.select(
-            Projections.constructor(
-                CommentsInfo::class.java,
-                comments.id,
-                comments.writer.id,
-                comments.post.id,
-                comments.content,
-                comments.commentsState,
-                comments.createdDatetime
-            )
-        )
+        return jpaQueryFactory.select(commentsInfoField)
             .from(comments)
             .where(comments.id.eq(id))
             .fetchOne() ?: throw CommentsException(CommentsExceptionMessage.COMMENTS_IS_NULL, id)
@@ -54,17 +54,7 @@ class CommentsCustomRepositoryImpl(
         lastId: Long?
     ): CommentsPage {
         val commentsInfoList =
-            jpaQueryFactory.select(
-                Projections.constructor(
-                    CommentsInfo::class.java,
-                    comments.id,
-                    comments.writer.id,
-                    comments.post.id,
-                    comments.content,
-                    comments.commentsState,
-                    comments.createdDatetime
-                )
-            )
+            jpaQueryFactory.select(commentsInfoField)
                 .from(comments)
                 .where(comments.writer.id.eq(writerId).and(ltLastId(lastId, comments) { it.id }))
                 .orderBy(comments.id.desc())
@@ -79,17 +69,7 @@ class CommentsCustomRepositoryImpl(
         lastId: Long?
     ): CommentsPage {
         val commentsInfoList =
-            jpaQueryFactory.select(
-                Projections.constructor(
-                    CommentsInfo::class.java,
-                    comments.id,
-                    comments.writer.id,
-                    comments.post.id,
-                    comments.content,
-                    comments.commentsState,
-                    comments.createdDatetime
-                )
-            )
+            jpaQueryFactory.select(commentsInfoField)
                 .from(comments)
                 .where(comments.post.id.eq(postId).and(ltLastId(lastId, comments) { it.id }))
                 .orderBy(comments.id.desc())

@@ -32,17 +32,18 @@ class PostCustomRepositoryImpl(
             .fetchOne() ?: throw PostException(PostExceptionMessage.POST_IS_NULL, id)
     }
 
-    override fun findPostInfoById(id: Long): PostInfo {
-        return jpaQueryFactory.select(
-            Projections.constructor(
-                PostInfo::class.java,
-                post.id,
-                post.writer.id,
-                post.content,
-                post.postState,
-                post.createdDatetime
-            )
+    private val postInfoField =
+        Projections.constructor(
+            PostInfo::class.java,
+            post.id,
+            post.writer.id,
+            post.content,
+            post.postState,
+            post.createdDatetime
         )
+
+    override fun findPostInfoById(id: Long): PostInfo {
+        return jpaQueryFactory.select(postInfoField)
             .from(post)
             .where(post.id.eq(id))
             .fetchOne() ?: throw PostException(PostExceptionMessage.POST_IS_NULL, id)
@@ -53,16 +54,7 @@ class PostCustomRepositoryImpl(
         lastId: Long?
     ): PostPage {
         val postInfoList =
-            jpaQueryFactory.select(
-                Projections.constructor(
-                    PostInfo::class.java,
-                    post.id,
-                    post.writer.id,
-                    post.content,
-                    post.postState,
-                    post.createdDatetime
-                )
-            )
+            jpaQueryFactory.select(postInfoField)
                 .from(post)
                 .where(post.writer.id.eq(memberId).and(ltLastId(lastId, post) { it.id }))
                 .orderBy(post.id.desc())
@@ -74,16 +66,7 @@ class PostCustomRepositoryImpl(
 
     override fun findAllPosts(lastId: Long?): PostPage {
         val postInfoList =
-            jpaQueryFactory.select(
-                Projections.constructor(
-                    PostInfo::class.java,
-                    post.id,
-                    post.writer.id,
-                    post.content,
-                    post.postState,
-                    post.createdDatetime
-                )
-            )
+            jpaQueryFactory.select(postInfoField)
                 .from(post)
                 .where(ltLastId(lastId, post) { it.id })
                 .orderBy(post.id.desc())
@@ -98,16 +81,7 @@ class PostCustomRepositoryImpl(
         lastId: Long?
     ): PostPage {
         val postInfoList =
-            jpaQueryFactory.select(
-                Projections.constructor(
-                    PostInfo::class.java,
-                    post.id,
-                    post.writer.id,
-                    post.content,
-                    post.postState,
-                    post.createdDatetime
-                )
-            )
+            jpaQueryFactory.select(postInfoField)
                 .from(post)
                 .where(post.writer.id.eq(someoneId).and(ltLastId(lastId, post) { it.id }))
                 .orderBy(post.id.desc())
@@ -122,16 +96,7 @@ class PostCustomRepositoryImpl(
         lastId: Long?
     ): PostPage {
         val postInfoList =
-            jpaQueryFactory.select(
-                Projections.constructor(
-                    PostInfo::class.java,
-                    post.id,
-                    post.writer.id,
-                    post.content,
-                    post.postState,
-                    post.createdDatetime
-                )
-            )
+            jpaQueryFactory.select(postInfoField)
                 .from(post)
                 .where(post.writer.id.`in`(followeeId).and(ltLastId(lastId, post) { it.id }))
                 .orderBy(post.id.desc())
@@ -146,16 +111,7 @@ class PostCustomRepositoryImpl(
         lastId: Long?
     ): PostPage {
         val postInfoList =
-            jpaQueryFactory.select(
-                Projections.constructor(
-                    PostInfo::class.java,
-                    post.id,
-                    post.writer.id,
-                    post.content,
-                    post.postState,
-                    post.createdDatetime
-                )
-            )
+            jpaQueryFactory.select(postInfoField)
                 .from(post)
                 .where(post.content.startsWith(keyword).and(ltLastId(lastId, post) { it.id }))
                 .orderBy(post.id.desc())

@@ -26,18 +26,19 @@ class ReplyCustomRepositoryImpl(
             .fetchOne() ?: throw ReplyException(ReplyExceptionMessage.REPLY_IS_NULL, id)
     }
 
-    override fun findReplyInfoById(id: Long): ReplyInfo {
-        return jpaQueryFactory.select(
-            Projections.constructor(
-                ReplyInfo::class.java,
-                reply.id,
-                reply.writer.id,
-                reply.comment.id,
-                reply.content,
-                reply.replyState,
-                reply.createdDatetime
-            )
+    private val replyInfoField =
+        Projections.constructor(
+            ReplyInfo::class.java,
+            reply.id,
+            reply.writer.id,
+            reply.comment.id,
+            reply.content,
+            reply.replyState,
+            reply.createdDatetime
         )
+
+    override fun findReplyInfoById(id: Long): ReplyInfo {
+        return jpaQueryFactory.select(replyInfoField)
             .from(reply)
             .where(reply.id.eq(id))
             .fetchOne() ?: throw ReplyException(ReplyExceptionMessage.REPLY_IS_NULL, id)
@@ -48,17 +49,7 @@ class ReplyCustomRepositoryImpl(
         lastId: Long?
     ): ReplyPage {
         val replyInfoList =
-            jpaQueryFactory.select(
-                Projections.constructor(
-                    ReplyInfo::class.java,
-                    reply.id,
-                    reply.writer.id,
-                    reply.comment.id,
-                    reply.content,
-                    reply.replyState,
-                    reply.createdDatetime
-                )
-            )
+            jpaQueryFactory.select(replyInfoField)
                 .from(reply)
                 .where(reply.writer.id.eq(writerId).and(ltLastId(lastId, reply) { it.id }))
                 .orderBy(reply.id.desc())
@@ -73,17 +64,7 @@ class ReplyCustomRepositoryImpl(
         lastId: Long?
     ): ReplyPage {
         val replyInfoList =
-            jpaQueryFactory.select(
-                Projections.constructor(
-                    ReplyInfo::class.java,
-                    reply.id,
-                    reply.writer.id,
-                    reply.comment.id,
-                    reply.content,
-                    reply.replyState,
-                    reply.createdDatetime
-                )
-            )
+            jpaQueryFactory.select(replyInfoField)
                 .from(reply)
                 .where(reply.comment.id.eq(commentId).and(ltLastId(lastId, reply) { it.id }))
                 .orderBy(reply.id.desc())

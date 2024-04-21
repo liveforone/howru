@@ -24,17 +24,18 @@ class SubscribeCustomRepositoryImpl(
             .fetchOne() ?: throw SubscribeException(SubscribeExceptionMessage.SUBSCRIBE_IS_NULL, followerId)
     }
 
+    private val subscribeInfoField =
+        Projections.constructor(
+            SubscribeInfo::class.java,
+            subscribe.followeeId,
+            subscribe.followerId
+        )
+
     override fun findSubscribesByFollower(
         followerId: UUID,
         lastTimestamp: Int?
     ): List<SubscribeInfo> {
-        return jpaQueryFactory.select(
-            Projections.constructor(
-                SubscribeInfo::class.java,
-                subscribe.followeeId,
-                subscribe.followerId
-            )
-        )
+        return jpaQueryFactory.select(subscribeInfoField)
             .from(subscribe)
             .where(subscribe.followerId.eq(followerId).and(ltTimestamp(lastTimestamp)))
             .orderBy(subscribe.timestamp.desc())
@@ -46,13 +47,7 @@ class SubscribeCustomRepositoryImpl(
         followeeId: UUID,
         lastTimestamp: Int?
     ): List<SubscribeInfo> {
-        return jpaQueryFactory.select(
-            Projections.constructor(
-                SubscribeInfo::class.java,
-                subscribe.followeeId,
-                subscribe.followerId
-            )
-        )
+        return jpaQueryFactory.select(subscribeInfoField)
             .from(subscribe)
             .where(subscribe.followeeId.eq(followeeId).and(ltTimestamp(lastTimestamp)))
             .orderBy(subscribe.timestamp.desc())

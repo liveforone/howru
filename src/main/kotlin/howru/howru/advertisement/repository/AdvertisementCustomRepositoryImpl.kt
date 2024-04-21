@@ -20,52 +20,33 @@ class AdvertisementCustomRepositoryImpl(
             .fetchOne() ?: throw AdvertisementException(AdvertisementExceptionMessage.AD_IS_NULL, id)
     }
 
-    override fun findAdvertisementInfoById(id: Long): AdvertisementInfo {
-        return jpaQueryFactory.select(
-            Projections.constructor(
-                AdvertisementInfo::class.java,
-                advertisement.id,
-                advertisement.company,
-                advertisement.title,
-                advertisement.content,
-                advertisement.createdDate,
-                advertisement.endDate
-            )
+    private val advertisementInfoField =
+        Projections.constructor(
+            AdvertisementInfo::class.java,
+            advertisement.id,
+            advertisement.company,
+            advertisement.title,
+            advertisement.content,
+            advertisement.createdDate,
+            advertisement.endDate
         )
+
+    override fun findAdvertisementInfoById(id: Long): AdvertisementInfo {
+        return jpaQueryFactory.select(advertisementInfoField)
             .from(advertisement)
             .where(advertisement.id.eq(id))
             .fetchOne() ?: throw AdvertisementException(AdvertisementExceptionMessage.AD_IS_NULL, id)
     }
 
     override fun findAllAdvertisements(): List<AdvertisementInfo> {
-        return jpaQueryFactory.select(
-            Projections.constructor(
-                AdvertisementInfo::class.java,
-                advertisement.id,
-                advertisement.company,
-                advertisement.title,
-                advertisement.content,
-                advertisement.createdDate,
-                advertisement.endDate
-            )
-        )
+        return jpaQueryFactory.select(advertisementInfoField)
             .from(advertisement)
             .orderBy(advertisement.id.desc())
             .fetch()
     }
 
     override fun searchAdByCompany(company: String): List<AdvertisementInfo> {
-        return jpaQueryFactory.select(
-            Projections.constructor(
-                AdvertisementInfo::class.java,
-                advertisement.id,
-                advertisement.company,
-                advertisement.title,
-                advertisement.content,
-                advertisement.createdDate,
-                advertisement.endDate
-            )
-        )
+        return jpaQueryFactory.select(advertisementInfoField)
             .from(advertisement)
             .where(advertisement.company.startsWith(company))
             .orderBy(advertisement.id.desc())
@@ -73,17 +54,7 @@ class AdvertisementCustomRepositoryImpl(
     }
 
     override fun findExpiredAds(): List<AdvertisementInfo> {
-        return jpaQueryFactory.select(
-            Projections.constructor(
-                AdvertisementInfo::class.java,
-                advertisement.id,
-                advertisement.company,
-                advertisement.title,
-                advertisement.content,
-                advertisement.createdDate,
-                advertisement.endDate
-            )
-        )
+        return jpaQueryFactory.select(advertisementInfoField)
             .from(advertisement)
             .where(advertisement.endDate.lt(getDateDigit(LocalDate.now())))
             .orderBy(advertisement.id.desc())
