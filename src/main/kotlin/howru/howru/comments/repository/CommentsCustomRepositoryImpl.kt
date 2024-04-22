@@ -32,15 +32,16 @@ class CommentsCustomRepositoryImpl(
             .fetchOne() ?: throw CommentsException(CommentsExceptionMessage.COMMENTS_IS_NULL, id)
     }
 
-    private val commentsInfoField = Projections.constructor(
-        CommentsInfo::class.java,
-        comments.id,
-        comments.writer.id,
-        comments.post.id,
-        comments.content,
-        comments.commentsState,
-        comments.createdDatetime
-    )
+    private val commentsInfoField =
+        Projections.constructor(
+            CommentsInfo::class.java,
+            comments.id,
+            comments.writer.id,
+            comments.post.id,
+            comments.content,
+            comments.commentsState,
+            comments.createdDatetime
+        )
 
     override fun findCommentsInfoById(id: Long): CommentsInfo {
         return jpaQueryFactory.select(commentsInfoField)
