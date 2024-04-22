@@ -50,7 +50,29 @@ class MemberCommandServiceTest
 
         @Test
         @Transactional
-        fun reissueJwtToken() {
+        fun updatePasswordTest() {
+            // given
+            val email = "update_password_test@gmail.com"
+            val pw = "1234"
+            val nickName = "nickName"
+            val request = SignupRequest(email, pw, nickName)
+            memberCommandService.signup(request)
+            flushAndClear()
+            val loginRequest = LoginRequest(email, pw)
+            val id = memberCommandService.login(loginRequest).id
+
+            // when
+            val newPw = "1111"
+            memberCommandService.updatePassword(UpdatePassword(newPw, pw), id)
+            flushAndClear()
+
+            // then
+            Assertions.assertThat(memberCommandService.login(LoginRequest(email, newPw)).id).isEqualTo(id)
+        }
+
+        @Test
+        @Transactional
+        fun reissueJwtTokenTest() {
             // given
             val email = "reissue_token_test@gmail.com"
             val pw = "1234"
