@@ -25,14 +25,18 @@ class AdvertisementCommandService
         private val advertisementRepository: AdvertisementRepository,
         private val memberRepository: MemberCustomRepository
     ) {
-        fun createHalfAd(
-            createAdvertisement: CreateAdvertisement,
-            memberId: UUID
-        ): Long {
+        private fun checkAdmin(memberId: UUID) {
             require(memberRepository.findMemberById(memberId).isAdmin()) {
                 logger().warn(AdServiceLog.ACCESS_NON_ADMIN_USER + memberId)
                 throw MemberException(MemberExceptionMessage.AUTH_IS_NOT_ADMIN, memberId.toString())
             }
+        }
+
+        fun createHalfAd(
+            createAdvertisement: CreateAdvertisement,
+            memberId: UUID
+        ): Long {
+            checkAdmin(memberId)
             return with(createAdvertisement) {
                 Advertisement.createHalfAd(company!!, title!!, content!!)
                     .run { advertisementRepository.save(this).id!! }
@@ -43,10 +47,7 @@ class AdvertisementCommandService
             createAdvertisement: CreateAdvertisement,
             memberId: UUID
         ): Long {
-            require(memberRepository.findMemberById(memberId).isAdmin()) {
-                logger().warn(AdServiceLog.ACCESS_NON_ADMIN_USER + memberId)
-                throw MemberException(MemberExceptionMessage.AUTH_IS_NOT_ADMIN, memberId.toString())
-            }
+            checkAdmin(memberId)
             return with(createAdvertisement) {
                 Advertisement.createYearAd(company!!, title!!, content!!)
                     .run { advertisementRepository.save(this).id!! }
@@ -58,10 +59,7 @@ class AdvertisementCommandService
             updateAdTitle: UpdateAdTitle,
             memberId: UUID
         ) {
-            require(memberRepository.findMemberById(memberId).isAdmin()) {
-                logger().warn(AdServiceLog.ACCESS_NON_ADMIN_USER + memberId)
-                throw MemberException(MemberExceptionMessage.AUTH_IS_NOT_ADMIN, memberId.toString())
-            }
+            checkAdmin(memberId)
             with(updateAdTitle) {
                 advertisementRepository.findAdvertisementById(id).also { it.editTitle(title!!) }
             }
@@ -72,10 +70,7 @@ class AdvertisementCommandService
             updateAdContent: UpdateAdContent,
             memberId: UUID
         ) {
-            require(memberRepository.findMemberById(memberId).isAdmin()) {
-                logger().warn(AdServiceLog.ACCESS_NON_ADMIN_USER + memberId)
-                throw MemberException(MemberExceptionMessage.AUTH_IS_NOT_ADMIN, memberId.toString())
-            }
+            checkAdmin(memberId)
             with(updateAdContent) {
                 advertisementRepository.findAdvertisementById(id).also { it.editContent(content!!) }
             }
