@@ -62,6 +62,7 @@
 * [적절한 로그를 기록하는 법](./Documents/HOW_TO_RECORD_PROPER_LOG.md)
 * [jjwt 변경사항에 따른 로직 변화](./Documents/JJWT_CHANGE_LOGIC.md)
 * [KTLint 적용](./Documents/KTLINT_APPLY.md)
+* [Any 타입 대신 제네릭을 사용하여 함수 재사용성 높이기](https://github.com/liveforone/Documents/blob/main/backend/generic_vs_any.md)
 ## 비즈니스적 고민
 * [클린한 커뮤니티 만들기](./Documents/CLEAN_COMMUNITY.md)
 
