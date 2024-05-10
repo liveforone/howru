@@ -5,6 +5,7 @@ import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
 import howru.howru.exception.exception.SubscribeException
 import howru.howru.exception.message.SubscribeExceptionMessage
+import howru.howru.globalUtil.ltLastTimestamp
 import howru.howru.subscribe.domain.QSubscribe
 import howru.howru.subscribe.domain.Subscribe
 import howru.howru.subscribe.dto.response.SubscribeInfo
@@ -37,7 +38,7 @@ class SubscribeCustomRepositoryImpl(
     ): List<SubscribeInfo> {
         return jpaQueryFactory.select(subscribeInfoField)
             .from(subscribe)
-            .where(subscribe.followerId.eq(followerId).and(ltTimestamp(lastTimestamp)))
+            .where(subscribe.followerId.eq(followerId).and(ltLastTimestamp(lastTimestamp, subscribe) { it.timestamp }))
             .orderBy(subscribe.timestamp.desc())
             .limit(SubscribeRepoConstant.LIMIT_PAGE)
             .fetch()
@@ -49,7 +50,7 @@ class SubscribeCustomRepositoryImpl(
     ): List<SubscribeInfo> {
         return jpaQueryFactory.select(subscribeInfoField)
             .from(subscribe)
-            .where(subscribe.followeeId.eq(followeeId).and(ltTimestamp(lastTimestamp)))
+            .where(subscribe.followeeId.eq(followeeId).and(ltLastTimestamp(lastTimestamp, subscribe) { it.timestamp }))
             .orderBy(subscribe.timestamp.desc())
             .limit(SubscribeRepoConstant.LIMIT_PAGE)
             .fetch()
@@ -62,9 +63,4 @@ class SubscribeCustomRepositoryImpl(
             .orderBy(subscribe.timestamp.desc())
             .fetch()
     }
-
-    private fun ltTimestamp(lastTimestamp: Int?): BooleanExpression? =
-        lastTimestamp?.takeIf {
-            it > 0
-        }?.let { subscribe.timestamp.lt(it) }
 }
