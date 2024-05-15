@@ -1,7 +1,6 @@
 package howru.howru.subscribe.repository
 
 import com.querydsl.core.types.Projections
-import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
 import howru.howru.exception.exception.SubscribeException
 import howru.howru.exception.message.SubscribeExceptionMessage
