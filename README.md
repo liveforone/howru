@@ -24,6 +24,7 @@
 * Security : Spring Security | Jwt(jjwt) 0.12.5
 * Cache : Caffeine 3.1.8 -> redis
 * Test : Junit5
+* KtLint 12.1.1
 
 # 2. 프로젝트 설계
 ## 시스템 설계
