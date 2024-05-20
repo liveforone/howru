@@ -1,6 +1,5 @@
-package howru.howru.exception.controllerAdvice
+package howru.howru.globalException
 
-import howru.howru.exception.controllerAdvice.constant.GlobalAdviceConstant
 import jakarta.validation.ConstraintViolationException
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
@@ -9,6 +8,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import java.util.*
+
+object GlobalAdviceConstant {
+    const val DUPLICATE_ENTITY_VAL = "데이터 베이스 무결성 조건을 위반하였습니다."
+}
 
 @RestControllerAdvice
 class GlobalControllerAdvice {
