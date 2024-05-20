@@ -1,6 +1,4 @@
-package howru.howru.exception.exception
-
-import howru.howru.exception.message.AdvertisementExceptionMessage
+package howru.howru.advertisement.exception
 
 class AdvertisementException(
     val advertisementExceptionMessage: AdvertisementExceptionMessage,

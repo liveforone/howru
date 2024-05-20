@@ -1,4 +1,4 @@
-package howru.howru.advertisement.dto.request
+package howru.howru.advertisement.dto
 
 import jakarta.validation.constraints.NotBlank
 

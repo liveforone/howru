@@ -1,6 +1,6 @@
 package howru.howru.advertisement.controller.response
 
-import howru.howru.advertisement.dto.response.AdvertisementInfo
+import howru.howru.advertisement.domain.vo.AdvertisementInfo
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 

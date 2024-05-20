@@ -1,7 +1,7 @@
 package howru.howru.advertisement.repository
 
 import howru.howru.advertisement.domain.Advertisement
-import howru.howru.advertisement.dto.response.AdvertisementInfo
+import howru.howru.advertisement.domain.vo.AdvertisementInfo
 
 interface AdvertisementCustomRepository {
     fun findAdvertisementById(id: Long): Advertisement

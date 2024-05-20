@@ -1,7 +1,7 @@
 package howru.howru.advertisement.repository
 
 import howru.howru.advertisement.domain.Advertisement
-import howru.howru.advertisement.dto.response.AdvertisementInfo
+import howru.howru.advertisement.domain.vo.AdvertisementInfo
 import howru.howru.advertisement.repository.sql.AdvertisementSql
 import howru.howru.globalUtil.getDateDigit
 import org.springframework.data.jpa.repository.JpaRepository

@@ -3,10 +3,10 @@ package howru.howru.advertisement.controller
 import howru.howru.advertisement.controller.constant.AdvertisementParam
 import howru.howru.advertisement.controller.constant.AdvertisementUrl
 import howru.howru.advertisement.controller.response.AdvertisementResponse
-import howru.howru.advertisement.dto.request.CreateAdvertisement
-import howru.howru.advertisement.dto.request.UpdateAdContent
-import howru.howru.advertisement.dto.request.UpdateAdTitle
-import howru.howru.advertisement.dto.response.AdvertisementInfo
+import howru.howru.advertisement.dto.CreateAdvertisement
+import howru.howru.advertisement.dto.UpdateAdContent
+import howru.howru.advertisement.dto.UpdateAdTitle
+import howru.howru.advertisement.domain.vo.AdvertisementInfo
 import howru.howru.advertisement.log.AdControllerLog
 import howru.howru.advertisement.service.command.AdvertisementCommandService
 import howru.howru.advertisement.service.query.AdvertisementQueryService

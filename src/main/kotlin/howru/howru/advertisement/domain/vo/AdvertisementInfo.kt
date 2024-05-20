@@ -1,4 +1,4 @@
-package howru.howru.advertisement.dto.response
+package howru.howru.advertisement.domain.vo
 
 data class AdvertisementInfo(
     val id: Long,

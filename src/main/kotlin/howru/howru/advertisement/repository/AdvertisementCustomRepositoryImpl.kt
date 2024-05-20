@@ -4,9 +4,9 @@ import com.querydsl.core.types.Projections
 import com.querydsl.jpa.impl.JPAQueryFactory
 import howru.howru.advertisement.domain.Advertisement
 import howru.howru.advertisement.domain.QAdvertisement
-import howru.howru.advertisement.dto.response.AdvertisementInfo
-import howru.howru.exception.exception.AdvertisementException
-import howru.howru.exception.message.AdvertisementExceptionMessage
+import howru.howru.advertisement.domain.vo.AdvertisementInfo
+import howru.howru.advertisement.exception.AdvertisementException
+import howru.howru.advertisement.exception.AdvertisementExceptionMessage
 import howru.howru.globalUtil.getDateDigit
 import java.time.LocalDate
 
