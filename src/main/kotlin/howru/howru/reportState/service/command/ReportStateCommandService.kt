@@ -2,7 +2,7 @@ package howru.howru.reportState.service.command
 
 import howru.howru.member.domain.Member
 import howru.howru.reportState.domain.ReportState
-import howru.howru.reportState.dto.request.ReportMember
+import howru.howru.reportState.dto.ReportMember
 import howru.howru.reportState.repository.ReportStateRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

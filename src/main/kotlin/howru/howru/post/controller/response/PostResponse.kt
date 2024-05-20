@@ -1,6 +1,6 @@
 package howru.howru.post.controller.response
 
-import howru.howru.post.dto.response.PostInfo
+import howru.howru.post.domain.vo.PostInfo
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 

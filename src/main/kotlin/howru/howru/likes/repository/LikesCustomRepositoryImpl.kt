@@ -2,13 +2,13 @@ package howru.howru.likes.repository
 
 import com.querydsl.core.types.Projections
 import com.querydsl.jpa.impl.JPAQueryFactory
-import howru.howru.exception.exception.LikesException
-import howru.howru.exception.message.LikesExceptionMessage
-import howru.howru.globalUtil.ltLastTimestamp
+import howru.howru.likes.exception.LikesException
+import howru.howru.likes.exception.LikesExceptionMessage
+import howru.howru.global.util.ltLastTimestamp
 import howru.howru.likes.domain.Likes
 import howru.howru.likes.domain.QLikes
-import howru.howru.likes.dto.response.LikesBelongMemberInfo
-import howru.howru.likes.dto.response.LikesBelongPostInfo
+import howru.howru.likes.domain.vo.LikesBelongMemberInfo
+import howru.howru.likes.domain.vo.LikesBelongPostInfo
 import howru.howru.likes.repository.constant.LikesRepoConstant
 import java.util.*
 

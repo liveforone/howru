@@ -9,8 +9,8 @@ import howru.howru.comments.domain.vo.CommentsPage
 import howru.howru.comments.repository.constant.CommentsRepoConstant
 import howru.howru.comments.exception.CommentsException
 import howru.howru.comments.exception.CommentsExceptionMessage
-import howru.howru.globalUtil.findLastIdOrDefault
-import howru.howru.globalUtil.ltLastId
+import howru.howru.global.util.findLastIdOrDefault
+import howru.howru.global.util.ltLastId
 import java.util.*
 
 class CommentsCustomRepositoryImpl(

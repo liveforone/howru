@@ -1,8 +1,8 @@
 package howru.howru.post.repository
 
 import howru.howru.post.domain.Post
-import howru.howru.post.dto.response.PostInfo
-import howru.howru.post.dto.response.PostPage
+import howru.howru.post.domain.vo.PostInfo
+import howru.howru.post.domain.vo.PostPage
 import java.util.*
 
 interface PostCustomRepository {

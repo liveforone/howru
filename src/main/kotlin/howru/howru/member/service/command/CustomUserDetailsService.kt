@@ -1,7 +1,7 @@
 package howru.howru.member.service.command
 
-import howru.howru.exception.exception.MemberException
-import howru.howru.exception.message.MemberExceptionMessage
+import howru.howru.member.exception.MemberException
+import howru.howru.member.exception.MemberExceptionMessage
 import howru.howru.logger
 import howru.howru.member.domain.Member
 import howru.howru.member.domain.Role

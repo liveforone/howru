@@ -2,8 +2,8 @@ package howru.howru.comments.domain
 
 import howru.howru.comments.domain.constant.CommentsConstant
 import howru.howru.converter.CommentsStateConverter
-import howru.howru.globalUtil.DATETIME_TYPE
-import howru.howru.globalUtil.getDatetimeDigit
+import howru.howru.global.util.DATETIME_TYPE
+import howru.howru.global.util.getDatetimeDigit
 import howru.howru.member.domain.Member
 import howru.howru.post.domain.Post
 import jakarta.persistence.*

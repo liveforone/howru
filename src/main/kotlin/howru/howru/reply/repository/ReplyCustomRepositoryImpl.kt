@@ -2,14 +2,14 @@ package howru.howru.reply.repository
 
 import com.querydsl.core.types.Projections
 import com.querydsl.jpa.impl.JPAQueryFactory
-import howru.howru.exception.exception.ReplyException
-import howru.howru.exception.message.ReplyExceptionMessage
-import howru.howru.globalUtil.findLastIdOrDefault
-import howru.howru.globalUtil.ltLastId
+import howru.howru.reply.exception.ReplyException
+import howru.howru.reply.exception.ReplyExceptionMessage
+import howru.howru.global.util.findLastIdOrDefault
+import howru.howru.global.util.ltLastId
 import howru.howru.reply.domain.QReply
 import howru.howru.reply.domain.Reply
-import howru.howru.reply.dto.response.ReplyInfo
-import howru.howru.reply.dto.response.ReplyPage
+import howru.howru.reply.domain.vo.ReplyInfo
+import howru.howru.reply.domain.vo.ReplyPage
 import howru.howru.reply.repository.constant.ReplyRepoConstant
 import java.util.*
 

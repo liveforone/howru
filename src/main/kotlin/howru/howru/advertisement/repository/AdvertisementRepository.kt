@@ -3,7 +3,7 @@ package howru.howru.advertisement.repository
 import howru.howru.advertisement.domain.Advertisement
 import howru.howru.advertisement.domain.vo.AdvertisementInfo
 import howru.howru.advertisement.repository.sql.AdvertisementSql
-import howru.howru.globalUtil.getDateDigit
+import howru.howru.global.util.getDateDigit
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query

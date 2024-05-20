@@ -1,6 +1,6 @@
 package howru.howru.member.controller.response
 
-import howru.howru.member.dto.response.MemberInfo
+import howru.howru.member.domain.vo.MemberInfo
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 

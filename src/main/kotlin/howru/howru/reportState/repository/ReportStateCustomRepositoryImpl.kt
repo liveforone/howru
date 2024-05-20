@@ -2,12 +2,12 @@ package howru.howru.reportState.repository
 
 import com.querydsl.core.types.Projections
 import com.querydsl.jpa.impl.JPAQueryFactory
-import howru.howru.exception.exception.ReportStateException
-import howru.howru.exception.message.RepostStateExceptionMessage
+import howru.howru.reportState.exceptioin.ReportStateException
+import howru.howru.reportState.exceptioin.RepostStateExceptionMessage
 import howru.howru.member.domain.QMember
 import howru.howru.reportState.domain.QReportState
 import howru.howru.reportState.domain.ReportState
-import howru.howru.reportState.dto.response.ReportStateInfo
+import howru.howru.reportState.domain.vo.ReportStateInfo
 import java.util.*
 
 class ReportStateCustomRepositoryImpl(

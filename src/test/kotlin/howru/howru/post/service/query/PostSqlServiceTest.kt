@@ -1,13 +1,13 @@
 package howru.howru.post.service.query
 
-import howru.howru.exception.exception.SubscribeException
+import howru.howru.subscribe.exception.SubscribeException
 import howru.howru.logger
-import howru.howru.member.dto.request.LoginRequest
-import howru.howru.member.dto.request.SignupRequest
+import howru.howru.member.dto.LoginRequest
+import howru.howru.member.dto.SignupRequest
 import howru.howru.member.service.command.MemberCommandService
-import howru.howru.post.dto.request.CreatePost
+import howru.howru.post.dto.CreatePost
 import howru.howru.post.service.command.PostCommandService
-import howru.howru.subscribe.dto.request.CreateSubscribe
+import howru.howru.subscribe.dto.CreateSubscribe
 import howru.howru.subscribe.service.command.SubscribeCommandService
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions

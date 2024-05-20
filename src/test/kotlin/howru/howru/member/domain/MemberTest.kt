@@ -1,6 +1,6 @@
 package howru.howru.member.domain
 
-import howru.howru.globalUtil.isMatchPassword
+import howru.howru.global.util.isMatchPassword
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 

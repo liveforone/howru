@@ -1,12 +1,12 @@
 package howru.howru.post.service.query
 
-import howru.howru.exception.exception.SubscribeException
-import howru.howru.exception.message.SubscribeExceptionMessage
-import howru.howru.globalUtil.extractKeywords
+import howru.howru.subscribe.exception.SubscribeException
+import howru.howru.subscribe.exception.SubscribeExceptionMessage
+import howru.howru.global.util.extractKeywords
 import howru.howru.logger
 import howru.howru.member.service.query.MemberQueryService
 import howru.howru.post.cache.PostCache
-import howru.howru.post.dto.response.PostPage
+import howru.howru.post.domain.vo.PostPage
 import howru.howru.post.log.PostServiceLog
 import howru.howru.post.repository.PostRepository
 import howru.howru.subscribe.service.query.SubscribeQueryService

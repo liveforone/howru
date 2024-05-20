@@ -1,9 +1,9 @@
 package howru.howru.jwt.filterLogic
 
-import howru.howru.exception.exception.JwtCustomException
-import howru.howru.exception.message.JwtExceptionMessage
+import howru.howru.jwt.exception.JwtCustomException
+import howru.howru.jwt.exception.JwtExceptionMessage
 import howru.howru.jwt.constant.JwtConstant
-import howru.howru.jwt.dto.JwtTokenInfo
+import howru.howru.jwt.domain.vo.JwtTokenInfo
 import howru.howru.logger
 import howru.howru.member.domain.Role
 import io.jsonwebtoken.*

@@ -1,11 +1,11 @@
 package howru.howru.member.service.command
 
-import howru.howru.exception.exception.JwtCustomException
-import howru.howru.exception.exception.MemberException
+import howru.howru.jwt.exception.JwtCustomException
+import howru.howru.member.exception.MemberException
 import howru.howru.jwt.service.JwtTokenService
 import howru.howru.member.domain.MemberLock
 import howru.howru.member.domain.Role
-import howru.howru.member.dto.request.*
+import howru.howru.member.dto.*
 import howru.howru.member.service.query.MemberQueryService
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions

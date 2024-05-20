@@ -1,6 +1,6 @@
 package howru.howru.advertisement.domain
 
-import howru.howru.globalUtil.getDateDigit
+import howru.howru.global.util.getDateDigit
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import java.time.LocalDate

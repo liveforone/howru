@@ -1,6 +1,6 @@
 package howru.howru.subscribe.domain
 
-import howru.howru.globalUtil.getCurrentTimestamp
+import howru.howru.global.util.getCurrentTimestamp
 import howru.howru.subscribe.domain.constant.SubscribeConstant
 import jakarta.persistence.*
 import java.util.*

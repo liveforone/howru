@@ -7,7 +7,7 @@ import howru.howru.advertisement.domain.QAdvertisement
 import howru.howru.advertisement.domain.vo.AdvertisementInfo
 import howru.howru.advertisement.exception.AdvertisementException
 import howru.howru.advertisement.exception.AdvertisementExceptionMessage
-import howru.howru.globalUtil.getDateDigit
+import howru.howru.global.util.getDateDigit
 import java.time.LocalDate
 
 class AdvertisementCustomRepositoryImpl(

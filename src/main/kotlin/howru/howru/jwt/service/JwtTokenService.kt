@@ -1,12 +1,12 @@
 package howru.howru.jwt.service
 
-import howru.howru.exception.exception.JwtCustomException
-import howru.howru.exception.message.JwtExceptionMessage
-import howru.howru.globalConfig.redis.RedisKeyValueTimeOut
-import howru.howru.globalConfig.redis.RedisRepository
+import howru.howru.jwt.exception.JwtCustomException
+import howru.howru.jwt.exception.JwtExceptionMessage
+import howru.howru.global.config.redis.RedisKeyValueTimeOut
+import howru.howru.global.config.redis.RedisRepository
 import howru.howru.jwt.cache.JwtCache
 import howru.howru.jwt.domain.RefreshToken
-import howru.howru.jwt.dto.JwtTokenInfo
+import howru.howru.jwt.domain.vo.JwtTokenInfo
 import howru.howru.jwt.filterLogic.JwtTokenProvider
 import howru.howru.jwt.log.JwtServiceLog
 import howru.howru.logger

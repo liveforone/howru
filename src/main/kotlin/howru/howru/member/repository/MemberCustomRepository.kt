@@ -2,7 +2,7 @@ package howru.howru.member.repository
 
 import howru.howru.member.domain.Member
 import howru.howru.member.domain.Role
-import howru.howru.member.dto.response.MemberInfo
+import howru.howru.member.domain.vo.MemberInfo
 import java.util.*
 
 interface MemberCustomRepository {

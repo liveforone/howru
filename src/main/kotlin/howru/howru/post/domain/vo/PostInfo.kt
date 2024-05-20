@@ -1,0 +1,12 @@
+package howru.howru.post.domain.vo
+
+import howru.howru.post.domain.PostState
+import java.util.UUID
+
+class PostInfo(
+    val id: Long,
+    val writerId: UUID,
+    val content: String,
+    val postState: PostState,
+    val createdDatetime: Long
+)

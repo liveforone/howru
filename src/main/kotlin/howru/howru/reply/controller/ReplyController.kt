@@ -4,10 +4,10 @@ import howru.howru.logger
 import howru.howru.reply.controller.constant.ReplyParam
 import howru.howru.reply.controller.constant.ReplyUrl
 import howru.howru.reply.controller.response.ReplyResponse
-import howru.howru.reply.dto.request.CreateReply
-import howru.howru.reply.dto.request.RemoveReply
-import howru.howru.reply.dto.request.UpdateReplyContent
-import howru.howru.reply.dto.response.ReplyInfo
+import howru.howru.reply.dto.CreateReply
+import howru.howru.reply.dto.RemoveReply
+import howru.howru.reply.dto.UpdateReplyContent
+import howru.howru.reply.domain.vo.ReplyInfo
 import howru.howru.reply.log.ReplyControllerLog
 import howru.howru.reply.service.command.ReplyCommandService
 import howru.howru.reply.service.query.ReplyQueryService

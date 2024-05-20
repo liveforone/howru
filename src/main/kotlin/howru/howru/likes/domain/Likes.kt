@@ -1,6 +1,6 @@
 package howru.howru.likes.domain
 
-import howru.howru.globalUtil.getCurrentTimestamp
+import howru.howru.global.util.getCurrentTimestamp
 import howru.howru.likes.domain.constant.LikesConstant
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

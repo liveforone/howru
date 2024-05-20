@@ -1,8 +1,8 @@
 package howru.howru.likes.repository
 
 import howru.howru.likes.domain.Likes
-import howru.howru.likes.dto.response.LikesBelongMemberInfo
-import howru.howru.likes.dto.response.LikesBelongPostInfo
+import howru.howru.likes.domain.vo.LikesBelongMemberInfo
+import howru.howru.likes.domain.vo.LikesBelongPostInfo
 import java.util.*
 
 interface LikesCustomRepository {

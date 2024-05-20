@@ -3,8 +3,8 @@ package howru.howru.comments.service.query
 import howru.howru.comments.domain.vo.CommentsPage
 import howru.howru.comments.log.CommentsServiceLog
 import howru.howru.comments.repository.CommentsRepository
-import howru.howru.exception.exception.SubscribeException
-import howru.howru.exception.message.SubscribeExceptionMessage
+import howru.howru.subscribe.exception.SubscribeException
+import howru.howru.subscribe.exception.SubscribeExceptionMessage
 import howru.howru.logger
 import howru.howru.subscribe.service.query.SubscribeQueryService
 import org.springframework.beans.factory.annotation.Autowired

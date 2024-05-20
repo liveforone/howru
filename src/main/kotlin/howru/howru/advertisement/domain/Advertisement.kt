@@ -1,8 +1,8 @@
 package howru.howru.advertisement.domain
 
 import howru.howru.advertisement.domain.constant.AdvertisementConstant
-import howru.howru.globalUtil.DATE_TYPE
-import howru.howru.globalUtil.getDateDigit
+import howru.howru.global.util.DATE_TYPE
+import howru.howru.global.util.getDateDigit
 import jakarta.persistence.*
 import java.time.LocalDate
 

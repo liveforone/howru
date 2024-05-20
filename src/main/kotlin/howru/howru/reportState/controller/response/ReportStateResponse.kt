@@ -1,6 +1,6 @@
 package howru.howru.reportState.controller.response
 
-import howru.howru.reportState.dto.response.ReportStateInfo
+import howru.howru.reportState.domain.vo.ReportStateInfo
 import org.springframework.http.ResponseEntity
 
 object ReportStateResponse {

@@ -6,10 +6,10 @@ import howru.howru.comments.dto.RemoveComments
 import howru.howru.comments.dto.UpdateComments
 import howru.howru.comments.service.query.CommentsQueryService
 import howru.howru.comments.exception.CommentsException
-import howru.howru.member.dto.request.LoginRequest
-import howru.howru.member.dto.request.SignupRequest
+import howru.howru.member.dto.LoginRequest
+import howru.howru.member.dto.SignupRequest
 import howru.howru.member.service.command.MemberCommandService
-import howru.howru.post.dto.request.CreatePost
+import howru.howru.post.dto.CreatePost
 import howru.howru.post.service.command.PostCommandService
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions

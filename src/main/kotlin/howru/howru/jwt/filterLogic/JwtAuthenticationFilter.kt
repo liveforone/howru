@@ -1,7 +1,7 @@
 package howru.howru.jwt.filterLogic
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import howru.howru.exception.exception.JwtCustomException
+import howru.howru.jwt.exception.JwtCustomException
 import howru.howru.jwt.constant.JwtConstant
 import howru.howru.logger
 import jakarta.servlet.FilterChain

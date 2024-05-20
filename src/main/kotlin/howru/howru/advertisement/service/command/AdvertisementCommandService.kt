@@ -7,8 +7,8 @@ import howru.howru.advertisement.dto.UpdateAdTitle
 import howru.howru.advertisement.log.AdServiceLog
 import howru.howru.advertisement.repository.AdvertisementRepository
 import howru.howru.advertisement.service.command.constant.AdScheduleConstant
-import howru.howru.exception.exception.MemberException
-import howru.howru.exception.message.MemberExceptionMessage
+import howru.howru.member.exception.MemberException
+import howru.howru.member.exception.MemberExceptionMessage
 import howru.howru.logger
 import howru.howru.member.repository.MemberCustomRepository
 import org.springframework.beans.factory.annotation.Autowired

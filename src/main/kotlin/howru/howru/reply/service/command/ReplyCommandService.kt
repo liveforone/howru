@@ -3,9 +3,9 @@ package howru.howru.reply.service.command
 import howru.howru.comments.repository.CommentsRepository
 import howru.howru.member.repository.MemberCustomRepository
 import howru.howru.reply.domain.Reply
-import howru.howru.reply.dto.request.CreateReply
-import howru.howru.reply.dto.request.RemoveReply
-import howru.howru.reply.dto.request.UpdateReplyContent
+import howru.howru.reply.dto.CreateReply
+import howru.howru.reply.dto.RemoveReply
+import howru.howru.reply.dto.UpdateReplyContent
 import howru.howru.reply.repository.ReplyRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

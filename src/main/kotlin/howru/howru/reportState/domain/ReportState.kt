@@ -1,9 +1,9 @@
 package howru.howru.reportState.domain
 
 import howru.howru.converter.MemberStateConverter
-import howru.howru.globalUtil.DATE_TYPE
-import howru.howru.globalUtil.convertDateToLocalDate
-import howru.howru.globalUtil.getDateDigit
+import howru.howru.global.util.DATE_TYPE
+import howru.howru.global.util.convertDateToLocalDate
+import howru.howru.global.util.getDateDigit
 import howru.howru.member.domain.Member
 import howru.howru.reportState.domain.constant.ReportStateConstant
 import jakarta.persistence.*

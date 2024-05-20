@@ -4,8 +4,8 @@ import howru.howru.logger
 import howru.howru.reportState.controller.constant.ReportStateParam
 import howru.howru.reportState.controller.constant.ReportStateUrl
 import howru.howru.reportState.controller.response.ReportStateResponse
-import howru.howru.reportState.dto.request.ReportMember
-import howru.howru.reportState.dto.response.ReportStateInfo
+import howru.howru.reportState.dto.ReportMember
+import howru.howru.reportState.domain.vo.ReportStateInfo
 import howru.howru.reportState.log.ReportStateControllerLog
 import howru.howru.reportState.service.command.ReportStateCommandService
 import howru.howru.reportState.service.query.ReportStateQueryService

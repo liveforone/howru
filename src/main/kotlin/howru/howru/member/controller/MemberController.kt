@@ -1,15 +1,15 @@
 package howru.howru.member.controller
 
-import howru.howru.exception.exception.MemberException
-import howru.howru.exception.message.MemberExceptionMessage
-import howru.howru.jwt.dto.JwtTokenInfo
+import howru.howru.member.exception.MemberException
+import howru.howru.member.exception.MemberExceptionMessage
+import howru.howru.jwt.domain.vo.JwtTokenInfo
 import howru.howru.logger
 import howru.howru.member.controller.constant.MemberControllerConstant
 import howru.howru.member.controller.constant.MemberRequestHeaderConstant
 import howru.howru.member.controller.constant.MemberUrl
 import howru.howru.member.controller.response.MemberResponse
-import howru.howru.member.dto.request.*
-import howru.howru.member.dto.response.MemberInfo
+import howru.howru.member.domain.vo.MemberInfo
+import howru.howru.member.dto.*
 import howru.howru.member.log.MemberControllerLog
 import howru.howru.member.service.command.MemberCommandService
 import howru.howru.member.service.query.MemberQueryService

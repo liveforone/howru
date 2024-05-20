@@ -2,12 +2,12 @@ package howru.howru.member.domain
 
 import howru.howru.converter.MemberLockConverter
 import howru.howru.converter.RoleConverter
-import howru.howru.exception.exception.MemberException
-import howru.howru.exception.message.MemberExceptionMessage
-import howru.howru.globalUtil.UUID_TYPE
-import howru.howru.globalUtil.createUUID
-import howru.howru.globalUtil.encodePassword
-import howru.howru.globalUtil.isMatchPassword
+import howru.howru.member.exception.MemberException
+import howru.howru.member.exception.MemberExceptionMessage
+import howru.howru.global.util.UUID_TYPE
+import howru.howru.global.util.createUUID
+import howru.howru.global.util.encodePassword
+import howru.howru.global.util.isMatchPassword
 import howru.howru.member.domain.constant.MemberConstant
 import jakarta.persistence.*
 import org.springframework.security.core.GrantedAuthority

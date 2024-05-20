@@ -2,8 +2,8 @@ package howru.howru.advertisement.service.query
 
 import howru.howru.advertisement.dto.CreateAdvertisement
 import howru.howru.advertisement.service.command.AdvertisementCommandService
-import howru.howru.member.dto.request.LoginRequest
-import howru.howru.member.dto.request.SignupRequest
+import howru.howru.member.dto.LoginRequest
+import howru.howru.member.dto.SignupRequest
 import howru.howru.member.service.command.MemberCommandService
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions

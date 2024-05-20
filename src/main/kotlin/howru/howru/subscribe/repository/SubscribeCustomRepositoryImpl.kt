@@ -2,12 +2,12 @@ package howru.howru.subscribe.repository
 
 import com.querydsl.core.types.Projections
 import com.querydsl.jpa.impl.JPAQueryFactory
-import howru.howru.exception.exception.SubscribeException
-import howru.howru.exception.message.SubscribeExceptionMessage
-import howru.howru.globalUtil.ltLastTimestamp
+import howru.howru.subscribe.exception.SubscribeException
+import howru.howru.subscribe.exception.SubscribeExceptionMessage
+import howru.howru.global.util.ltLastTimestamp
 import howru.howru.subscribe.domain.QSubscribe
 import howru.howru.subscribe.domain.Subscribe
-import howru.howru.subscribe.dto.response.SubscribeInfo
+import howru.howru.subscribe.domain.vo.SubscribeInfo
 import howru.howru.subscribe.repository.constant.SubscribeRepoConstant
 import java.util.*
 
