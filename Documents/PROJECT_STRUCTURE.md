@@ -11,14 +11,14 @@
 * 루트를 기준으로 전반적인 디렉토리는 아래와 같다.
 ```
 ㅡ howru
-   |ㅡ howru
-        |ㅡ 도메인1
-        |ㅡ 도메인2
-        |ㅡ global
-              |ㅡ config
-              |ㅡ exception
-              |ㅡ util
-        |ㅡ converter
+   ㄴ howru
+   |     ㄴ 도메인1
+   |     ㄴ 도메인2
+   |     ㄴ global
+   |     |     ㄴ config
+   |     |     ㄴ exception
+   |     |     ㄴ util
+   |     ㄴ  converter
 ```
 
 ## 도메인 디렉토리 구조
@@ -27,25 +27,25 @@
 * command작업에서 클라이언트에게 전달할 정보(주로 성공 메세지 + http status)는 `도메인Response`에 담아 전달한다.
 ```
 ㅡ 도메인
-    |ㅡ cache
-    |ㅡ controller
-          |ㅡ constant
-                |ㅡ 도메인ControllerConstant.kt
-          |ㅡ response
-                |ㅡ 도메인Response.kt
-    |ㅡ domain
-          |ㅡ constant
-          |ㅡ vo
-          |ㅡ 도메인.kt
-          |ㅡ 엔티티에 사용되는 enum.kt
-    |ㅡ dto
-    |ㅡ exception
-          |ㅡ 도메인ControllerAdvice.kt
-          |ㅡ 도메인Exception.kt
-          |ㅡ 도메인도메인ExceptionMessage.kt
-    |ㅡ log
-    |ㅡ repository
-    |ㅡ service
-          |ㅡ command
-          |ㅡ query
+    ㄴ cache
+    ㄴ controller
+    |      ㄴ constant
+    |      |      ㄴ 도메인ControllerConstant.kt
+    |      ㄴ response
+    |             ㄴ 도메인Response.kt
+    ㄴ domain
+    |      ㄴ constant
+    |      ㄴ vo
+    |      ㄴ 도메인.kt
+    |      ㄴ 엔티티에 사용되는 enum.kt
+    ㄴ dto
+    ㄴ exception
+    |      ㄴ 도메인ControllerAdvice.kt
+    |      ㄴ 도메인Exception.kt
+    |      ㄴ 도메인도메인ExceptionMessage.kt
+    ㄴ log
+    ㄴ repository
+    ㄴ service
+    |      ㄴ command
+    |      ㄴ query
 ```
