@@ -1,6 +1,6 @@
 package howru.howru.reply.service.query
 
-import howru.howru.comments.dto.request.CreateComments
+import howru.howru.comments.dto.CreateComments
 import howru.howru.comments.service.command.CommentsCommandService
 import howru.howru.member.dto.request.LoginRequest
 import howru.howru.member.dto.request.SignupRequest

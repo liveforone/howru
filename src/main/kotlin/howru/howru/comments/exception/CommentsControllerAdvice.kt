@@ -1,6 +1,5 @@
-package howru.howru.exception.controllerAdvice
+package howru.howru.comments.exception
 
-import howru.howru.exception.exception.CommentsException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice

@@ -1,4 +1,4 @@
-package howru.howru.comments.dto.request
+package howru.howru.comments.dto
 
 import jakarta.validation.constraints.NotNull
 import java.util.UUID

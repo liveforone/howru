@@ -1,6 +1,4 @@
-package howru.howru.exception.exception
-
-import howru.howru.exception.message.CommentsExceptionMessage
+package howru.howru.comments.exception
 
 class CommentsException(val commentsExceptionMessage: CommentsExceptionMessage, val commentId: Long) : RuntimeException(
     commentsExceptionMessage.message

@@ -1,4 +1,4 @@
-package howru.howru.comments.dto.response
+package howru.howru.comments.domain.vo
 
 import howru.howru.comments.domain.CommentsState
 import java.util.UUID

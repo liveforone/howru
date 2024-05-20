@@ -3,11 +3,11 @@ package howru.howru.comments.controller
 import howru.howru.comments.controller.constant.CommentsParam
 import howru.howru.comments.controller.constant.CommentsUrl
 import howru.howru.comments.controller.response.CommentsResponse
-import howru.howru.comments.dto.request.CreateComments
-import howru.howru.comments.dto.request.RemoveComments
-import howru.howru.comments.dto.request.UpdateComments
-import howru.howru.comments.dto.response.CommentsInfo
-import howru.howru.comments.dto.response.CommentsPage
+import howru.howru.comments.dto.CreateComments
+import howru.howru.comments.dto.RemoveComments
+import howru.howru.comments.dto.UpdateComments
+import howru.howru.comments.domain.vo.CommentsInfo
+import howru.howru.comments.domain.vo.CommentsPage
 import howru.howru.comments.log.CommentsControllerLog
 import howru.howru.comments.service.command.CommentsCommandService
 import howru.howru.comments.service.query.CommentsQueryService

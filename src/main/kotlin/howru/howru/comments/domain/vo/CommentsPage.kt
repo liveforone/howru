@@ -1,4 +1,4 @@
-package howru.howru.comments.dto.response
+package howru.howru.comments.domain.vo
 
 data class CommentsPage(
     val commentsInfoList: List<CommentsInfo>,

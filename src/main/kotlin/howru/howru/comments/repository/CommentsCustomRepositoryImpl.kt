@@ -4,11 +4,11 @@ import com.querydsl.core.types.Projections
 import com.querydsl.jpa.impl.JPAQueryFactory
 import howru.howru.comments.domain.Comments
 import howru.howru.comments.domain.QComments
-import howru.howru.comments.dto.response.CommentsInfo
-import howru.howru.comments.dto.response.CommentsPage
+import howru.howru.comments.domain.vo.CommentsInfo
+import howru.howru.comments.domain.vo.CommentsPage
 import howru.howru.comments.repository.constant.CommentsRepoConstant
-import howru.howru.exception.exception.CommentsException
-import howru.howru.exception.message.CommentsExceptionMessage
+import howru.howru.comments.exception.CommentsException
+import howru.howru.comments.exception.CommentsExceptionMessage
 import howru.howru.globalUtil.findLastIdOrDefault
 import howru.howru.globalUtil.ltLastId
 import java.util.*

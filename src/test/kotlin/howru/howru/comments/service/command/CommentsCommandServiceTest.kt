@@ -1,11 +1,11 @@
 package howru.howru.comments.service.command
 
 import howru.howru.comments.domain.CommentsState
-import howru.howru.comments.dto.request.CreateComments
-import howru.howru.comments.dto.request.RemoveComments
-import howru.howru.comments.dto.request.UpdateComments
+import howru.howru.comments.dto.CreateComments
+import howru.howru.comments.dto.RemoveComments
+import howru.howru.comments.dto.UpdateComments
 import howru.howru.comments.service.query.CommentsQueryService
-import howru.howru.exception.exception.CommentsException
+import howru.howru.comments.exception.CommentsException
 import howru.howru.member.dto.request.LoginRequest
 import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.service.command.MemberCommandService
