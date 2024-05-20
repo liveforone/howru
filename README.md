@@ -30,6 +30,7 @@
 ## 시스템 설계
 * [전체 설계](./Documents/DESIGN.md)
 * [DB 설계](./Documents/DB_DESIGN.md)
+* [프로젝트 구조](./Documents/PROJECT_STRUCTURE.md)
 * [rest-ful한 api 설계](./Documents/REST_FUL_API_DESIGN.md)
 ## 엔티티 설계
 * [회원 & JWT 설계](./Documents/MEMBER_DESIGN.md)
