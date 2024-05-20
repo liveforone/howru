@@ -7,3 +7,9 @@ object LikesUrl {
     const val LIKE = "/likes/like"
     const val DISLIKE = "/likes/dislike"
 }
+
+object LikesParam {
+    const val MEMBER_ID = "memberId"
+    const val POST_ID = "postId"
+    const val LAST_TIMESTAMP = "lastTimestamp"
+}

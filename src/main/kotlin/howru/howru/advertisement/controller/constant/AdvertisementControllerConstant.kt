@@ -12,3 +12,8 @@ object AdvertisementUrl {
     const val EDIT_CONTENT = "/advertisement/{id}/edit/content"
     const val REMOVE_AD = "/advertisement/{id}/remove"
 }
+
+object AdvertisementParam {
+    const val ID = "id"
+    const val COMPANY = "company"
+}

@@ -4,8 +4,7 @@ import howru.howru.member.exception.MemberException
 import howru.howru.member.exception.MemberExceptionMessage
 import howru.howru.jwt.domain.vo.JwtTokenInfo
 import howru.howru.logger
-import howru.howru.member.controller.constant.MemberControllerConstant
-import howru.howru.member.controller.constant.MemberRequestHeaderConstant
+import howru.howru.member.controller.constant.MemberRequestHeader
 import howru.howru.member.controller.constant.MemberUrl
 import howru.howru.member.controller.response.MemberResponse
 import howru.howru.member.domain.vo.MemberInfo
@@ -51,9 +50,9 @@ class MemberController
         ): ResponseEntity<String> {
             val tokenInfo = memberCommandService.login(loginRequest)
             response.apply {
-                addHeader(MemberControllerConstant.ACCESS_TOKEN, tokenInfo.accessToken)
-                addHeader(MemberControllerConstant.REFRESH_TOKEN, tokenInfo.refreshToken)
-                addHeader(MemberControllerConstant.MEMBER_ID, tokenInfo.id.toString())
+                addHeader(MemberRequestHeader.ACCESS_TOKEN, tokenInfo.accessToken)
+                addHeader(MemberRequestHeader.REFRESH_TOKEN, tokenInfo.refreshToken)
+                addHeader(MemberRequestHeader.MEMBER_ID, tokenInfo.id.toString())
             }
             logger().info(MemberControllerLog.LOGIN_SUCCESS + loginRequest.email)
 
@@ -62,8 +61,8 @@ class MemberController
 
         @PutMapping(MemberUrl.JWT_TOKEN_REISSUE)
         fun jwtTokenReissue(
-            @RequestHeader(MemberRequestHeaderConstant.ID) id: String?,
-            @RequestHeader(MemberRequestHeaderConstant.REFRESH_TOKEN) refreshToken: String?
+            @RequestHeader(MemberRequestHeader.ID) id: String?,
+            @RequestHeader(MemberRequestHeader.REFRESH_TOKEN) refreshToken: String?
         ): ResponseEntity<JwtTokenInfo> {
             if (id.isNullOrBlank() || refreshToken.isNullOrBlank()) {
                 throw MemberException(MemberExceptionMessage.TOKEN_REISSUE_HEADER_IS_NULL, "UNRELIABLE-MEMBER")

@@ -8,3 +8,10 @@ object ReplyUrl {
     const val EDIT = "/reply/{id}/edit"
     const val REMOVE = "/reply/{id}/remove"
 }
+
+object ReplyParam {
+    const val ID = "id"
+    const val LAST_ID = "lastId"
+    const val WRITER_ID = "writerId"
+    const val COMMENT_ID = "commentId"
+}

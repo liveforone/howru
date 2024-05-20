@@ -9,3 +9,11 @@ object CommentsUrl {
     const val EDIT_COMMENTS = "/comments/{id}/edit"
     const val REMOVE_COMMENTS = "/comments/{id}/remove"
 }
+
+object CommentsParam {
+    const val ID = "id"
+    const val WRITER_ID = "writerId"
+    const val POST_ID = "postId"
+    const val MEMBER_ID = "memberId"
+    const val LAST_ID = "lastId"
+}
