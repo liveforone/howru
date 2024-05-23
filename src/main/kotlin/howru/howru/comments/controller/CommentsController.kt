@@ -10,6 +10,7 @@ import howru.howru.comments.dto.response.CommentsInfo
 import howru.howru.comments.log.CommentsControllerLog
 import howru.howru.comments.service.command.CommentsCommandService
 import howru.howru.comments.service.query.CommentsQueryService
+import howru.howru.global.response.GlobalResponse
 import howru.howru.logger
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Positive
@@ -52,7 +53,7 @@ class CommentsController
                             myId = UUID.fromString(principal.name),
                             lastId
                         )
-                    else -> return CommentsResponse.badRequestCommentsPage()
+                    else -> return GlobalResponse.badRequest()
                 }
             return ResponseEntity.ok(comments)
         }
