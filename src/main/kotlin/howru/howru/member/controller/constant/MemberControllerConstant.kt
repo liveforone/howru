@@ -1,16 +1,16 @@
 package howru.howru.member.controller.constant
 
 object MemberUrl {
-    const val SIGNUP = "/member/signup"
-    const val LOGIN = "/member/login"
-    const val INFO = "/member/info"
+    const val SIGNUP = "/members/signup"
+    const val LOGIN = "/members/login"
+    const val INFO = "/members/info"
     const val JWT_TOKEN_REISSUE = "/auth/reissue"
-    const val UPDATE_PASSWORD = "/member/update/password"
-    const val LOCK_ON = "/member/lock-on"
-    const val LOCK_OFF = "/member/lock-off"
-    const val LOGOUT = "/member/logout"
-    const val RECOVERY_MEMBER = "/member/recovery"
-    const val WITHDRAW = "/member/withdraw"
+    const val UPDATE_PASSWORD = "/members/update/password"
+    const val LOCK_ON = "/members/lock-on"
+    const val LOCK_OFF = "/members/lock-off"
+    const val LOGOUT = "/members/logout"
+    const val RECOVERY_MEMBER = "/members/recovery"
+    const val WITHDRAW = "/members/withdraw"
     const val PROHIBITION = "/prohibition"
 }
 

@@ -6,27 +6,27 @@
 * access 토큰의 만료시간은 2시간 입니다. refresh 토큰의 만료시간은 30일 입니다.
 
 ## 상세 설계
-* 외부 식별자 이름은 uuid로 합니다. 다른 도메인에서 사용하게된다면 memberUUID 형태로 사용합니다.
+* 외부 식별자 이름은 `uuid`로 합니다. 다른 도메인에서 사용하게된다면 memberUUID 형태로 사용합니다.
 * 이는 회원의 pk를 외부에 노출하지 않기 위함입니다.
 * 회원은 member, admin, 두 종류가 있습니다.
-* 비밀번호는 모두 bcrypt로 암호화 합니다.
+* 비밀번호는 모두 `bcrypt`로 암호화 합니다.
 * 회원의 비밀번호는 변경 가능합니다.
 * 로그인은 스프링 시큐리티에 위임합니다
 * 정지된 계정인지는 로그인시에 판별합니다.
 * 회원은 잠금이 가능하며, 잠금 회원의 경우 맞팔로우한 회원만 해당 회원의 게시글이나 프로필에 접근 가능합니다.
 * 잠금 상태는 회원가입시 기본적으로 off로 처리됩니다. 자유롭게 on/off 변경 가능합니다.
-* 정규화를 하여 회원의 상태와 신고 로직은 ReportState 테이블로 이관하였습니다.
+* 정규화를 하여 회원의 상태와 신고 로직은 `ReportState` 테이블로 이관하였습니다.
 
 ## 회원 탈퇴 매커니즘
-* 회원이 탈퇴되면 바로 계정이 삭제되지 않습니다. 
+* 회원이 탈퇴되면 바로 계정이 삭제되지 않습니다.
 * 각국의 개인정보 보호 정책에 따라 삭제하면 안되는 경우도 있습니다.
-* 따라서 auth를 withdraw로 설정하고, 모든 회원 조회쿼리에 auth가 `not equal withdraw` 조건절을 넣어서 
-* withdraw 권한을 가진 회원은 조회되지 않도록 합니다.
-* 또한 이렇게 withdraw된 회원이 똑같은 id로 중복가입을 막기위해 duplicate email validation에서는 auth가 withdraw인 회원을 포함하여 검증합니다.
-* 후에 회원이 복구 api를 이용하여 접근하면 auth를 member auth로 전환시켜서 다시 활동이 가능하도록 합니다.
-* 당연히 이 api는 시큐리티 설정에 외부접근을 permit 시켜주어서 jwt 토큰없이도 접근 가능하도록 합니다. 이때 사용자로부터 email과 pw를 json으로 받고,
+* 따라서 `auth`를 `withdraw`상태로 설정하고, 모든 회원 조회쿼리에 `auth`가 `not equal withdraw` 조건절을 넣어서
+* `withdraw` 권한을 가진 회원은 조회되지 않도록 합니다.
+* 또한 이렇게 `withdraw`된 회원이 똑같은 id로 중복가입을 막기위해 `duplicate email validation`에서는 `auth`가 `withdraw`인 회원을 포함하여 검증합니다.
+* 후에 회원이 복구 api를 이용하여 접근하면 `auth`를 `member auth`로 전환시켜서 다시 활동이 가능하도록 합니다.
+* 당연히 이 api는 시큐리티 설정에 외부접근을 permit 시켜주어서 `jwt` 토큰없이도 접근 가능하도록 합니다. 이때 사용자로부터 email과 pw를 json으로 받고,
 * pw를 체크하여 pw가 올바른 경우 복구 시켜주도록 하였습니다.
-* 만약 여러가지 회원 권한(어드민을 제외한다. 어드민은 탈퇴하지 않는다.)이 존재하는 경우에는 각 권한별로 api를 만들어서 처리하거나, 
+* 만약 여러가지 회원 권한(어드민을 제외한다. 어드민은 탈퇴하지 않는다.)이 존재하는 경우에는 각 권한별로 api를 만들어서 처리하거나,
 * 복구 api에서 각 권한을 json에 포함시켜 받아서 각 권한별 복구를 진행하면됩니다.
 * 아래는 이해를 돕기 쉽게 전체적인 매커니즘을 코드로 표현했습니다.
 ```
@@ -49,16 +49,16 @@ function 복구(이메일, 비밀번호) {
 
 ## API 설계
 ```
-[POST] /member/signup
-[POST] /member/login
-[GET] /member/info
-[PATCH] /member/update/password
-[PATCH] /member/lock-on
-[PATCH] /member/lock-off
+[POST] /members/signup
+[POST] /members/login
+[GET] /members/info
+[PATCH] /members/update/password
+[PATCH] /members/lock-on
+[PATCH] /members/lock-off
 [PUT] /auth/reissue
-[POST] /member/logout
-[POST] /member/recovery
-[DELETE] /member/withdraw
+[POST] /members/logout
+[POST] /members/recovery
+[DELETE] /members/withdraw
 ```
 
 ## Json body 예시
