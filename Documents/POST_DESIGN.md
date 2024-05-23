@@ -1,7 +1,7 @@
 # 게시글 설계
 
 ## 상세 설계
-* 게시글은 **상세조회**, **내가 작성한 게시글**, **모든게시글(최신순)**, 
+* 게시글은 **상세조회**, **내가 작성한 게시글**, **모든게시글(최신순)**,
 * **다른 회원의 게시글**, **팔로워가 팔로잉 하고 있는 사람들의 게시글**, **최다키워드를 분석하여 3개의 유사 게시글 추천**,
 * **랜덤 게시글** **작성자가 작성한 게시글의 수** 등에 대한 조회가 가능하며,
 * 잠금된 계정의 회원의 경우 해당 회원의 게시글을 조회하려는 회원이, 해당 회원을 팔로잉하고 있는지 확인해야한다.
@@ -11,8 +11,8 @@
 * 회원이 탈퇴되면 해당 회원에 속한 게시글은 삭제된다.
 * 게시글은 좋아요를 누를 수 있도록 설계되었다. 좋아요 중복과 관리를 위해 따로 도메인을 떼어내어 관리하도록 하였다.
 * 게시글의 좋아요 수는 likes 도메인에서 api를 호출하여 가져온다.
-* 다른 사람의 활동을 조회할때, 잠금된 계정의 관해서는 다음과 같다. 
-* 게시글은 잠금된 계정의 게시글이어도 팔로잉을 한다면 조회가 가능하다. 
+* 다른 사람의 활동을 조회할때, 잠금된 계정의 관해서는 다음과 같다.
+* 게시글은 잠금된 계정의 게시글이어도 팔로잉을 한다면 조회가 가능하다.
 * 그러나 댓글(의견)의 경우 맞팔로우한 상태여야만 열람이 가능하다.
 * 게시글과 관련되어 고민한 점이나, 상세한 설계는 따로 기술하였으니 아래 링크를 참조바란다.
 1. [날짜형 타입의 성능 향상](https://github.com/liveforone/howru/blob/master/Documents/DATETIME_PERFORMANCE.md)
@@ -22,16 +22,17 @@
 
 ## API 설계
 ```
-[GET] /post/{id}
-[GET] /post/my-post/{memberUUID}
-[GET] /post
-[GET] /post/writer/{writerUUID}
-[GET] /post/followee/{followerUUID}
-[GET] /post/recommend
-[GET] /post/count/{writerUUID}
-[POST] /post/create
-[PATCH] /post/{id}/edit-content
-[DELETE] /post/{id}/remove
+[GET] /posts
+[GET] /posts/{id}
+[GET] /posts/{memberId}/my : 나의 글 조회
+[GET] /posts/{memberId}/other : 다른 사람의 글 조회
+[GET] /posts/{memberId}/followee : 내가 팔로우하는 사람들의 글 조회
+[GET] /posts/recommend
+[GET] /posts/random
+[GET] /posts/{memberId}/count
+[POST] /posts
+[PATCH] /posts/{id}
+[DELETE] /posts/{id}
 ```
 
 ## Json Body 설계

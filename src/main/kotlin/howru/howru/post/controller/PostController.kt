@@ -17,6 +17,7 @@ import jakarta.validation.constraints.Positive
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 import java.util.UUID
 
 @RestController
@@ -34,8 +35,16 @@ class PostController
             return ResponseEntity.ok(postDetail)
         }
 
+        @GetMapping(PostUrl.ALL)
+        fun allPost(
+            @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
+        ): ResponseEntity<PostPage> {
+            val allPosts = postQueryService.getAllPosts(lastId)
+            return ResponseEntity.ok(allPosts)
+        }
+
         @GetMapping(PostUrl.MY_POST)
-        fun getMyPostPage(
+        fun myPost(
             @PathVariable(PostParam.MEMBER_ID) memberId: UUID,
             @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
         ): ResponseEntity<PostPage> {
@@ -43,30 +52,22 @@ class PostController
             return ResponseEntity.ok(myPosts)
         }
 
-        @GetMapping(PostUrl.ALL_POST)
-        fun getAllPostPage(
-            @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
+        @GetMapping(PostUrl.OTHER_MEMBER_POST)
+        fun otherMemberPost(
+            @PathVariable(PostParam.MEMBER_ID) memberId: UUID,
+            @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?,
+            principal: Principal
         ): ResponseEntity<PostPage> {
-            val allPosts = postQueryService.getAllPosts(lastId)
-            return ResponseEntity.ok(allPosts)
-        }
-
-        @GetMapping(PostUrl.POST_OF_WRITER)
-        fun getPostOfWriterPage(
-            @PathVariable(PostParam.WRITER_ID) writerId: UUID,
-            @RequestParam(PostParam.MEMBER_ID) memberId: UUID,
-            @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
-        ): ResponseEntity<PostPage> {
-            val postsOfWriter = postQueryService.getPostsBySomeone(writerId, memberId, lastId)
-            return ResponseEntity.ok(postsOfWriter)
+            val posts = postQueryService.getPostsBySomeone(memberId, UUID.fromString(principal.name), lastId)
+            return ResponseEntity.ok(posts)
         }
 
         @GetMapping(PostUrl.POST_OF_FOLLOWEE)
         fun getPostOfFolloweePage(
-            @PathVariable(PostParam.FOLLOWER_ID) followerId: UUID,
+            @PathVariable(PostParam.MEMBER_ID) memberId: UUID,
             @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
         ): ResponseEntity<PostPage> {
-            val postsOfFollowee = postQueryService.getPostsOfFollowee(followerId, lastId)
+            val postsOfFollowee = postQueryService.getPostsOfFollowee(memberId, lastId)
             return ResponseEntity.ok(postsOfFollowee)
         }
 
@@ -85,11 +86,11 @@ class PostController
             return ResponseEntity.ok(randomPosts)
         }
 
-        @GetMapping(PostUrl.COUNT_POST_BY_WRITER)
+        @GetMapping(PostUrl.COUNT_MEMBER_POST)
         fun getCountPostByWriterInfo(
-            @PathVariable(PostParam.WRITER_ID) writerId: UUID
+            @PathVariable(PostParam.MEMBER_ID) memberId: UUID
         ): ResponseEntity<Long> {
-            val countPost = postQueryService.getCountOfPostsByWriter(writerId)
+            val countPost = postQueryService.getCountOfPostsByWriter(memberId)
             return ResponseEntity.ok(countPost)
         }
 

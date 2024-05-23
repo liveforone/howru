@@ -37,18 +37,18 @@ class PostQueryService
 
         fun getPostsBySomeone(
             writerId: UUID,
-            memberId: UUID,
+            myId: UUID,
             lastId: Long?
         ): PostPage {
             val writer = memberQueryService.getMemberById(writerId)
             return if (writer.isUnlock()) {
                 postRepository.findPostsBySomeone(writerId, lastId)
             } else {
-                takeIf { subscribeQueryService.isFollowee(writerId, memberId) }
+                takeIf { subscribeQueryService.isFollowee(writerId, myId) }
                     ?.run { postRepository.findPostsBySomeone(writerId, lastId) }
                     ?: run {
                         logger().warn(PostServiceLog.NOT_FOLLOWER + writerId)
-                        throw SubscribeException(SubscribeExceptionMessage.NOT_FOLLOWER, memberId)
+                        throw SubscribeException(SubscribeExceptionMessage.NOT_FOLLOWER, myId)
                     }
             }
         }
