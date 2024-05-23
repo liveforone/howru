@@ -35,10 +35,11 @@
     |             ㄴ 도메인Response.kt
     ㄴ domain
     |      ㄴ constant
-    |      ㄴ vo
     |      ㄴ 도메인.kt
     |      ㄴ 엔티티에 사용되는 enum.kt
     ㄴ dto
+    |      ㄴ request
+    |      ㄴ response
     ㄴ exception
     |      ㄴ 도메인ControllerAdvice.kt
     |      ㄴ 도메인Exception.kt
