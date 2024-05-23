@@ -1,17 +1,17 @@
 package howru.howru.reply.controller.constant
 
 object ReplyUrl {
-    const val DETAIL = "/reply/{id}"
-    const val BELONG_WRITER = "/reply/belong/writer/{writerId}"
-    const val BELONG_COMMENT = "/reply/belong/comment/{commentId}"
-    const val CREATE = "/reply/create"
-    const val EDIT = "/reply/{id}/edit"
-    const val REMOVE = "/reply/{id}/remove"
+    const val DETAIL = "/replies/{id}"
+    const val REPLY_PAGE = "/replies"
+    const val MY_REPLY = "/replies/{memberId}/my"
+    const val CREATE = "/replies"
+    const val EDIT = "/replies/{id}"
+    const val REMOVE = "/replies/{id}"
 }
 
 object ReplyParam {
     const val ID = "id"
     const val LAST_ID = "lastId"
-    const val WRITER_ID = "writerId"
+    const val MEMBER_ID = "memberId"
     const val COMMENT_ID = "commentId"
 }

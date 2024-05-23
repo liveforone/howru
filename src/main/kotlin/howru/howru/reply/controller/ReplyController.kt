@@ -26,28 +26,28 @@ class ReplyController
         private val replyCommandService: ReplyCommandService
     ) {
         @GetMapping(ReplyUrl.DETAIL)
-        fun getReplyDetailInfo(
+        fun replyDetail(
             @PathVariable(ReplyParam.ID) @Positive id: Long
         ): ResponseEntity<ReplyInfo> {
             val reply = replyQueryService.getReplyById(id)
             return ResponseEntity.ok(reply)
         }
 
-        @GetMapping(ReplyUrl.BELONG_WRITER)
-        fun getRepliesBelongWriterPage(
-            @PathVariable(ReplyParam.WRITER_ID) writerId: UUID,
-            @RequestParam(ReplyParam.LAST_ID, required = false) lastId: Long?
-        ): ResponseEntity<*> {
-            val replies = replyQueryService.getRepliesByWriter(writerId, lastId)
-            return ResponseEntity.ok(replies)
-        }
-
-        @GetMapping(ReplyUrl.BELONG_COMMENT)
-        fun getRepliesBelongCommentPage(
-            @PathVariable(ReplyParam.COMMENT_ID) commentId: Long,
+        @GetMapping(ReplyUrl.REPLY_PAGE)
+        fun replyPage(
+            @RequestParam(ReplyParam.COMMENT_ID) commentId: Long,
             @RequestParam(ReplyParam.LAST_ID, required = false) lastId: Long?
         ): ResponseEntity<*> {
             val replies = replyQueryService.getRepliesByComment(commentId, lastId)
+            return ResponseEntity.ok(replies)
+        }
+
+        @GetMapping(ReplyUrl.MY_REPLY)
+        fun myReplies(
+            @PathVariable(ReplyParam.MEMBER_ID) memberId: UUID,
+            @RequestParam(ReplyParam.LAST_ID, required = false) lastId: Long?
+        ): ResponseEntity<*> {
+            val replies = replyQueryService.getRepliesByWriter(memberId, lastId)
             return ResponseEntity.ok(replies)
         }
 
