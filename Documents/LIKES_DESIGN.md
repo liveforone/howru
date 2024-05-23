@@ -29,13 +29,13 @@
 ```json
 [CreateLikes]
 {
-  "memberUUID": "61da7e2f-709e-4dc3-a13c-47dd026c21d1",
+  "memberId": "61da7e2f-709e-4dc3-a13c-47dd026c21d1",
   "postId": 2
 }
 
-[DeleteLikes]
+[RemoveLikes]
 {
-  "memberUUID": "87d5da2d-88ae-4b62-a5f0-3976c8947649",
+  "memberId": "87d5da2d-88ae-4b62-a5f0-3976c8947649",
   "postId": 1
 }
 ```

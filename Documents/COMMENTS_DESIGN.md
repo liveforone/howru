@@ -33,20 +33,20 @@
 ```json
 [CreateComments]
 {
-  "writerUUID": "86bd534f-3044-47df-bf8f-7531b343870e",
+  "writerId": "86bd534f-3044-47df-bf8f-7531b343870e",
   "postId": 1,
   "content": "comment"
 }
 
-[UpdateCommentsContent]
+[UpdateComments]
 {
-  "writerUUID": "86bd534f-3044-47df-bf8f-7531b343870e",
+  "writerId": "86bd534f-3044-47df-bf8f-7531b343870e",
   "content": "updated comment"
 }
 
-[DeleteComments]
+[RemoveComments]
 {
-  "writerUUID": "86bd534f-3044-47df-bf8f-7531b343870e"
+  "writerId": "86bd534f-3044-47df-bf8f-7531b343870e"
 }
 ```
 

@@ -39,19 +39,19 @@
 ```json
 [CreatePost]
 {
-  "writerUUID": "2753c128-9efc-4262-8196-ce62747d3287",
+  "writerId": "2753c128-9efc-4262-8196-ce62747d3287",
   "content": "post content."
 }
 
 [UpdatePostContent]
 {
-  "writerUUID": "1d390047-ac36-433b-b73a-8c9ec00405b9",
+  "writerId": "1d390047-ac36-433b-b73a-8c9ec00405b9",
   "content": "update content."
 }
 
 [DeletePost]
 {
-  "writerUUID": "a784848d-b1ce-4b1a-946d-7b343ebdd373"
+  "writerId": "a784848d-b1ce-4b1a-946d-7b343ebdd373"
 }
 ```
 

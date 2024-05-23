@@ -21,20 +21,20 @@
 ```json
 [CreateReply]
 {
-  "writerUUID": "b05a66cd-0a55-45b8-918f-a74820d96d64",
-  "commentID": 1,
+  "writerId": "b05a66cd-0a55-45b8-918f-a74820d96d64",
+  "commentId": 1,
   "content": "test_reply"
 }
 
 [UpdateReplyContent]
 {
-  "writerUUID": "b05a66cd-0a55-45b8-918f-a74820d96d64",
+  "writerId": "b05a66cd-0a55-45b8-918f-a74820d96d64",
   "content": "updated reply"
 }
 
-[DeleteReply]
+[RemoveReply]
 {
-  "writerUUID": "70033e13-275a-426d-b8bf-50b264a3e689"
+  "writerId": "70033e13-275a-426d-b8bf-50b264a3e689"
 }
 ```
 
