@@ -31,7 +31,7 @@ class ReportStateController
             @PathVariable(ReportStateParam.MEMBER_ID) memberId: UUID
         ): ResponseEntity<ReportStateInfo> {
             val reportState = reportStateQueryService.getOneByMemberId(memberId)
-            return ReportStateResponse.infoSuccess(reportState)
+            return ResponseEntity.ok(reportState)
         }
 
         @PostMapping(ReportStateUrl.REPORT)

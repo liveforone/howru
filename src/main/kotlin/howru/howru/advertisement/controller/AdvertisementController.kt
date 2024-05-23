@@ -39,13 +39,13 @@ AdvertisementController
             @PathVariable(AdvertisementParam.ID) @Positive id: Long
         ): ResponseEntity<AdvertisementInfo> {
             val ad = advertisementQueryService.getOneById(id)
-            return AdvertisementResponse.detailSuccess(ad)
+            return ResponseEntity.ok(ad)
         }
 
         @GetMapping(AdvertisementUrl.ALL_AD)
         fun getAllAdPage(): ResponseEntity<List<AdvertisementInfo?>> {
             val ads = advertisementQueryService.getAllAdvertisements()
-            return AdvertisementResponse.allAdSuccess(ads)
+            return ResponseEntity.ok(ads)
         }
 
         @GetMapping(AdvertisementUrl.SEARCH_COMPANY)
@@ -53,19 +53,19 @@ AdvertisementController
             @RequestParam(AdvertisementParam.COMPANY) company: String
         ): ResponseEntity<List<AdvertisementInfo?>> {
             val ads = advertisementQueryService.searchAdByCompany(company)
-            return AdvertisementResponse.searchAdByCompanySuccess(ads)
+            return ResponseEntity.ok(ads)
         }
 
         @GetMapping(AdvertisementUrl.EXPIRED_AD)
         fun getExpiredAdPage(): ResponseEntity<List<AdvertisementInfo?>> {
             val ads = advertisementQueryService.getExpiredAds()
-            return AdvertisementResponse.expiredAdSuccess(ads)
+            return ResponseEntity.ok(ads)
         }
 
         @GetMapping(AdvertisementUrl.RANDOM_AD)
         fun getRandomAdInfo(): ResponseEntity<AdvertisementInfo> {
             val ad = advertisementQueryService.getRandomAd()
-            return AdvertisementResponse.randomAdSuccess(ad)
+            return ResponseEntity.ok(ad)
         }
 
         @PostMapping(AdvertisementUrl.CREATE_HALF_AD)

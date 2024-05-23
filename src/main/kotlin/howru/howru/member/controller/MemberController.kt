@@ -30,7 +30,7 @@ class MemberController
         @GetMapping(MemberUrl.INFO)
         fun getMemberInfo(principal: Principal): ResponseEntity<MemberInfo> {
             val member = memberQueryService.getMemberById(id = UUID.fromString(principal.name))
-            return MemberResponse.infoSuccess(member)
+            return ResponseEntity.ok(member)
         }
 
         @PostMapping(MemberUrl.SIGNUP)

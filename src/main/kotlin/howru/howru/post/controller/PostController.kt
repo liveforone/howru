@@ -31,7 +31,7 @@ class PostController
             @PathVariable(PostParam.ID) @Positive id: Long
         ): ResponseEntity<PostInfo> {
             val postDetail = postQueryService.getPostById(id)
-            return PostResponse.postDetailSuccess(postDetail)
+            return ResponseEntity.ok(postDetail)
         }
 
         @GetMapping(PostUrl.MY_POST)
@@ -82,7 +82,7 @@ class PostController
         @GetMapping(PostUrl.RANDOM)
         fun getRandomPostPage(): ResponseEntity<List<PostInfo>> {
             val randomPosts = postQueryService.getRandomPosts()
-            return PostResponse.randomPostSuccess(randomPosts)
+            return ResponseEntity.ok(randomPosts)
         }
 
         @GetMapping(PostUrl.COUNT_POST_BY_WRITER)
@@ -90,7 +90,7 @@ class PostController
             @PathVariable(PostParam.WRITER_ID) writerId: UUID
         ): ResponseEntity<Long> {
             val countPost = postQueryService.getCountOfPostsByWriter(writerId)
-            return PostResponse.countPostOfWriterSuccess(countPost)
+            return ResponseEntity.ok(countPost)
         }
 
         @PostMapping(PostUrl.CREATE)

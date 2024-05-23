@@ -1,33 +1,30 @@
 package howru.howru.advertisement.controller.response
 
-import howru.howru.advertisement.domain.vo.AdvertisementInfo
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 
+private object CommandSuccessMessage {
+    const val CREATE_HALF_AD_SUCCESS = "6개월 광고 등록를 성공적으로 등록하였습니다."
+    const val CREATE_YEAR_AD_SUCCESS = "1년 광고 등록를 성공적으로 등록하였습니다."
+    const val EDIT_TITLE_SUCCESS = "광고 제목을 성공적으로 수정하였습니다."
+    const val EDIT_CONTENT_SUCCESS = "광고 내용을 성공적으로 수정하였습니다."
+    const val REMOVE_AD_SUCCESS = "광고를 성공적으로 삭제하였습니다."
+}
+
 object AdvertisementResponse {
-    private const val CREATE_HALF_AD_SUCCESS = "6개월 광고 등록를 성공적으로 등록하였습니다."
-    private const val CREATE_YEAR_AD_SUCCESS = "1년 광고 등록를 성공적으로 등록하였습니다."
-    private const val EDIT_TITLE_SUCCESS = "광고 제목을 성공적으로 수정하였습니다."
-    private const val EDIT_CONTENT_SUCCESS = "광고 내용을 성공적으로 수정하였습니다."
-    private const val REMOVE_AD_SUCCESS = "광고를 성공적으로 삭제하였습니다."
+    fun createHalfAdSuccess() =
+        ResponseEntity
+            .status(HttpStatus.CREATED)
+            .body(CommandSuccessMessage.CREATE_HALF_AD_SUCCESS)
 
-    fun detailSuccess(ad: AdvertisementInfo) = ResponseEntity.ok(ad)
+    fun createYearAdSuccess() =
+        ResponseEntity
+            .status(HttpStatus.CREATED)
+            .body(CommandSuccessMessage.CREATE_YEAR_AD_SUCCESS)
 
-    fun allAdSuccess(ads: List<AdvertisementInfo?>) = ResponseEntity.ok(ads)
+    fun editTitleSuccess() = ResponseEntity.ok(CommandSuccessMessage.EDIT_TITLE_SUCCESS)
 
-    fun searchAdByCompanySuccess(ads: List<AdvertisementInfo?>) = ResponseEntity.ok(ads)
+    fun editContentSuccess() = ResponseEntity.ok(CommandSuccessMessage.EDIT_CONTENT_SUCCESS)
 
-    fun expiredAdSuccess(ads: List<AdvertisementInfo?>) = ResponseEntity.ok(ads)
-
-    fun randomAdSuccess(ad: AdvertisementInfo) = ResponseEntity.ok(ad)
-
-    fun createHalfAdSuccess() = ResponseEntity.status(HttpStatus.CREATED).body(CREATE_HALF_AD_SUCCESS)
-
-    fun createYearAdSuccess() = ResponseEntity.status(HttpStatus.CREATED).body(CREATE_YEAR_AD_SUCCESS)
-
-    fun editTitleSuccess() = ResponseEntity.ok(EDIT_TITLE_SUCCESS)
-
-    fun editContentSuccess() = ResponseEntity.ok(EDIT_CONTENT_SUCCESS)
-
-    fun removeAdSuccess() = ResponseEntity.ok(REMOVE_AD_SUCCESS)
+    fun removeAdSuccess() = ResponseEntity.ok(CommandSuccessMessage.REMOVE_AD_SUCCESS)
 }

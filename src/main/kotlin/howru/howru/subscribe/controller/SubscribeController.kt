@@ -45,7 +45,7 @@ class SubscribeController
             @PathVariable(SubscribeParam.FOLLOWER_ID) followerId: UUID
         ): ResponseEntity<Long> {
             val countOfSubscribes = subscribeQueryService.getCountOfSubscribes(followerId)
-            return SubscribeResponse.countFollowingSuccess(countOfSubscribes)
+            return ResponseEntity.ok(countOfSubscribes)
         }
 
         @GetMapping(SubscribeUrl.COUNT_FOLLOWER)
@@ -53,7 +53,7 @@ class SubscribeController
             @PathVariable(SubscribeParam.FOLLOWEE_ID) followeeId: UUID
         ): ResponseEntity<Long> {
             val countOfFollower = subscribeQueryService.getCountOfFollower(followeeId)
-            return SubscribeResponse.countFollowerSuccess(countOfFollower)
+            return ResponseEntity.ok(countOfFollower)
         }
 
         @PostMapping(SubscribeUrl.SUBSCRIBE)
