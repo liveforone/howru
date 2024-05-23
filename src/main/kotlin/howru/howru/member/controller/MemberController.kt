@@ -28,7 +28,7 @@ class MemberController
         private val memberCommandService: MemberCommandService
     ) {
         @GetMapping(MemberUrl.INFO)
-        fun getMemberInfo(principal: Principal): ResponseEntity<MemberInfo> {
+        fun memberInfo(principal: Principal): ResponseEntity<MemberInfo> {
             val member = memberQueryService.getMemberById(id = UUID.fromString(principal.name))
             return ResponseEntity.ok(member)
         }
