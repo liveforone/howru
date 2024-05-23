@@ -35,8 +35,8 @@ class CommentsController
             return ResponseEntity.ok(comment)
         }
 
-        @GetMapping(CommentsUrl.COMMENTS_BY_POST)
-        fun commentsByPost(
+        @GetMapping(CommentsUrl.COMMENTS_PAGE)
+        fun commentsPage(
             @RequestParam(CommentsParam.POST_ID) postId: Long,
             @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
         ): ResponseEntity<CommentsPage> {

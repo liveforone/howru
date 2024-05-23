@@ -2,7 +2,7 @@ package howru.howru.comments.controller.constant
 
 object CommentsUrl {
     const val DETAIL = "/comments/{id}"
-    const val COMMENTS_BY_POST = "/comments"
+    const val COMMENTS_PAGE = "/comments"
     const val MY_COMMENTS = "/comments/{memberId}/my"
     const val OTHER_COMMENTS = "/comments/{memberId}/other"
     const val CREATE_COMMENTS = "/comments"
