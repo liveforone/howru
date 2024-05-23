@@ -20,15 +20,15 @@
 
 ## API 설계
 ```
-[GET] /advertisement/{id}
-[GET] /advertisement
-[GET] /advertisement/search-company
-[GET] /advertisement/expired
-[GET] /advertisement/random
-[POST] /advertisement/create/half
-[POST] /advertisement/create/year
-[PATCH] /advertisement/{id}
-[DELETE] /advertisement/{id}
+[GET] /advertisements/{id}
+[GET] /advertisements
+[GET] /advertisements/search-company
+[GET] /advertisements/expired
+[GET] /advertisements/random
+[POST] /advertisements/create/half
+[POST] /advertisements/create/year
+[PATCH] /advertisements/{id}
+[DELETE] /advertisements/{id}
 ```
 
 ## Json Body 예시
