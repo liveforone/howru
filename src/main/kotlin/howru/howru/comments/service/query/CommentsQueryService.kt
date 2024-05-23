@@ -34,12 +34,12 @@ class CommentsQueryService
 
         fun getCommentsBySomeone(
             someoneId: UUID,
-            memberId: UUID,
+            myId: UUID,
             lastId: Long?
         ): CommentsPage {
-            require(subscribeQueryService.isFollowEach(someoneId, memberId)) {
-                logger().info(CommentsServiceLog.VIEW_SOMEONE_COMMENTS_WHO_NOT_FOLLOWING + memberId)
-                throw SubscribeException(SubscribeExceptionMessage.IS_NOT_FOLLOW_EACH, memberId)
+            require(subscribeQueryService.isFollowEach(someoneId, myId)) {
+                logger().info(CommentsServiceLog.VIEW_SOMEONE_COMMENTS_WHO_NOT_FOLLOWING + myId)
+                throw SubscribeException(SubscribeExceptionMessage.IS_NOT_FOLLOW_EACH, myId)
             }
             return commentsRepository.findCommentsByWriter(someoneId, lastId)
         }
