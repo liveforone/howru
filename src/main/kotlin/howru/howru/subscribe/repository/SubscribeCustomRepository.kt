@@ -1,7 +1,7 @@
 package howru.howru.subscribe.repository
 
 import howru.howru.subscribe.domain.Subscribe
-import howru.howru.subscribe.dto.vo.SubscribeInfo
+import howru.howru.subscribe.dto.response.SubscribeInfo
 import java.util.*
 
 interface SubscribeCustomRepository {
@@ -10,13 +10,13 @@ interface SubscribeCustomRepository {
         followerId: UUID
     ): Subscribe
 
-    fun findSubscribesByFollower(
-        followerId: UUID,
+    fun findFollowing(
+        memberId: UUID,
         lastTimestamp: Int?
     ): List<SubscribeInfo>
 
-    fun findSubscribesByFollowee(
-        followeeId: UUID,
+    fun findFollower(
+        memberId: UUID,
         lastTimestamp: Int?
     ): List<SubscribeInfo>
 

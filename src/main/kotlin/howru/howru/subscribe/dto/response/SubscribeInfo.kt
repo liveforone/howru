@@ -1,4 +1,4 @@
-package howru.howru.subscribe.dto.vo
+package howru.howru.subscribe.dto.response
 
 import java.util.UUID
 

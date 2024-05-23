@@ -63,7 +63,7 @@ class SubscribeCommandServiceTest
             flushAndClear()
 
             // then
-            Assertions.assertThat(subscribeQueryService.getSubscribesByFollower(followerId, null)[0].followeeId)
+            Assertions.assertThat(subscribeQueryService.getFollowing(followerId, null)[0].followeeId)
                 .isEqualTo(followeeId)
         }
 
@@ -83,7 +83,7 @@ class SubscribeCommandServiceTest
             flushAndClear()
 
             // then
-            Assertions.assertThat(subscribeQueryService.getSubscribesByFollower(followerId, null))
+            Assertions.assertThat(subscribeQueryService.getFollowing(followerId, null))
                 .isEmpty()
         }
     }

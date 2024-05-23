@@ -6,6 +6,7 @@ import howru.howru.subscribe.controller.constant.SubscribeUrl
 import howru.howru.subscribe.controller.response.SubscribeResponse
 import howru.howru.subscribe.dto.request.CreateSubscribe
 import howru.howru.subscribe.dto.request.UnsubscribeRequest
+import howru.howru.subscribe.dto.response.SubscribeInfo
 import howru.howru.subscribe.log.SubscribeControllerLog
 import howru.howru.subscribe.service.command.SubscribeCommandService
 import howru.howru.subscribe.service.query.SubscribeQueryService
@@ -22,37 +23,37 @@ class SubscribeController
         private val subscribeQueryService: SubscribeQueryService,
         private val subscribeCommandService: SubscribeCommandService
     ) {
-        @GetMapping(SubscribeUrl.GET_FOLLOWING)
-        fun getFollowing(
-            @PathVariable(SubscribeParam.FOLLOWER_ID) followerId: UUID,
+        @GetMapping(SubscribeUrl.FOLLOWING_INFO)
+        fun followingInfo(
+            @PathVariable(SubscribeParam.MEMBER_ID) memberId: UUID,
             @RequestParam(SubscribeParam.LAST_TIMESTAMP, required = false) lastTimestamp: Int?
-        ): ResponseEntity<*> {
-            val subscribes = subscribeQueryService.getSubscribesByFollower(followerId, lastTimestamp)
+        ): ResponseEntity<List<SubscribeInfo>> {
+            val subscribes = subscribeQueryService.getFollowing(memberId, lastTimestamp)
             return ResponseEntity.ok(subscribes)
         }
 
-        @GetMapping(SubscribeUrl.GET_FOLLOWER)
-        fun getFollower(
-            @PathVariable(SubscribeParam.FOLLOWEE_ID) followeeId: UUID,
+        @GetMapping(SubscribeUrl.FOLLOWER_INFO)
+        fun followerInfo(
+            @PathVariable(SubscribeParam.MEMBER_ID) memberId: UUID,
             @RequestParam(SubscribeParam.LAST_TIMESTAMP, required = false) lastTimestamp: Int?
-        ): ResponseEntity<*> {
-            val subscribes = subscribeQueryService.getSubscribesByFollowee(followeeId, lastTimestamp)
+        ): ResponseEntity<List<SubscribeInfo>> {
+            val subscribes = subscribeQueryService.getFollower(memberId, lastTimestamp)
             return ResponseEntity.ok(subscribes)
         }
 
         @GetMapping(SubscribeUrl.COUNT_FOLLOWING)
-        fun getCountOfFollowingInfo(
-            @PathVariable(SubscribeParam.FOLLOWER_ID) followerId: UUID
+        fun countOfFollowing(
+            @PathVariable(SubscribeParam.MEMBER_ID) memberId: UUID
         ): ResponseEntity<Long> {
-            val countOfSubscribes = subscribeQueryService.getCountOfSubscribes(followerId)
+            val countOfSubscribes = subscribeQueryService.getCountOfFollowing(memberId)
             return ResponseEntity.ok(countOfSubscribes)
         }
 
         @GetMapping(SubscribeUrl.COUNT_FOLLOWER)
-        fun getCountOfFollowerInfo(
-            @PathVariable(SubscribeParam.FOLLOWEE_ID) followeeId: UUID
+        fun countOfFollower(
+            @PathVariable(SubscribeParam.MEMBER_ID) memberId: UUID
         ): ResponseEntity<Long> {
-            val countOfFollower = subscribeQueryService.getCountOfFollower(followeeId)
+            val countOfFollower = subscribeQueryService.getCountOfFollower(memberId)
             return ResponseEntity.ok(countOfFollower)
         }
 

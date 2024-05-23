@@ -22,12 +22,12 @@ interface SubscribeRepository : JpaRepository<Subscribe, SubscribePk>, Subscribe
     ): Boolean
 
     @Query("select count(*) from Subscribe s where s.followerId = :followerId")
-    fun countOfSubscribesByFollower(
+    fun countOfFollowings(
         @Param("followerId") followerId: UUID
     ): Long
 
     @Query("select count(*) from Subscribe s where s.followeeId = :followeeId")
-    fun countOfFollowersByFollowee(
+    fun countOfFollowers(
         @Param("followeeId") followeeId: UUID
     ): Long
 }

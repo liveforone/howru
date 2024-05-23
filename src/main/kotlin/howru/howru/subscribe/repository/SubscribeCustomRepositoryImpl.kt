@@ -7,7 +7,7 @@ import howru.howru.subscribe.exception.SubscribeExceptionMessage
 import howru.howru.global.util.ltLastTimestamp
 import howru.howru.subscribe.domain.QSubscribe
 import howru.howru.subscribe.domain.Subscribe
-import howru.howru.subscribe.dto.vo.SubscribeInfo
+import howru.howru.subscribe.dto.response.SubscribeInfo
 import howru.howru.subscribe.repository.constant.SubscribeRepoConstant
 import java.util.*
 
@@ -31,25 +31,25 @@ class SubscribeCustomRepositoryImpl(
             subscribe.followerId
         )
 
-    override fun findSubscribesByFollower(
-        followerId: UUID,
+    override fun findFollowing(
+        memberId: UUID,
         lastTimestamp: Int?
     ): List<SubscribeInfo> {
         return jpaQueryFactory.select(subscribeInfoField)
             .from(subscribe)
-            .where(subscribe.followerId.eq(followerId).and(ltLastTimestamp(lastTimestamp, subscribe) { it.timestamp }))
+            .where(subscribe.followerId.eq(memberId).and(ltLastTimestamp(lastTimestamp, subscribe) { it.timestamp }))
             .orderBy(subscribe.timestamp.desc())
             .limit(SubscribeRepoConstant.LIMIT_PAGE)
             .fetch()
     }
 
-    override fun findSubscribesByFollowee(
-        followeeId: UUID,
+    override fun findFollower(
+        memberId: UUID,
         lastTimestamp: Int?
     ): List<SubscribeInfo> {
         return jpaQueryFactory.select(subscribeInfoField)
             .from(subscribe)
-            .where(subscribe.followeeId.eq(followeeId).and(ltLastTimestamp(lastTimestamp, subscribe) { it.timestamp }))
+            .where(subscribe.followeeId.eq(memberId).and(ltLastTimestamp(lastTimestamp, subscribe) { it.timestamp }))
             .orderBy(subscribe.timestamp.desc())
             .limit(SubscribeRepoConstant.LIMIT_PAGE)
             .fetch()

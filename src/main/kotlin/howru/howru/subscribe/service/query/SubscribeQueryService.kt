@@ -13,22 +13,19 @@ class SubscribeQueryService
     constructor(
         private val subscribeRepository: SubscribeRepository
     ) {
-        fun getSubscribesByFollower(
-            followerId: UUID,
+        fun getFollowing(
+            memberId: UUID,
             lastTimestamp: Int?
-        ) = subscribeRepository.findSubscribesByFollower(followerId, lastTimestamp)
+        ) = subscribeRepository.findFollowing(memberId, lastTimestamp)
 
-        fun getSubscribesByFollowee(
-            followeeId: UUID,
+        fun getFollower(
+            memberId: UUID,
             lastTimestamp: Int?
-        ) = subscribeRepository.findSubscribesByFollowee(
-            followeeId,
-            lastTimestamp
-        )
+        ) = subscribeRepository.findFollower(memberId, lastTimestamp)
 
-        fun getCountOfFollower(followeeId: UUID) = subscribeRepository.countOfFollowersByFollowee(followeeId)
+        fun getCountOfFollower(memberId: UUID) = subscribeRepository.countOfFollowers(memberId)
 
-        fun getCountOfSubscribes(followerId: UUID) = subscribeRepository.countOfSubscribesByFollower(followerId)
+        fun getCountOfFollowing(memberId: UUID) = subscribeRepository.countOfFollowings(memberId)
 
         fun getFollowees(followerId: UUID) = subscribeRepository.findFollowees(followerId)
 

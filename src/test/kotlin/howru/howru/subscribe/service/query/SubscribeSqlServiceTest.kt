@@ -60,7 +60,7 @@ class SubscribeSqlServiceTest
             flushAndClear()
 
             // when
-            val subscribes = subscribeQueryService.getSubscribesByFollower(followerId, null)
+            val subscribes = subscribeQueryService.getFollowing(followerId, null)
 
             // then
             Assertions.assertThat(subscribes[0].followeeId).isEqualTo(followeeId)
@@ -77,7 +77,7 @@ class SubscribeSqlServiceTest
             flushAndClear()
 
             // when
-            val subscribes = subscribeQueryService.getSubscribesByFollower(followerId, null)
+            val subscribes = subscribeQueryService.getFollowing(followerId, null)
 
             // then
             Assertions.assertThat(subscribes).isNotEmpty()
