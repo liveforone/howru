@@ -13,9 +13,9 @@ import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
@@ -27,8 +27,8 @@ class ReportStateController
         private val reportStateCommandService: ReportStateCommandService
     ) {
         @GetMapping(ReportStateUrl.REPORT_STATE_INFO)
-        fun getReportStateInfo(
-            @PathVariable(ReportStateParam.MEMBER_ID) memberId: UUID
+        fun reportStateInfo(
+            @RequestParam(ReportStateParam.MEMBER_ID) memberId: UUID
         ): ResponseEntity<ReportStateInfo> {
             val reportState = reportStateQueryService.getOneByMemberId(memberId)
             return ResponseEntity.ok(reportState)
