@@ -34,7 +34,7 @@ class LikesController
 
         @GetMapping(LikesUrl.LIKES_BELONG_MEMBER)
         fun likesBelongMember(
-            @PathVariable(LikesParam.MEMBER_ID) memberId: UUID,
+            @RequestParam(LikesParam.MEMBER_ID) memberId: UUID,
             @RequestParam(LikesParam.LAST_TIMESTAMP, required = false) lastTimestamp: Int?
         ): ResponseEntity<List<LikesBelongMemberInfo>> {
             val likes = likesQueryService.getLikesBelongMember(memberId, lastTimestamp)
@@ -43,7 +43,7 @@ class LikesController
 
         @GetMapping(LikesUrl.LIKES_BELONG_POST)
         fun likesBelongPost(
-            @PathVariable(LikesParam.POST_ID) postId: Long,
+            @RequestParam(LikesParam.POST_ID) postId: Long,
             @RequestParam(LikesParam.LAST_TIMESTAMP, required = false) lastTimestamp: Int?
         ): ResponseEntity<List<LikesBelongPostInfo>> {
             val likes = likesQueryService.getLikesBelongPost(postId, lastTimestamp)

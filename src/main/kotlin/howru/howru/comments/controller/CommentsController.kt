@@ -42,14 +42,18 @@ class CommentsController
             @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?,
             principal: Principal
         ): ResponseEntity<*> {
-            val comments = when {
-                writerId != null -> commentsQueryService.getCommentsByWriter(writerId, lastId)
-                postId != null -> commentsQueryService.getCommentsByPost(postId, lastId)
-                memberId != null -> commentsQueryService.getCommentsBySomeone(
-                    memberId, myId = UUID.fromString(principal.name), lastId
-                )
-                else -> return CommentsResponse.badRequestCommentsPage()
-            }
+            val comments =
+                when {
+                    writerId != null -> commentsQueryService.getCommentsByWriter(writerId, lastId)
+                    postId != null -> commentsQueryService.getCommentsByPost(postId, lastId)
+                    memberId != null ->
+                        commentsQueryService.getCommentsBySomeone(
+                            memberId,
+                            myId = UUID.fromString(principal.name),
+                            lastId
+                        )
+                    else -> return CommentsResponse.badRequestCommentsPage()
+                }
             return ResponseEntity.ok(comments)
         }
 
