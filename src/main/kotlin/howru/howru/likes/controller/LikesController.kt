@@ -1,12 +1,11 @@
 package howru.howru.likes.controller
 
+import howru.howru.global.response.GlobalResponse
 import howru.howru.likes.controller.constant.LikesParam
 import howru.howru.likes.controller.constant.LikesUrl
 import howru.howru.likes.controller.response.LikesResponse
 import howru.howru.likes.dto.request.CreateLikes
 import howru.howru.likes.dto.request.RemoveLikes
-import howru.howru.likes.dto.response.LikesBelongMemberInfo
-import howru.howru.likes.dto.response.LikesBelongPostInfo
 import howru.howru.likes.log.LikesControllerLog
 import howru.howru.likes.service.command.LikesCommandService
 import howru.howru.likes.service.query.LikesQueryService
@@ -32,21 +31,18 @@ class LikesController
             return ResponseEntity.ok(countOfLikes)
         }
 
-        @GetMapping(LikesUrl.LIKES_BELONG_MEMBER)
+        @GetMapping(LikesUrl.LIKES_PAGE)
         fun likesBelongMember(
-            @RequestParam(LikesParam.MEMBER_ID) memberId: UUID,
+            @RequestParam(LikesParam.MEMBER_ID, required = false) memberId: UUID?,
+            @RequestParam(LikesParam.POST_ID, required = false) postId: Long?,
             @RequestParam(LikesParam.LAST_TIMESTAMP, required = false) lastTimestamp: Int?
-        ): ResponseEntity<List<LikesBelongMemberInfo>> {
-            val likes = likesQueryService.getLikesBelongMember(memberId, lastTimestamp)
-            return ResponseEntity.ok(likes)
-        }
-
-        @GetMapping(LikesUrl.LIKES_BELONG_POST)
-        fun likesBelongPost(
-            @RequestParam(LikesParam.POST_ID) postId: Long,
-            @RequestParam(LikesParam.LAST_TIMESTAMP, required = false) lastTimestamp: Int?
-        ): ResponseEntity<List<LikesBelongPostInfo>> {
-            val likes = likesQueryService.getLikesBelongPost(postId, lastTimestamp)
+        ): ResponseEntity<*> {
+            val likes =
+                when {
+                    memberId != null -> likesQueryService.getLikesBelongMember(memberId, lastTimestamp)
+                    postId != null -> likesQueryService.getLikesBelongPost(postId, lastTimestamp)
+                    else -> return GlobalResponse.badRequest()
+                }
             return ResponseEntity.ok(likes)
         }
 
