@@ -10,7 +10,7 @@ object PostUrl {
     const val RANDOM = "/posts/random"
     const val COUNT_MEMBER_POST = "/posts/{memberId}/count"
     const val CREATE = "/posts"
-    const val EDIT_CONTENT = "/posts/{id}"
+    const val EDIT = "/posts/{id}"
     const val REMOVE = "/posts/{id}"
 }
 

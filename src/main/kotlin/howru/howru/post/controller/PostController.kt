@@ -104,8 +104,8 @@ class PostController
             return PostResponse.createPostSuccess()
         }
 
-        @PatchMapping(PostUrl.EDIT_CONTENT)
-        fun editPostContent(
+        @PatchMapping(PostUrl.EDIT)
+        fun editPost(
             @PathVariable(PostParam.ID) @Positive id: Long,
             @RequestBody @Valid updatePostContent: UpdatePostContent
         ): ResponseEntity<String> {
