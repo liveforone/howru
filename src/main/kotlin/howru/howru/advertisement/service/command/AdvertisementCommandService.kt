@@ -2,8 +2,7 @@ package howru.howru.advertisement.service.command
 
 import howru.howru.advertisement.domain.Advertisement
 import howru.howru.advertisement.dto.request.CreateAdvertisement
-import howru.howru.advertisement.dto.request.UpdateAdContent
-import howru.howru.advertisement.dto.request.UpdateAdTitle
+import howru.howru.advertisement.dto.request.UpdateAdvertisement
 import howru.howru.advertisement.log.AdServiceLog
 import howru.howru.advertisement.repository.AdvertisementRepository
 import howru.howru.advertisement.service.command.constant.AdScheduleConstant
@@ -54,25 +53,17 @@ class AdvertisementCommandService
             }
         }
 
-        fun editAdTitle(
+        fun editAd(
             id: Long,
-            updateAdTitle: UpdateAdTitle,
+            updateAdvertisement: UpdateAdvertisement,
             memberId: UUID
         ) {
             checkAdmin(memberId)
-            with(updateAdTitle) {
-                advertisementRepository.findAdvertisementById(id).also { it.editTitle(title!!) }
-            }
-        }
-
-        fun editAdContent(
-            id: Long,
-            updateAdContent: UpdateAdContent,
-            memberId: UUID
-        ) {
-            checkAdmin(memberId)
-            with(updateAdContent) {
-                advertisementRepository.findAdvertisementById(id).also { it.editContent(content!!) }
+            with(updateAdvertisement) {
+                advertisementRepository.findAdvertisementById(id).also {
+                    it.editTitle(title!!)
+                    it.editContent(content!!)
+                }
             }
         }
 

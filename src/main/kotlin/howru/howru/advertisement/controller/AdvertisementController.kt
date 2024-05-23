@@ -4,8 +4,7 @@ import howru.howru.advertisement.controller.constant.AdvertisementParam
 import howru.howru.advertisement.controller.constant.AdvertisementUrl
 import howru.howru.advertisement.controller.response.AdvertisementResponse
 import howru.howru.advertisement.dto.request.CreateAdvertisement
-import howru.howru.advertisement.dto.request.UpdateAdContent
-import howru.howru.advertisement.dto.request.UpdateAdTitle
+import howru.howru.advertisement.dto.request.UpdateAdvertisement
 import howru.howru.advertisement.dto.response.AdvertisementInfo
 import howru.howru.advertisement.log.AdControllerLog
 import howru.howru.advertisement.service.command.AdvertisementCommandService
@@ -90,28 +89,16 @@ AdvertisementController
             return AdvertisementResponse.createYearAdSuccess()
         }
 
-        @PatchMapping(AdvertisementUrl.EDIT_TITLE)
-        fun editAdTitle(
+        @PatchMapping(AdvertisementUrl.EDIT_AD)
+        fun editAd(
             @PathVariable(AdvertisementParam.ID) @Positive id: Long,
-            @RequestBody @Valid updateAdTitle: UpdateAdTitle,
+            @RequestBody @Valid updateAdvertisement: UpdateAdvertisement,
             principal: Principal
         ): ResponseEntity<String> {
-            advertisementCommandService.editAdTitle(id, updateAdTitle, UUID.fromString(principal.name))
-            logger().info(AdControllerLog.EDIT_TITLE_SUCCESS + id)
+            advertisementCommandService.editAd(id, updateAdvertisement, UUID.fromString(principal.name))
+            logger().info(AdControllerLog.EDIT_SUCCESS + id)
 
-            return AdvertisementResponse.editTitleSuccess()
-        }
-
-        @PatchMapping(AdvertisementUrl.EDIT_CONTENT)
-        fun editAdContent(
-            @PathVariable(AdvertisementParam.ID) @Positive id: Long,
-            @RequestBody @Valid updateAdContent: UpdateAdContent,
-            principal: Principal
-        ): ResponseEntity<String> {
-            advertisementCommandService.editAdContent(id, updateAdContent, UUID.fromString(principal.name))
-            logger().info(AdControllerLog.EDIT_CONTENT_SUCCESS + id)
-
-            return AdvertisementResponse.editContentSuccess()
+            return AdvertisementResponse.editAdSuccess()
         }
 
         @DeleteMapping(AdvertisementUrl.REMOVE_AD)

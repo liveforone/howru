@@ -1,8 +1,7 @@
 package howru.howru.advertisement.service.command
 
 import howru.howru.advertisement.dto.request.CreateAdvertisement
-import howru.howru.advertisement.dto.request.UpdateAdContent
-import howru.howru.advertisement.dto.request.UpdateAdTitle
+import howru.howru.advertisement.dto.request.UpdateAdvertisement
 import howru.howru.advertisement.service.query.AdvertisementQueryService
 import howru.howru.advertisement.exception.AdvertisementException
 import howru.howru.global.util.getDateDigit
@@ -84,7 +83,7 @@ class AdvertisementCommandServiceTest
         }
 
         @Test @Transactional
-        fun editTitle() {
+        fun editAd() {
             // given
             val adminId = createAdmin()
             val company = "test company"
@@ -96,33 +95,14 @@ class AdvertisementCommandServiceTest
 
             // when
             val updatedTitle = "updated title"
-            val updateRequest = UpdateAdTitle(updatedTitle)
-            advertisementCommandService.editAdTitle(adId, updateRequest, adminId)
+            val updatedContent = "updated content"
+            val updateRequest = UpdateAdvertisement(updatedTitle, updatedContent)
+            advertisementCommandService.editAd(adId, updateRequest, adminId)
             flushAndClear()
 
             // then
             Assertions.assertThat(advertisementQueryService.getOneById(adId).title)
                 .isEqualTo(updatedTitle)
-        }
-
-        @Test @Transactional
-        fun editContent() {
-            // given
-            val adminId = createAdmin()
-            val company = "test company"
-            val title = "test title"
-            val content = "edit content ad test"
-            val request = CreateAdvertisement(company, title, content)
-            val adId = advertisementCommandService.createYearAd(request, adminId)
-            flushAndClear()
-
-            // when
-            val updatedContent = "updated content"
-            val updateRequest = UpdateAdContent(updatedContent)
-            advertisementCommandService.editAdContent(adId, updateRequest, adminId)
-            flushAndClear()
-
-            // then
             Assertions.assertThat(advertisementQueryService.getOneById(adId).content)
                 .isEqualTo(updatedContent)
         }
