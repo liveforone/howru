@@ -21,10 +21,10 @@
 ## API 설계
 ```
 [GET] /comments/{id}
-[GET] /comments?writerId={writerUUID}&lastId={lastId} : 사용자가 작성한 댓글
 [GET] /comments?postId={postId}&lastId={lastId} : 게시글에 속한 댓글
-[GET] /comments?memberId={memberId}&lastId={lastId} : 다른 사용자가 작성한 게시글
-[POST] /comments/create
+[GET] //comments/{memberId}/my?lastId={lastId} : 사용자가 작성한 댓글
+[GET] /comments/{memberId}/other?lastId={lastId} : 다른 사용자가 작성한 게시글
+[POST] /comments
 [PATCH] /comments/{id}
 [DELETE] /comments/{id}
 ```
