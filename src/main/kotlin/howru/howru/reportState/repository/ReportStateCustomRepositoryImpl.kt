@@ -7,7 +7,7 @@ import howru.howru.reportState.exceptioin.RepostStateExceptionMessage
 import howru.howru.member.domain.QMember
 import howru.howru.reportState.domain.QReportState
 import howru.howru.reportState.domain.ReportState
-import howru.howru.reportState.domain.vo.ReportStateInfo
+import howru.howru.reportState.dto.ReportStateInfo
 import java.util.*
 
 class ReportStateCustomRepositoryImpl(

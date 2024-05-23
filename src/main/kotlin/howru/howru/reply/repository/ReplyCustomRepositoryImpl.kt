@@ -8,8 +8,8 @@ import howru.howru.global.util.findLastIdOrDefault
 import howru.howru.global.util.ltLastId
 import howru.howru.reply.domain.QReply
 import howru.howru.reply.domain.Reply
-import howru.howru.reply.domain.vo.ReplyInfo
-import howru.howru.reply.domain.vo.ReplyPage
+import howru.howru.reply.dto.response.ReplyInfo
+import howru.howru.reply.dto.response.ReplyPage
 import howru.howru.reply.repository.constant.ReplyRepoConstant
 import java.util.*
 

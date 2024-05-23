@@ -1,13 +1,13 @@
 package howru.howru.advertisement.service.command
 
-import howru.howru.advertisement.dto.CreateAdvertisement
-import howru.howru.advertisement.dto.UpdateAdContent
-import howru.howru.advertisement.dto.UpdateAdTitle
+import howru.howru.advertisement.dto.request.CreateAdvertisement
+import howru.howru.advertisement.dto.request.UpdateAdContent
+import howru.howru.advertisement.dto.request.UpdateAdTitle
 import howru.howru.advertisement.service.query.AdvertisementQueryService
 import howru.howru.advertisement.exception.AdvertisementException
 import howru.howru.global.util.getDateDigit
-import howru.howru.member.dto.LoginRequest
-import howru.howru.member.dto.SignupRequest
+import howru.howru.member.dto.request.LoginRequest
+import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.service.command.MemberCommandService
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions

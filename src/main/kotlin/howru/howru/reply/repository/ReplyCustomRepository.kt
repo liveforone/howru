@@ -1,8 +1,8 @@
 package howru.howru.reply.repository
 
 import howru.howru.reply.domain.Reply
-import howru.howru.reply.domain.vo.ReplyInfo
-import howru.howru.reply.domain.vo.ReplyPage
+import howru.howru.reply.dto.response.ReplyInfo
+import howru.howru.reply.dto.response.ReplyPage
 import java.util.*
 
 interface ReplyCustomRepository {

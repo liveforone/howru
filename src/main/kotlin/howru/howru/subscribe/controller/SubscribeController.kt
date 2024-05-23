@@ -4,8 +4,8 @@ import howru.howru.logger
 import howru.howru.subscribe.controller.constant.SubscribeParam
 import howru.howru.subscribe.controller.constant.SubscribeUrl
 import howru.howru.subscribe.controller.response.SubscribeResponse
-import howru.howru.subscribe.dto.CreateSubscribe
-import howru.howru.subscribe.dto.UnsubscribeRequest
+import howru.howru.subscribe.dto.request.CreateSubscribe
+import howru.howru.subscribe.dto.request.UnsubscribeRequest
 import howru.howru.subscribe.log.SubscribeControllerLog
 import howru.howru.subscribe.service.command.SubscribeCommandService
 import howru.howru.subscribe.service.query.SubscribeQueryService

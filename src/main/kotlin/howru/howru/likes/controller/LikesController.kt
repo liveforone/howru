@@ -3,10 +3,10 @@ package howru.howru.likes.controller
 import howru.howru.likes.controller.constant.LikesParam
 import howru.howru.likes.controller.constant.LikesUrl
 import howru.howru.likes.controller.response.LikesResponse
-import howru.howru.likes.dto.CreateLikes
-import howru.howru.likes.dto.RemoveLikes
-import howru.howru.likes.domain.vo.LikesBelongMemberInfo
-import howru.howru.likes.domain.vo.LikesBelongPostInfo
+import howru.howru.likes.dto.request.CreateLikes
+import howru.howru.likes.dto.request.RemoveLikes
+import howru.howru.likes.dto.response.LikesBelongMemberInfo
+import howru.howru.likes.dto.response.LikesBelongPostInfo
 import howru.howru.likes.log.LikesControllerLog
 import howru.howru.likes.service.command.LikesCommandService
 import howru.howru.likes.service.query.LikesQueryService

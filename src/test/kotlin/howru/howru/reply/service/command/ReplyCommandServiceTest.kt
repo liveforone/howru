@@ -1,17 +1,17 @@
 package howru.howru.reply.service.command
 
-import howru.howru.comments.dto.CreateComments
+import howru.howru.comments.dto.request.CreateComments
 import howru.howru.comments.service.command.CommentsCommandService
 import howru.howru.reply.exception.ReplyException
-import howru.howru.member.dto.LoginRequest
-import howru.howru.member.dto.SignupRequest
+import howru.howru.member.dto.request.LoginRequest
+import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.service.command.MemberCommandService
-import howru.howru.post.dto.CreatePost
+import howru.howru.post.dto.request.CreatePost
 import howru.howru.post.service.command.PostCommandService
 import howru.howru.reply.domain.ReplyState
-import howru.howru.reply.dto.CreateReply
-import howru.howru.reply.dto.RemoveReply
-import howru.howru.reply.dto.UpdateReplyContent
+import howru.howru.reply.dto.request.CreateReply
+import howru.howru.reply.dto.request.RemoveReply
+import howru.howru.reply.dto.request.UpdateReplyContent
 import howru.howru.reply.service.query.ReplyQueryService
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions

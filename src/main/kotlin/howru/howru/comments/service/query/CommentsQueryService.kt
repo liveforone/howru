@@ -1,6 +1,6 @@
 package howru.howru.comments.service.query
 
-import howru.howru.comments.domain.vo.CommentsPage
+import howru.howru.comments.dto.response.CommentsPage
 import howru.howru.comments.log.CommentsServiceLog
 import howru.howru.comments.repository.CommentsRepository
 import howru.howru.subscribe.exception.SubscribeException

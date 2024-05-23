@@ -1,10 +1,10 @@
 package howru.howru.subscribe.service.command
 
-import howru.howru.member.dto.LoginRequest
-import howru.howru.member.dto.SignupRequest
+import howru.howru.member.dto.request.LoginRequest
+import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.service.command.MemberCommandService
-import howru.howru.subscribe.dto.CreateSubscribe
-import howru.howru.subscribe.dto.UnsubscribeRequest
+import howru.howru.subscribe.dto.request.CreateSubscribe
+import howru.howru.subscribe.dto.request.UnsubscribeRequest
 import howru.howru.subscribe.service.query.SubscribeQueryService
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions

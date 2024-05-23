@@ -1,8 +1,8 @@
 package howru.howru.comments.repository
 
 import howru.howru.comments.domain.Comments
-import howru.howru.comments.domain.vo.CommentsInfo
-import howru.howru.comments.domain.vo.CommentsPage
+import howru.howru.comments.dto.response.CommentsInfo
+import howru.howru.comments.dto.response.CommentsPage
 import java.util.*
 
 interface CommentsCustomRepository {

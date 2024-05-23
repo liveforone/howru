@@ -1,7 +1,7 @@
 package howru.howru.subscribe.repository
 
 import howru.howru.subscribe.domain.Subscribe
-import howru.howru.subscribe.domain.vo.SubscribeInfo
+import howru.howru.subscribe.dto.vo.SubscribeInfo
 import java.util.*
 
 interface SubscribeCustomRepository {

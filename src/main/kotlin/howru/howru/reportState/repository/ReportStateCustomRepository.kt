@@ -1,7 +1,7 @@
 package howru.howru.reportState.repository
 
 import howru.howru.reportState.domain.ReportState
-import howru.howru.reportState.domain.vo.ReportStateInfo
+import howru.howru.reportState.dto.ReportStateInfo
 import java.util.*
 
 interface ReportStateCustomRepository {

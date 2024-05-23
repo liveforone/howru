@@ -1,7 +1,7 @@
 package howru.howru.reportState.service.command
 
-import howru.howru.member.dto.LoginRequest
-import howru.howru.member.dto.SignupRequest
+import howru.howru.member.dto.request.LoginRequest
+import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.service.command.MemberCommandService
 import howru.howru.reportState.domain.MemberState
 import howru.howru.reportState.dto.ReportMember

@@ -1,9 +1,9 @@
 package howru.howru.comments.service.command
 
 import howru.howru.comments.domain.Comments
-import howru.howru.comments.dto.CreateComments
-import howru.howru.comments.dto.RemoveComments
-import howru.howru.comments.dto.UpdateComments
+import howru.howru.comments.dto.request.CreateComments
+import howru.howru.comments.dto.request.RemoveComments
+import howru.howru.comments.dto.request.UpdateComments
 import howru.howru.comments.repository.CommentsRepository
 import howru.howru.member.repository.MemberCustomRepository
 import howru.howru.post.repository.PostRepository

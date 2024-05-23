@@ -1,8 +1,8 @@
 package howru.howru.subscribe.service.command
 
 import howru.howru.subscribe.domain.Subscribe
-import howru.howru.subscribe.dto.CreateSubscribe
-import howru.howru.subscribe.dto.UnsubscribeRequest
+import howru.howru.subscribe.dto.request.CreateSubscribe
+import howru.howru.subscribe.dto.request.UnsubscribeRequest
 import howru.howru.subscribe.repository.SubscribeRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

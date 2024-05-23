@@ -1,8 +1,8 @@
 package howru.howru.likes.service.command
 
 import howru.howru.likes.domain.Likes
-import howru.howru.likes.dto.CreateLikes
-import howru.howru.likes.dto.RemoveLikes
+import howru.howru.likes.dto.request.CreateLikes
+import howru.howru.likes.dto.request.RemoveLikes
 import howru.howru.likes.repository.LikesRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

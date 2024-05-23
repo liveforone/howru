@@ -6,7 +6,7 @@ import howru.howru.global.config.redis.RedisKeyValueTimeOut
 import howru.howru.global.config.redis.RedisRepository
 import howru.howru.jwt.cache.JwtCache
 import howru.howru.jwt.domain.RefreshToken
-import howru.howru.jwt.domain.vo.JwtTokenInfo
+import howru.howru.jwt.dto.JwtTokenInfo
 import howru.howru.jwt.filterLogic.JwtTokenProvider
 import howru.howru.jwt.log.JwtServiceLog
 import howru.howru.logger

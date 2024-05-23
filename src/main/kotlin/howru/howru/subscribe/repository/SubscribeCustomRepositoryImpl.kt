@@ -7,7 +7,7 @@ import howru.howru.subscribe.exception.SubscribeExceptionMessage
 import howru.howru.global.util.ltLastTimestamp
 import howru.howru.subscribe.domain.QSubscribe
 import howru.howru.subscribe.domain.Subscribe
-import howru.howru.subscribe.domain.vo.SubscribeInfo
+import howru.howru.subscribe.dto.vo.SubscribeInfo
 import howru.howru.subscribe.repository.constant.SubscribeRepoConstant
 import java.util.*
 
