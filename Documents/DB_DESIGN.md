@@ -77,7 +77,7 @@ CREATE INDEX likes_timestamp_idx ON Likes (timestamp);
 ```
 ### 댓글 -> Comments
 * 댓글은 회원(member)테이블과 N:1 관계를 맺는다.
-* 댓글은 게시글(post) 테이블과 N:1 관계를 맺는다. 
+* 댓글은 게시글(post) 테이블과 N:1 관계를 맺는다.
 ```sql
 create table comments (
      id bigint not null auto_increment,
@@ -120,19 +120,6 @@ create table advertisement (
 );
 CREATE INDEX advertisement_company_idx ON Advertisement (company);
 CREATE INDEX advertisement_end_date_idx ON Advertisement (end_date);
-```
-
-## no-offset 페이징
-* 페이징 성능을 향상하기 위해 no-offset 방식으로 페이징 처리한다.
-* 이에 따라 동적쿼리 구성이 필요하다.
-* 아래는 jdsl v2로 구성한 no-offset 동적쿼리이다.
-* 현재 정렬은 desc이기 때문에 asc를 사용한다면 lessThan을 greaterThan으로 변경한다.
-* 정책은 lastId가 null 일경우 첫 페이지로 인식하고
-* 그 이외에는 lastId보다 작은 id에 한해 조회한다.
-```kotlin
-private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastUUID(lastId: Long?): PredicateSpec? {
-        return lastId?.let { and(col(엔티티::id).lessThan(it)) }
-}
 ```
 
 ## 복합키 주의 사항
