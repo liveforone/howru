@@ -24,7 +24,7 @@ class LikesController
         private val likesCommandService: LikesCommandService
     ) {
         @GetMapping(LikesUrl.COUNT_OF_LIKES_IN_POST)
-        fun getCountOfLikesByPostInfo(
+        fun countOfLikesInPost(
             @PathVariable(LikesParam.POST_ID) postId: Long
         ): ResponseEntity<Long> {
             val countOfLikes = likesQueryService.getCountOfLikesByPost(postId)
@@ -32,7 +32,7 @@ class LikesController
         }
 
         @GetMapping(LikesUrl.LIKES_PAGE)
-        fun likesBelongMember(
+        fun likesPage(
             @RequestParam(LikesParam.MEMBER_ID, required = false) memberId: UUID?,
             @RequestParam(LikesParam.POST_ID, required = false) postId: Long?,
             @RequestParam(LikesParam.LAST_TIMESTAMP, required = false) lastTimestamp: Int?
