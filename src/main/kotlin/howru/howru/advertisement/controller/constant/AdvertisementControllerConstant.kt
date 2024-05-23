@@ -8,7 +8,7 @@ object AdvertisementUrl {
     const val RANDOM_AD = "/advertisement/random"
     const val CREATE_HALF_AD = "/advertisement/create/half"
     const val CREATE_YEAR_AD = "/advertisement/create/year"
-    const val EDIT_AD = "/advertisement/{id}/edit"
+    const val EDIT_AD = "/advertisement/{id}"
     const val REMOVE_AD = "/advertisement/{id}"
 }
 
