@@ -11,7 +11,7 @@
 ```
 [GET] /replies/{id} : 대댓글 상세
 [GET] /replies?commentId={commentId} : 대댓글 페이지
-[GET] /replies/{memberId}/my : 사용자가 작성한 대댓글, 작성자만 접근 가능합니다.(프론트에서 제어)
+[GET] /replies/my : 내가 작성한 대댓글, 작성자만 접근 가능합니다.(프론트에서 제어)
 [POST] /replies
 [PATCH] /replies/{id}
 [DELETE] /replies/{id}

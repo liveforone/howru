@@ -16,6 +16,7 @@ import jakarta.validation.constraints.Positive
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 import java.util.UUID
 
 @RestController
@@ -44,10 +45,10 @@ class ReplyController
 
         @GetMapping(ReplyUrl.MY_REPLY)
         fun myReplies(
-            @PathVariable(ReplyParam.MEMBER_ID) memberId: UUID,
-            @RequestParam(ReplyParam.LAST_ID, required = false) lastId: Long?
+            @RequestParam(ReplyParam.LAST_ID, required = false) lastId: Long?,
+            principal: Principal
         ): ResponseEntity<*> {
-            val replies = replyQueryService.getRepliesByWriter(memberId, lastId)
+            val replies = replyQueryService.getRepliesByWriter(UUID.fromString(principal.name), lastId)
             return ResponseEntity.ok(replies)
         }
 
