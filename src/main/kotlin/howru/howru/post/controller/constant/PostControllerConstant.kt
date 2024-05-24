@@ -3,9 +3,9 @@ package howru.howru.post.controller.constant
 object PostUrl {
     const val DETAIL = "/posts/{id}"
     const val ALL = "/posts"
-    const val MY_POST = "/posts/{memberId}/my"
-    const val OTHER_MEMBER_POST = "/posts/{memberId}/other"
-    const val POST_OF_FOLLOWEE = "/posts/{memberId}/followee"
+    const val MY_POST = "/posts/my"
+    const val POST_OF_FOLLOWEE = "/posts/followees"
+    const val POST_OF_OTHER_MEMBER = "/posts/member/{memberId}"
     const val RECOMMEND = "/posts/recommend"
     const val RANDOM = "/posts/random"
     const val COUNT_MEMBER_POST = "/posts/{memberId}/count"

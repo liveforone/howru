@@ -24,9 +24,9 @@
 ```
 [GET] /posts
 [GET] /posts/{id}
-[GET] /posts/{memberId}/my : 나의 글 조회
-[GET] /posts/{memberId}/other : 다른 사람의 글 조회
-[GET] /posts/{memberId}/followee : 내가 팔로우하는 사람들의 글 조회
+[GET] /posts/my : 나의 글 조회
+[GET] /posts/followees : 내가 팔로우하는 사람들의 글 조회
+[GET] /posts/member/{memberId} : 다른 사람의 글 조회
 [GET] /posts/recommend
 [GET] /posts/random
 [GET] /posts/{memberId}/count
