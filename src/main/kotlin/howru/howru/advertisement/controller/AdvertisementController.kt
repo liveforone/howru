@@ -34,7 +34,7 @@ AdvertisementController
         private val advertisementCommandService: AdvertisementCommandService
     ) {
         @GetMapping(AdvertisementUrl.DETAIL)
-        fun adDetail(
+        fun detail(
             @PathVariable(AdvertisementParam.ID) @Positive id: Long
         ): ResponseEntity<AdvertisementInfo> {
             val ad = advertisementQueryService.getOneById(id)
@@ -48,7 +48,7 @@ AdvertisementController
         }
 
         @GetMapping(AdvertisementUrl.SEARCH_COMPANY)
-        fun searchAd(
+        fun searchCompany(
             @RequestParam(AdvertisementParam.COMPANY) company: String
         ): ResponseEntity<List<AdvertisementInfo?>> {
             val ads = advertisementQueryService.searchAdByCompany(company)

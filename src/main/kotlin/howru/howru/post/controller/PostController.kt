@@ -28,7 +28,7 @@ class PostController
         private val postCommandService: PostCommandService
     ) {
         @GetMapping(PostUrl.DETAIL)
-        fun getDetailInfo(
+        fun postDetail(
             @PathVariable(PostParam.ID) @Positive id: Long
         ): ResponseEntity<PostInfo> {
             val postDetail = postQueryService.getPostById(id)
@@ -62,7 +62,7 @@ class PostController
         }
 
         @GetMapping(PostUrl.POST_OF_OTHER_MEMBER)
-        fun otherMemberPost(
+        fun postOfOtherMember(
             @PathVariable(PostParam.MEMBER_ID) memberId: UUID,
             @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?,
             principal: Principal
@@ -86,7 +86,7 @@ class PostController
             return ResponseEntity.ok(randomPosts)
         }
 
-        @GetMapping(PostUrl.COUNT_MEMBER_POST)
+        @GetMapping(PostUrl.COUNT_OF_POST)
         fun countOfMemberPost(
             @PathVariable(PostParam.MEMBER_ID) memberId: UUID
         ): ResponseEntity<Long> {
