@@ -34,15 +34,10 @@ spring:
     url: redis://default:159624@host.docker.internal:6379
 #    url: redis://default:159624@127.0.0.1:6379
 
-# 프러덕션환경에서는 아래 p6spy 로깅을 false로 두고 배포한다.
-decorator:
-  datasource:
-    p6spy:
-      enable-logging: true
-
 logging:
   level:
     org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
     org.springframework.web: DEBUG
     org.springframework.cache: TRACE
 
