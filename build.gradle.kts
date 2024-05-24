@@ -24,7 +24,7 @@ noArg {
 }
 
 group = "howru"
-version = "2.5.0"
+version = "2.6.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -52,8 +52,6 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt-api:0.12.5")
     implementation("io.jsonwebtoken:jjwt-impl:0.12.5")
     implementation("io.jsonwebtoken:jjwt-jackson:0.12.5")
-    // p6spy
-    implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.1")
     // query-dsl config
     implementation("com.querydsl:querydsl-jpa:5.1.0:jakarta")
     kapt("com.querydsl:querydsl-apt:5.1.0:jakarta")
