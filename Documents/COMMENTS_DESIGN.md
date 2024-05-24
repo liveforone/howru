@@ -22,8 +22,8 @@
 ```
 [GET] /comments/{id}
 [GET] /comments?postId={postId}&lastId={lastId} : 댓글 페이지
-[GET] /comments/{memberId}/my?lastId={lastId} : 사용자가 작성한 댓글 목록
-[GET] /comments/{memberId}/other?lastId={lastId} : 다른 사용자가 작성한 댓글 목록
+[GET] /comments/my?lastId={lastId} : 내가가 작성한 댓글 목록
+[GET] /comments/member/{memberId}?lastId={lastId} : 다른 사용자가 작성한 댓글 목록
 [POST] /comments
 [PATCH] /comments/{id}
 [DELETE] /comments/{id}
