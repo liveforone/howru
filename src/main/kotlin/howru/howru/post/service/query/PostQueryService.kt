@@ -1,13 +1,8 @@
 package howru.howru.post.service.query
 
-import howru.howru.subscribe.exception.SubscribeException
-import howru.howru.subscribe.exception.SubscribeExceptionMessage
 import howru.howru.global.util.extractKeywords
-import howru.howru.logger
-import howru.howru.member.service.query.MemberQueryService
 import howru.howru.post.cache.PostCache
 import howru.howru.post.dto.response.PostPage
-import howru.howru.post.log.PostServiceLog
 import howru.howru.post.repository.PostRepository
 import howru.howru.subscribe.service.query.SubscribeQueryService
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,36 +17,17 @@ class PostQueryService
     @Autowired
     constructor(
         private val postRepository: PostRepository,
-        private val memberQueryService: MemberQueryService,
         private val subscribeQueryService: SubscribeQueryService
     ) {
         @Cacheable(cacheNames = [PostCache.POST_DETAIL_NAME], key = PostCache.POST_DETAIL_KEY)
         fun getPostById(id: Long) = postRepository.findPostInfoById(id)
 
-        fun getMyPosts(
-            memberId: UUID,
-            lastId: Long?
-        ) = postRepository.findPostsByWriter(memberId, lastId)
-
         fun getAllPosts(lastId: Long?) = postRepository.findAllPosts(lastId)
 
-        fun getPostsBySomeone(
-            writerId: UUID,
-            myId: UUID,
+        fun getPostsByMember(
+            memberId: UUID,
             lastId: Long?
-        ): PostPage {
-            val writer = memberQueryService.getMemberById(writerId)
-            return if (writer.isUnlock()) {
-                postRepository.findPostsBySomeone(writerId, lastId)
-            } else {
-                takeIf { subscribeQueryService.isFollowee(writerId, myId) }
-                    ?.run { postRepository.findPostsBySomeone(writerId, lastId) }
-                    ?: run {
-                        logger().warn(PostServiceLog.NOT_FOLLOWER + writerId)
-                        throw SubscribeException(SubscribeExceptionMessage.NOT_FOLLOWER, myId)
-                    }
-            }
-        }
+        ) = postRepository.findPostsByMember(memberId, lastId)
 
         fun getPostsOfFollowee(
             followerId: UUID,
@@ -70,5 +46,5 @@ class PostQueryService
 
         fun getRandomPosts() = postRepository.findRandomPosts()
 
-        fun getCountOfPostsByWriter(writerId: UUID) = postRepository.countOfPostByWriter(writerId)
+        fun getCountOfPostByMember(memberId: UUID) = postRepository.countOfPostByMember(memberId)
     }

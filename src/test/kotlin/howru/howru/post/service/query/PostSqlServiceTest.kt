@@ -1,6 +1,5 @@
 package howru.howru.post.service.query
 
-import howru.howru.subscribe.exception.SubscribeException
 import howru.howru.logger
 import howru.howru.member.dto.request.LoginRequest
 import howru.howru.member.dto.request.SignupRequest
@@ -86,7 +85,7 @@ class PostSqlServiceTest
             flushAndClear()
 
             // when
-            val postPage = postQueryService.getMyPosts(writerId, null)
+            val postPage = postQueryService.getPostsByMember(writerId, null)
 
             // then
             Assertions.assertThat(postPage.postInfoList.size).isEqualTo(2)
@@ -112,55 +111,6 @@ class PostSqlServiceTest
 
             // then
             Assertions.assertThat(postPage.postInfoList[0].content).isEqualTo(content2)
-        }
-
-    /*
-     * 구독하지 않았을때, 상대방의 게시글을 조회하는 경우 예외가 정상적으로 발생하는지 확인하는 테스트
-     * PostException 이 발생해야한다.
-     */
-        @Test
-        @Transactional
-        fun getPostsBySomeoneWhenNoSubscribeTest() {
-            // given
-            val followeeId = createWriter1()
-            memberCommandService.memberLockOn(followeeId)
-            flushAndClear()
-            val content1 = "test_content1"
-            val request1 = CreatePost(followeeId, content1)
-            postCommandService.createPost(request1)
-            flushAndClear()
-            val followerId = createWriter2()
-
-            // then -> error 발생!!
-            Assertions.assertThatThrownBy { postQueryService.getPostsBySomeone(followeeId, followerId, null) }
-                .isInstanceOf(SubscribeException::class.java)
-        }
-
-    /*
-     * 구독 한 경우, 상대방의 게시글을 조회할때 정상적으로 처리되는지 확인하는 테스트
-     * 구독확인에 대한 쿼리까지 살펴볼 수 있다.
-     */
-        @Test
-        @Transactional
-        fun getPostsBySomeoneWhenSubscribeTest() {
-            // given
-            val followeeId = createWriter1()
-            memberCommandService.memberLockOn(followeeId)
-            flushAndClear()
-            val content1 = "test_content1"
-            val request1 = CreatePost(followeeId, content1)
-            postCommandService.createPost(request1)
-            flushAndClear()
-            val followerId = createWriter2()
-
-            // when
-            val subscribeRequest = CreateSubscribe(followeeId, followerId)
-            subscribeCommandService.createSubscribe(subscribeRequest)
-            flushAndClear()
-
-            // then
-            Assertions.assertThat(postQueryService.getPostsBySomeone(followeeId, followerId, null).postInfoList)
-                .isNotEmpty
         }
 
         @Test
@@ -250,7 +200,7 @@ class PostSqlServiceTest
             }
 
             // when
-            val countOfPosts = postQueryService.getCountOfPostsByWriter(writerId)
+            val countOfPosts = postQueryService.getCountOfPostByMember(writerId)
 
             // then
             Assertions.assertThat(countOfPosts).isEqualTo(countOfRepeatCreatePost.toLong())

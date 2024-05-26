@@ -48,7 +48,7 @@ class PostController
             @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?,
             principal: Principal
         ): ResponseEntity<PostPage> {
-            val myPosts = postQueryService.getMyPosts(UUID.fromString(principal.name), lastId)
+            val myPosts = postQueryService.getPostsByMember(UUID.fromString(principal.name), lastId)
             return ResponseEntity.ok(myPosts)
         }
 
@@ -59,16 +59,6 @@ class PostController
         ): ResponseEntity<PostPage> {
             val postsOfFollowee = postQueryService.getPostsOfFollowee(UUID.fromString(principal.name), lastId)
             return ResponseEntity.ok(postsOfFollowee)
-        }
-
-        @GetMapping(PostUrl.POST_OF_OTHER_MEMBER)
-        fun postOfOtherMember(
-            @PathVariable(PostParam.MEMBER_ID) memberId: UUID,
-            @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?,
-            principal: Principal
-        ): ResponseEntity<PostPage> {
-            val posts = postQueryService.getPostsBySomeone(memberId, UUID.fromString(principal.name), lastId)
-            return ResponseEntity.ok(posts)
         }
 
         @GetMapping(PostUrl.RECOMMEND)
@@ -84,14 +74,6 @@ class PostController
         fun randomPostPage(): ResponseEntity<List<PostInfo>> {
             val randomPosts = postQueryService.getRandomPosts()
             return ResponseEntity.ok(randomPosts)
-        }
-
-        @GetMapping(PostUrl.COUNT_OF_POST)
-        fun countOfMemberPost(
-            @PathVariable(PostParam.MEMBER_ID) memberId: UUID
-        ): ResponseEntity<Long> {
-            val countPost = postQueryService.getCountOfPostsByWriter(memberId)
-            return ResponseEntity.ok(countPost)
         }
 
         @PostMapping(PostUrl.CREATE)

@@ -15,17 +15,12 @@ interface PostCustomRepository {
 
     fun findPostInfoById(id: Long): PostInfo
 
-    fun findPostsByWriter(
+    fun findPostsByMember(
         memberId: UUID,
         lastId: Long?
     ): PostPage
 
     fun findAllPosts(lastId: Long?): PostPage
-
-    fun findPostsBySomeone(
-        someoneId: UUID,
-        lastId: Long?
-    ): PostPage
 
     fun findPostsByFollowee(
         followeeId: List<UUID>,

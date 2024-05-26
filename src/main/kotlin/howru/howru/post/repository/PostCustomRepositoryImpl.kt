@@ -49,7 +49,7 @@ class PostCustomRepositoryImpl(
             .fetchOne() ?: throw PostException(PostExceptionMessage.POST_IS_NULL, id)
     }
 
-    override fun findPostsByWriter(
+    override fun findPostsByMember(
         memberId: UUID,
         lastId: Long?
     ): PostPage {
@@ -69,21 +69,6 @@ class PostCustomRepositoryImpl(
             jpaQueryFactory.select(postInfoField)
                 .from(post)
                 .where(ltLastId(lastId, post) { it.id })
-                .orderBy(post.id.desc())
-                .limit(PostRepoConstant.LIMIT_PAGE)
-                .fetch()
-
-        return PostPage(postInfoList, findLastIdOrDefault(postInfoList) { it.id })
-    }
-
-    override fun findPostsBySomeone(
-        someoneId: UUID,
-        lastId: Long?
-    ): PostPage {
-        val postInfoList =
-            jpaQueryFactory.select(postInfoField)
-                .from(post)
-                .where(post.writer.id.eq(someoneId).and(ltLastId(lastId, post) { it.id }))
                 .orderBy(post.id.desc())
                 .limit(PostRepoConstant.LIMIT_PAGE)
                 .fetch()
