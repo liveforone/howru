@@ -59,7 +59,7 @@ class PostController
             @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?,
             principal: Principal
         ): ResponseEntity<PostPage> {
-            val postsOfFollowee = postQueryService.getPostsOfFollowee(UUID.fromString(principal.name), lastId)
+            val postsOfFollowee = integratedPostService.getPostsOfFollowee(UUID.fromString(principal.name), lastId)
             return ResponseEntity.ok(postsOfFollowee)
         }
 

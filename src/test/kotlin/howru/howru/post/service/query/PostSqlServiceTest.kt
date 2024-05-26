@@ -6,7 +6,6 @@ import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.service.command.MemberCommandService
 import howru.howru.post.dto.request.CreatePost
 import howru.howru.post.service.command.PostCommandService
-import howru.howru.subscribe.dto.request.CreateSubscribe
 import howru.howru.subscribe.service.command.SubscribeCommandService
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions
@@ -111,27 +110,6 @@ class PostSqlServiceTest
 
             // then
             Assertions.assertThat(postPage.postInfoList[0].content).isEqualTo(content2)
-        }
-
-        @Test
-        @Transactional
-        fun getPostsOfFolloweeTest() {
-            // given
-            val followeeId = createWriter1()
-            val content1 = "test_content1"
-            val request1 = CreatePost(followeeId, content1)
-            postCommandService.createPost(request1)
-            flushAndClear()
-            val followerId = createWriter2()
-
-            // when
-            val subscribeRequest = CreateSubscribe(followeeId, followerId)
-            subscribeCommandService.createSubscribe(subscribeRequest)
-            flushAndClear()
-
-            // then
-            Assertions.assertThat(postQueryService.getPostsOfFollowee(followerId, null).postInfoList)
-                .isNotEmpty
         }
 
         @Test

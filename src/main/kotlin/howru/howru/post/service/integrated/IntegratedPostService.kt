@@ -35,4 +35,12 @@ class IntegratedPostService
                 throw SubscribeException(SubscribeExceptionMessage.NOT_FOLLOWER, myId)
             }
         }
+
+        fun getPostsOfFollowee(
+            followerId: UUID,
+            lastId: Long?
+        ): PostPage {
+            val followeeId = subscribeQueryService.getFollowees(followerId)
+            return postQueryService.getPostsByFolloweeIds(followeeId, lastId)
+        }
     }

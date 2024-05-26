@@ -22,7 +22,7 @@ interface PostCustomRepository {
 
     fun findAllPosts(lastId: Long?): PostPage
 
-    fun findPostsByFollowee(
+    fun findPostsByFolloweeIds(
         followeeId: List<UUID>,
         lastId: Long?
     ): PostPage

@@ -76,7 +76,7 @@ class PostCustomRepositoryImpl(
         return PostPage(postInfoList, findLastIdOrDefault(postInfoList) { it.id })
     }
 
-    override fun findPostsByFollowee(
+    override fun findPostsByFolloweeIds(
         followeeId: List<UUID>,
         lastId: Long?
     ): PostPage {

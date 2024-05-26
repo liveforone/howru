@@ -4,7 +4,6 @@ import howru.howru.global.util.extractKeywords
 import howru.howru.post.cache.PostCache
 import howru.howru.post.dto.response.PostPage
 import howru.howru.post.repository.PostRepository
-import howru.howru.subscribe.service.query.SubscribeQueryService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
@@ -16,8 +15,7 @@ import java.util.UUID
 class PostQueryService
     @Autowired
     constructor(
-        private val postRepository: PostRepository,
-        private val subscribeQueryService: SubscribeQueryService
+        private val postRepository: PostRepository
     ) {
         @Cacheable(cacheNames = [PostCache.POST_DETAIL_NAME], key = PostCache.POST_DETAIL_KEY)
         fun getPostById(id: Long) = postRepository.findPostInfoById(id)
@@ -29,13 +27,10 @@ class PostQueryService
             lastId: Long?
         ) = postRepository.findPostsByMember(memberId, lastId)
 
-        fun getPostsOfFollowee(
-            followerId: UUID,
+        fun getPostsByFolloweeIds(
+            followeeIds: List<UUID>,
             lastId: Long?
-        ): PostPage {
-            val followeeId = subscribeQueryService.getFollowees(followerId)
-            return postRepository.findPostsByFollowee(followeeId, lastId)
-        }
+        ) = postRepository.findPostsByFolloweeIds(followeeIds, lastId)
 
         fun getRecommendPosts(
             content: String,

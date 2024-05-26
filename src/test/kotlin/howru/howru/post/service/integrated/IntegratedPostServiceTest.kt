@@ -104,4 +104,25 @@ class IntegratedPostServiceTest
                 integratedPostService.getPostOfOtherMember(followeeId, followerId, null).postInfoList
             ).isNotEmpty
         }
+
+        @Test
+        @Transactional
+        fun getPostsOfFolloweeTest() {
+            // given
+            val followeeId = createMember1()
+            val content1 = "test_content1"
+            val request1 = CreatePost(followeeId, content1)
+            postCommandService.createPost(request1)
+            flushAndClear()
+            val followerId = createMember2()
+
+            // when
+            val subscribeRequest = CreateSubscribe(followeeId, followerId)
+            subscribeCommandService.createSubscribe(subscribeRequest)
+            flushAndClear()
+
+            // then
+            Assertions.assertThat(integratedPostService.getPostsOfFollowee(followerId, null).postInfoList)
+                .isNotEmpty
+        }
     }
