@@ -10,6 +10,7 @@ object PostUrl {
     const val CREATE = "/posts"
     const val EDIT = "/posts/{id}"
     const val REMOVE = "/posts/{id}"
+    const val COMMENTS_PAGE = "/posts/{id}/comments"
 }
 
 object PostParam {

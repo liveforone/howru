@@ -1,5 +1,6 @@
 package howru.howru.post.controller
 
+import howru.howru.comments.dto.response.CommentsPage
 import howru.howru.logger
 import howru.howru.post.controller.constant.PostParam
 import howru.howru.post.controller.constant.PostUrl
@@ -11,6 +12,7 @@ import howru.howru.post.dto.response.PostInfo
 import howru.howru.post.dto.response.PostPage
 import howru.howru.post.log.PostControllerLog
 import howru.howru.post.service.command.PostCommandService
+import howru.howru.post.service.integrated.IntegratedPostService
 import howru.howru.post.service.query.PostQueryService
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Positive
@@ -25,7 +27,8 @@ class PostController
     @Autowired
     constructor(
         private val postQueryService: PostQueryService,
-        private val postCommandService: PostCommandService
+        private val postCommandService: PostCommandService,
+        private val integratedPostService: IntegratedPostService
     ) {
         @GetMapping(PostUrl.DETAIL)
         fun postDetail(
@@ -106,5 +109,14 @@ class PostController
             logger().info(PostControllerLog.DELETE_POST_SUCCESS + id)
 
             return PostResponse.removePostSuccess()
+        }
+
+        @GetMapping(PostUrl.COMMENTS_PAGE)
+        fun commentsPage(
+            @PathVariable(PostParam.ID) id: Long,
+            @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
+        ): ResponseEntity<CommentsPage> {
+            val comments = integratedPostService.getCommentsByPost(id, lastId)
+            return ResponseEntity.ok(comments)
         }
     }

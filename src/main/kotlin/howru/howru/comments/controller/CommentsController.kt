@@ -38,15 +38,6 @@ class CommentsController
             return ResponseEntity.ok(comment)
         }
 
-        @GetMapping(CommentsUrl.COMMENTS_PAGE)
-        fun commentsPage(
-            @RequestParam(CommentsParam.POST_ID) postId: Long,
-            @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
-        ): ResponseEntity<CommentsPage> {
-            val comments = commentsQueryService.getCommentsByPost(postId, lastId)
-            return ResponseEntity.ok(comments)
-        }
-
         @GetMapping(CommentsUrl.MY_COMMENTS)
         fun myComments(
             @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?,
