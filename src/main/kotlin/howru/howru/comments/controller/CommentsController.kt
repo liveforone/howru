@@ -10,8 +10,10 @@ import howru.howru.comments.dto.response.CommentsInfo
 import howru.howru.comments.dto.response.CommentsPage
 import howru.howru.comments.log.CommentsControllerLog
 import howru.howru.comments.service.command.CommentsCommandService
+import howru.howru.comments.service.integrated.IntegratedCommentsService
 import howru.howru.comments.service.query.CommentsQueryService
 import howru.howru.logger
+import howru.howru.reply.dto.response.ReplyPage
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Positive
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,7 +27,8 @@ class CommentsController
     @Autowired
     constructor(
         private val commentsQueryService: CommentsQueryService,
-        private val commentsCommandService: CommentsCommandService
+        private val commentsCommandService: CommentsCommandService,
+        private val integratedCommentsService: IntegratedCommentsService
     ) {
         @GetMapping(CommentsUrl.DETAIL)
         fun commentsDetail(
@@ -83,5 +86,14 @@ class CommentsController
             logger().info(CommentsControllerLog.DELETE_COMMENTS_SUCCESS + id)
 
             return CommentsResponse.removeCommentsSuccess()
+        }
+
+        @GetMapping(CommentsUrl.REPLY_PAGE)
+        fun replyPage(
+            @PathVariable(CommentsParam.ID) id: Long,
+            @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
+        ): ResponseEntity<ReplyPage> {
+            val replies = integratedCommentsService.getRepliesByComment(id, lastId)
+            return ResponseEntity.ok(replies)
         }
     }

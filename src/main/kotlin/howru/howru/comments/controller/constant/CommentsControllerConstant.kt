@@ -7,6 +7,7 @@ object CommentsUrl {
     const val CREATE_COMMENTS = "/comments"
     const val EDIT_COMMENTS = "/comments/{id}"
     const val REMOVE_COMMENTS = "/comments/{id}"
+    const val REPLY_PAGE = "/comments/{id}/replies"
 }
 
 object CommentsParam {

@@ -34,15 +34,6 @@ class ReplyController
             return ResponseEntity.ok(reply)
         }
 
-        @GetMapping(ReplyUrl.REPLY_PAGE)
-        fun replyPage(
-            @RequestParam(ReplyParam.COMMENT_ID) commentId: Long,
-            @RequestParam(ReplyParam.LAST_ID, required = false) lastId: Long?
-        ): ResponseEntity<*> {
-            val replies = replyQueryService.getRepliesByComment(commentId, lastId)
-            return ResponseEntity.ok(replies)
-        }
-
         @GetMapping(ReplyUrl.MY_REPLY)
         fun myReplies(
             @RequestParam(ReplyParam.LAST_ID, required = false) lastId: Long?,
