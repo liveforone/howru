@@ -41,7 +41,6 @@ class SecurityConfig
                 JwtAuthenticationFilter(jwtTokenProvider),
                 UsernamePasswordAuthenticationFilter::class.java
             )
-            http.exceptionHandling { exception -> exception.accessDeniedPage(MemberUrl.PROHIBITION) }
             return http.build()
         }
     }
