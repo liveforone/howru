@@ -8,6 +8,7 @@ import howru.howru.reply.dto.request.CreateReply
 import howru.howru.reply.dto.request.RemoveReply
 import howru.howru.reply.dto.request.UpdateReplyContent
 import howru.howru.reply.dto.response.ReplyInfo
+import howru.howru.reply.dto.response.ReplyPage
 import howru.howru.reply.log.ReplyControllerLog
 import howru.howru.reply.service.command.ReplyCommandService
 import howru.howru.reply.service.query.ReplyQueryService
@@ -32,6 +33,15 @@ class ReplyController
         ): ResponseEntity<ReplyInfo> {
             val reply = replyQueryService.getReplyById(id)
             return ResponseEntity.ok(reply)
+        }
+
+        @GetMapping(ReplyUrl.REPLY_PAGE)
+        fun replyPage(
+            @PathVariable(ReplyParam.COMMENT_ID) commentId: Long,
+            @RequestParam(ReplyParam.LAST_ID, required = false) lastId: Long?
+        ): ResponseEntity<ReplyPage> {
+            val replies = replyQueryService.getRepliesByComment(commentId, lastId)
+            return ResponseEntity.ok(replies)
         }
 
         @GetMapping(ReplyUrl.MY_REPLY)

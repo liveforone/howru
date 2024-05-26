@@ -1,6 +1,5 @@
 package howru.howru.post.controller
 
-import howru.howru.comments.dto.response.CommentsPage
 import howru.howru.logger
 import howru.howru.post.controller.constant.PostParam
 import howru.howru.post.controller.constant.PostUrl
@@ -64,6 +63,24 @@ class PostController
             return ResponseEntity.ok(postsOfFollowee)
         }
 
+        @GetMapping(PostUrl.POST_OF_OTHER_MEMBER)
+        fun postOfOtherMember(
+            @PathVariable(PostParam.MEMBER_ID) memberId: UUID,
+            @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?,
+            principal: Principal
+        ): ResponseEntity<PostPage> {
+            val posts = integratedPostService.getPostOfOtherMember(memberId, UUID.fromString(principal.name), lastId)
+            return ResponseEntity.ok(posts)
+        }
+
+        @GetMapping(PostUrl.COUNT_OF_POST)
+        fun countOfPostByMember(
+            @PathVariable(PostParam.MEMBER_ID) memberId: UUID
+        ): ResponseEntity<Long> {
+            val countPost = postQueryService.getCountOfPostByMember(memberId)
+            return ResponseEntity.ok(countPost)
+        }
+
         @GetMapping(PostUrl.RECOMMEND)
         fun recommendPostPage(
             @RequestParam(PostParam.CONTENT) content: String,
@@ -109,14 +126,5 @@ class PostController
             logger().info(PostControllerLog.DELETE_POST_SUCCESS + id)
 
             return PostResponse.removePostSuccess()
-        }
-
-        @GetMapping(PostUrl.COMMENTS_PAGE)
-        fun commentsPage(
-            @PathVariable(PostParam.ID) id: Long,
-            @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
-        ): ResponseEntity<CommentsPage> {
-            val comments = integratedPostService.getCommentsByPost(id, lastId)
-            return ResponseEntity.ok(comments)
         }
     }

@@ -11,14 +11,6 @@ object MemberUrl {
     const val LOGOUT = "/members/logout"
     const val RECOVERY_MEMBER = "/members/recovery"
     const val WITHDRAW = "/members/withdraw"
-    const val POST_OF_OTHER_MEMBER = "/members/{memberId}/posts"
-    const val COUNT_OF_POST = "/members/{memberId}/count-of-post"
-    const val COMMENTS_OF_OTHER_MEMBER = "/members/{memberId}/comments"
-}
-
-object MemberParam {
-    const val MEMBER_ID = "memberId"
-    const val LAST_ID = "lastId"
 }
 
 object MemberRequestHeader {

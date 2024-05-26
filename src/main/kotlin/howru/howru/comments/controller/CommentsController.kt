@@ -13,7 +13,6 @@ import howru.howru.comments.service.command.CommentsCommandService
 import howru.howru.comments.service.integrated.IntegratedCommentsService
 import howru.howru.comments.service.query.CommentsQueryService
 import howru.howru.logger
-import howru.howru.reply.dto.response.ReplyPage
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Positive
 import org.springframework.beans.factory.annotation.Autowired
@@ -38,12 +37,36 @@ class CommentsController
             return ResponseEntity.ok(comment)
         }
 
+        @GetMapping(CommentsUrl.COMMENTS_PAGE)
+        fun commentsPage(
+            @PathVariable(CommentsParam.POST_ID) id: Long,
+            @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
+        ): ResponseEntity<CommentsPage> {
+            val comments = commentsQueryService.getCommentsByPost(id, lastId)
+            return ResponseEntity.ok(comments)
+        }
+
         @GetMapping(CommentsUrl.MY_COMMENTS)
         fun myComments(
             @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?,
             principal: Principal
         ): ResponseEntity<CommentsPage> {
             val comments = commentsQueryService.getCommentsByMember(UUID.fromString(principal.name), lastId)
+            return ResponseEntity.ok(comments)
+        }
+
+        @GetMapping(CommentsUrl.COMMENTS_OF_OTHER_MEMBER)
+        fun commentsOfOtherMember(
+            @PathVariable(CommentsParam.MEMBER_ID) memberId: UUID,
+            @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?,
+            principal: Principal
+        ): ResponseEntity<CommentsPage> {
+            val comments =
+                integratedCommentsService.getCommentsByOtherMember(
+                    memberId,
+                    myId = UUID.fromString(principal.name),
+                    lastId
+                )
             return ResponseEntity.ok(comments)
         }
 
@@ -77,14 +100,5 @@ class CommentsController
             logger().info(CommentsControllerLog.DELETE_COMMENTS_SUCCESS + id)
 
             return CommentsResponse.removeCommentsSuccess()
-        }
-
-        @GetMapping(CommentsUrl.REPLY_PAGE)
-        fun replyPage(
-            @PathVariable(CommentsParam.ID) id: Long,
-            @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
-        ): ResponseEntity<ReplyPage> {
-            val replies = integratedCommentsService.getRepliesByComment(id, lastId)
-            return ResponseEntity.ok(replies)
         }
     }

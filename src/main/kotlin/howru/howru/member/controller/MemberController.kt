@@ -1,11 +1,9 @@
 package howru.howru.member.controller
 
-import howru.howru.comments.dto.response.CommentsPage
 import howru.howru.member.exception.MemberException
 import howru.howru.member.exception.MemberExceptionMessage
 import howru.howru.jwt.dto.JwtTokenInfo
 import howru.howru.logger
-import howru.howru.member.controller.constant.MemberParam
 import howru.howru.member.controller.constant.MemberRequestHeader
 import howru.howru.member.controller.constant.MemberUrl
 import howru.howru.member.controller.response.MemberResponse
@@ -13,9 +11,7 @@ import howru.howru.member.dto.response.MemberInfo
 import howru.howru.member.dto.request.*
 import howru.howru.member.log.MemberControllerLog
 import howru.howru.member.service.command.MemberCommandService
-import howru.howru.member.service.integrated.IntegratedMemberService
 import howru.howru.member.service.query.MemberQueryService
-import howru.howru.post.dto.response.PostPage
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,8 +25,7 @@ class MemberController
     @Autowired
     constructor(
         private val memberQueryService: MemberQueryService,
-        private val memberCommandService: MemberCommandService,
-        private val integratedMemberService: IntegratedMemberService
+        private val memberCommandService: MemberCommandService
     ) {
         @GetMapping(MemberUrl.INFO)
         fun memberInfo(principal: Principal): ResponseEntity<MemberInfo> {
@@ -139,38 +134,5 @@ class MemberController
             logger().info(MemberControllerLog.WITHDRAW_SUCCESS + memberId)
 
             return MemberResponse.withdrawSuccess()
-        }
-
-        @GetMapping(MemberUrl.POST_OF_OTHER_MEMBER)
-        fun postOfOtherMember(
-            @PathVariable(MemberParam.MEMBER_ID) memberId: UUID,
-            @RequestParam(MemberParam.LAST_ID, required = false) lastId: Long?,
-            principal: Principal
-        ): ResponseEntity<PostPage> {
-            val posts = integratedMemberService.getPostOfOtherMember(memberId, UUID.fromString(principal.name), lastId)
-            return ResponseEntity.ok(posts)
-        }
-
-        @GetMapping(MemberUrl.COUNT_OF_POST)
-        fun countOfPostByMember(
-            @PathVariable(MemberParam.MEMBER_ID) memberId: UUID
-        ): ResponseEntity<Long> {
-            val countPost = integratedMemberService.getCountOfPostByMember(memberId)
-            return ResponseEntity.ok(countPost)
-        }
-
-        @GetMapping(MemberUrl.COMMENTS_OF_OTHER_MEMBER)
-        fun commentsOfOtherMember(
-            @PathVariable(MemberParam.MEMBER_ID) memberId: UUID,
-            @RequestParam(MemberParam.LAST_ID, required = false) lastId: Long?,
-            principal: Principal
-        ): ResponseEntity<CommentsPage> {
-            val comments =
-                integratedMemberService.getCommentsByOtherMember(
-                    memberId,
-                    myId = UUID.fromString(principal.name),
-                    lastId
-                )
-            return ResponseEntity.ok(comments)
         }
     }
