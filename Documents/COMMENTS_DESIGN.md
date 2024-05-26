@@ -21,9 +21,9 @@
 ## API 설계
 ```
 [GET] /comments/{id}
-[GET] /comments?postId={postId}&lastId={lastId} : 댓글 페이지
+[GET] /posts/{postId}/comments?lastId={lastId} : 댓글 페이지
 [GET] /comments/my?lastId={lastId} : 내가가 작성한 댓글 목록
-[GET] /comments/member/{memberId}?lastId={lastId} : 다른 사용자가 작성한 댓글 목록
+[GET] /members/{memberId}/comments?lastId={lastId} : 다른 사용자가 작성한 댓글 목록
 [POST] /comments
 [PATCH] /comments/{id}
 [DELETE] /comments/{id}
