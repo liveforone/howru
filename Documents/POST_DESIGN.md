@@ -24,12 +24,12 @@
 ```
 [GET] /posts
 [GET] /posts/{id}
-[GET] /posts/my : 나의 글 조회
-[GET] /posts/followees : 내가 팔로우하는 사람들의 글 조회
-[GET] /posts/member/{memberId} : 다른 사람의 글 조회
-[GET] /posts/recommend
+[GET] /posts/my?lastId={lastId} : 나의 글 조회
+[GET] /posts/followees?lastId={lastId} : 내가 팔로우하는 사람들의 글 조회
+[GET] /members/{memberId}/posts&lastId={lastId} : 회원의 글 조회
+[GET] /members/{memberId}/count-of-post : 회원의 게시글 수 조회
+[GET] /posts/recommend?lastId={lastId}
 [GET] /posts/random
-[GET] /posts/{memberId}/count
 [POST] /posts
 [PATCH] /posts/{id}
 [DELETE] /posts/{id}
