@@ -1,12 +1,6 @@
 package howru.howru.comments.service.query
 
-import howru.howru.comments.dto.response.CommentsPage
-import howru.howru.comments.log.CommentsServiceLog
 import howru.howru.comments.repository.CommentsRepository
-import howru.howru.subscribe.exception.SubscribeException
-import howru.howru.subscribe.exception.SubscribeExceptionMessage
-import howru.howru.logger
-import howru.howru.subscribe.service.query.SubscribeQueryService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -17,30 +11,17 @@ import java.util.UUID
 class CommentsQueryService
     @Autowired
     constructor(
-        private val commentsRepository: CommentsRepository,
-        private val subscribeQueryService: SubscribeQueryService
+        private val commentsRepository: CommentsRepository
     ) {
         fun getCommentById(id: Long) = commentsRepository.findCommentsInfoById(id)
 
-        fun getCommentsByWriter(
-            writerId: UUID,
+        fun getCommentsByMember(
+            memberId: UUID,
             lastId: Long?
-        ) = commentsRepository.findCommentsByWriter(writerId, lastId)
+        ) = commentsRepository.findCommentsByMember(memberId, lastId)
 
         fun getCommentsByPost(
             postId: Long,
             lastId: Long?
         ) = commentsRepository.findCommentsByPost(postId, lastId)
-
-        fun getCommentsBySomeone(
-            someoneId: UUID,
-            myId: UUID,
-            lastId: Long?
-        ): CommentsPage {
-            require(subscribeQueryService.isFollowEach(someoneId, myId)) {
-                logger().info(CommentsServiceLog.VIEW_SOMEONE_COMMENTS_WHO_NOT_FOLLOWING + myId)
-                throw SubscribeException(SubscribeExceptionMessage.IS_NOT_FOLLOW_EACH, myId)
-            }
-            return commentsRepository.findCommentsByWriter(someoneId, lastId)
-        }
     }

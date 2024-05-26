@@ -1,5 +1,6 @@
 package howru.howru.member.controller
 
+import howru.howru.comments.dto.response.CommentsPage
 import howru.howru.member.exception.MemberException
 import howru.howru.member.exception.MemberExceptionMessage
 import howru.howru.jwt.dto.JwtTokenInfo
@@ -156,5 +157,20 @@ class MemberController
         ): ResponseEntity<Long> {
             val countPost = integratedMemberService.getCountOfPostByMember(memberId)
             return ResponseEntity.ok(countPost)
+        }
+
+        @GetMapping(MemberUrl.COMMENTS_OF_OTHER_MEMBER)
+        fun commentsOfOtherMember(
+            @PathVariable(MemberParam.MEMBER_ID) memberId: UUID,
+            @RequestParam(MemberParam.LAST_ID, required = false) lastId: Long?,
+            principal: Principal
+        ): ResponseEntity<CommentsPage> {
+            val comments =
+                integratedMemberService.getCommentsByOtherMember(
+                    memberId,
+                    myId = UUID.fromString(principal.name),
+                    lastId
+                )
+            return ResponseEntity.ok(comments)
         }
     }

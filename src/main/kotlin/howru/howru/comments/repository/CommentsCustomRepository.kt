@@ -15,8 +15,8 @@ interface CommentsCustomRepository {
 
     fun findCommentsInfoById(id: Long): CommentsInfo
 
-    fun findCommentsByWriter(
-        writerId: UUID,
+    fun findCommentsByMember(
+        memberId: UUID,
         lastId: Long?
     ): CommentsPage
 

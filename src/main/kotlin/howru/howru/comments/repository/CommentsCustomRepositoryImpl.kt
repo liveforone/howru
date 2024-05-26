@@ -50,14 +50,14 @@ class CommentsCustomRepositoryImpl(
             .fetchOne() ?: throw CommentsException(CommentsExceptionMessage.COMMENTS_IS_NULL, id)
     }
 
-    override fun findCommentsByWriter(
-        writerId: UUID,
+    override fun findCommentsByMember(
+        memberId: UUID,
         lastId: Long?
     ): CommentsPage {
         val commentsInfoList =
             jpaQueryFactory.select(commentsInfoField)
                 .from(comments)
-                .where(comments.writer.id.eq(writerId).and(ltLastId(lastId, comments) { it.id }))
+                .where(comments.writer.id.eq(memberId).and(ltLastId(lastId, comments) { it.id }))
                 .orderBy(comments.id.desc())
                 .limit(CommentsRepoConstant.LIMIT_PAGE)
                 .fetch()

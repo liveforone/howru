@@ -1,5 +1,7 @@
 package howru.howru.member.service.integrated
 
+import howru.howru.comments.dto.request.CreateComments
+import howru.howru.comments.service.command.CommentsCommandService
 import howru.howru.member.dto.request.LoginRequest
 import howru.howru.member.dto.request.SignupRequest
 import howru.howru.member.service.command.MemberCommandService
@@ -22,8 +24,9 @@ class IntegratedMemberServiceTest
     constructor(
         private val entityManager: EntityManager,
         private val memberCommandService: MemberCommandService,
-        private val postCommandService: PostCommandService,
         private val subscribeCommandService: SubscribeCommandService,
+        private val postCommandService: PostCommandService,
+        private val commentsCommandService: CommentsCommandService,
         private val integratedMemberService: IntegratedMemberService
     ) {
         private fun flushAndClear() {
@@ -31,10 +34,10 @@ class IntegratedMemberServiceTest
             entityManager.clear()
         }
 
-        private fun createWriter1(): UUID {
-            val email = "test_followee@gmail.com"
+        private fun createMember1(): UUID {
+            val email = "test_member1@gmail.com"
             val pw = "1111"
-            val nickName = "writer1"
+            val nickName = "member1"
             val request = SignupRequest(email, pw, nickName)
             memberCommandService.signup(request)
             flushAndClear()
@@ -42,10 +45,10 @@ class IntegratedMemberServiceTest
             return memberCommandService.login(loginRequest).id
         }
 
-        private fun createWriter2(): UUID {
-            val email = "test_follower@gmail.com"
+        private fun createMember2(): UUID {
+            val email = "test_member2@gmail.com"
             val pw = "2222"
-            val nickName = "writer2"
+            val nickName = "member2"
             val request = SignupRequest(email, pw, nickName)
             memberCommandService.signup(request)
             flushAndClear()
@@ -61,14 +64,14 @@ class IntegratedMemberServiceTest
         @Transactional
         fun getPostsOfOtherMemberWhenNoSubscribeTest() {
             // given
-            val followeeId = createWriter1()
+            val followeeId = createMember1()
             memberCommandService.memberLockOn(followeeId)
             flushAndClear()
-            val content1 = "test_content1"
+            val content1 = "test_content"
             val request1 = CreatePost(followeeId, content1)
             postCommandService.createPost(request1)
             flushAndClear()
-            val followerId = createWriter2()
+            val followerId = createMember2()
 
             // then -> error 발생!!
             Assertions.assertThatThrownBy {
@@ -84,14 +87,14 @@ class IntegratedMemberServiceTest
         @Transactional
         fun getPostsOfOtherMemberWhenSubscribeTest() {
             // given
-            val followeeId = createWriter1()
+            val followeeId = createMember1()
             memberCommandService.memberLockOn(followeeId)
             flushAndClear()
-            val content1 = "test_content1"
+            val content1 = "test_content"
             val request1 = CreatePost(followeeId, content1)
             postCommandService.createPost(request1)
             flushAndClear()
-            val followerId = createWriter2()
+            val followerId = createMember2()
 
             // when
             val subscribeRequest = CreateSubscribe(followeeId, followerId)
@@ -102,5 +105,61 @@ class IntegratedMemberServiceTest
             Assertions.assertThat(
                 integratedMemberService.getPostOfOtherMember(followeeId, followerId, null).postInfoList
             ).isNotEmpty
+        }
+
+        private fun createSubscribe(
+            followeeId: UUID,
+            followerId: UUID
+        ) {
+            subscribeCommandService.createSubscribe(CreateSubscribe(followeeId, followerId))
+            flushAndClear()
+        }
+
+        @Test
+        @Transactional
+        fun getCommentsBySomeoneTest() {
+            // given
+            val memberId = createMember1()
+            val member2Id = createMember2()
+            createSubscribe(memberId, member2Id)
+            createSubscribe(member2Id, memberId)
+            val content1 = "test_content"
+            val requestPost = CreatePost(memberId, content1)
+            val postId = postCommandService.createPost(requestPost)
+            flushAndClear()
+            val content = "test_comments"
+            val request1 = CreateComments(memberId, postId, content)
+            commentsCommandService.createComments(request1)
+            flushAndClear()
+
+            // when
+            val commentsPage = integratedMemberService.getCommentsByOtherMember(memberId, member2Id, null)
+
+            // then
+            Assertions.assertThat(commentsPage.commentsInfoList).isNotEmpty
+        }
+
+        @Test
+        @Transactional
+        fun getCommentsBySomeonePagingTest() {
+            // given
+            val memberId = createMember1()
+            val member2Id = createMember2()
+            createSubscribe(memberId, member2Id)
+            createSubscribe(member2Id, memberId)
+            val content1 = "test_content"
+            val requestPost = CreatePost(memberId, content1)
+            val postId = postCommandService.createPost(requestPost)
+            flushAndClear()
+            val content = "test_comments"
+            val request1 = CreateComments(memberId, postId, content)
+            commentsCommandService.createComments(request1)
+            flushAndClear()
+
+            // when
+            val commentsPage = integratedMemberService.getCommentsByOtherMember(memberId, member2Id, null)
+
+            // then
+            Assertions.assertThat(commentsPage.commentsInfoList).isNotEmpty()
         }
     }

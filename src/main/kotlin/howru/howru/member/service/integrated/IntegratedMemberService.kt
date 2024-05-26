@@ -1,5 +1,7 @@
 package howru.howru.member.service.integrated
 
+import howru.howru.comments.dto.response.CommentsPage
+import howru.howru.comments.service.query.CommentsQueryService
 import howru.howru.logger
 import howru.howru.member.log.IntegratedMemberServiceLog
 import howru.howru.member.service.query.MemberQueryService
@@ -19,22 +21,35 @@ class IntegratedMemberService
     @Autowired
     constructor(
         private val memberQueryService: MemberQueryService,
+        private val subscribeQueryService: SubscribeQueryService,
         private val postQueryService: PostQueryService,
-        private val subscribeQueryService: SubscribeQueryService
+        private val commentsQueryService: CommentsQueryService
     ) {
         fun getPostOfOtherMember(
-            writerId: UUID,
+            memberId: UUID,
             myId: UUID,
             lastId: Long?
         ): PostPage {
-            val writer = memberQueryService.getMemberById(writerId)
-            return if (writer.isUnlock() || subscribeQueryService.isFollowee(writerId, myId)) {
-                postQueryService.getPostsByMember(writerId, lastId)
+            val writer = memberQueryService.getMemberById(memberId)
+            return if (writer.isUnlock() || subscribeQueryService.isFollowee(memberId, myId)) {
+                postQueryService.getPostsByMember(memberId, lastId)
             } else {
-                logger().warn(IntegratedMemberServiceLog.NOT_FOLLOWER + writerId)
+                logger().warn(IntegratedMemberServiceLog.NOT_FOLLOWER + memberId)
                 throw SubscribeException(SubscribeExceptionMessage.NOT_FOLLOWER, myId)
             }
         }
 
         fun getCountOfPostByMember(memberId: UUID) = postQueryService.getCountOfPostByMember(memberId)
+
+        fun getCommentsByOtherMember(
+            memberId: UUID,
+            myId: UUID,
+            lastId: Long?
+        ): CommentsPage {
+            require(subscribeQueryService.isFollowEach(memberId, myId)) {
+                logger().info(IntegratedMemberServiceLog.VIEW_SOMEONE_COMMENTS_WHO_NOT_FOLLOWING + myId)
+                throw SubscribeException(SubscribeExceptionMessage.IS_NOT_FOLLOW_EACH, myId)
+            }
+            return commentsQueryService.getCommentsByMember(memberId, lastId)
+        }
     }
