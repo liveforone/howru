@@ -5,7 +5,7 @@ import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
 import java.util.concurrent.TimeUnit
 
-class RedisKeyValueTimeOut(
+class RedisTimeOut(
     val time: Long,
     val timeUnit: TimeUnit
 )
@@ -18,7 +18,7 @@ class RedisRepository(
     fun <T> save(
         key: String,
         value: T,
-        timeOut: RedisKeyValueTimeOut? = null
+        timeOut: RedisTimeOut? = null
     ) {
         timeOut?.let {
             redisTemplate.opsForValue().set(
@@ -63,5 +63,17 @@ class RedisRepository(
         value: T
     ) {
         return save(key = key, value = value)
+    }
+
+    fun <T> getOrLoad(
+        key: String,
+        clazz: Class<T>,
+        findDataFromDB: () -> T,
+        timeOut: RedisTimeOut?
+    ): T {
+        val cachedValue: T? = getByKey(key, clazz)
+        return cachedValue ?: findDataFromDB().also { data ->
+            timeOut?.let { save(key, data, timeOut) } ?: save(key, data)
+        }
     }
 }
