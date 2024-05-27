@@ -1,14 +1,14 @@
 package howru.howru.post.service.command
 
+import howru.howru.global.config.redis.RedisRepository
 import howru.howru.member.repository.MemberCustomRepository
-import howru.howru.post.cache.PostCache
+import howru.howru.post.cache.PostCacheKey
 import howru.howru.post.domain.Post
 import howru.howru.post.dto.request.CreatePost
 import howru.howru.post.dto.request.RemovePost
 import howru.howru.post.dto.request.UpdatePostContent
 import howru.howru.post.repository.PostRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.cache.annotation.CacheEvict
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional
 class PostCommandService
     @Autowired
     constructor(
+        private val redisRepository: RedisRepository,
         private val postRepository: PostRepository,
         private val memberRepository: MemberCustomRepository
     ) {
@@ -27,25 +28,29 @@ class PostCommandService
             }
         }
 
-        @CacheEvict(cacheNames = [PostCache.POST_DETAIL_NAME], key = PostCache.POST_DETAIL_KEY)
         fun editPostContent(
             id: Long,
             updatePostContent: UpdatePostContent
         ) {
             with(updatePostContent) {
                 postRepository.findPostByIdAndWriter(id, writerId!!)
-                    .also { it.editContent(content!!) }
+                    .also {
+                        it.editContent(content!!)
+                        redisRepository.delete(PostCacheKey.POST_DETAIL + id)
+                    }
             }
         }
 
-        @CacheEvict(cacheNames = [PostCache.POST_DETAIL_NAME], key = PostCache.POST_DETAIL_KEY)
         fun removePost(
             id: Long,
             removePost: RemovePost
         ) {
             with(removePost) {
                 postRepository.findPostByIdAndWriter(id, writerId!!)
-                    .also { postRepository.delete(it) }
+                    .also {
+                        postRepository.delete(it)
+                        redisRepository.delete(PostCacheKey.POST_DETAIL + id)
+                    }
             }
         }
     }

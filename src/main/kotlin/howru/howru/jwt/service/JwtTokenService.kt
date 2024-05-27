@@ -2,9 +2,10 @@ package howru.howru.jwt.service
 
 import howru.howru.jwt.exception.JwtCustomException
 import howru.howru.jwt.exception.JwtExceptionMessage
-import howru.howru.global.config.redis.RedisKeyValueTimeOut
+import howru.howru.global.config.redis.RedisTimeOut
 import howru.howru.global.config.redis.RedisRepository
-import howru.howru.jwt.cache.JwtCache
+import howru.howru.global.config.redis.constant.CacheTTL
+import howru.howru.jwt.cache.JwtCacheKey
 import howru.howru.jwt.domain.RefreshToken
 import howru.howru.jwt.dto.JwtTokenInfo
 import howru.howru.jwt.filterLogic.JwtTokenProvider
@@ -24,7 +25,7 @@ class JwtTokenService
         private val jwtTokenProvider: JwtTokenProvider
     ) {
         fun getRefreshToken(id: UUID): RefreshToken =
-            redisRepository.getByKey(JwtCache.REFRESH_TOKEN_NAME + id, RefreshToken::class.java)
+            redisRepository.getByKey(JwtCacheKey.REFRESH_TOKEN + id, RefreshToken::class.java)
                 ?: throw JwtCustomException(JwtExceptionMessage.NOT_EXIST_REFRESH_TOKEN).apply {
                     logger().warn(JwtServiceLog.NOT_EXIST_REFRESH_TOKEN + id)
                 }
@@ -34,9 +35,9 @@ class JwtTokenService
             refreshToken: String
         ) {
             redisRepository.save(
-                JwtCache.REFRESH_TOKEN_NAME + id,
+                JwtCacheKey.REFRESH_TOKEN + id,
                 RefreshToken.create(id, refreshToken),
-                RedisKeyValueTimeOut(15, TimeUnit.DAYS)
+                RedisTimeOut(CacheTTL.FIFTEEN, TimeUnit.DAYS)
             )
         }
 
@@ -46,7 +47,7 @@ class JwtTokenService
             role: Role
         ): JwtTokenInfo {
             jwtTokenProvider.validateToken(refreshToken)
-            val key = JwtCache.REFRESH_TOKEN_NAME + id
+            val key = JwtCacheKey.REFRESH_TOKEN + id
             redisRepository.getByKey(key, RefreshToken::class.java)
                 ?.let {
                     check(it.refreshToken.equals(refreshToken)) {
@@ -64,6 +65,6 @@ class JwtTokenService
         }
 
         fun removeRefreshToken(id: UUID) {
-            redisRepository.delete(JwtCache.REFRESH_TOKEN_NAME + id)
+            redisRepository.delete(JwtCacheKey.REFRESH_TOKEN + id)
         }
     }
