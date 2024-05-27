@@ -2,13 +2,13 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
-    id("org.springframework.boot") version "3.2.5"
-    id("io.spring.dependency-management") version "1.1.4"
+    id("org.springframework.boot") version "3.3.0"
+    id("io.spring.dependency-management") version "1.1.5"
     id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
-    kotlin("jvm") version "1.9.22"
-    kotlin("plugin.spring") version "1.9.22"
-    kotlin("plugin.jpa") version "1.9.22"
-    kotlin("kapt") version "1.9.22"
+    kotlin("jvm") version "1.9.24"
+    kotlin("plugin.spring") version "1.9.24"
+    kotlin("plugin.jpa") version "1.9.24"
+    kotlin("kapt") version "1.9.24"
 }
 
 allOpen {
@@ -24,7 +24,7 @@ noArg {
 }
 
 group = "howru"
-version = "2.6.0"
+version = "2.7.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
