@@ -22,6 +22,10 @@ class IntegratedPostService
         private val subscribeQueryService: SubscribeQueryService,
         private val postQueryService: PostQueryService
     ) {
+        /**
+         * This method always checks the following relationship between two members.
+         * If you don't want to check the following relationship, use the 'getPostsByMember()' function
+         */
         fun getPostOfOtherMember(
             memberId: UUID,
             myId: UUID,

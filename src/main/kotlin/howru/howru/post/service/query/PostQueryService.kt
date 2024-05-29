@@ -33,6 +33,10 @@ class PostQueryService
 
         fun getAllPosts(lastId: Long?) = postRepository.findAllPosts(lastId)
 
+        /**
+         * This method does not check the following relationship between members.
+         * If you need to check the following relationship, use the 'getPostOfOtherMember()' function
+         */
         fun getPostsByMember(
             memberId: UUID,
             lastId: Long?
