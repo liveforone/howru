@@ -67,6 +67,7 @@
 * [Any 타입 대신 제네릭을 사용하여 함수 재사용성 높이기](https://github.com/liveforone/Documents/blob/main/backend/generic_vs_any.md)
 * [service가 service를 의존할 때, facade 패턴으로 결합도를 낮추기](./Documents/FACADE.md)
 * [RedisTemplate 만을 사용해서 @Cacheable 어노테이션 대체하기](./Documents/ONLY_USE_REDIS_TEMPLATE.md)
+* [동일한 url에 쿼리 스트링만 다를 때 여러 메서드로 분리하기](./Documents/SAME_URL_DIFFERENT_QUERY.md)
 ## 비즈니스적 고민
 * [클린한 커뮤니티 만들기](./Documents/CLEAN_COMMUNITY.md)
 
