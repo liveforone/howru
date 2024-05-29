@@ -19,8 +19,8 @@
 ## API 설계
 ```
 [GET] /likes/{postId}/count : 게시글의 좋아요 수
-[GET] /likes?memberId={memberId} : 회원에 속한 좋아요
-[GET] /likes?postId={postId} : 게시글에 속한 좋아요
+[GET] /likes?member-id={memberId}&last-timestamp={lastTimestamp} : 회원에 속한 좋아요, member-id 필수
+[GET] /likes?post-id={postId}&last-timestamp={lastTimestamp} : 게시글에 속한 좋아요, post-id 필수
 [POST] /likes
 [DELETE] /likes/dislike
 ```
