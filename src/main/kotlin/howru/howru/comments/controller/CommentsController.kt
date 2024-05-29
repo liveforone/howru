@@ -46,15 +46,6 @@ class CommentsController
             return ResponseEntity.ok(comments)
         }
 
-        @GetMapping(CommentsUrl.MY_COMMENTS)
-        fun myComments(
-            @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?,
-            principal: Principal
-        ): ResponseEntity<CommentsPage> {
-            val comments = commentsQueryService.getCommentsByMember(UUID.fromString(principal.name), lastId)
-            return ResponseEntity.ok(comments)
-        }
-
         @GetMapping(CommentsUrl.COMMENTS_OF_OTHER_MEMBER, params = [CommentsParam.MEMBER_ID])
         fun commentsOfOtherMember(
             @RequestParam(CommentsParam.MEMBER_ID) memberId: UUID,
@@ -67,6 +58,15 @@ class CommentsController
                     myId = UUID.fromString(principal.name),
                     lastId
                 )
+            return ResponseEntity.ok(comments)
+        }
+
+        @GetMapping(CommentsUrl.MY_COMMENTS)
+        fun myComments(
+            @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?,
+            principal: Principal
+        ): ResponseEntity<CommentsPage> {
+            val comments = commentsQueryService.getCommentsByMember(UUID.fromString(principal.name), lastId)
             return ResponseEntity.ok(comments)
         }
 
