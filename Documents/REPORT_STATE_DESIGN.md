@@ -13,7 +13,7 @@
 
 ## API 설계
 ```
-[GET] /reports?memberId={memberId}
+[GET] /reports?member-id={memberId}
 [POST] /reports
 ```
 
