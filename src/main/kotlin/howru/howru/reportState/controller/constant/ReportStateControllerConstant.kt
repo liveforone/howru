@@ -6,5 +6,5 @@ object ReportStateUrl {
 }
 
 object ReportStateParam {
-    const val MEMBER_ID = "memberId"
+    const val MEMBER_ID = "member-id"
 }

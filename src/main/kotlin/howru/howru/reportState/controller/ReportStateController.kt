@@ -26,7 +26,7 @@ class ReportStateController
         private val reportStateQueryService: ReportStateQueryService,
         private val reportStateCommandService: ReportStateCommandService
     ) {
-        @GetMapping(ReportStateUrl.REPORT_STATE_INFO)
+        @GetMapping(ReportStateUrl.REPORT_STATE_INFO, params = [ReportStateParam.MEMBER_ID])
         fun reportStateInfo(
             @RequestParam(ReportStateParam.MEMBER_ID) memberId: UUID
         ): ResponseEntity<ReportStateInfo> {
