@@ -35,9 +35,9 @@ class ReplyController
             return ResponseEntity.ok(reply)
         }
 
-        @GetMapping(ReplyUrl.REPLY_PAGE)
+        @GetMapping(ReplyUrl.REPLY_PAGE, params = [ReplyParam.COMMENT_ID])
         fun replyPage(
-            @PathVariable(ReplyParam.COMMENT_ID) commentId: Long,
+            @RequestParam(ReplyParam.COMMENT_ID) commentId: Long,
             @RequestParam(ReplyParam.LAST_ID, required = false) lastId: Long?
         ): ResponseEntity<ReplyPage> {
             val replies = replyQueryService.getRepliesByComment(commentId, lastId)
