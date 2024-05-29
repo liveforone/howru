@@ -63,9 +63,9 @@ class PostController
             return ResponseEntity.ok(postsOfFollowee)
         }
 
-        @GetMapping(PostUrl.POST_OF_OTHER_MEMBER)
+        @GetMapping(PostUrl.POST_OF_OTHER_MEMBER, params = [PostParam.MEMBER_ID])
         fun postOfOtherMember(
-            @PathVariable(PostParam.MEMBER_ID) memberId: UUID,
+            @RequestParam(PostParam.MEMBER_ID) memberId: UUID,
             @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?,
             principal: Principal
         ): ResponseEntity<PostPage> {
@@ -73,15 +73,15 @@ class PostController
             return ResponseEntity.ok(posts)
         }
 
-        @GetMapping(PostUrl.COUNT_OF_POST)
+        @GetMapping(PostUrl.COUNT_OF_POST, params = [PostParam.MEMBER_ID])
         fun countOfPostByMember(
-            @PathVariable(PostParam.MEMBER_ID) memberId: UUID
+            @RequestParam(PostParam.MEMBER_ID) memberId: UUID
         ): ResponseEntity<Long> {
             val countPost = postQueryService.getCountOfPostByMember(memberId)
             return ResponseEntity.ok(countPost)
         }
 
-        @GetMapping(PostUrl.RECOMMEND)
+        @GetMapping(PostUrl.RECOMMEND, params = [PostParam.CONTENT])
         fun recommendPostPage(
             @RequestParam(PostParam.CONTENT) content: String,
             @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
