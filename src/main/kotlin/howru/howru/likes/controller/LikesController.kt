@@ -1,11 +1,12 @@
 package howru.howru.likes.controller
 
-import howru.howru.global.response.GlobalResponse
 import howru.howru.likes.controller.constant.LikesParam
 import howru.howru.likes.controller.constant.LikesUrl
 import howru.howru.likes.controller.response.LikesResponse
 import howru.howru.likes.dto.request.CreateLikes
 import howru.howru.likes.dto.request.RemoveLikes
+import howru.howru.likes.dto.response.LikesBelongMemberInfo
+import howru.howru.likes.dto.response.LikesBelongPostInfo
 import howru.howru.likes.log.LikesControllerLog
 import howru.howru.likes.service.command.LikesCommandService
 import howru.howru.likes.service.query.LikesQueryService
@@ -23,27 +24,30 @@ class LikesController
         private val likesQueryService: LikesQueryService,
         private val likesCommandService: LikesCommandService
     ) {
-        @GetMapping(LikesUrl.COUNT_OF_LIKES)
+        @GetMapping(LikesUrl.COUNT_OF_LIKES, params = [LikesParam.POST_ID])
         fun countOfLikes(
-            @PathVariable(LikesParam.POST_ID) postId: Long
+            @RequestParam(LikesParam.POST_ID) postId: Long
         ): ResponseEntity<Long> {
             val countOfLikes = likesQueryService.getCountOfLikesByPost(postId)
             return ResponseEntity.ok(countOfLikes)
         }
 
-        @GetMapping(LikesUrl.LIKES_PAGE)
-        fun likesPage(
-            @RequestParam(LikesParam.MEMBER_ID, required = false) memberId: UUID?,
-            @RequestParam(LikesParam.POST_ID, required = false) postId: Long?,
+        @GetMapping(LikesUrl.LIKES_BY_MEMBER, params = [LikesParam.MEMBER_ID])
+        fun likesByMember(
+            @RequestParam(LikesParam.MEMBER_ID) memberId: UUID,
             @RequestParam(LikesParam.LAST_TIMESTAMP, required = false) lastTimestamp: Int?
-        ): ResponseEntity<*> {
-            val likes =
-                when {
-                    memberId != null -> likesQueryService.getLikesBelongMember(memberId, lastTimestamp)
-                    postId != null -> likesQueryService.getLikesBelongPost(postId, lastTimestamp)
-                    else -> return GlobalResponse.badRequest()
-                }
-            return ResponseEntity.ok(likes)
+        ): ResponseEntity<List<LikesBelongMemberInfo>> {
+            val likesBelongMemberInfo = likesQueryService.getLikesBelongMember(memberId, lastTimestamp)
+            return ResponseEntity.ok(likesBelongMemberInfo)
+        }
+
+        @GetMapping(LikesUrl.LIKES_BY_POST, params = [LikesParam.POST_ID])
+        fun likesByPost(
+            @RequestParam(LikesParam.POST_ID) postId: Long,
+            @RequestParam(LikesParam.LAST_TIMESTAMP, required = false) lastTimestamp: Int?
+        ): ResponseEntity<List<LikesBelongPostInfo>> {
+            val likesBelongPost = likesQueryService.getLikesBelongPost(postId, lastTimestamp)
+            return ResponseEntity.ok(likesBelongPost)
         }
 
         @PostMapping(LikesUrl.LIKE)
