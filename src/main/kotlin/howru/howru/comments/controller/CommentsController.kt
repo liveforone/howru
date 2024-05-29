@@ -37,12 +37,12 @@ class CommentsController
             return ResponseEntity.ok(comment)
         }
 
-        @GetMapping(CommentsUrl.COMMENTS_PAGE)
+        @GetMapping(CommentsUrl.COMMENTS_PAGE, params = [CommentsParam.POST_ID])
         fun commentsPage(
-            @PathVariable(CommentsParam.POST_ID) id: Long,
+            @RequestParam(CommentsParam.POST_ID) postId: Long,
             @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
         ): ResponseEntity<CommentsPage> {
-            val comments = commentsQueryService.getCommentsByPost(id, lastId)
+            val comments = commentsQueryService.getCommentsByPost(postId, lastId)
             return ResponseEntity.ok(comments)
         }
 
@@ -55,9 +55,9 @@ class CommentsController
             return ResponseEntity.ok(comments)
         }
 
-        @GetMapping(CommentsUrl.COMMENTS_OF_OTHER_MEMBER)
+        @GetMapping(CommentsUrl.COMMENTS_OF_OTHER_MEMBER, params = [CommentsParam.MEMBER_ID])
         fun commentsOfOtherMember(
-            @PathVariable(CommentsParam.MEMBER_ID) memberId: UUID,
+            @RequestParam(CommentsParam.MEMBER_ID) memberId: UUID,
             @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?,
             principal: Principal
         ): ResponseEntity<CommentsPage> {
