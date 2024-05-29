@@ -22,13 +22,13 @@
 
 ## API 설계
 ```
-[GET] /posts
 [GET] /posts/{id}
+[GET] /posts?last-id={lastId}
+[GET] /posts?member-id={memberId}&last-id={lastId} : 회원의 글 조회, member-id 필수
 [GET] /posts/my?lastId={lastId} : 나의 글 조회
 [GET] /posts/followees?lastId={lastId} : 내가 팔로우하는 사람들의 글 조회
-[GET] /members/{memberId}/posts&lastId={lastId} : 회원의 글 조회
-[GET] /members/{memberId}/count-of-post : 회원의 게시글 수 조회
-[GET] /posts/recommend?lastId={lastId}
+[GET] /posts/count?member-id={memberId} : 회원의 게시글 수 조회, member-id 필수
+[GET] /posts/recommend?content={content}&lastId={lastId} : content 필수
 [GET] /posts/random
 [POST] /posts
 [PATCH] /posts/{id}
