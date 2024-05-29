@@ -45,6 +45,16 @@ class PostController
             return ResponseEntity.ok(allPosts)
         }
 
+        @GetMapping(PostUrl.POST_OF_OTHER_MEMBER, params = [PostParam.MEMBER_ID])
+        fun postOfOtherMember(
+            @RequestParam(PostParam.MEMBER_ID) memberId: UUID,
+            @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?,
+            principal: Principal
+        ): ResponseEntity<PostPage> {
+            val posts = integratedPostService.getPostOfOtherMember(memberId, UUID.fromString(principal.name), lastId)
+            return ResponseEntity.ok(posts)
+        }
+
         @GetMapping(PostUrl.MY_POST)
         fun myPost(
             @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?,
@@ -61,16 +71,6 @@ class PostController
         ): ResponseEntity<PostPage> {
             val postsOfFollowee = integratedPostService.getPostsOfFollowee(UUID.fromString(principal.name), lastId)
             return ResponseEntity.ok(postsOfFollowee)
-        }
-
-        @GetMapping(PostUrl.POST_OF_OTHER_MEMBER, params = [PostParam.MEMBER_ID])
-        fun postOfOtherMember(
-            @RequestParam(PostParam.MEMBER_ID) memberId: UUID,
-            @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?,
-            principal: Principal
-        ): ResponseEntity<PostPage> {
-            val posts = integratedPostService.getPostOfOtherMember(memberId, UUID.fromString(principal.name), lastId)
-            return ResponseEntity.ok(posts)
         }
 
         @GetMapping(PostUrl.COUNT_OF_POST, params = [PostParam.MEMBER_ID])
