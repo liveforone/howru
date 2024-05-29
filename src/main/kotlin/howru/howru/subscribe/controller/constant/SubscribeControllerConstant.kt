@@ -11,5 +11,5 @@ object SubscribeUrl {
 
 object SubscribeParam {
     const val MEMBER_ID = "memberId"
-    const val LAST_TIMESTAMP = "lastTimestamp"
+    const val LAST_TIMESTAMP = "last-timestamp"
 }
