@@ -47,7 +47,7 @@
 * [내부 식별자와 외부 식별자 구분](./Documents/INTERNAL_EXTERNAL_PK.md)
 * [단방향 관계에서 delete cascade 사용하기](./Documents/ONE_WAY_CASCADE.md)
 * [No Offset 페이징으로 페이징 성능 향상](./Documents/NO_OFFSET.md)
-* [JPA에서 복합키로 조회 쿼리 최적화](./Documents/COMPOSITE_KEY_IN_JPA.md)
+* [JPA에서 복합키로 조회 쿼리 최적화 및 다량의 in절 쿼리 문제 해결하기](./Documents/COMPOSITE_KEY_IN_JPA.md)
 * [복합키를 사용하는 테이블에서 timestamp 기반 no-offset 페이징](./Documents/NO_OFFSET_IN_COMPOSITE_KEY_TABLE.md)
 * [단일 쿼리로 맞팔로우 확인 방법](./Documents/FOLLOW_EACH_CHECK_BY_QUERY.md)
 * [존재여부 확인(case-exist/count) 쿼리 성능 향상](./Documents/EXIST_VS_COUNT_QUERY.md)
