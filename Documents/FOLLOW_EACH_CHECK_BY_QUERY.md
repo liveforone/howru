@@ -1,5 +1,15 @@
 # 단일 쿼리로 맞팔로우 확인 방법
 
+## 목차
+* [테이블 간단설명](#테이블-간단설명)
+* [맞팔로우 조건](#맞팔로우-조건)
+* [맞팔로우 사용범위](#맞팔로우-사용범위)
+* [간단한 맞팔로우 확인 쿼리](#간단한-맞팔로우-확인-쿼리)
+* [최적화한 맞팔로우 확인 쿼리](#최적화한-맞팔로우-확인-쿼리)
+* [case와 exist를 사용하자.](#case와-exist를-사용하자)
+* [case when 쿼리 주의점](#case-when-쿼리-주의점)
+* [결론](#결론)
+
 ## 테이블 간단설명
 * 이 프로젝트에서 팔로잉 테이블은 followeeUUID와 followerUUID가 복합키로 되어있는 구조를 가진다.
 * 연관관계는 존재하지 않고, 복합키로 존재하기 때문에 중복발생확률은 없다.
@@ -43,12 +53,12 @@
 * jdsl로는 이러한 쿼리를 짜는것이 불가능하여 jpql을 이용해 정적쿼리를 직접 짜서 사용했다.
 ```sql
 SELECT CASE WHEN EXISTS (
-    SELECT 1 FROM Subscribe s1 
-    WHERE s1.followeeUUID = :followeeUUID 
+    SELECT 1 FROM Subscribe s1
+    WHERE s1.followeeUUID = :followeeUUID
     AND s1.followerUUID = :followerUUID
 ) AND EXISTS (
-    SELECT 1 FROM Subscribe s2 
-    WHERE s2.followeeUUID = :followerUUID 
+    SELECT 1 FROM Subscribe s2
+    WHERE s2.followeeUUID = :followerUUID
     AND s2.followerUUID = :followeeUUID
 ) THEN true ELSE false END
 ```
