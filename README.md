@@ -17,8 +17,8 @@
 * 다양한 쿼리 방법들을 시도해보며 성능이 좋은 쿼리를 찾기 위해 분석하였고, 이를 적용한 코드를 확인하실 수 있습니다.
 * 특히나 구독(Subscribe) 도메인과 게시글(Post) 도메인에서 확인하실 수 있습니다.
 ## 기술 스택
-* Framework : Spring Boot 3.3.0
-* Lang : Kotlin 1.9.24, Jvm21
+* Framework : Spring Boot 3.3.4
+* Lang : Kotlin 2.0.20, Jvm21
 * Data : Spring Data Jpa | MySql 8.X
 * Data Lib : Kotlin-JDSL-2.2.1.RELEASE & 3.3.2 -> QueryDsl 5.1.0
 * Security : Spring Security | Jwt(jjwt) 0.12.5
