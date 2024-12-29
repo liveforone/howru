@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+//import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
     id("org.springframework.boot") version "3.4.1"
     id("io.spring.dependency-management") version "1.1.7"
-    id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
+//    id("org.jlleitschuh.gradle.ktlint") version "12.1.2"
     kotlin("jvm") version "2.1.0"
     kotlin("plugin.spring") version "2.1.0"
     kotlin("plugin.jpa") version "2.1.0"
@@ -80,8 +80,8 @@ kapt {
     generateStubs = true
 }
 
-ktlint {
-    reporters {
-        reporter(ReporterType.JSON)
-    }
-}
+//ktlint {
+//    reporters {
+//        reporter(ReporterType.JSON)
+//    }
+//}
