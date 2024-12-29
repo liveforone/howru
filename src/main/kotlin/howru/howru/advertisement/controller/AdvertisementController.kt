@@ -1,7 +1,7 @@
 package howru.howru.advertisement.controller
 
 import howru.howru.advertisement.controller.constant.AdvertisementParam
-import howru.howru.advertisement.controller.constant.AdvertisementSwagger
+import howru.howru.advertisement.controller.constant.AdvertisementApiDocs
 import howru.howru.advertisement.controller.constant.AdvertisementUrl
 import howru.howru.advertisement.controller.response.AdvertisementResponse
 import howru.howru.advertisement.dto.request.CreateAdvertisement
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 import java.util.UUID
 
-@Tag(name = AdvertisementSwagger.TAG_NAME)
+@Tag(name = AdvertisementApiDocs.TAG_NAME)
 @RestController
 class
 AdvertisementController
@@ -38,7 +38,7 @@ AdvertisementController
         private val advertisementCommandService: AdvertisementCommandService
     ) {
         @GetMapping(AdvertisementUrl.DETAIL)
-        @Operation(summary = AdvertisementSwagger.DETAIL_SUMMARY)
+        @Operation(summary = AdvertisementApiDocs.DETAIL_SUMMARY)
         fun detail(
             @PathVariable(AdvertisementParam.ID) @Positive id: Long
         ): ResponseEntity<AdvertisementInfo> {
@@ -47,14 +47,14 @@ AdvertisementController
         }
 
         @GetMapping(AdvertisementUrl.ALL_AD)
-        @Operation(summary = AdvertisementSwagger.ALL_AD_SUMMARY)
+        @Operation(summary = AdvertisementApiDocs.ALL_PAGE_SUMMARY)
         fun allAd(): ResponseEntity<List<AdvertisementInfo?>> {
             val ads = advertisementQueryService.getAllAdvertisements()
             return ResponseEntity.ok(ads)
         }
 
         @GetMapping(AdvertisementUrl.SEARCH_COMPANY)
-        @Operation(summary = AdvertisementSwagger.SEARCH_AD_SUMMARY)
+        @Operation(summary = AdvertisementApiDocs.SEARCH_PAGE_SUMMARY)
         fun searchCompany(
             @RequestParam(AdvertisementParam.COMPANY) company: String
         ): ResponseEntity<List<AdvertisementInfo?>> {
@@ -63,21 +63,21 @@ AdvertisementController
         }
 
         @GetMapping(AdvertisementUrl.EXPIRED_AD)
-        @Operation(summary = AdvertisementSwagger.EXPIRED_AD_SUMMARY)
+        @Operation(summary = AdvertisementApiDocs.EXPIRED_PAGE_SUMMARY)
         fun expiredAd(): ResponseEntity<List<AdvertisementInfo?>> {
             val ads = advertisementQueryService.getExpiredAds()
             return ResponseEntity.ok(ads)
         }
 
         @GetMapping(AdvertisementUrl.RANDOM_AD)
-        @Operation(summary = AdvertisementSwagger.RANDOM_AD_SUMMARY)
+        @Operation(summary = AdvertisementApiDocs.RANDOM_SUMMARY)
         fun randomAd(): ResponseEntity<AdvertisementInfo> {
             val ad = advertisementQueryService.getRandomAd()
             return ResponseEntity.ok(ad)
         }
 
         @PostMapping(AdvertisementUrl.CREATE_HALF_AD)
-        @Operation(summary = AdvertisementSwagger.CREATE_HALF_AD_SUMMARY)
+        @Operation(summary = AdvertisementApiDocs.CREATE_HALF_SUMMARY)
         fun createHalfAd(
             @RequestBody @Valid createAdvertisement: CreateAdvertisement,
             principal: Principal
@@ -89,7 +89,7 @@ AdvertisementController
         }
 
         @PostMapping(AdvertisementUrl.CREATE_YEAR_AD)
-        @Operation(summary = AdvertisementSwagger.CREATE_YEAR_AD_SUMMARY)
+        @Operation(summary = AdvertisementApiDocs.CREATE_YEAR_SUMMARY)
         fun createYearAd(
             @RequestBody @Valid createAdvertisement: CreateAdvertisement,
             principal: Principal
@@ -101,7 +101,7 @@ AdvertisementController
         }
 
         @PatchMapping(AdvertisementUrl.EDIT_AD)
-        @Operation(summary = AdvertisementSwagger.EDIT_AD_SUMMARY)
+        @Operation(summary = AdvertisementApiDocs.EDIT_SUMMARY)
         fun editAd(
             @PathVariable(AdvertisementParam.ID) @Positive id: Long,
             @RequestBody @Valid updateAdvertisement: UpdateAdvertisement,
@@ -114,7 +114,7 @@ AdvertisementController
         }
 
         @DeleteMapping(AdvertisementUrl.REMOVE_AD)
-        @Operation(summary = AdvertisementSwagger.REMOVE_AD_SUMMARY)
+        @Operation(summary = AdvertisementApiDocs.REMOVE_SUMMARY)
         fun removeAd(
             @PathVariable(AdvertisementParam.ID) @Positive id: Long,
             principal: Principal
