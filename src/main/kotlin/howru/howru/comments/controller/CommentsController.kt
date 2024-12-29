@@ -1,5 +1,6 @@
 package howru.howru.comments.controller
 
+import howru.howru.comments.controller.constant.CommentsApiDocs
 import howru.howru.comments.controller.constant.CommentsParam
 import howru.howru.comments.controller.constant.CommentsUrl
 import howru.howru.comments.controller.response.CommentsResponse
@@ -13,6 +14,8 @@ import howru.howru.comments.service.command.CommentsCommandService
 import howru.howru.comments.service.integrated.IntegratedCommentsService
 import howru.howru.comments.service.query.CommentsQueryService
 import howru.howru.logger
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Positive
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.*
 import java.security.Principal
 import java.util.UUID
 
+@Tag(name = CommentsApiDocs.TAG_NAME)
 @RestController
 class CommentsController
     @Autowired
@@ -30,6 +34,7 @@ class CommentsController
         private val integratedCommentsService: IntegratedCommentsService
     ) {
         @GetMapping(CommentsUrl.DETAIL)
+        @Operation(summary = CommentsApiDocs.DETAIL_SUMMARY)
         fun commentsDetail(
             @PathVariable(CommentsParam.ID) @Positive id: Long
         ): ResponseEntity<CommentsInfo> {
@@ -38,6 +43,7 @@ class CommentsController
         }
 
         @GetMapping(CommentsUrl.COMMENTS_PAGE, params = [CommentsParam.POST_ID])
+        @Operation(summary = CommentsApiDocs.BASIC_PAGE_SUMMARY, description = CommentsApiDocs.BASIC_PAGE_DESCRIPTION)
         fun commentsPage(
             @RequestParam(CommentsParam.POST_ID) postId: Long,
             @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?
@@ -47,6 +53,7 @@ class CommentsController
         }
 
         @GetMapping(CommentsUrl.COMMENTS_OF_OTHER_MEMBER, params = [CommentsParam.MEMBER_ID])
+        @Operation(summary = CommentsApiDocs.MEMBER_PAGE_SUMMARY, description = CommentsApiDocs.MEMBER_PAGE_DESCRIPTION)
         fun commentsOfOtherMember(
             @RequestParam(CommentsParam.MEMBER_ID) memberId: UUID,
             @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?,
@@ -62,6 +69,7 @@ class CommentsController
         }
 
         @GetMapping(CommentsUrl.MY_COMMENTS)
+        @Operation(summary = CommentsApiDocs.MY_PAGE_SUMMARY, description = CommentsApiDocs.MY_PAGE_DESCRIPTION)
         fun myComments(
             @RequestParam(CommentsParam.LAST_ID, required = false) lastId: Long?,
             principal: Principal
@@ -71,6 +79,7 @@ class CommentsController
         }
 
         @PostMapping(CommentsUrl.CREATE_COMMENTS)
+        @Operation(summary = CommentsApiDocs.CREATE_SUMMARY)
         fun createComments(
             @RequestBody @Valid createComments: CreateComments
         ): ResponseEntity<String> {
@@ -81,6 +90,7 @@ class CommentsController
         }
 
         @PatchMapping(CommentsUrl.EDIT_COMMENTS)
+        @Operation(summary = CommentsApiDocs.EDIT_SUMMARY)
         fun editComments(
             @PathVariable(CommentsParam.ID) @Positive id: Long,
             @RequestBody @Valid updateComments: UpdateComments
@@ -92,6 +102,7 @@ class CommentsController
         }
 
         @DeleteMapping(CommentsUrl.REMOVE_COMMENTS)
+        @Operation(summary = CommentsApiDocs.REMOVE_SUMMARY)
         fun removeComments(
             @PathVariable(CommentsParam.ID) @Positive id: Long,
             @RequestBody @Valid removeComments: RemoveComments
