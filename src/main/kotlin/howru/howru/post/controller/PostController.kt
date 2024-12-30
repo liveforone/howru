@@ -1,6 +1,7 @@
 package howru.howru.post.controller
 
 import howru.howru.logger
+import howru.howru.post.controller.constant.PostApiDocs
 import howru.howru.post.controller.constant.PostParam
 import howru.howru.post.controller.constant.PostUrl
 import howru.howru.post.controller.response.PostResponse
@@ -13,6 +14,8 @@ import howru.howru.post.log.PostControllerLog
 import howru.howru.post.service.command.PostCommandService
 import howru.howru.post.service.integrated.IntegratedPostService
 import howru.howru.post.service.query.PostQueryService
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Positive
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.*
 import java.security.Principal
 import java.util.UUID
 
+@Tag(name = PostApiDocs.TAG_NAME)
 @RestController
 class PostController
     @Autowired
@@ -30,6 +34,7 @@ class PostController
         private val integratedPostService: IntegratedPostService
     ) {
         @GetMapping(PostUrl.DETAIL)
+        @Operation(summary = PostApiDocs.DETAIL_SUMMARY)
         fun postDetail(
             @PathVariable(PostParam.ID) @Positive id: Long
         ): ResponseEntity<PostInfo> {
@@ -38,6 +43,7 @@ class PostController
         }
 
         @GetMapping(PostUrl.ALL)
+        @Operation(summary = PostApiDocs.BASIC_PAGE_SUMMARY, description = PostApiDocs.BASIC_PAGE_DESCRIPTION)
         fun allPost(
             @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
         ): ResponseEntity<PostPage> {
@@ -46,6 +52,7 @@ class PostController
         }
 
         @GetMapping(PostUrl.POST_OF_OTHER_MEMBER, params = [PostParam.MEMBER_ID])
+        @Operation(summary = PostApiDocs.MEMBER_PAGE_SUMMARY, description = PostApiDocs.MEMBER_PAGE_DESCRIPTION)
         fun postOfOtherMember(
             @RequestParam(PostParam.MEMBER_ID) memberId: UUID,
             @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?,
@@ -56,6 +63,7 @@ class PostController
         }
 
         @GetMapping(PostUrl.MY_POST)
+        @Operation(summary = PostApiDocs.MY_PAGE_SUMMARY, description = PostApiDocs.MY_PAGE_DESCRIPTION)
         fun myPost(
             @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?,
             principal: Principal
@@ -65,6 +73,7 @@ class PostController
         }
 
         @GetMapping(PostUrl.POST_OF_FOLLOWEE)
+        @Operation(summary = PostApiDocs.FOLLOWEES_PAGE_SUMMARY, description = PostApiDocs.FOLLOWEES_PAGE_DESCRIPTION)
         fun postOfFolloweePage(
             @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?,
             principal: Principal
@@ -74,6 +83,7 @@ class PostController
         }
 
         @GetMapping(PostUrl.COUNT_OF_POST, params = [PostParam.MEMBER_ID])
+        @Operation(summary = PostApiDocs.COUNT_OF_POST_SUMMARY)
         fun countOfPostByMember(
             @RequestParam(PostParam.MEMBER_ID) memberId: UUID
         ): ResponseEntity<Long> {
@@ -82,6 +92,7 @@ class PostController
         }
 
         @GetMapping(PostUrl.RECOMMEND, params = [PostParam.CONTENT])
+        @Operation(summary = PostApiDocs.RECOMMEND_PAGE_SUMMARY, description = PostApiDocs.RECOMMEND_PAGE_DESCRIPTION)
         fun recommendPostPage(
             @RequestParam(PostParam.CONTENT) content: String,
             @RequestParam(PostParam.LAST_ID, required = false) lastId: Long?
@@ -91,12 +102,14 @@ class PostController
         }
 
         @GetMapping(PostUrl.RANDOM)
+        @Operation(summary = PostApiDocs.RANDOM_SUMMARY, description = PostApiDocs.RANDOM_DESCRIPTION)
         fun randomPostPage(): ResponseEntity<List<PostInfo>> {
             val randomPosts = postQueryService.getRandomPosts()
             return ResponseEntity.ok(randomPosts)
         }
 
         @PostMapping(PostUrl.CREATE)
+        @Operation(summary = PostApiDocs.CREATE_SUMMARY)
         fun createPost(
             @RequestBody @Valid createPost: CreatePost
         ): ResponseEntity<String> {
@@ -107,6 +120,7 @@ class PostController
         }
 
         @PatchMapping(PostUrl.EDIT)
+        @Operation(summary = PostApiDocs.EDIT_SUMMARY)
         fun editPost(
             @PathVariable(PostParam.ID) @Positive id: Long,
             @RequestBody @Valid updatePostContent: UpdatePostContent
@@ -118,6 +132,7 @@ class PostController
         }
 
         @DeleteMapping(PostUrl.REMOVE)
+        @Operation(summary = PostApiDocs.REMOVE_SUMMARY)
         fun removePost(
             @PathVariable(PostParam.ID) @Positive id: Long,
             @RequestBody @Valid removePost: RemovePost
