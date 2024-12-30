@@ -4,6 +4,7 @@ import howru.howru.member.exception.MemberException
 import howru.howru.member.exception.MemberExceptionMessage
 import howru.howru.jwt.dto.JwtTokenInfo
 import howru.howru.logger
+import howru.howru.member.controller.constant.MemberApiDocs
 import howru.howru.member.controller.constant.MemberRequestHeader
 import howru.howru.member.controller.constant.MemberUrl
 import howru.howru.member.controller.response.MemberResponse
@@ -12,6 +13,8 @@ import howru.howru.member.dto.request.*
 import howru.howru.member.log.MemberControllerLog
 import howru.howru.member.service.command.MemberCommandService
 import howru.howru.member.service.query.MemberQueryService
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.*
 import java.security.Principal
 import java.util.*
 
+@Tag(name = MemberApiDocs.TAG_NAME)
 @RestController
 class MemberController
     @Autowired
@@ -28,12 +32,14 @@ class MemberController
         private val memberCommandService: MemberCommandService
     ) {
         @GetMapping(MemberUrl.INFO)
+        @Operation(summary = MemberApiDocs.INFO_SUMMARY)
         fun memberInfo(principal: Principal): ResponseEntity<MemberInfo> {
             val member = memberQueryService.getMemberById(id = UUID.fromString(principal.name))
             return ResponseEntity.ok(member)
         }
 
         @PostMapping(MemberUrl.SIGNUP)
+        @Operation(summary = MemberApiDocs.SIGNUP_SUMMARY)
         fun signup(
             @RequestBody @Valid signupRequest: SignupRequest
         ): ResponseEntity<String> {
@@ -44,6 +50,7 @@ class MemberController
         }
 
         @PostMapping(MemberUrl.LOGIN)
+        @Operation(summary = MemberApiDocs.LOGIN_SUMMARY, description = MemberApiDocs.LOGIN_DESCRIPTION)
         fun login(
             @RequestBody @Valid loginRequest: LoginRequest,
             response: HttpServletResponse
@@ -60,6 +67,7 @@ class MemberController
         }
 
         @PutMapping(MemberUrl.JWT_TOKEN_REISSUE)
+        @Operation(summary = MemberApiDocs.JWT_REISSUE_SUMMARY, description = MemberApiDocs.JWT_REISSUE_DESCRIPTION)
         fun jwtTokenReissue(
             @RequestHeader(MemberRequestHeader.ID) id: String?,
             @RequestHeader(MemberRequestHeader.REFRESH_TOKEN) refreshToken: String?
@@ -76,6 +84,7 @@ class MemberController
         }
 
         @PatchMapping(MemberUrl.UPDATE_PASSWORD)
+        @Operation(summary = MemberApiDocs.UPDATE_PW_SUMMARY)
         fun updatePassword(
             @RequestBody @Valid updatePassword: UpdatePassword,
             principal: Principal
@@ -88,6 +97,7 @@ class MemberController
         }
 
         @PatchMapping(MemberUrl.LOCK_ON)
+        @Operation(summary = MemberApiDocs.LOCK_ON_SUMMARY)
         fun lockOn(principal: Principal): ResponseEntity<String> {
             val memberId = UUID.fromString(principal.name)
             memberCommandService.memberLockOn(memberId)
@@ -97,6 +107,7 @@ class MemberController
         }
 
         @PatchMapping(MemberUrl.LOCK_OFF)
+        @Operation(summary = MemberApiDocs.LOCK_OFF_SUMMARY)
         fun lockOff(principal: Principal): ResponseEntity<String> {
             val memberId = UUID.fromString(principal.name)
             memberCommandService.memberLockOff(memberId)
@@ -106,6 +117,7 @@ class MemberController
         }
 
         @PostMapping(MemberUrl.LOGOUT)
+        @Operation(summary = MemberApiDocs.LOGOUT_SUMMARY, description = MemberApiDocs.LOGOUT_DESCRIPTION)
         fun logout(principal: Principal): ResponseEntity<String> {
             val memberId = UUID.fromString(principal.name)
             memberCommandService.logout(memberId)
@@ -115,6 +127,7 @@ class MemberController
         }
 
         @PostMapping(MemberUrl.RECOVERY_MEMBER)
+        @Operation(summary = MemberApiDocs.RECOVERY_SUMMARY)
         fun recoveryMember(
             @RequestBody @Valid recoveryRequest: RecoveryRequest
         ): ResponseEntity<String> {
@@ -125,6 +138,7 @@ class MemberController
         }
 
         @DeleteMapping(MemberUrl.WITHDRAW)
+        @Operation(summary = MemberApiDocs.WITHDRAW_SUMMARY)
         fun withdraw(
             @RequestBody @Valid withdrawRequest: WithdrawRequest,
             principal: Principal
