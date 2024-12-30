@@ -8,3 +8,9 @@ object ReportStateUrl {
 object ReportStateParam {
     const val MEMBER_ID = "member-id"
 }
+
+object ReportStateApiDocs {
+    const val TAG_NAME = "Report State"
+    const val INFO_SUMMARY = "회원의 신고 상태 조회"
+    const val REPORT_SUMMARY = "회원 신고"
+}
