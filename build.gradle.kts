@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-//import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
-    id("org.springframework.boot") version "3.4.1"
+    id("org.springframework.boot") version "3.4.5"
     id("io.spring.dependency-management") version "1.1.7"
-//    id("org.jlleitschuh.gradle.ktlint") version "12.1.2"
+    id("org.jlleitschuh.gradle.ktlint") version "12.2.0"
     kotlin("jvm") version "2.1.0"
     kotlin("plugin.spring") version "2.1.0"
     kotlin("plugin.jpa") version "2.1.0"
@@ -25,7 +25,7 @@ noArg {
 }
 
 group = "howru"
-version = "2.7.1"
+version = "2.7.2"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -65,7 +65,7 @@ dependencies {
 }
 
 tasks.withType<KotlinCompile> {
-    compilerOptions  {
+    compilerOptions {
         freeCompilerArgs.add("-Xjsr305=strict")
         jvmTarget = JvmTarget.JVM_21
     }
@@ -80,8 +80,9 @@ kapt {
     generateStubs = true
 }
 
-//ktlint {
-//    reporters {
-//        reporter(ReporterType.JSON)
-//    }
-//}
+ktlint {
+    version.set("1.4.1") // version set 안하면 gradle 7.x 이상에서 에러발생
+    reporters {
+        reporter(ReporterType.JSON)
+    }
+}
