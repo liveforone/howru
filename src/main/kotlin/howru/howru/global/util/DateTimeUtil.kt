@@ -7,9 +7,7 @@ import java.time.LocalDateTime
 const val DATETIME_TYPE = "BIGINT(12)"
 const val DATE_TYPE = "INT(8)"
 
-fun getCurrentTimestamp(): Int {
-    return Instant.now().epochSecond.toInt()
-}
+fun getCurrentTimestamp(): Int = Instant.now().epochSecond.toInt()
 
 fun getDatetimeDigit(dateTime: LocalDateTime): Long {
     val year = dateTime.year.toString()
@@ -38,10 +36,9 @@ fun convertDateToLocalDate(date: Int): LocalDate {
     return LocalDate.of(year, month, day)
 }
 
-private fun checkSingleDigit(digit: Int): String {
-    return if (digit in 0..9) {
+private fun checkSingleDigit(digit: Int): String =
+    if (digit in 0..9) {
         "0$digit"
     } else {
         digit.toString()
     }
-}

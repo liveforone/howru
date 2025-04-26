@@ -18,75 +18,87 @@ import java.util.*
 
 @Component
 class JwtTokenProvider {
-    private val key = Jwts.SIG.HS256.key().build()
+    private val key =
+        Jwts.SIG.HS256
+            .key()
+            .build()
 
     fun generateToken(authentication: Authentication): JwtTokenInfo {
         val id = UUID.fromString(authentication.name)
         return JwtTokenInfo.create(id, generateAccessToken(authentication), generateRefreshToken())
     }
 
-    private fun generateAccessToken(authentication: Authentication): String {
-        return Jwts.builder()
+    private fun generateAccessToken(authentication: Authentication): String =
+        Jwts
+            .builder()
             .subject(authentication.name)
-            .claim(JwtConstant.CLAIM_NAME, authentication.authorities.iterator().next().authority)
-            .expiration(Date(Date().time + JwtConstant.TWO_HOUR_MS))
+            .claim(
+                JwtConstant.CLAIM_NAME,
+                authentication.authorities
+                    .iterator()
+                    .next()
+                    .authority
+            ).expiration(Date(Date().time + JwtConstant.TWO_HOUR_MS))
             .signWith(key)
             .compact()
-    }
 
     fun reissueToken(
         id: UUID,
         role: Role
-    ): JwtTokenInfo {
-        return JwtTokenInfo.create(id, generateAccessTokenWhenReissue(id, role), generateRefreshToken())
-    }
+    ): JwtTokenInfo = JwtTokenInfo.create(id, generateAccessTokenWhenReissue(id, role), generateRefreshToken())
 
     private fun generateAccessTokenWhenReissue(
         id: UUID,
         role: Role
-    ): String {
-        return Jwts.builder()
+    ): String =
+        Jwts
+            .builder()
             .subject(id.toString())
             .claim(JwtConstant.CLAIM_NAME, role.auth)
             .expiration(Date(Date().time + JwtConstant.TWO_HOUR_MS))
             .signWith(key)
             .compact()
-    }
 
-    private fun generateRefreshToken(): String {
-        return Jwts.builder()
+    private fun generateRefreshToken(): String =
+        Jwts
+            .builder()
             .expiration(Date(Date().time + JwtConstant.THIRTY_DAY_MS))
             .signWith(key)
             .compact()
-    }
 
     fun getAuthentication(accessToken: String): Authentication {
         val claims = parseClaims(accessToken)
         val authorities: Collection<GrantedAuthority> =
-            claims[JwtConstant.CLAIM_NAME].toString()
+            claims[JwtConstant.CLAIM_NAME]
+                .toString()
                 .split(JwtConstant.AUTH_DELIMITER)
                 .map { role: String? -> SimpleGrantedAuthority(role) }
         val principal: UserDetails = User(claims.subject, JwtConstant.EMPTY_PW, authorities)
         return UsernamePasswordAuthenticationToken(principal, JwtConstant.CREDENTIAL, authorities)
     }
 
-    private fun parseClaims(accessToken: String): Claims {
-        return try {
-            Jwts.parser()
+    private fun parseClaims(accessToken: String): Claims =
+        try {
+            Jwts
+                .parser()
                 .verifyWith(key)
                 .build()
-                .parseSignedClaims(accessToken).payload
+                .parseSignedClaims(accessToken)
+                .payload
         } catch (e: ExpiredJwtException) {
             e.claims
         }
-    }
 
     fun validateToken(token: String) {
         if (token.isBlank()) {
             throw JwtCustomException(JwtExceptionMessage.TOKEN_IS_NULL)
         }
         try {
-            Jwts.parser().verifyWith(key).build().parseSignedClaims(token)
+            Jwts
+                .parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
         } catch (e: MalformedJwtException) {
             logger().info(JwtExceptionMessage.INVALID_TOKEN.message)
             throw JwtCustomException(JwtExceptionMessage.EMPTY_CLAIMS)

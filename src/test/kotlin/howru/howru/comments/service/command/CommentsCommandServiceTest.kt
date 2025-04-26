@@ -78,7 +78,8 @@ class CommentsCommandServiceTest
             flushAndClear()
 
             // then
-            Assertions.assertThat(commentsQueryService.getCommentById(commentId).content)
+            Assertions
+                .assertThat(commentsQueryService.getCommentById(commentId).content)
                 .isEqualTo(content)
         }
 
@@ -118,7 +119,8 @@ class CommentsCommandServiceTest
             flushAndClear()
 
             // then
-            Assertions.assertThatThrownBy { commentsQueryService.getCommentById(commentId) }
+            Assertions
+                .assertThatThrownBy { commentsQueryService.getCommentById(commentId) }
                 .isInstanceOf(CommentsException::class.java)
         }
     }

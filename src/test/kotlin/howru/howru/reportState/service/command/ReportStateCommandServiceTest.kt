@@ -44,7 +44,8 @@ class ReportStateCommandServiceTest
             // then
             val loginRequest = LoginRequest(email, pw)
             val memberId = memberCommandService.login(loginRequest).id
-            Assertions.assertThat(reportStateQueryService.getOneByMemberId(memberId).memberState)
+            Assertions
+                .assertThat(reportStateQueryService.getOneByMemberId(memberId).memberState)
                 .isEqualTo(MemberState.NORMAL)
         }
 
@@ -69,7 +70,8 @@ class ReportStateCommandServiceTest
             val loginRequest = LoginRequest(email, pw)
 
             // then
-            Assertions.assertThatThrownBy { memberCommandService.login(loginRequest) }
+            Assertions
+                .assertThatThrownBy { memberCommandService.login(loginRequest) }
                 .isInstanceOf(InternalAuthenticationServiceException::class.java)
         }
 
@@ -93,7 +95,8 @@ class ReportStateCommandServiceTest
             }
 
             // then
-            Assertions.assertThat(reportStateQueryService.getOneByMemberId(memberId).memberState)
+            Assertions
+                .assertThat(reportStateQueryService.getOneByMemberId(memberId).memberState)
                 .isEqualTo(MemberState.SUSPEND_MONTH)
         }
     }

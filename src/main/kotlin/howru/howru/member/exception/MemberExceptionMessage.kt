@@ -1,6 +1,9 @@
 package howru.howru.member.exception
 
-enum class MemberExceptionMessage(val status: Int, val message: String) {
+enum class MemberExceptionMessage(
+    val status: Int,
+    val message: String
+) {
     SUSPEND_MEMBER(401, "정지된 계정입니다. 회원식별자 : "),
     WRONG_PASSWORD(400, "비밀번호를 틀렸습니다. 회원식별자 : "),
     MEMBER_IS_NULL(404, "회원이 존재하지 않습니다. 회원식별자 : "),

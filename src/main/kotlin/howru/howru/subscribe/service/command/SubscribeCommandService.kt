@@ -17,14 +17,16 @@ class SubscribeCommandService
     ) {
         fun createSubscribe(createSubscribe: CreateSubscribe) {
             with(createSubscribe) {
-                Subscribe.create(followeeId!!, followerId!!)
+                Subscribe
+                    .create(followeeId!!, followerId!!)
                     .also { subscribeRepository.save(it) }
             }
         }
 
         fun unsubscribe(unsubscribeRequest: UnsubscribeRequest) {
             with(unsubscribeRequest) {
-                subscribeRepository.findSubscribeById(followeeId!!, followerId!!)
+                subscribeRepository
+                    .findSubscribeById(followeeId!!, followerId!!)
                     .also { subscribeRepository.delete(it) }
             }
         }

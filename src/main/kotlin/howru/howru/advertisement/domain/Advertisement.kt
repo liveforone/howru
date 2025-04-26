@@ -21,27 +21,25 @@ class Advertisement private constructor(
             company: String,
             title: String,
             content: String
-        ): Advertisement {
-            return Advertisement(
+        ): Advertisement =
+            Advertisement(
                 company = company,
                 title = title,
                 content = content,
                 endDate = getDateDigit(LocalDate.now().plusMonths(AdvertisementConstant.HALF_MONTH_TYPE))
             )
-        }
 
         fun createYearAd(
             company: String,
             title: String,
             content: String
-        ): Advertisement {
-            return Advertisement(
+        ): Advertisement =
+            Advertisement(
                 company = company,
                 title = title,
                 content = content,
                 endDate = getDateDigit(LocalDate.now().plusYears(AdvertisementConstant.ONE_YEAR_TYPE))
             )
-        }
     }
 
     fun editTitle(title: String) {

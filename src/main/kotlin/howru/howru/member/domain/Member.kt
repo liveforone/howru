@@ -37,14 +37,13 @@ class Member private constructor(
             email: String,
             pw: String,
             nickName: String
-        ): Member {
-            return Member(
+        ): Member =
+            Member(
                 auth = findFitAuth(email),
                 email = email,
                 pw = encodePassword(pw),
                 nickName = nickName
             )
-        }
     }
 
     fun isAdmin() = auth == Role.ADMIN

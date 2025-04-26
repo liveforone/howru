@@ -48,7 +48,8 @@ class JwtTokenService
         ): JwtTokenInfo {
             jwtTokenProvider.validateToken(refreshToken)
             val key = JwtCacheKey.REFRESH_TOKEN + id
-            redisRepository.getByKey(key, RefreshToken::class.java)
+            redisRepository
+                .getByKey(key, RefreshToken::class.java)
                 ?.let {
                     check(it.refreshToken.equals(refreshToken)) {
                         logger().warn(JwtServiceLog.UN_MATCH_REFRESH_TOKEN + id)

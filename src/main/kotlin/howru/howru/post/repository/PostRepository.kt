@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import java.util.UUID
 
-interface PostRepository : JpaRepository<Post, Long>, PostCustomRepository {
+interface PostRepository :
+    JpaRepository<Post, Long>,
+    PostCustomRepository {
     @Query(PostSql.RANDOM_POSTS_QUERY)
     fun findRandomPosts(): List<PostInfo>
 

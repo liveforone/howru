@@ -42,9 +42,9 @@ class JwtAuthenticationFilter
             }
         }
 
-        private fun resolveToken(request: HttpServletRequest): String? {
-            return request.getHeader(JwtConstant.HEADER)
+        private fun resolveToken(request: HttpServletRequest): String? =
+            request
+                .getHeader(JwtConstant.HEADER)
                 ?.takeIf { it.startsWith(JwtConstant.BEARER_TOKEN) }
                 ?.substring(JwtConstant.TOKEN_SUB_INDEX)
-        }
     }

@@ -90,7 +90,8 @@ class MemberCommandService
             withdrawRequest: WithdrawRequest,
             id: UUID
         ) {
-            memberRepository.findMemberById(id)
+            memberRepository
+                .findMemberById(id)
                 .takeIf { isMatchPassword(withdrawRequest.pw!!, it.pw) }
                 ?.also {
                     it.withdraw()

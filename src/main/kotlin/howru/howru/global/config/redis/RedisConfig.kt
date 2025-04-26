@@ -24,13 +24,12 @@ class RedisConfig(
     }
 
     @Bean
-    fun redisTemplate(): RedisTemplate<String, Any> {
-        return RedisTemplate<String, Any>().apply {
+    fun redisTemplate(): RedisTemplate<String, Any> =
+        RedisTemplate<String, Any>().apply {
             this.connectionFactory = lettuceConnectionFactory()
             this.keySerializer = StringRedisSerializer()
             this.valueSerializer = StringRedisSerializer()
             this.hashKeySerializer = StringRedisSerializer()
             this.hashValueSerializer = StringRedisSerializer()
         }
-    }
 }

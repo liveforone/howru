@@ -101,9 +101,11 @@ class AdvertisementCommandServiceTest
             flushAndClear()
 
             // then
-            Assertions.assertThat(advertisementQueryService.getOneById(adId).title)
+            Assertions
+                .assertThat(advertisementQueryService.getOneById(adId).title)
                 .isEqualTo(updatedTitle)
-            Assertions.assertThat(advertisementQueryService.getOneById(adId).content)
+            Assertions
+                .assertThat(advertisementQueryService.getOneById(adId).content)
                 .isEqualTo(updatedContent)
         }
 
@@ -123,7 +125,8 @@ class AdvertisementCommandServiceTest
             flushAndClear()
 
             // then
-            Assertions.assertThatThrownBy { advertisementQueryService.getOneById(adId) }
+            Assertions
+                .assertThatThrownBy { advertisementQueryService.getOneById(adId) }
                 .isInstanceOf(AdvertisementException::class.java)
         }
 
@@ -143,7 +146,8 @@ class AdvertisementCommandServiceTest
             flushAndClear()
 
             // when
-            Assertions.assertThat(advertisementQueryService.getOneById(adId))
+            Assertions
+                .assertThat(advertisementQueryService.getOneById(adId))
                 .isNotNull
         }
     }

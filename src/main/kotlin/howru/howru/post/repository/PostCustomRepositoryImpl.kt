@@ -17,20 +17,20 @@ class PostCustomRepositoryImpl(
     private val jpaQueryFactory: JPAQueryFactory,
     private val post: QPost = QPost.post
 ) : PostCustomRepository {
-    override fun findPostById(id: Long): Post {
-        return jpaQueryFactory.selectFrom(post)
+    override fun findPostById(id: Long): Post =
+        jpaQueryFactory
+            .selectFrom(post)
             .where(post.id.eq(id))
             .fetchOne() ?: throw PostException(PostExceptionMessage.POST_IS_NULL, id)
-    }
 
     override fun findPostByIdAndWriter(
         id: Long,
         writerId: UUID
-    ): Post {
-        return jpaQueryFactory.selectFrom(post)
+    ): Post =
+        jpaQueryFactory
+            .selectFrom(post)
             .where(post.id.eq(id).and(post.writer.id.eq(writerId)))
             .fetchOne() ?: throw PostException(PostExceptionMessage.POST_IS_NULL, id)
-    }
 
     private val postInfoField =
         Projections.constructor(
@@ -42,22 +42,26 @@ class PostCustomRepositoryImpl(
             post.createdDatetime
         )
 
-    override fun findPostInfoById(id: Long): PostInfo {
-        return jpaQueryFactory.select(postInfoField)
+    override fun findPostInfoById(id: Long): PostInfo =
+        jpaQueryFactory
+            .select(postInfoField)
             .from(post)
             .where(post.id.eq(id))
             .fetchOne() ?: throw PostException(PostExceptionMessage.POST_IS_NULL, id)
-    }
 
     override fun findPostsByMember(
         memberId: UUID,
         lastId: Long?
     ): PostPage {
         val postInfoList =
-            jpaQueryFactory.select(postInfoField)
+            jpaQueryFactory
+                .select(postInfoField)
                 .from(post)
-                .where(post.writer.id.eq(memberId).and(ltLastId(lastId, post) { it.id }))
-                .orderBy(post.id.desc())
+                .where(
+                    post.writer.id
+                        .eq(memberId)
+                        .and(ltLastId(lastId, post) { it.id })
+                ).orderBy(post.id.desc())
                 .limit(PostRepoConstant.LIMIT_PAGE)
                 .fetch()
 
@@ -66,7 +70,8 @@ class PostCustomRepositoryImpl(
 
     override fun findAllPosts(lastId: Long?): PostPage {
         val postInfoList =
-            jpaQueryFactory.select(postInfoField)
+            jpaQueryFactory
+                .select(postInfoField)
                 .from(post)
                 .where(ltLastId(lastId, post) { it.id })
                 .orderBy(post.id.desc())
@@ -81,10 +86,14 @@ class PostCustomRepositoryImpl(
         lastId: Long?
     ): PostPage {
         val postInfoList =
-            jpaQueryFactory.select(postInfoField)
+            jpaQueryFactory
+                .select(postInfoField)
                 .from(post)
-                .where(post.writer.id.`in`(followeeId).and(ltLastId(lastId, post) { it.id }))
-                .orderBy(post.id.desc())
+                .where(
+                    post.writer.id
+                        .`in`(followeeId)
+                        .and(ltLastId(lastId, post) { it.id })
+                ).orderBy(post.id.desc())
                 .limit(PostRepoConstant.LIMIT_PAGE)
                 .fetch()
 
@@ -96,7 +105,8 @@ class PostCustomRepositoryImpl(
         lastId: Long?
     ): PostPage {
         val postInfoList =
-            jpaQueryFactory.select(postInfoField)
+            jpaQueryFactory
+                .select(postInfoField)
                 .from(post)
                 .where(post.content.startsWith(keyword).and(ltLastId(lastId, post) { it.id }))
                 .orderBy(post.id.desc())

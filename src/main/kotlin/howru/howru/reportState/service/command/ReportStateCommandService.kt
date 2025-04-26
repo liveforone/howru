@@ -19,9 +19,10 @@ class ReportStateCommandService
             reportStateRepository.save(ReportState.create(member))
         }
 
-        fun releaseSuspend(email: String): ReportState {
-            return reportStateRepository.findReportStateByMemberEmail(email).also { it.releaseSuspend() }
-        }
+        fun releaseSuspend(email: String): ReportState =
+            reportStateRepository.findReportStateByMemberEmail(email).also {
+                it.releaseSuspend()
+            }
 
         fun addRepost(reportMember: ReportMember) {
             with(reportMember) {

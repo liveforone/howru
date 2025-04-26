@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import java.util.UUID
 
-interface SubscribeRepository : JpaRepository<Subscribe, SubscribePk>, SubscribeCustomRepository {
+interface SubscribeRepository :
+    JpaRepository<Subscribe, SubscribePk>,
+    SubscribeCustomRepository {
     @Query(SubscribeSql.IS_FOLLOWEE)
     fun isFollowee(
         @Param(SubscribeSql.FOLLOWEE_ID) followeeId: UUID,

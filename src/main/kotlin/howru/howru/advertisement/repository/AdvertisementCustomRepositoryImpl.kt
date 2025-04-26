@@ -14,11 +14,11 @@ class AdvertisementCustomRepositoryImpl(
     private val jpaQueryFactory: JPAQueryFactory,
     private val advertisement: QAdvertisement = QAdvertisement.advertisement
 ) : AdvertisementCustomRepository {
-    override fun findAdvertisementById(id: Long): Advertisement {
-        return jpaQueryFactory.selectFrom(advertisement)
+    override fun findAdvertisementById(id: Long): Advertisement =
+        jpaQueryFactory
+            .selectFrom(advertisement)
             .where(advertisement.id.eq(id))
             .fetchOne() ?: throw AdvertisementException(AdvertisementExceptionMessage.AD_IS_NULL, id)
-    }
 
     private val advertisementInfoField =
         Projections.constructor(
@@ -31,33 +31,33 @@ class AdvertisementCustomRepositoryImpl(
             advertisement.endDate
         )
 
-    override fun findAdvertisementInfoById(id: Long): AdvertisementInfo {
-        return jpaQueryFactory.select(advertisementInfoField)
+    override fun findAdvertisementInfoById(id: Long): AdvertisementInfo =
+        jpaQueryFactory
+            .select(advertisementInfoField)
             .from(advertisement)
             .where(advertisement.id.eq(id))
             .fetchOne() ?: throw AdvertisementException(AdvertisementExceptionMessage.AD_IS_NULL, id)
-    }
 
-    override fun findAllAdvertisements(): List<AdvertisementInfo> {
-        return jpaQueryFactory.select(advertisementInfoField)
+    override fun findAllAdvertisements(): List<AdvertisementInfo> =
+        jpaQueryFactory
+            .select(advertisementInfoField)
             .from(advertisement)
             .orderBy(advertisement.id.desc())
             .fetch()
-    }
 
-    override fun searchAdByCompany(company: String): List<AdvertisementInfo> {
-        return jpaQueryFactory.select(advertisementInfoField)
+    override fun searchAdByCompany(company: String): List<AdvertisementInfo> =
+        jpaQueryFactory
+            .select(advertisementInfoField)
             .from(advertisement)
             .where(advertisement.company.startsWith(company))
             .orderBy(advertisement.id.desc())
             .fetch()
-    }
 
-    override fun findExpiredAds(): List<AdvertisementInfo> {
-        return jpaQueryFactory.select(advertisementInfoField)
+    override fun findExpiredAds(): List<AdvertisementInfo> =
+        jpaQueryFactory
+            .select(advertisementInfoField)
             .from(advertisement)
             .where(advertisement.endDate.lt(getDateDigit(LocalDate.now())))
             .orderBy(advertisement.id.desc())
             .fetch()
-    }
 }

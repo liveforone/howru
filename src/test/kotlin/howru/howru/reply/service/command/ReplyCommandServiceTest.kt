@@ -102,7 +102,8 @@ class ReplyCommandServiceTest
             flushAndClear()
 
             // then
-            Assertions.assertThat(replyQueryService.getReplyById(replyId).content)
+            Assertions
+                .assertThat(replyQueryService.getReplyById(replyId).content)
                 .isEqualTo(content)
         }
 
@@ -144,7 +145,8 @@ class ReplyCommandServiceTest
             flushAndClear()
 
             // then
-            Assertions.assertThatThrownBy { replyQueryService.getReplyById(replyId) }
+            Assertions
+                .assertThatThrownBy { replyQueryService.getReplyById(replyId) }
                 .isInstanceOf(ReplyException::class.java)
         }
     }

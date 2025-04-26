@@ -44,7 +44,8 @@ class MemberCommandServiceTest
             // then
             val loginRequest = LoginRequest(email, pw)
             val jwtTokenInfo = memberCommandService.login(loginRequest)
-            Assertions.assertThat(memberQueryService.getMemberById(jwtTokenInfo.id).auth)
+            Assertions
+                .assertThat(memberQueryService.getMemberById(jwtTokenInfo.id).auth)
                 .isEqualTo(Role.MEMBER)
         }
 
@@ -110,7 +111,8 @@ class MemberCommandServiceTest
             flushAndClear()
 
             // then
-            Assertions.assertThat(memberQueryService.getMemberById(id).memberLock)
+            Assertions
+                .assertThat(memberQueryService.getMemberById(id).memberLock)
                 .isEqualTo(MemberLock.ON)
         }
 
@@ -134,7 +136,8 @@ class MemberCommandServiceTest
             flushAndClear()
 
             // then
-            Assertions.assertThat(memberQueryService.getMemberById(id).memberLock)
+            Assertions
+                .assertThat(memberQueryService.getMemberById(id).memberLock)
                 .isEqualTo(MemberLock.OFF)
         }
 
@@ -184,9 +187,11 @@ class MemberCommandServiceTest
             flushAndClear()
 
             // then
-            Assertions.assertThatThrownBy { jwtTokenService.getRefreshToken(id) }
+            Assertions
+                .assertThatThrownBy { jwtTokenService.getRefreshToken(id) }
                 .isInstanceOf(JwtCustomException::class.java)
-            Assertions.assertThatThrownBy { (memberQueryService.getMemberById(id)) }
+            Assertions
+                .assertThatThrownBy { (memberQueryService.getMemberById(id)) }
                 .isInstanceOf(MemberException::class.java)
         }
     }

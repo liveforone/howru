@@ -18,11 +18,11 @@ class SubscribeCustomRepositoryImpl(
     override fun findSubscribeById(
         followeeId: UUID,
         followerId: UUID
-    ): Subscribe {
-        return jpaQueryFactory.selectFrom(subscribe)
+    ): Subscribe =
+        jpaQueryFactory
+            .selectFrom(subscribe)
             .where(subscribe.followeeId.eq(followeeId).and(subscribe.followerId.eq(followerId)))
             .fetchOne() ?: throw SubscribeException(SubscribeExceptionMessage.SUBSCRIBE_IS_NULL, followerId)
-    }
 
     private val subscribeInfoField =
         Projections.constructor(
@@ -34,32 +34,32 @@ class SubscribeCustomRepositoryImpl(
     override fun findFollowing(
         memberId: UUID,
         lastTimestamp: Int?
-    ): List<SubscribeInfo> {
-        return jpaQueryFactory.select(subscribeInfoField)
+    ): List<SubscribeInfo> =
+        jpaQueryFactory
+            .select(subscribeInfoField)
             .from(subscribe)
             .where(subscribe.followerId.eq(memberId).and(ltLastTimestamp(lastTimestamp, subscribe) { it.timestamp }))
             .orderBy(subscribe.timestamp.desc())
             .limit(SubscribeRepoConstant.LIMIT_PAGE)
             .fetch()
-    }
 
     override fun findFollower(
         memberId: UUID,
         lastTimestamp: Int?
-    ): List<SubscribeInfo> {
-        return jpaQueryFactory.select(subscribeInfoField)
+    ): List<SubscribeInfo> =
+        jpaQueryFactory
+            .select(subscribeInfoField)
             .from(subscribe)
             .where(subscribe.followeeId.eq(memberId).and(ltLastTimestamp(lastTimestamp, subscribe) { it.timestamp }))
             .orderBy(subscribe.timestamp.desc())
             .limit(SubscribeRepoConstant.LIMIT_PAGE)
             .fetch()
-    }
 
-    override fun findFollowees(followerId: UUID): List<UUID> {
-        return jpaQueryFactory.select(subscribe.followeeId)
+    override fun findFollowees(followerId: UUID): List<UUID> =
+        jpaQueryFactory
+            .select(subscribe.followeeId)
             .from(subscribe)
             .where(subscribe.followerId.eq(followerId))
             .orderBy(subscribe.timestamp.desc())
             .fetch()
-    }
 }

@@ -38,7 +38,10 @@ class LikesController
         }
 
         @GetMapping(LikesUrl.LIKES_BY_MEMBER, params = [LikesParam.MEMBER_ID])
-        @Operation(summary = LikesApiDocs.LIKES_BY_MEMBER_SUMMARY, description = LikesApiDocs.LIKES_BY_MEMBER_DESCRIPTION)
+        @Operation(
+            summary = LikesApiDocs.LIKES_BY_MEMBER_SUMMARY,
+            description = LikesApiDocs.LIKES_BY_MEMBER_DESCRIPTION
+        )
         fun likesByMember(
             @RequestParam(LikesParam.MEMBER_ID) memberId: UUID,
             @RequestParam(LikesParam.LAST_TIMESTAMP, required = false) lastTimestamp: Int?

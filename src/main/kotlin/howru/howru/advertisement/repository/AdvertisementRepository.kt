@@ -10,7 +10,9 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import java.time.LocalDate
 
-interface AdvertisementRepository : JpaRepository<Advertisement, Long>, AdvertisementCustomRepository {
+interface AdvertisementRepository :
+    JpaRepository<Advertisement, Long>,
+    AdvertisementCustomRepository {
     @Query(AdvertisementSql.RANDOM_AD_QUERY)
     fun findRandomAd(): AdvertisementInfo
 

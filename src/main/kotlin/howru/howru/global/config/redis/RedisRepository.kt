@@ -54,16 +54,12 @@ class RedisRepository(
     operator fun <T> get(
         key: String,
         clazz: Class<T>
-    ): T? {
-        return getByKey(key = key, clazz = clazz)
-    }
+    ): T? = getByKey(key = key, clazz = clazz)
 
     operator fun <T> set(
         key: String,
         value: T
-    ) {
-        return save(key = key, value = value)
-    }
+    ) = save(key = key, value = value)
 
     fun <T> getOrLoad(
         key: String,

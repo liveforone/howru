@@ -1,6 +1,9 @@
 package howru.howru.jwt.exception
 
-enum class JwtExceptionMessage(val status: Int, val message: String) {
+enum class JwtExceptionMessage(
+    val status: Int,
+    val message: String
+) {
     TOKEN_IS_NULL(404, "Token Is Null"),
     INVALID_TOKEN(401, "Invalid JWT Token"),
     EXPIRED_JWT_TOKEN(401, "Expired Jwt Token"),

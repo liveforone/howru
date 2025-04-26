@@ -37,7 +37,8 @@ class AdvertisementCommandService
         ): Long {
             checkAdmin(memberId)
             return with(createAdvertisement) {
-                Advertisement.createHalfAd(company!!, title!!, content!!)
+                Advertisement
+                    .createHalfAd(company!!, title!!, content!!)
                     .run { advertisementRepository.save(this).id!! }
             }
         }
@@ -48,7 +49,8 @@ class AdvertisementCommandService
         ): Long {
             checkAdmin(memberId)
             return with(createAdvertisement) {
-                Advertisement.createYearAd(company!!, title!!, content!!)
+                Advertisement
+                    .createYearAd(company!!, title!!, content!!)
                     .run { advertisementRepository.save(this).id!! }
             }
         }
@@ -71,7 +73,8 @@ class AdvertisementCommandService
             id: Long,
             memberId: UUID
         ) {
-            advertisementRepository.findAdvertisementById(id)
+            advertisementRepository
+                .findAdvertisementById(id)
                 .takeIf { memberRepository.findMemberById(memberId).isAdmin() }
                 ?.also { advertisementRepository.delete(it) }
                 ?: run {

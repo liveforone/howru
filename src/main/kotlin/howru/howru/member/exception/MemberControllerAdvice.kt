@@ -13,16 +13,14 @@ object MemberAdviceConstant {
 @RestControllerAdvice
 class MemberControllerAdvice {
     @ExceptionHandler(BadCredentialsException::class)
-    fun handleLoginFail(): ResponseEntity<String> {
-        return ResponseEntity
+    fun handleLoginFail(): ResponseEntity<String> =
+        ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .body(MemberAdviceConstant.LOGIN_FAIL)
-    }
 
     @ExceptionHandler(MemberException::class)
-    fun handleMemberException(memberException: MemberException): ResponseEntity<String> {
-        return ResponseEntity
+    fun handleMemberException(memberException: MemberException): ResponseEntity<String> =
+        ResponseEntity
             .status(memberException.memberExceptionMessage.status)
             .body(memberException.message + memberException.memberIdentifier)
-    }
 }

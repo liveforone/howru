@@ -20,11 +20,11 @@ class ReplyCustomRepositoryImpl(
     override fun findReplyByIdAndWriter(
         id: Long,
         writerId: UUID
-    ): Reply {
-        return jpaQueryFactory.selectFrom(reply)
+    ): Reply =
+        jpaQueryFactory
+            .selectFrom(reply)
             .where(reply.id.eq(id).and(reply.writer.id.eq(writerId)))
             .fetchOne() ?: throw ReplyException(ReplyExceptionMessage.REPLY_IS_NULL, id)
-    }
 
     private val replyInfoField =
         Projections.constructor(
@@ -37,22 +37,26 @@ class ReplyCustomRepositoryImpl(
             reply.createdDatetime
         )
 
-    override fun findReplyInfoById(id: Long): ReplyInfo {
-        return jpaQueryFactory.select(replyInfoField)
+    override fun findReplyInfoById(id: Long): ReplyInfo =
+        jpaQueryFactory
+            .select(replyInfoField)
             .from(reply)
             .where(reply.id.eq(id))
             .fetchOne() ?: throw ReplyException(ReplyExceptionMessage.REPLY_IS_NULL, id)
-    }
 
     override fun findRepliesByWriter(
         writerId: UUID,
         lastId: Long?
     ): ReplyPage {
         val replyInfoList =
-            jpaQueryFactory.select(replyInfoField)
+            jpaQueryFactory
+                .select(replyInfoField)
                 .from(reply)
-                .where(reply.writer.id.eq(writerId).and(ltLastId(lastId, reply) { it.id }))
-                .orderBy(reply.id.desc())
+                .where(
+                    reply.writer.id
+                        .eq(writerId)
+                        .and(ltLastId(lastId, reply) { it.id })
+                ).orderBy(reply.id.desc())
                 .limit(ReplyRepoConstant.LIMIT_PAGE)
                 .fetch()
 
@@ -64,10 +68,14 @@ class ReplyCustomRepositoryImpl(
         lastId: Long?
     ): ReplyPage {
         val replyInfoList =
-            jpaQueryFactory.select(replyInfoField)
+            jpaQueryFactory
+                .select(replyInfoField)
                 .from(reply)
-                .where(reply.comment.id.eq(commentId).and(ltLastId(lastId, reply) { it.id }))
-                .orderBy(reply.id.desc())
+                .where(
+                    reply.comment.id
+                        .eq(commentId)
+                        .and(ltLastId(lastId, reply) { it.id })
+                ).orderBy(reply.id.desc())
                 .limit(ReplyRepoConstant.LIMIT_PAGE)
                 .fetch()
 

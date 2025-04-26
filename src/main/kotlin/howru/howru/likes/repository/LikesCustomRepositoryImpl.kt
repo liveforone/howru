@@ -19,45 +19,43 @@ class LikesCustomRepositoryImpl(
     override fun findLikesById(
         memberId: UUID,
         postId: Long
-    ): Likes {
-        return jpaQueryFactory.selectFrom(likes)
+    ): Likes =
+        jpaQueryFactory
+            .selectFrom(likes)
             .where(likes.memberId.eq(memberId).and(likes.postId.eq(postId)))
             .fetchOne() ?: throw LikesException(LikesExceptionMessage.LIKES_IS_NULL, postId)
-    }
 
     override fun findLikesBelongMember(
         memberId: UUID,
         lastTimestamp: Int?
-    ): List<LikesBelongMemberInfo> {
-        return jpaQueryFactory.select(
-            Projections.constructor(
-                LikesBelongMemberInfo::class.java,
-                likes.postId,
-                likes.timestamp
-            )
-        )
-            .from(likes)
+    ): List<LikesBelongMemberInfo> =
+        jpaQueryFactory
+            .select(
+                Projections.constructor(
+                    LikesBelongMemberInfo::class.java,
+                    likes.postId,
+                    likes.timestamp
+                )
+            ).from(likes)
             .where(likes.memberId.eq(memberId).and(ltLastTimestamp(lastTimestamp, likes) { it.timestamp }))
             .orderBy(likes.timestamp.desc())
             .limit(LikesRepoConstant.LIMIT_PAGE)
             .fetch()
-    }
 
     override fun findLikesBelongPost(
         postId: Long,
         lastTimestamp: Int?
-    ): List<LikesBelongPostInfo> {
-        return jpaQueryFactory.select(
-            Projections.constructor(
-                LikesBelongPostInfo::class.java,
-                likes.memberId,
-                likes.timestamp
-            )
-        )
-            .from(likes)
+    ): List<LikesBelongPostInfo> =
+        jpaQueryFactory
+            .select(
+                Projections.constructor(
+                    LikesBelongPostInfo::class.java,
+                    likes.memberId,
+                    likes.timestamp
+                )
+            ).from(likes)
             .where(likes.postId.eq(postId).and(ltLastTimestamp(lastTimestamp, likes) { it.timestamp }))
             .orderBy(likes.timestamp.desc())
             .limit(LikesRepoConstant.LIMIT_PAGE)
             .fetch()
-    }
 }

@@ -7,9 +7,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 @RestControllerAdvice
 class SubscribeControllerAdvice {
     @ExceptionHandler(SubscribeException::class)
-    fun handleSubscribeException(subscribeException: SubscribeException): ResponseEntity<String> {
-        return ResponseEntity
+    fun handleSubscribeException(subscribeException: SubscribeException): ResponseEntity<String> =
+        ResponseEntity
             .status(subscribeException.subscribeExceptionMessage.status)
             .body(subscribeException.message + subscribeException.followerUUID)
-    }
 }

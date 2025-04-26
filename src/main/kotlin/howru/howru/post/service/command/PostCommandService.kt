@@ -21,19 +21,20 @@ class PostCommandService
         private val postRepository: PostRepository,
         private val memberRepository: MemberCustomRepository
     ) {
-        fun createPost(createPost: CreatePost): Long {
-            return with(createPost) {
-                Post.create(writer = memberRepository.findMemberById(writerId!!), content!!)
+        fun createPost(createPost: CreatePost): Long =
+            with(createPost) {
+                Post
+                    .create(writer = memberRepository.findMemberById(writerId!!), content!!)
                     .run { postRepository.save(this).id!! }
             }
-        }
 
         fun editPostContent(
             id: Long,
             updatePostContent: UpdatePostContent
         ) {
             with(updatePostContent) {
-                postRepository.findPostByIdAndWriter(id, writerId!!)
+                postRepository
+                    .findPostByIdAndWriter(id, writerId!!)
                     .also {
                         it.editContent(content!!)
                         redisRepository.delete(PostCacheKey.POST_DETAIL + id)
@@ -46,7 +47,8 @@ class PostCommandService
             removePost: RemovePost
         ) {
             with(removePost) {
-                postRepository.findPostByIdAndWriter(id, writerId!!)
+                postRepository
+                    .findPostByIdAndWriter(id, writerId!!)
                     .also {
                         postRepository.delete(it)
                         redisRepository.delete(PostCacheKey.POST_DETAIL + id)

@@ -28,7 +28,10 @@ class SubscribeController
         private val subscribeCommandService: SubscribeCommandService
     ) {
         @GetMapping(SubscribeUrl.FOLLOWING_INFO)
-        @Operation(summary = SubscribeApiDocs.FOLLOWING_INFO_SUMMARY, description = SubscribeApiDocs.FOLLOWING_INFO_DESCRIPTION)
+        @Operation(
+            summary = SubscribeApiDocs.FOLLOWING_INFO_SUMMARY,
+            description = SubscribeApiDocs.FOLLOWING_INFO_DESCRIPTION
+        )
         fun followingInfo(
             @PathVariable(SubscribeParam.MEMBER_ID) memberId: UUID,
             @RequestParam(SubscribeParam.LAST_TIMESTAMP, required = false) lastTimestamp: Int?
@@ -38,7 +41,10 @@ class SubscribeController
         }
 
         @GetMapping(SubscribeUrl.FOLLOWER_INFO)
-        @Operation(summary = SubscribeApiDocs.FOLLOWER_INFO_SUMMARY, description = SubscribeApiDocs.FOLLOWER_INFO_DESCRIPTION)
+        @Operation(
+            summary = SubscribeApiDocs.FOLLOWER_INFO_SUMMARY,
+            description = SubscribeApiDocs.FOLLOWER_INFO_DESCRIPTION
+        )
         fun followerInfo(
             @PathVariable(SubscribeParam.MEMBER_ID) memberId: UUID,
             @RequestParam(SubscribeParam.LAST_TIMESTAMP, required = false) lastTimestamp: Int?

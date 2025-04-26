@@ -16,11 +16,10 @@ object GlobalAdviceConstant {
 @RestControllerAdvice
 class GlobalControllerAdvice {
     @ExceptionHandler(DataIntegrityViolationException::class)
-    fun handleDuplicateEntityValueException(): ResponseEntity<String> {
-        return ResponseEntity
+    fun handleDuplicateEntityValueException(): ResponseEntity<String> =
+        ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .body(GlobalAdviceConstant.DUPLICATE_ENTITY_VAL)
-    }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleValidationExceptions(exception: MethodArgumentNotValidException): ResponseEntity<String> {
@@ -33,9 +32,8 @@ class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(ConstraintViolationException::class)
-    fun handleConstraintViolationException(ex: ConstraintViolationException): ResponseEntity<*> {
-        return ResponseEntity
+    fun handleConstraintViolationException(ex: ConstraintViolationException): ResponseEntity<*> =
+        ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .body(ex.message)
-    }
 }

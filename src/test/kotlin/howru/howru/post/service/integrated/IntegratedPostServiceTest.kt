@@ -71,9 +71,10 @@ class IntegratedPostServiceTest
             val followerId = createMember2()
 
             // then -> error 발생!!
-            Assertions.assertThatThrownBy {
-                integratedPostService.getPostOfOtherMember(followeeId, followerId, null)
-            }.isInstanceOf(SubscribeException::class.java)
+            Assertions
+                .assertThatThrownBy {
+                    integratedPostService.getPostOfOtherMember(followeeId, followerId, null)
+                }.isInstanceOf(SubscribeException::class.java)
         }
 
     /*
@@ -100,9 +101,10 @@ class IntegratedPostServiceTest
             flushAndClear()
 
             // then
-            Assertions.assertThat(
-                integratedPostService.getPostOfOtherMember(followeeId, followerId, null).postInfoList
-            ).isNotEmpty
+            Assertions
+                .assertThat(
+                    integratedPostService.getPostOfOtherMember(followeeId, followerId, null).postInfoList
+                ).isNotEmpty
         }
 
         @Test
@@ -122,7 +124,8 @@ class IntegratedPostServiceTest
             flushAndClear()
 
             // then
-            Assertions.assertThat(integratedPostService.getPostsOfFollowee(followerId, null).postInfoList)
+            Assertions
+                .assertThat(integratedPostService.getPostsOfFollowee(followerId, null).postInfoList)
                 .isNotEmpty
         }
     }

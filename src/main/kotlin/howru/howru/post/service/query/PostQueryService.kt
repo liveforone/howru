@@ -22,14 +22,13 @@ class PostQueryService
         private val redisRepository: RedisRepository,
         private val postRepository: PostRepository
     ) {
-        fun getPostById(id: Long): PostInfo {
-            return redisRepository.getOrLoad(
+        fun getPostById(id: Long): PostInfo =
+            redisRepository.getOrLoad(
                 PostCacheKey.POST_DETAIL + id,
                 PostInfo::class.java,
                 findDataFromDB = { postRepository.findPostInfoById(id) },
                 RedisTimeOut(CacheTTL.TEN, TimeUnit.MINUTES)
             )
-        }
 
         fun getAllPosts(lastId: Long?) = postRepository.findAllPosts(lastId)
 
@@ -50,9 +49,7 @@ class PostQueryService
         fun getRecommendPosts(
             content: String,
             lastId: Long?
-        ): PostPage {
-            return postRepository.findRecommendPosts(extractKeywords(content), lastId)
-        }
+        ): PostPage = postRepository.findRecommendPosts(extractKeywords(content), lastId)
 
         fun getRandomPosts() = postRepository.findRandomPosts()
 

@@ -31,8 +31,8 @@ class CustomUserDetailsService
             return createUserDetails(member)
         }
 
-        private fun createUserDetails(member: Member): UserDetails {
-            return when (member.auth) {
+        private fun createUserDetails(member: Member): UserDetails =
+            when (member.auth) {
                 Role.ADMIN -> {
                     createAdmin(member)
                 }
@@ -40,21 +40,20 @@ class CustomUserDetailsService
                     createMember(member)
                 }
             }
-        }
 
-        private fun createAdmin(member: Member): UserDetails {
-            return User.builder()
+        private fun createAdmin(member: Member): UserDetails =
+            User
+                .builder()
                 .username(member.id.toString())
                 .password(member.password)
                 .roles(Role.ADMIN.name)
                 .build()
-        }
 
-        private fun createMember(member: Member): UserDetails {
-            return User.builder()
+        private fun createMember(member: Member): UserDetails =
+            User
+                .builder()
                 .username(member.id.toString())
                 .password(member.password)
                 .roles(Role.MEMBER.name)
                 .build()
-        }
     }

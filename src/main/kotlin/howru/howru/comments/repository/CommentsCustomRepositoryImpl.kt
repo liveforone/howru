@@ -17,20 +17,20 @@ class CommentsCustomRepositoryImpl(
     private val jpaQueryFactory: JPAQueryFactory,
     private val comments: QComments = QComments.comments
 ) : CommentsCustomRepository {
-    override fun findCommentById(id: Long): Comments {
-        return jpaQueryFactory.selectFrom(comments)
+    override fun findCommentById(id: Long): Comments =
+        jpaQueryFactory
+            .selectFrom(comments)
             .where(comments.id.eq(id))
             .fetchOne() ?: throw CommentsException(CommentsExceptionMessage.COMMENTS_IS_NULL, id)
-    }
 
     override fun findCommentByIdAndWriter(
         id: Long,
         writerId: UUID
-    ): Comments {
-        return jpaQueryFactory.selectFrom(comments)
+    ): Comments =
+        jpaQueryFactory
+            .selectFrom(comments)
             .where(comments.id.eq(id).and(comments.writer.id.eq(writerId)))
             .fetchOne() ?: throw CommentsException(CommentsExceptionMessage.COMMENTS_IS_NULL, id)
-    }
 
     private val commentsInfoField =
         Projections.constructor(
@@ -43,22 +43,26 @@ class CommentsCustomRepositoryImpl(
             comments.createdDatetime
         )
 
-    override fun findCommentsInfoById(id: Long): CommentsInfo {
-        return jpaQueryFactory.select(commentsInfoField)
+    override fun findCommentsInfoById(id: Long): CommentsInfo =
+        jpaQueryFactory
+            .select(commentsInfoField)
             .from(comments)
             .where(comments.id.eq(id))
             .fetchOne() ?: throw CommentsException(CommentsExceptionMessage.COMMENTS_IS_NULL, id)
-    }
 
     override fun findCommentsByMember(
         memberId: UUID,
         lastId: Long?
     ): CommentsPage {
         val commentsInfoList =
-            jpaQueryFactory.select(commentsInfoField)
+            jpaQueryFactory
+                .select(commentsInfoField)
                 .from(comments)
-                .where(comments.writer.id.eq(memberId).and(ltLastId(lastId, comments) { it.id }))
-                .orderBy(comments.id.desc())
+                .where(
+                    comments.writer.id
+                        .eq(memberId)
+                        .and(ltLastId(lastId, comments) { it.id })
+                ).orderBy(comments.id.desc())
                 .limit(CommentsRepoConstant.LIMIT_PAGE)
                 .fetch()
 
@@ -70,10 +74,14 @@ class CommentsCustomRepositoryImpl(
         lastId: Long?
     ): CommentsPage {
         val commentsInfoList =
-            jpaQueryFactory.select(commentsInfoField)
+            jpaQueryFactory
+                .select(commentsInfoField)
                 .from(comments)
-                .where(comments.post.id.eq(postId).and(ltLastId(lastId, comments) { it.id }))
-                .orderBy(comments.id.desc())
+                .where(
+                    comments.post.id
+                        .eq(postId)
+                        .and(ltLastId(lastId, comments) { it.id })
+                ).orderBy(comments.id.desc())
                 .limit(CommentsRepoConstant.LIMIT_PAGE)
                 .fetch()
 

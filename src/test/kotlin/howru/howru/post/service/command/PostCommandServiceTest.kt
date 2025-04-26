@@ -58,7 +58,8 @@ class PostCommandServiceTest
             // then
             val post = postQueryService.getPostById(postId)
             logger().info("${post.createdDatetime}")
-            Assertions.assertThat(post.writerId)
+            Assertions
+                .assertThat(post.writerId)
                 .isEqualTo(writerId)
         }
 
@@ -100,7 +101,8 @@ class PostCommandServiceTest
             flushAndClear()
 
             // then
-            Assertions.assertThatThrownBy { postQueryService.getPostById(postId) }
+            Assertions
+                .assertThatThrownBy { postQueryService.getPostById(postId) }
                 .isInstanceOf(PostException::class.java)
         }
     }

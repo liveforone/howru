@@ -20,22 +20,23 @@ class CommentsCommandService
         private val memberRepository: MemberCustomRepository,
         private val postRepository: PostRepository
     ) {
-        fun createComments(createComments: CreateComments): Long {
-            return with(createComments) {
-                Comments.create(
-                    writer = memberRepository.findMemberById(writerId!!),
-                    post = postRepository.findPostById(postId!!),
-                    content!!
-                ).run { commentsRepository.save(this).id!! }
+        fun createComments(createComments: CreateComments): Long =
+            with(createComments) {
+                Comments
+                    .create(
+                        writer = memberRepository.findMemberById(writerId!!),
+                        post = postRepository.findPostById(postId!!),
+                        content!!
+                    ).run { commentsRepository.save(this).id!! }
             }
-        }
 
         fun editComment(
             id: Long,
             updateComments: UpdateComments
         ) {
             with(updateComments) {
-                commentsRepository.findCommentByIdAndWriter(id, writerId!!)
+                commentsRepository
+                    .findCommentByIdAndWriter(id, writerId!!)
                     .also { it.editContentAndState(content!!) }
             }
         }
@@ -45,7 +46,8 @@ class CommentsCommandService
             removeComments: RemoveComments
         ) {
             with(removeComments) {
-                commentsRepository.findCommentByIdAndWriter(id, writerId!!)
+                commentsRepository
+                    .findCommentByIdAndWriter(id, writerId!!)
                     .also { commentsRepository.delete(it) }
             }
         }

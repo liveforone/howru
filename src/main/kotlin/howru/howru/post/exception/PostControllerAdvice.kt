@@ -7,9 +7,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 @RestControllerAdvice
 class PostControllerAdvice {
     @ExceptionHandler(PostException::class)
-    fun handlePostException(postException: PostException): ResponseEntity<String> {
-        return ResponseEntity
+    fun handlePostException(postException: PostException): ResponseEntity<String> =
+        ResponseEntity
             .status(postException.postExceptionMessage.status)
             .body(postException.message + postException.postId)
-    }
 }

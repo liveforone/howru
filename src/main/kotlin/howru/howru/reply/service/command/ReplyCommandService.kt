@@ -20,22 +20,23 @@ class ReplyCommandService
         private val memberRepository: MemberCustomRepository,
         private val commentsRepository: CommentsRepository
     ) {
-        fun createReply(createReply: CreateReply): Long {
-            return with(createReply) {
-                Reply.create(
-                    writer = memberRepository.findMemberById(writerId!!),
-                    comment = commentsRepository.findCommentById(commentId!!),
-                    content!!
-                ).run { replyRepository.save(this).id!! }
+        fun createReply(createReply: CreateReply): Long =
+            with(createReply) {
+                Reply
+                    .create(
+                        writer = memberRepository.findMemberById(writerId!!),
+                        comment = commentsRepository.findCommentById(commentId!!),
+                        content!!
+                    ).run { replyRepository.save(this).id!! }
             }
-        }
 
         fun editReply(
             id: Long,
             updateReplyContent: UpdateReplyContent
         ) {
             with(updateReplyContent) {
-                replyRepository.findReplyByIdAndWriter(id, writerId!!)
+                replyRepository
+                    .findReplyByIdAndWriter(id, writerId!!)
                     .also { it.editContent(content!!) }
             }
         }
@@ -45,7 +46,8 @@ class ReplyCommandService
             removeReply: RemoveReply
         ) {
             with(removeReply) {
-                replyRepository.findReplyByIdAndWriter(id, writerId!!)
+                replyRepository
+                    .findReplyByIdAndWriter(id, writerId!!)
                     .also { replyRepository.delete(it) }
             }
         }

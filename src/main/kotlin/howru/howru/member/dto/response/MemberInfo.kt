@@ -11,7 +11,5 @@ data class MemberInfo(
     val nickName: String,
     val memberLock: MemberLock
 ) {
-    fun isUnlock(): Boolean {
-        return memberLock == MemberLock.OFF
-    }
+    fun isUnlock(): Boolean = memberLock == MemberLock.OFF
 }
