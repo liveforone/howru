@@ -90,7 +90,7 @@ class MemberCommandServiceTest
 
             // then
             val jwtTokenInfo2 = memberCommandService.login(loginRequest)
-            Assertions.assertThat(reissueJwtToken.refreshToken.equals(jwtTokenInfo2.refreshToken)).isTrue()
+            Assertions.assertThat(reissueJwtToken.refreshToken == jwtTokenInfo2.refreshToken).isTrue()
         }
 
         @Test
