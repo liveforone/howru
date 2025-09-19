@@ -1,7 +1,6 @@
 package howru.howru.post.domain
 
 import howru.howru.converter.PostStateConverter
-import howru.howru.global.util.DATETIME_TYPE
 import howru.howru.global.util.getDatetimeDigit
 import howru.howru.member.domain.Member
 import howru.howru.post.domain.constant.PostConstant
@@ -23,8 +22,7 @@ class Post private constructor(
     ) var postState: PostState = PostState.ORIGINAL,
     @Column(
         nullable = false,
-        updatable = false,
-        columnDefinition = DATETIME_TYPE
+        updatable = false
     ) val createdDatetime: Long = getDatetimeDigit(LocalDateTime.now())
 ) {
     companion object {

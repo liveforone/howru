@@ -53,9 +53,9 @@ create table advertisement (
      id bigint not null auto_increment,
      company varchar(255) not null,
      title varchar(255) not null,
-     content VARCHAR(800) not null,
-     created_date INT(8) not null,
-     end_date INT(8) not null,
+     content varchar(800) not null,
+     created_date integer not null,
+     end_date integer not null,
      primary key (id)
 );
 CREATE INDEX advertisement_company_idx ON Advertisement (company);

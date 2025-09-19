@@ -1,7 +1,6 @@
 package howru.howru.advertisement.domain
 
 import howru.howru.advertisement.domain.constant.AdvertisementConstant
-import howru.howru.global.util.DATE_TYPE
 import howru.howru.global.util.getDateDigit
 import jakarta.persistence.*
 import java.time.LocalDate
@@ -12,9 +11,9 @@ class Advertisement private constructor(
     @Column(nullable = false) val company: String,
     @Column(nullable = false) var title: String,
     @Column(nullable = false, columnDefinition = AdvertisementConstant.CONTENT_TYPE) var content: String,
-    @Column(nullable = false, updatable = false, columnDefinition = DATE_TYPE) val createdDate: Int =
+    @Column(nullable = false, updatable = false) val createdDate: Int =
         getDateDigit(LocalDate.now()),
-    @Column(nullable = false, updatable = false, columnDefinition = DATE_TYPE) val endDate: Int
+    @Column(nullable = false, updatable = false) val endDate: Int
 ) {
     companion object {
         fun createHalfAd(

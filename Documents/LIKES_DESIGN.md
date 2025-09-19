@@ -1,7 +1,7 @@
 # 좋아요 설계
 
 ## 명칭
-* like는 sql의 예약어입니다.
+* like는 대부분의 DB에서 예약어입니다.
 * 따라서 이를 사용하게 되면 에러가 발생합니다. 따라서 좋아요의 명칭은 모두 likes로 통일합니다.
 * 이는 '좋아요들' 을 의미하는 '복수'가 아니고 '단수 명칭'으로 사용됩니다.
 
@@ -44,7 +44,7 @@
 ```sql
 create table likes (
      timestamp integer,
-     member_id binary(16) not null,
+     member_id UUID not null,
      post_id bigint not null,
      primary key (member_id, post_id)
 );

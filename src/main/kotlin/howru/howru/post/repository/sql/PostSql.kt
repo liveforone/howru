@@ -2,8 +2,13 @@ package howru.howru.post.repository.sql
 
 object PostSql {
     const val RANDOM_POSTS_QUERY = """
-    select new howru.howru.post.dto.response.PostInfo(p.id, p.writer.id, p.content, p.postState, p.createdDatetime)
-     from Post p order by RAND() limit 10"""
+    select new howru.howru.post.dto.response.PostInfo(
+        p.id, p.writer.id, p.content, p.postState, p.createdDatetime
+    )
+    from Post p
+    order by function('RANDOM')
+    limit 10
+"""
     const val COUNT_OF_POST_BY_MEMBER_QUERY = "select count(*) from Post p where p.writer.id = :memberId"
     const val MEMBER_ID = "memberId"
 }

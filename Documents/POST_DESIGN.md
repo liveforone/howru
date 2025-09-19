@@ -59,10 +59,10 @@
 ```sql
 create table post (
     id bigint not null auto_increment,
-    writer_id binary(16),
+    writer_id UUID,
     content VARCHAR(800) not null,
     post_state varchar(8) not null,
-    createdDate BIGINT(12) not null,
+    createdDate bigint not null,
     primary key (id),
     foreign key (writer_id) references Member (id) on delete cascade
 );
@@ -112,5 +112,5 @@ override fun findOneByUUIDAndWriter(id: Long, writerUUID: UUID): Post {
 * 이렇게 하면 DB에서 자동으로 랜덤한 값을 리턴한다.
 * jdsl에서는 rand()함수를 사용할 수 없다. 따라서 이는 jpql로 정적쿼리를 만들어 날려주어야한다.
 ```sql
-SELECT * FROM Table ORDER BY RAND();
+SELECT * FROM Table ORDER BY FUNCTION('RANDOM') LIMIT 10;
 ```

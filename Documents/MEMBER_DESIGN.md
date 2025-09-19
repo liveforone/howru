@@ -98,7 +98,7 @@ function 복구(이메일, 비밀번호) {
 ### member
 ```sql
 create table member (
-    id BINARY(16) not null,
+    id UUID not null,
     email varchar(255) UNIQUE not null,
     password varchar(100) not null,
     auth varchar(7) not null,

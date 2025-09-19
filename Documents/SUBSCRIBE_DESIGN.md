@@ -1,7 +1,7 @@
 # 구독(팔로잉) 설계
 
 ## 주의
-* mysql 예약어에 follow, following이 들어갑니다.
+* mysql & postgresql 예약어에 following이 들어갑니다.
 * 이에 따라 subscribe로 단어를 대체하여 사용합니다.
 * 종종 following, follow 등 단어가 혼용되어 사용될 수 있으나, 테이블 이름은 Subscribe로 사용되는 점을 주의합니다.
 
@@ -57,8 +57,8 @@
 ```sql
 create table subscribe (
     timestamp integer,
-    followee_id binary(16) not null,
-    follower_id binary(16) not null,
+    followee_id UUID not null,
+    follower_id UUID not null,
     primary key (followee_id, follower_id)
 );
 CREATE INDEX subscribe_timestamp_idx ON Subscribe (timestamp);

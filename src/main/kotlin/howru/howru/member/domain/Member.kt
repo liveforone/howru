@@ -4,7 +4,6 @@ import howru.howru.converter.MemberLockConverter
 import howru.howru.converter.RoleConverter
 import howru.howru.member.exception.MemberException
 import howru.howru.member.exception.MemberExceptionMessage
-import howru.howru.global.util.UUID_TYPE
 import howru.howru.global.util.createUUID
 import howru.howru.global.util.encodePassword
 import howru.howru.global.util.isMatchPassword
@@ -17,7 +16,7 @@ import java.util.*
 
 @Entity
 class Member private constructor(
-    @Id @Column(columnDefinition = UUID_TYPE) val id: UUID = createUUID(),
+    @Id val id: UUID = createUUID(),
     @Convert(converter = RoleConverter::class) @Column(
         nullable = false,
         columnDefinition = MemberConstant.ROLE_TYPE

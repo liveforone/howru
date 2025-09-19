@@ -1,11 +1,7 @@
 # 댓글 설계
 
 ## 명칭 문제
-* sql에서 comment는 예약어이다.
-* 따라서 이를 사용하게 되면 에러가 발생한다. 즉 ddl 자체가 불가능하다.
-* 따라서 댓글에 대한 명칭은 모두 Comments로 통일한다.
-* 이는 복수를 뜻하는 것이 아닌 댓글을 해당 프로젝트에서 나타내는 '명사'일 뿐이다.
-* 해당 프로젝트는 mysql을 DB로 사용했기에 comments라는 네이밍이 문제가 없었지만, postgressql을 사용한다면 comments마저도 예약어로 분류되니 주의하라.
+* Comments는 복수를 뜻하는 것이 아닌 댓글을 해당 프로젝트에서 나타내는 '명사'일 뿐이다.
 
 ## 상세 설계
 * 댓글은 수정/삭제가 가능합니다.
@@ -55,10 +51,10 @@
 create table comments (
      id bigint not null auto_increment,
      post_id bigint,
-     writer_id bigint,
+     writer_id UUID,
      content VARCHAR(100) not null,
      comments_state varchar(8) not null,
-     created_date BIGINT(12) not null,
+     created_date bigint not null,
      primary key (id)
      foreign key (writer_id) references Member (id) on delete cascade
      foreign key (post_id) references Post (id) on delete cascade

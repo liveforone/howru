@@ -7,7 +7,7 @@
 ### 회원 -> Member
 ```sql
 create table member (
-    id BINARY(16) not null,
+    id UUID not null,
     email varchar(255) not null,
     password varchar(100) not null,
     auth varchar(7) not null,
@@ -24,8 +24,8 @@ CREATE INDEX email_auth_idx ON member (email, auth);
 ```sql
 create table report_state (
      id bigint not null auto_increment,
-     member_id binary(16),
-     modified_state_date INT(8) not null,
+     member_id UUID,
+     modified_state_date integer not null,
      report_count integer not null,
      member_state VARCHAR(17) not null,
      primary key (id),
@@ -38,8 +38,8 @@ create table report_state (
 ```sql
 create table subscribe (
     timestamp integer,
-    followee_id binary(16) not null,
-    follower_id binary(16) not null,
+    followee_id UUID not null,
+    follower_id UUID not null,
     primary key (followee_id, follower_id)
 );
 CREATE INDEX subscribe_timestamp_idx ON Subscribe (timestamp);
@@ -51,10 +51,10 @@ CREATE INDEX follower_id_timestamp_idx ON Subscribe (follower_id, timestamp);
 ```sql
 create table post (
     id bigint not null auto_increment,
-    writer_id binary(16),
+    writer_id UUID,
     content VARCHAR(800) not null,
     post_state varchar(8) not null,
-    createdDate BIGINT(12) not null,
+    createdDate bigint not null,
     primary key (id),
     foreign key (writer_id) references Member (id) on delete cascade
 );
@@ -68,7 +68,7 @@ CREATE INDEX post_content_idx ON Post (content);
 ```sql
 create table likes (
      timestamp integer,
-     member_id binary(16) not null,
+     member_id UUID not null,
      post_id bigint not null,
      primary key (member_id, post_id)
 );
@@ -82,10 +82,10 @@ CREATE INDEX likes_timestamp_idx ON Likes (timestamp);
 create table comments (
      id bigint not null auto_increment,
      post_id bigint,
-     writer_id binary(16),
+     writer_id UUID,
      content VARCHAR(100) not null,
      comments_state varchar(8) not null,
-     created_date BIGINT(12) not null,
+     created_date bigint not null,
      primary key (id)
      foreign key (writer_id) references Member (id) on delete cascade
      foreign key (post_id) references Post (id) on delete cascade
@@ -98,10 +98,10 @@ create table comments (
 create table reply (
      id bigint not null auto_increment,
      comment_id bigint,
-     writer_id binary(16),
+     writer_id UUID,
      content VARCHAR(100) not null,
      reply_state varchar(8) not null,
-     created_date BIGINT(12) not null,
+     created_date bigint not null,
      primary key (id)
      foreign key (comment_id) references comments (id) on delete cascade
      foreign key (writer_id) references member (id) on delete cascade
@@ -114,8 +114,8 @@ create table advertisement (
      company varchar(255) not null,
      title varchar(255) not null,
      content VARCHAR(800) not null,
-     created_date INT(8) not null,
-     end_date INT(8) not null,
+     created_date integer not null,
+     end_date integer not null,
      primary key (id)
 );
 CREATE INDEX advertisement_company_idx ON Advertisement (company);

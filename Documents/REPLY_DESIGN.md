@@ -43,10 +43,10 @@
 create table reply (
      id bigint not null auto_increment,
      comment_id bigint,
-     writer_id binary(16),
+     writer_id UUID,
      content VARCHAR(100) not null,
      reply_state varchar(8) not null,
-     created_date BIGINT(12) not null,
+     created_date bigint not null,
      primary key (id)
      foreign key (comment_id) references comments (id) on delete cascade
      foreign key (writer_id) references member (id) on delete cascade

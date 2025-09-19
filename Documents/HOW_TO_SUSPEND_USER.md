@@ -1,9 +1,9 @@
 # 정지 기간이 있는 계정 정지 방법
 
 ## 다양한 계정 정지 방법
-* 계정을 정지하는 방법은 다양하다. 
+* 계정을 정지하는 방법은 다양하다.
 * **"어떤 수만큼의 신고가 들어왔을때 완전 정지하여 회복이 불가능"** 하게 만들거나,
-* **"정지 기간이 존재하고, 기간에 맞게만 정지하도록 하는 방법"**, 
+* **"정지 기간이 존재하고, 기간에 맞게만 정지하도록 하는 방법"**,
 * 마지막으로 필자가 소개 **"할 정지 기간이 있고 + 신고 수가 한계치에 도달하였을때 영구 정지처리하는 방법"** 이다.
 
 ## 날짜를 기반으로 동작한다.
@@ -12,7 +12,7 @@
 * 저장된 정지 기간만큼 날짜가 지났는지 판별해 정지를 풀어주거, 유지하면 된다.
 * 필자는 아래와 같이 정지 날짜 컬럼을 두었다.
 ```kotlin
-@Column(nullable = false, columnDefinition = DATE_TYPE) var modifiedStateDate: Int = getDateDigit(LocalDate.now())
+@Column(nullable = false) var modifiedStateDate: Int = getDateDigit(LocalDate.now())
 ```
 * 또한 기간이 지났다면 정지를 풀어주는 코드는 아래와 같다.
 ```kotlin

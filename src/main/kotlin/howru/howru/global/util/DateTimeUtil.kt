@@ -4,9 +4,6 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-const val DATETIME_TYPE = "BIGINT(12)"
-const val DATE_TYPE = "INT(8)"
-
 fun getCurrentTimestamp(): Int = Instant.now().epochSecond.toInt()
 
 fun getDatetimeDigit(dateTime: LocalDateTime): Long {

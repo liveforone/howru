@@ -9,10 +9,10 @@ spring:
       filter:
         enabled: true
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://host.docker.internal:3306/howru?serverTimezone=Asia/Seoul
-#    url: jdbc:mysql://localhost:3306/howru?serverTimezone=Asia/Seoul
-    username: root
+    driver-class-name: org.postgresql.Driver
+#    url: jdbc:mysql://host.docker.internal:5432/howru
+    url: jdbc:postgresql://localhost:5432/howru
+    username: postgres
     password: 159624
     hikari:
       # SHOW GLOBAL VARIABLES LIKE 'max_connections'; 이 명령어로 max-pool size 조회 가능
@@ -31,8 +31,8 @@ spring:
         default_batch_fetch_size: 100
     open-in-view: false
   redis:
-    url: redis://default:159624@host.docker.internal:6379
-#    url: redis://default:159624@127.0.0.1:6379
+#    url: redis://default:159624@host.docker.internal:6379
+    url: redis://default:159624@127.0.0.1:6379
 
 logging:
   level:

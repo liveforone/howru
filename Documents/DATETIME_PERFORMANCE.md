@@ -22,14 +22,14 @@
 * 따라서 조건절에 날짜를 사용하게된다면 숫자타입(int/bigint)를 사용하면 좋을 것같다.
 
 ## date와 datetime의 경우 타입에 주의하라
-* date의 경우 yyyy-mm--dd 만 넣기 때문에 int(8)로 타입을 선언해도 무방하지만,
+* date의 경우 yyyy-mm--dd 만 넣기 때문에 int로 타입을 선언해도 무방하지만,
 * datetime의 경우 초를 뺸다고 하더라도, yyyy--mm--dd-hh--mm를 넣게 되어 int(12) 처럼 int 타입이 불가능해진다.
-* 따라서 날짜와 시간을 표시하는 datetime의 경우 BIGINT(12) 를 사용하도록한다.
+* 따라서 날짜와 시간을 표시하는 datetime의 경우 bigint 를 사용하도록한다.
 
 ## 날짜를 숫자타입으로 파싱하는 코드 : datetime기준
 * 한자리 숫자의 경우 앞에 0을 삽입해주었다.
 * datetime을 기준으로 작성했기 때문에 Long 타입을 사용하였다.
-* DB에서도 정의할때 BIGINT(12)로 정의해주어야한다.
+* DB에서도 정의할때 bigint로 정의해주어야한다.
 ```kotlin
 fun datetimeConvertToDigit(): Long {
     val now = LocalDateTime.now()
@@ -52,7 +52,6 @@ private fun checkSingleDigit(digit: Int): String {
 ```
 
 ## 날짜를 숫자타입으로 파싱하는 코드 : date기준
-* INT(8)의 크기를 지정해주어야한다.
 * yyyymmdd 의 형태로 저장된다.
 ```kotlin
 fun getDateDigit(date: LocalDate): Int {

@@ -1,7 +1,6 @@
 package howru.howru.reportState.domain
 
 import howru.howru.converter.MemberStateConverter
-import howru.howru.global.util.DATE_TYPE
 import howru.howru.global.util.convertDateToLocalDate
 import howru.howru.global.util.getDateDigit
 import howru.howru.member.domain.Member
@@ -21,7 +20,7 @@ class ReportState private constructor(
         nullable = false,
         columnDefinition = ReportStateConstant.MEMBER_STATE_TYPE
     ) var memberState: MemberState = MemberState.NORMAL,
-    @Column(nullable = false, columnDefinition = DATE_TYPE) var modifiedStateDate: Int = getDateDigit(LocalDate.now()),
+    @Column(nullable = false) var modifiedStateDate: Int = getDateDigit(LocalDate.now()),
     @Column(nullable = false) var reportCount: Int = ReportStateConstant.BASIC_REPORT
 ) {
     companion object {
