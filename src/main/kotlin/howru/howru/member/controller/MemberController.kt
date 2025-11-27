@@ -2,7 +2,6 @@ package howru.howru.member.controller
 
 import howru.howru.member.exception.MemberException
 import howru.howru.member.exception.MemberExceptionMessage
-import howru.howru.jwt.dto.JwtTokenInfo
 import howru.howru.logger
 import howru.howru.member.controller.constant.MemberApiDocs
 import howru.howru.member.controller.constant.MemberRequestHeader
@@ -15,9 +14,12 @@ import howru.howru.member.service.command.MemberCommandService
 import howru.howru.member.service.query.MemberQueryService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.servlet.http.Cookie
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.ResponseCookie
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
@@ -58,9 +60,18 @@ class MemberController
             val tokenInfo = memberCommandService.login(loginRequest)
             response.apply {
                 addHeader(MemberRequestHeader.ACCESS_TOKEN, tokenInfo.accessToken)
-                addHeader(MemberRequestHeader.REFRESH_TOKEN, tokenInfo.refreshToken)
                 addHeader(MemberRequestHeader.MEMBER_ID, tokenInfo.id.toString())
             }
+
+            val cookie = ResponseCookie.from("refreshToken", tokenInfo.refreshToken)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(60L * 60 * 24 * 30)
+                .sameSite("None")
+                .build()
+
+            response.addHeader("Set-Cookie", cookie.toString())
             logger().info(MemberControllerLog.LOGIN_SUCCESS + loginRequest.email)
 
             return MemberResponse.loginSuccess()
@@ -70,17 +81,32 @@ class MemberController
         @Operation(summary = MemberApiDocs.JWT_REISSUE_SUMMARY, description = MemberApiDocs.JWT_REISSUE_DESCRIPTION)
         fun jwtTokenReissue(
             @RequestHeader(MemberRequestHeader.ID) id: String?,
-            @RequestHeader(MemberRequestHeader.REFRESH_TOKEN) refreshToken: String?
-        ): ResponseEntity<JwtTokenInfo> {
-            if (id.isNullOrBlank() || refreshToken.isNullOrBlank()) {
+            request: HttpServletRequest,
+            response: HttpServletResponse
+        ): ResponseEntity<String> {
+            if (id.isNullOrBlank()) {
                 throw MemberException(MemberExceptionMessage.TOKEN_REISSUE_HEADER_IS_NULL, "UNRELIABLE-MEMBER")
             }
+
+            val refreshToken = request.cookies
+                ?.firstOrNull { it.name == "refreshToken" }
+                ?.value
+                ?: throw MemberException(MemberExceptionMessage.TOKEN_REISSUE_HEADER_IS_NULL, "UNRELIABLE-MEMBER")
 
             val memberId = UUID.fromString(id)
             val reissueJwtToken = memberCommandService.reissueJwtToken(memberId, refreshToken)
             logger().info(MemberControllerLog.JWT_TOKEN_REISSUE_SUCCESS + memberId)
+            val refreshCookie = ResponseCookie.from("refreshToken", reissueJwtToken.refreshToken)
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
+                .path("/")
+                .maxAge(60L * 60 * 24 * 30)
+                .build()
+            response.addHeader(MemberRequestHeader.ACCESS_TOKEN, reissueJwtToken.accessToken)
+            response.addHeader("Set-Cookie", refreshCookie.toString())
 
-            return ResponseEntity.ok(reissueJwtToken)
+            return ResponseEntity.ok("Reissue Token Success!")
         }
 
         @PatchMapping(MemberUrl.UPDATE_PASSWORD)
@@ -118,10 +144,15 @@ class MemberController
 
         @PostMapping(MemberUrl.LOGOUT)
         @Operation(summary = MemberApiDocs.LOGOUT_SUMMARY, description = MemberApiDocs.LOGOUT_DESCRIPTION)
-        fun logout(principal: Principal): ResponseEntity<String> {
+        fun logout(principal: Principal, response: HttpServletResponse): ResponseEntity<String> {
             val memberId = UUID.fromString(principal.name)
             memberCommandService.logout(memberId)
             logger().info(MemberControllerLog.LOGOUT_SUCCESS + memberId)
+            val deleteCookie = Cookie("refreshToken", "").apply {
+                path = "/"
+                maxAge = 0
+            }
+            response.addCookie(deleteCookie)
 
             return MemberResponse.logOutSuccess()
         }

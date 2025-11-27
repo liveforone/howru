@@ -29,6 +29,17 @@ class SecurityConfig
             http.csrf { obj -> obj.disable() }
             http.requestCache { cache -> cache.disable() }
             http.sessionManagement { session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
+//            http.cors { cors ->
+//                cors.configurationSource {
+//                    val config = org.springframework.web.cors.CorsConfiguration()
+//                    config.allowedOrigins = listOf("https://프론트엔드_도메인")
+//                    config.allowedMethods = listOf("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+//                    config.allowedHeaders = listOf("*")
+//                    config.allowCredentials = true
+//
+//                    config
+//                }
+//            }
             http.authorizeHttpRequests { path ->
                 path
                     .requestMatchers(
